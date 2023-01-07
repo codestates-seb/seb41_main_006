@@ -31,6 +31,4 @@ jobs:
     - name: Add permission
       run: chmod +x ./server/gradlew
     - name: Build with Gradle
-      uses: ./server/gradlew clean build
-      with:
-        arguments: build
+      run: ./server/gradlew clean build
