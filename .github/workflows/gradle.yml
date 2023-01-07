@@ -62,5 +62,5 @@ jobs:
       run: >
         aws deploy create-deployment --application-name seb41_main_006
         --deployment-config-name CodeDeployDefault.AllAtOnce
-        --deployment-group-name seb_main_006_group
+        --deployment-group-name seb41_main_006
         --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=server.zip
