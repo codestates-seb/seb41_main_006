@@ -11,6 +11,7 @@ public enum ExceptionCode {
     MEMBER_NOT_FOUND(NOT_FOUND.value(), "Member Not Found"),
     PET_NOT_FOUND(404, "Pet Not Found"),
     PET_EXISTS(CONFLICT.value(), "Pet Exists" ),
+    BOARD_NOT_FOUND(NOT_FOUND.value(),"Board not Found"),
 
     COMMENTS_NOT_FOUND(404, "Comment Not Found");
 
