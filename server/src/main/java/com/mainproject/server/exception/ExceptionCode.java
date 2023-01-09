@@ -8,6 +8,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 public enum ExceptionCode {
     MEMBER_ALREADY_EXISTS(CONFLICT.value(), "Member Already Exists"),
+    MEMBER_NOT_FOUND(NOT_FOUND.value(), "Member Not Found"),
     PET_NOT_FOUND(404, "Pet Not Found"),
     PET_EXISTS(CONFLICT.value(), "Pet Exists" ),
     BOARD_NOT_FOUND(NOT_FOUND.value(),"Board not Found"),
