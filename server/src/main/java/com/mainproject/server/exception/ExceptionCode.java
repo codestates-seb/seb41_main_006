@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.CONFLICT;
 
 public enum ExceptionCode {
-    MEMBER_ALREADY_EXISTS(CONFLICT.value(), "Member Already Exists");
+    MEMBER_ALREADY_EXISTS(CONFLICT.value(), "Member Already Exists"),
+    PET_NOT_FOUND(404, "Pet Not Found"),
+    PET_EXISTS(CONFLICT.value(), "Pet Exists" );
 
     @Getter
     private int status;

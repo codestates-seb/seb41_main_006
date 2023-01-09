@@ -2,6 +2,8 @@ package com.mainproject.server.domain.pet.service;
 
 import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.domain.pet.repository.PetRepository;
+import com.mainproject.server.exception.BusinessLogicException;
+import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,15 +62,14 @@ public class PetService {
     private void verifyOverlapByPetName(String name) {
         Optional<Pet> optionalPet = petRepository.findByName(name);
         if(optionalPet.isPresent()) {
-//            throw new BusinessLogicException(ExceptionCode.PET_EXISTS);
+            throw new BusinessLogicException(ExceptionCode.PET_EXISTS);
         }
     }
 
     private Pet findVerifiedPet(long petId) {
         Optional<Pet> optionalPet = petRepository.findById(petId);
         Pet findPet = optionalPet.orElseThrow(
-//                () -> new BusinessLogicException(ExceptionCode.PET_NOT_FOUND)
-                ()-> new RuntimeException("해당 아이디를 가진 강아지 정보를 찾을 수 없습니다."));
+                () -> new BusinessLogicException(ExceptionCode.PET_NOT_FOUND));
 
         return findPet;
     }
