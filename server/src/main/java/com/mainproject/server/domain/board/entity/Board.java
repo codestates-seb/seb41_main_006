@@ -1,6 +1,6 @@
 package com.mainproject.server.domain.board.entity;
 
-import com.mainproject.server.global.auth.audit.Auditable;
+import com.mainproject.server.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
