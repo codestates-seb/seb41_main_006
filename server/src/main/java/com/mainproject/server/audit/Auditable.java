@@ -1,4 +1,4 @@
-package com.mainproject.server.global.auth.audit;
+package com.mainproject.server.audit;
 
 import java.time.LocalDateTime;
 

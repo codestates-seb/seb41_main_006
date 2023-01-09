@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.mainproject.server.global.auth.audit.Auditable;
+import com.mainproject.server.audit.Auditable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
