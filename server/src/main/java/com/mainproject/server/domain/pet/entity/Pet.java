@@ -20,7 +20,7 @@ public class Pet {
     private String name;
 
     @Column(nullable = false)
-    private int age;
+    private String age;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

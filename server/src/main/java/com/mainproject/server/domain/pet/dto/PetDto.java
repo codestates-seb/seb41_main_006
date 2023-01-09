@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class PetDto {
     @Getter
@@ -13,10 +14,12 @@ public class PetDto {
     public static class Post {
 
         @NotBlank(message = "이름을 입력해주세요.")
+        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$")
         private String name;
 
-        @NotNull(message = "나이를 입력해주세요.")
-        private int age;
+        @NotBlank(message = "나이를 입력해주세요.")
+        @Pattern(regexp = "^[0-9]{1,3}$ ")
+        private String age;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
@@ -38,10 +41,12 @@ public class PetDto {
         private Long petId;
 
         @NotBlank(message = "이름을 입력해주세요.")
+        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$")
         private String name;
 
-        @NotNull(message = "나이를 입력해주세요.")
-        private int age;
+        @NotBlank(message = "나이를 입력해주세요.")
+        @Pattern(regexp = "^[0-9]{1,3}$ ")
+        private String age;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;

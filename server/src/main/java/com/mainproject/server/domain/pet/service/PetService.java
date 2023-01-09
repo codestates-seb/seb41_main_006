@@ -56,7 +56,7 @@ public class PetService {
     public void deletePets(long petId) {
         petRepository.deleteById(petId);
     }
-
+    // member안에 pet 정보에서 조회하도록 수정 해야 함
     private void verifyOverlapByPetName(String name) {
         Optional<Pet> optionalPet = petRepository.findByName(name);
         if(optionalPet.isPresent()) {
