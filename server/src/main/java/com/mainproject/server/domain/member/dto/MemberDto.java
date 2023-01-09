@@ -1,11 +1,13 @@
 package com.mainproject.server.domain.member.dto;
 
 import com.mainproject.server.domain.member.entity.Member;
+import com.mainproject.server.validator.NotSpace;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
@@ -25,6 +27,7 @@ public class MemberDto {
         @Pattern(regexp ="^(?=.*\\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\\da-zA-Z~!@#$%^&*]+$",
                 message = "영문자와 숫자로 구성되며 최소 하나 이상의 특수문자(~!@#$%^&*)가 포함되어야합니다. "+
                         "공백은 포함될 수 없습니다")
+        @NotNull
         @Size(min = 8, max = 16)
         private String password;
 
@@ -41,6 +44,28 @@ public class MemberDto {
         private String address;
 
         private String aboutMe;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class Patch {
+
+        @NotSpace
+        private String nickName;
+
+        @Pattern(regexp ="^(?=.*\\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\\da-zA-Z~!@#$%^&*]+$",
+                message = "영문자와 숫자로 구성되며 최소 하나 이상의 특수문자(~!@#$%^&*)가 포함되어야합니다. "+
+                        "공백은 포함될 수 없습니다")
+        @Size(min = 8, max = 16)
+        private String password;
+
+        @Positive
+        private int age;
+
+        private String gender;
+        private String address;
+        private String aboutMe;
+        private Member.MemberStatus memberStatus;
     }
 
     @Getter
