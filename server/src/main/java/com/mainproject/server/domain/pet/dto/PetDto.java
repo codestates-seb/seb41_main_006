@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.pet.dto;
 
 import com.mainproject.server.domain.pet.entity.Pet;
+import com.mainproject.server.validator.Gender;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,16 +14,13 @@ public class PetDto {
     @Builder
     public static class Post {
 
-        @NotBlank(message = "이름을 입력해주세요.")
         @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$", message = "한글, 영어를 사용하여 10자 이내로 작성해주세요.")
         private String name;
 
-        @NotBlank(message = "나이를 입력해주세요.")
         @Pattern(regexp = "^[0-9]{1,2}$", message = "최대 2글자까지만 허용합니다.")
         private String age;
 
-        // 남, 여 값만 들어올 수 있는 validation 추가
-        @NotBlank(message = "강아지의 성별을 선택해주세요.")
+        @Gender
         private String gender;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
@@ -44,16 +42,13 @@ public class PetDto {
 
         private Long petId;
 
-        @NotBlank(message = "이름을 입력해주세요.")
         @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$", message = "한글, 영어를 사용하여 10자 이내로 작성해주세요.")
         private String name;
 
-        @NotBlank(message = "나이를 입력해주세요.")
         @Pattern(regexp = "^[0-9]{1,2}$", message = "최대 2글자까지만 허용합니다.")
         private String age;
 
-        // 남, 여 값만 들어올 수 있는 validation 추가
-        @NotBlank(message = "강아지의 성별을 선택해주세요.")
+        @Gender
         private String gender;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
