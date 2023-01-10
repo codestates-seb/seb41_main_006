@@ -10,7 +10,7 @@ function App() {
       <GlobalStyle />
       <Header></Header>
       <Routes>
-        <Route path="/mate" element={<FindMatePage />}></Route>
+        <Route path="/mate/*" element={<FindMatePage />}></Route>
       </Routes>
     </div>
   );
