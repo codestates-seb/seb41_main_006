@@ -3,6 +3,8 @@ package com.mainproject.server.domain.comments.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
+import org.springframework.lang.Nullable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,27 +18,16 @@ public class CommentsDto {
 		@Positive
 		private Long memberId;
 
-		//@Positive
-		//private Long postId;
+		@Positive
+		private Long boardId;
 
 		@NotBlank(message = "내용은 공백이 아니어야 합니다.")
 		private String content;
-	}
 
-	/*@AllArgsConstructor
-	@Getter
-	public static class RePost{
-		private Long commentsId;
-
-		private Long postId;
-
-		private Long memberId;
-
+		@Positive
+		@Nullable
 		private Long parentId;
-
-		@NotBlank(message = "내용은 공백이 아니어야 합니다.")
-		private String content;
-	}*/
+	}
 
 
 	@AllArgsConstructor
@@ -55,7 +46,7 @@ public class CommentsDto {
 	@Setter
 	public static class Response{
 		private Long commentsId;
-		private Long postId;
+		private Long boardId;
 		private Long memberId;
 		private String content;
 		private Long parentId;
