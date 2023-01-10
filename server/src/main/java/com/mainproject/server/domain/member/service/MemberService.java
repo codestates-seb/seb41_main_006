@@ -9,10 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 @Slf4j
 @RequiredArgsConstructor
 public class MemberService {
@@ -32,6 +34,14 @@ public class MemberService {
         return memberRepository.save(updatedMember);
     }
 
+    /*회원 탈퇴*/
+    public void deleteMember(long memberId) {
+        Member member = validateVerifyMember(memberId);
+        member.setMemberStatus(Member.MemberStatus.MEMBER_QUIT);
+
+        memberRepository.save(member);
+    }
+
     /*존재하는 회원인지 확인*/
     public Member validateVerifyMember(long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
@@ -46,5 +56,6 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_ALREADY_EXISTS);
         }
     }
+
 }
 
