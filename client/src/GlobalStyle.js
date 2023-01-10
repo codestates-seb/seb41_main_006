@@ -28,7 +28,6 @@ const GlobalStyle = createGlobalStyle`
     background-color: var(--bg-color);
     width: 100vw;
     min-height: 100vh;
-    height: 100vh;
     display: flex;
     justify-content: center;
   }
