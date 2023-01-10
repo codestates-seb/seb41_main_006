@@ -1,5 +1,12 @@
+import styled from 'styled-components';
+import Container from '../components/Container';
+
+const PageContainer = styled(Container)`
+  background-color: red;
+`;
+
 const FindMatePage = () => {
-  return <div>메이트 찾기 페이지</div>;
+  return <PageContainer>메이트 찾기 페이지</PageContainer>;
 };
 
 export default FindMatePage;
