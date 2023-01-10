@@ -1,5 +1,7 @@
 package com.mainproject.server.domain.member.entity;
 
+import com.mainproject.server.audit.Auditable;
+import com.mainproject.server.domain.pet.entity.Pet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,12 +13,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class Member {
+public class Member extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
@@ -47,8 +52,19 @@ public class Member {
 
     private String aboutMe;
 
+    @OneToMany(mappedBy = "member")
+    private List<Pet> pets = new ArrayList<>();
+
+    public void addPets(Pet pet) {
+        this.pets.add(pet);
+        if (pet.getMember() != this) {
+            pet.setMember(this);
+        }
+    }
+
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),
+
         MEMBER_SLEEP("휴면"),
         MEMBER_QUIT("탈퇴");
 
