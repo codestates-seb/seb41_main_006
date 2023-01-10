@@ -2,9 +2,30 @@ import { useState } from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
+import SearchAddressBox from '../components/findMate/SearchAddressBox';
+
+const FindMateContainer = styled(Container)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const FindMateHeader = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   h1 {
+    width: 100%;
+    color: var(--main-font-color);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  div {
+    width: 100%;
+  }
+
+  h2 {
     color: var(--main-font-color);
     font-size: 1.25rem;
   }
@@ -13,18 +34,12 @@ const FindMateHeader = styled.div`
 const FindMatePage = () => {
   const [address, setAddress] = useState('');
 
-  const handleChange = (e) => {
-    setAddress(e.target.value);
-  };
-
   return (
-    <Container>
+    <FindMateContainer>
       <FindMateHeader>
-        <h1>어떤 메이트를 찾고 싶으신가요?</h1>
-        <div>
-          <input type="text" value={address} onChange={handleChange}></input>
-          <div>{address}</div>
-        </div>
+        <h1>어떤 지역에서 찾고 싶으신가요?</h1>
+        <SearchAddressBox address={address} setAddress={setAddress} />
+        <h2>{address}</h2>
       </FindMateHeader>
       <div>
         <div>
@@ -37,7 +52,7 @@ const FindMatePage = () => {
           <Route path="*" element={<div>유저</div>}></Route>
         </Routes>
       </div>
-    </Container>
+    </FindMateContainer>
   );
 };
 

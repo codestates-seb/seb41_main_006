@@ -24,6 +24,21 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1rem;
   }
 
+  button{
+    cursor: pointer;
+  }
+
+  /* input 기본 스타일 초기화 */
+  input { 
+    -webkit-appearance : none;
+    -moz-appearance:none; 
+    appearance:none;
+    &:focus {
+      outline: none;
+    }
+  }
+
+
   .App{
     background-color: var(--bg-color);
     width: 100vw;
