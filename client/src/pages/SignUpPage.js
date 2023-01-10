@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import Container from '../components/Container';
 
-const SignUpContainer = styled.div`
-  width: 100%;
-  height: 100%;
+const SignUpContainer = styled(Container)`
   display: flex;
   justify-content: center;
 `;
@@ -12,7 +11,7 @@ const SInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-  width: 30%;
+  width: 20%;
   height: 50%;
   margin-top: 100px;
   .title {
