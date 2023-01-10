@@ -48,10 +48,20 @@ public class PetService {
 
         return petRepository.save(findPet);
     }
-    public Page<Pet> findPetByKeyword(int page, int size, String keyword) {
-        // 정렬 기준을 어떻게 할 것인지?
-        Pageable pageable = PageRequest.of(page-1, size, Sort.by("petId").ascending());
-        Page<Pet> petPage = petRepository.findByAboutDogContaining(pageable, keyword);
+    public Pet findPet(long petId) {
+        return findVerifiedPet(petId);
+    }
+    public Page<Pet> findPets(int page, int size) {
+        Pageable pageable = PageRequest.of(page-1, size, Sort.by("petId").descending());
+        Page<Pet> petPage = petRepository.findAll(pageable);
+
+        return petPage;
+    }
+    public Page<Pet> findPetByKeyword(int page, int size, Pet.PetSize petSize) {
+        // keyword -> Pet.PetSize 타입
+        Pageable pageable = PageRequest.of(page-1, size, Sort.by("petId").descending());
+
+        Page<Pet> petPage = petRepository.findByPetSizeLike(pageable, petSize);
 
         return petPage;
     }
