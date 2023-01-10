@@ -4,7 +4,7 @@ const Container = styled.div`
   padding-top: var(--header-height);
   background-color: var(--bg-color);
   width: 100%;
-  max-width: 980px;
+  max-width: 1200px;
   height: 100%;
   color: var(--main-color);
 `;
