@@ -2,8 +2,8 @@ import Header from './components/Header';
 import styled from 'styled-components';
 import GlobalStyle from './GlobalStyle';
 import { Routes, Route } from 'react-router-dom';
-
 import FindMatePage from './pages/FindMatePage';
+import SignUpPage from './pages/SignUpPage';
 
 const Container = styled.div`
   padding-top: var(--header-height);
@@ -22,6 +22,7 @@ function App() {
       <Container>
         <Routes>
           <Route path="/mate" element={<FindMatePage />}></Route>
+          <Route path="/signup" element={<SignUpPage />}></Route>
         </Routes>
       </Container>
     </div>
