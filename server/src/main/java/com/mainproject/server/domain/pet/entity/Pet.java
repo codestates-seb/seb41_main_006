@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.pet.entity;
 
+import com.mainproject.server.audit.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.lang.reflect.Member;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pet {
+public class Pet extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long petId;
@@ -19,8 +20,11 @@ public class Pet {
     @Column(nullable = false, length = 10)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 3)
     private String age;
+
+    @Column(nullable = false, length = 1)
+    private String gender;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -39,9 +43,15 @@ public class Pet {
     private String breed;
 
     public enum PetSize {
-        DOG_S,
-        DOG_M,
-        DOG_L
+        DOG_S("소형견"),
+        DOG_M("중형견"),
+        DOG_L("대형견");
+
+        private String status;
+
+        PetSize(String status) {
+            this.status = status;
+        }
     }
 
 }

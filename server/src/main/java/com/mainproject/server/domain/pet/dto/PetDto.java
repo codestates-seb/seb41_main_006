@@ -14,12 +14,16 @@ public class PetDto {
     public static class Post {
 
         @NotBlank(message = "이름을 입력해주세요.")
-        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$")
+        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$", message = "한글, 영어를 사용하여 10자 이내로 작성해주세요.")
         private String name;
 
         @NotBlank(message = "나이를 입력해주세요.")
-        @Pattern(regexp = "^[0-9]{1,3}$ ")
+        @Pattern(regexp = "^[0-9]{1,2}$", message = "최대 2글자까지만 허용합니다.")
         private String age;
+
+        // 남, 여 값만 들어올 수 있는 validation 추가
+        @NotBlank(message = "강아지의 성별을 선택해주세요.")
+        private String gender;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
@@ -27,7 +31,7 @@ public class PetDto {
         @NotNull(message = "강아지의 중성화 여부를 선택해주세요.")
         private boolean neutered;
 
-        @NotNull
+        @NotNull(message = "강아지 소개글을 작성해주세요.")
         private String aboutDog;
 
         @NotBlank(message = "강아지의 종을 입력해주세요.")
@@ -41,12 +45,16 @@ public class PetDto {
         private Long petId;
 
         @NotBlank(message = "이름을 입력해주세요.")
-        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$")
+        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$", message = "한글, 영어를 사용하여 10자 이내로 작성해주세요.")
         private String name;
 
         @NotBlank(message = "나이를 입력해주세요.")
-        @Pattern(regexp = "^[0-9]{1,3}$ ")
+        @Pattern(regexp = "^[0-9]{1,2}$", message = "최대 2글자까지만 허용합니다.")
         private String age;
+
+        // 남, 여 값만 들어올 수 있는 validation 추가
+        @NotBlank(message = "강아지의 성별을 선택해주세요.")
+        private String gender;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
@@ -54,7 +62,7 @@ public class PetDto {
         @NotNull(message = "강아지의 중성화 여부를 선택해주세요.")
         private boolean neutered;
 
-        @NotNull
+        @NotNull(message = "강아지 소개글을 작성해주세요.")
         private String aboutDog;
 
         @NotBlank(message = "강아지의 종을 입력해주세요.")
@@ -66,7 +74,8 @@ public class PetDto {
     public static class Response {
         private Long petId;
         private String name;
-        private int age;
+        private String age;
+        private String gender;
         private Pet.PetSize petSize;
         private boolean neutered;
         private String aboutDog;
