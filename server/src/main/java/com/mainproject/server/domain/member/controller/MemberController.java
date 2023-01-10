@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,15 +40,24 @@ public class MemberController {
                 new SingleResponseDto<>(memberMapper.memberToMemberResponseDto(savedMember)), HttpStatus.OK);
     }
 
-    /*마이페이지 회원 정보 수정*/
+    /*마이 페이지 회원 정보 수정*/
     @PatchMapping("/{member-id}/my-page")
     public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch requestBody,
                                       @Positive @PathVariable("member-id") long memberId) {
-        Member updateMember =
-                memberService.updateMember(memberId, memberMapper.memberPathDtoToMember(requestBody));
+        Member updateMypageInfo =
+                memberService.updateMypageInfo(memberId, memberMapper.memberPathDtoToMember(requestBody));
 
         return new ResponseEntity(
-                new SingleResponseDto<>(memberMapper.memberToMemberResponseDto(updateMember)), HttpStatus.OK);
+                new SingleResponseDto<>(memberMapper.memberToMemberResponseDto(updateMypageInfo)), HttpStatus.OK);
+    }
+
+    /*마이 페이지 회원 정보 조회*/
+    @GetMapping("/{member-id}/my-page")
+    public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId) {
+        Member mypageInfo = memberService.getMypageInfo(memberId);
+
+        return new ResponseEntity(
+                new SingleResponseDto<>(memberMapper.memberToMemberResponseDto(mypageInfo)), HttpStatus.OK);
     }
 
     /*회원 탈퇴*/

@@ -27,12 +27,18 @@ public class MemberService {
     }
 
     /*마이페이지 정보 수정*/
-    public Member updateMember(long memberId, Member member) {
+    public Member updateMypageInfo(long memberId, Member member) {
         Member findMember = validateVerifyMember(memberId);
         Member updatedMember = customBeanUtils.copyNonNullProperties(member, findMember);
 
         return memberRepository.save(updatedMember);
     }
+
+    /*마이페이지 회원 정보 조회*/
+    public Member getMypageInfo(long memberId) {
+         return validateVerifyMember(memberId);
+    }
+
 
     /*회원 탈퇴*/
     public void deleteMember(long memberId) {
