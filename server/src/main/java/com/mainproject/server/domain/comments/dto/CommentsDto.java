@@ -1,5 +1,7 @@
 package com.mainproject.server.domain.comments.dto;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
@@ -53,5 +55,7 @@ public class CommentsDto {
 		private int depth;
 		private int commentsOrder;
 		private int countLike;
+		private LocalDateTime createdAt;
+		private LocalDateTime modifiedAt;
 	}
 }
