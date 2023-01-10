@@ -37,7 +37,7 @@ public class CommentsService {
 
 		// 수정
 		Optional.ofNullable(comments.getContent())
-			.ifPresent(content -> findComments.setContent(content));
+			.ifPresent(findComments::setContent);
 
 		// 수정 뒤 저장
 		return commentsRepository.save(findComments);
