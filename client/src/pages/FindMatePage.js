@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import SearchAddressBox from '../components/findMate/SearchAddressBox';
+import FindMateTab from '../components/findMate/FindMateTab';
 
 const FindMateContainer = styled(Container)`
   display: flex;
@@ -10,7 +11,7 @@ const FindMateContainer = styled(Container)`
   align-items: center;
 `;
 
-const FindMateHeader = styled.div`
+const FindMateTop = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -27,8 +28,12 @@ const FindMateHeader = styled.div`
 
   h2 {
     color: var(--main-font-color);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
+`;
+
+const FindMateBottom = styled.div`
+  width: 100%;
 `;
 
 const FindMatePage = () => {
@@ -36,22 +41,19 @@ const FindMatePage = () => {
 
   return (
     <FindMateContainer>
-      <FindMateHeader>
+      <FindMateTop>
         <h1>어떤 지역에서 찾고 싶으신가요?</h1>
         <SearchAddressBox address={address} setAddress={setAddress} />
-        <h2>{address}</h2>
-      </FindMateHeader>
-      <div>
-        <div>
-          <Link to="users">산책 메이트</Link>
-          <Link to="posts">산책 모임</Link>
-        </div>
+        {address ? <h2>{address}</h2> : <h2>송파구 잠실 7동</h2>}
+      </FindMateTop>
+      <FindMateBottom>
+        <FindMateTab />
         <Routes>
           <Route path="users" element={<div>유저</div>}></Route>
           <Route path="posts" element={<div>글</div>}></Route>
           <Route path="*" element={<div>유저</div>}></Route>
         </Routes>
-      </div>
+      </FindMateBottom>
     </FindMateContainer>
   );
 };

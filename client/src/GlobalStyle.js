@@ -28,6 +28,15 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
 
+  a{
+    text-decoration: none;
+
+    &:visited{
+      text-decoration: none;
+      color: none;
+    }
+  }
+
   /* input 기본 스타일 초기화 */
   input { 
     -webkit-appearance : none;
