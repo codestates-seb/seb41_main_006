@@ -1,10 +1,22 @@
 package com.mainproject.server.domain.pet.entity;
 
 import com.mainproject.server.audit.Auditable;
-import lombok.*;
+import com.mainproject.server.domain.member.entity.Member;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.lang.reflect.Member;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Getter
@@ -41,6 +53,17 @@ public class Pet extends Auditable {
 
     @Column(nullable = false)
     private String breed;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    public void setMember(Member member) {
+        this.member = member;
+        if (!member.getPets().contains(this)) {
+            member.getPets().add(this);
+        }
+    }
 
     public enum PetSize {
         DOG_S("소형견"),
