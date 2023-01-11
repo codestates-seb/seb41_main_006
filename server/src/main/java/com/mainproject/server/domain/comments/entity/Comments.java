@@ -13,7 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Formula;
+
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.member.entity.Member;
@@ -37,6 +38,7 @@ public class Comments extends Auditable {
 	private String content;
 
 	@Column
+	@Formula("(select count(*) from comments_like v where v.comments_id = comments_id and v.like_status = 'LIKE')")
 	private int countLike;
 
 	@Column
@@ -56,7 +58,7 @@ public class Comments extends Auditable {
 	private Board board;
 
 	// 댓글 ~ 좋아요 (1 : N)
-	@OneToMany(mappedBy = "comments", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "comments", cascade = CascadeType.ALL)
 	private List<CommentsLike> commentsLikes = new ArrayList<>();
 
 	// 자기 참조 관계 : 댓글 ~ 대댓글 (1 : N)

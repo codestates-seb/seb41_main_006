@@ -6,7 +6,9 @@ import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 import com.mainproject.server.domain.comments.dto.CommentsDto;
+import com.mainproject.server.domain.comments.dto.CommentsLikeDto;
 import com.mainproject.server.domain.comments.entity.Comments;
+import com.mainproject.server.domain.comments.entity.CommentsLike;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CommentsMapper {
@@ -33,4 +35,9 @@ public interface CommentsMapper {
 	@Mappings({@Mapping(source = "member.memberId", target = "memberId"),
 	@Mapping(source = "board.boardId", target = "boardId")})
 	CommentsDto.Response commentsToCommentsResponseDto(Comments comments);
+
+	// @Mappings({@Mapping(source = "memberId", target = "member"),
+	// 	@Mapping(source = "commentsId", target = "comments")})
+	CommentsLike commentsLikeDtoToCommentsLike(CommentsLikeDto commentsLikeDto);
+
 }
