@@ -4,6 +4,7 @@ import MatePostList from './MatePostList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
+import { MdFilterListAlt } from 'react-icons/md';
 
 const UsersContentLayOut = styled.div`
   ${flexColCenter}
@@ -25,12 +26,18 @@ const MateUserContent = () => {
     <UsersContentLayOut>
       <UsersContentRow>
         <div>
-          <Title size="medium">산책 메이트</Title>
-          <input type="date"></input>
-          <input type="time"></input>
+          <Title as="h3" size="medium">
+            산책 메이트
+          </Title>
         </div>
-        <Button color="main" onClick={() => navigate('/')}>
-          글 작성
+        <Button
+          color="second"
+          size="small"
+          outline
+          onClick={() => navigate('/')}
+        >
+          <MdFilterListAlt />
+          상세 조건
         </Button>
       </UsersContentRow>
       <MatePostList />
