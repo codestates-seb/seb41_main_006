@@ -2,8 +2,9 @@ import styled from 'styled-components';
 import { StateButton } from '../components/Button';
 import { FaHeart } from 'react-icons/fa';
 import Map from '../components/Map';
+import Container from '../components/Container';
 
-const Container = styled.div`
+const Containerr = styled(Container)`
   .comment {
     background-color: yellow;
     height: 100px;
@@ -78,7 +79,7 @@ const MainContainer = styled.div`
 
 const PostDetailPage = () => {
   return (
-    <Container>
+    <Containerr>
       <HeaderContainer>
         <div className="post-title">
           <div className="title">같이 산책해요~!!</div>
@@ -111,7 +112,7 @@ const PostDetailPage = () => {
           <Map />
         </div>
       </MainContainer>
-    </Container>
+    </Containerr>
   );
 };
 
