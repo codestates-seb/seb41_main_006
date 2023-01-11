@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-const FindMateTabWrapper = styled.div`
+const FindMateTabLayout = styled.div`
   width: 100%;
   margin-top: 2rem;
   .tabs {
@@ -18,9 +18,9 @@ const FindMateTabWrapper = styled.div`
   }
 `;
 
-const StyledTabLink = styled(Link)`
+const TabLink = styled(Link)`
   width: 7rem;
-  padding-bottom: 0.3rem;
+  padding-bottom: 0.5rem;
   text-align: center;
   color: var(--sec-color);
   font-size: 1.25rem;
@@ -42,25 +42,25 @@ const FindMateTab = () => {
   const { pathname } = useLocation();
 
   return (
-    <FindMateTabWrapper>
+    <FindMateTabLayout>
       <div className="tabs">
-        <StyledTabLink
+        <TabLink
           className={
             pathname === '/mate' || pathname === '/mate/users' ? 'focus' : ''
           }
           to="users"
         >
           산책 메이트
-        </StyledTabLink>
-        <StyledTabLink
+        </TabLink>
+        <TabLink
           className={pathname === '/mate/posts' ? 'focus' : ''}
           to="posts"
         >
           산책 모임
-        </StyledTabLink>
+        </TabLink>
       </div>
       <div className="tab-line"></div>
-    </FindMateTabWrapper>
+    </FindMateTabLayout>
   );
 };
 
