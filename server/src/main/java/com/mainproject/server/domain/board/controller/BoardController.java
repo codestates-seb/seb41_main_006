@@ -69,7 +69,7 @@ public class BoardController {
     @GetMapping("/search")
     public ResponseEntity searchBoards(@Positive @RequestParam(defaultValue = "1") int page,
                                        @Positive @RequestParam(defaultValue = "10") int size,
-                                       @RequestParam(value = "keyword") String keyword) {
+                                       @RequestParam(value = "keyword") String keyword) { // 위치 정보 어떻게?
         Page<Board> boardPage;
 
         if(keyword != null) {
@@ -77,6 +77,7 @@ public class BoardController {
         } else {
             boardPage = boardService.findBoards(page, size);
         }
+
         PageInfo pageInfo = new PageInfo(page, size, (int) boardPage.getTotalElements(), boardPage.getTotalPages());
 
         List<Board> boardList = boardPage.getContent();
