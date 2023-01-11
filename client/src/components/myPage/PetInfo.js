@@ -9,9 +9,6 @@ const PetInfoContainer = styled.div`
   > * {
     margin: 1% 0;
   }
-  .title {
-    font-size: 2rem;
-  }
   .img {
     background-color: white;
     width: 35%;
@@ -55,13 +52,16 @@ const Saddbutton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 5%;
+  :active {
+    background-color: var(--main-font-color);
+  }
 `;
 
 const PetInfo = () => {
   return (
     <>
       <PetInfoContainer>
-        <div className="title">강아지 정보</div>
+        <h2>강아지 정보</h2>
         <div className="img"></div>
         <div>강아지 이름</div>
         <div className="Info">
