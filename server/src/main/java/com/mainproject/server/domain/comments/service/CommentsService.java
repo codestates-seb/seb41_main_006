@@ -51,7 +51,7 @@ public class CommentsService {
 	}
 
 	// ----- 댓글 검증
-	private Comments findVerifiedComments(Long commentsId){
+	public Comments findVerifiedComments(Long commentsId){
 		Optional<Comments> optionalComments = commentsRepository.findById(commentsId);
 		Comments findComments =
 			optionalComments.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENTS_NOT_FOUND));

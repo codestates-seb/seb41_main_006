@@ -1,4 +1,4 @@
-package com.mainproject.server.domain.comments.entity;
+package com.mainproject.server.domain.board.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,25 +24,26 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentsLike extends Auditable {
+public class BoardLike extends Auditable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long commentsLikeId;
+	private Long boardLikeId;
 
 	// 좋아요 ~ 멤버 (N : 1)
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	//좋아요 ~ 댓글 (N : 1)
+	// 좋아요 ~ 게시글 (N : 1)
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "comments_id", nullable = false)
-	private Comments comments;
+	@JoinColumn(name = "board_id", nullable = false)
+	private Board board;
 
 	@Enumerated(EnumType.STRING)
 	private LikeStatus likeStatus = LikeStatus.LIKE;
 
-	public CommentsLike(Long commentsLikeId){
-		this.commentsLikeId = commentsLikeId;
+	public BoardLike(Long boardLikeId){
+		this.boardLikeId = boardLikeId;
 	}
+
 }

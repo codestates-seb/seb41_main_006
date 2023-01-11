@@ -48,7 +48,7 @@ public class BoardService {
        return boardRepository.save(findBoard);
     }
 
-    public Board findBoard(long boardId) {
+    public Board findBoard(Long boardId) {
         return findVerifiedBoard(boardId);
     }
 
@@ -64,12 +64,12 @@ public class BoardService {
         return boardRepository.findByMeetingPlaceContaining(pageable, keyword);
     }
 
-    public void deleteBoard(long boardId) {
+    public void deleteBoard(Long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
         boardRepository.delete(findBoard);
     }
 
-    private Board findVerifiedBoard(long boardId) {
+    public Board findVerifiedBoard(Long boardId) {
         Optional<Board> optionalBoard = boardRepository.findById(boardId);
         Board findBoard = optionalBoard.orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND)

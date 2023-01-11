@@ -1,8 +1,10 @@
 package com.mainproject.server.domain.board.controller;
 
 import com.mainproject.server.domain.board.dto.BoardDto;
+import com.mainproject.server.domain.board.dto.BoardLikeDto;
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.board.mapper.BoardMapper;
+import com.mainproject.server.domain.board.service.BoardLikeService;
 import com.mainproject.server.domain.board.service.BoardService;
 import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.dto.SingleResponseDto;
@@ -24,6 +26,7 @@ import java.util.List;
 @RequestMapping("/boards")
 public class BoardController {
     private final BoardService boardService;
+    private final BoardLikeService boardLikeService;
     private final BoardMapper mapper;
 
     @PostMapping
@@ -91,5 +94,14 @@ public class BoardController {
         boardService.deleteBoard(boardId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{board-id}/like")
+    public ResponseEntity likeBoard(@Positive @PathVariable("board-id") Long boardId,
+                                    @Valid @RequestBody BoardLikeDto boardLikeDto){
+
+        boardLikeService.likeBoard(boardId, boardLikeDto.getMemberId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

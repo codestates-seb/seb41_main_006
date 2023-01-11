@@ -11,8 +11,7 @@ import com.mainproject.server.domain.comments.repository.CommentsLikeRepository;
 import com.mainproject.server.domain.comments.repository.CommentsRepository;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
-import com.mainproject.server.exception.BusinessLogicException;
-import com.mainproject.server.exception.ExceptionCode;
+import com.mainproject.server.domain.LikeStatus;
 
 @Service
 public class CommentsLikeService {
@@ -39,10 +38,10 @@ public class CommentsLikeService {
 		Optional<CommentsLike> oCommentsLike = commentsLikeRepository.findByMemberAndComments(findMember, findComments);
 		oCommentsLike.ifPresentOrElse(
 			like -> {
-				if (like.getLikeStatus().equals(CommentsLike.LikeStatus.LIKE)) {
-					like.setLikeStatus(CommentsLike.LikeStatus.CANCEL);
+				if (like.getLikeStatus().equals(LikeStatus.LIKE)) {
+					like.setLikeStatus(LikeStatus.CANCEL);
 				} else {
-					like.setLikeStatus(CommentsLike.LikeStatus.LIKE);
+					like.setLikeStatus(LikeStatus.LIKE);
 				}
 			},
 			() -> {
