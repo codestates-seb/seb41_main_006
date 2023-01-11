@@ -1,29 +1,23 @@
 import Header from './components/Header';
-import styled from 'styled-components';
 import GlobalStyle from './GlobalStyle';
 import { Routes, Route } from 'react-router-dom';
-
+// import Container from './components/Container';
 import FindMatePage from './pages/FindMatePage';
-
-const Container = styled.div`
-  padding-top: var(--header-height);
-  background-color: var(--bg-dark-color);
-  width: 100%;
-  max-width: 980px;
-  height: 100%;
-  color: var(--main-color);
-`;
+import PostDetailPage from './pages/PostDetailPage';
+import PostPage from './pages/PostPage';
+import PostEditPage from './pages/PostEditPage';
 
 function App() {
   return (
     <div className="App">
       <GlobalStyle />
       <Header></Header>
-      <Container>
-        <Routes>
-          <Route path="/mate" element={<FindMatePage />}></Route>
-        </Routes>
-      </Container>
+      <Routes>
+        <Route path="/mate" element={<FindMatePage />}></Route>
+        <Route path="/mate-detail" element={<PostDetailPage />}></Route>
+        <Route path="/post-mate" element={<PostPage />}></Route>
+        <Route path="/post-edit" element={<PostEditPage />}></Route>
+      </Routes>
     </div>
   );
 }
