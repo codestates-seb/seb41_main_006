@@ -13,6 +13,9 @@ const ProfileBox = styled(CenterBox)`
   }
 `;
 
+/**
+ * 원형의 profile 이미지를 반환
+ */
 const ProfileImage = ({ size, src, name }) => {
   return (
     <ProfileBox size={size}>
@@ -23,5 +26,7 @@ const ProfileImage = ({ size, src, name }) => {
 
 ProfileImage.defaultProps = {
   size: '16px',
+  name: 'user',
 };
+
 export default ProfileImage;

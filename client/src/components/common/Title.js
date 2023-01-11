@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 const titleSize = {
   large: '2rem',
-  medium: '1.75rem',
-  small: '1.25rem',
+  medium: '1.8rem', // 28px
+  small: '1.5rem', //24px
 };
 
 const StyledTitle = styled.h1`
