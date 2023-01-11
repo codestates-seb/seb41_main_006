@@ -80,7 +80,7 @@ public class CommentsController {
 	// ----- 댓글 좋아요
 	@PutMapping("/{comments-id}/like")
 	public ResponseEntity likeComments(@Positive @PathVariable("comments-id") Long commentsId,
-										@Positive @RequestBody CommentsLikeDto commentsLikeDto)
+										@Valid @RequestBody CommentsLikeDto commentsLikeDto)
 	{
 		commentsLikeService.likeComments(commentsId, commentsLikeDto.getMemberId());
 

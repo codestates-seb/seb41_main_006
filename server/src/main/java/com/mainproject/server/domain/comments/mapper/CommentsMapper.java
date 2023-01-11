@@ -17,27 +17,11 @@ public interface CommentsMapper {
 	@Mapping(source = "boardId", target = "board.boardId")})
 	Comments commentsPostDtoToComments(CommentsDto.Post commentsPostDto);
 
-	/*@Mapping(source = "memberId", target = "member.memberId")
-	default Comments commentsPostDtoToComments(CommentsDto.Post commentsPostDto){
-		Comments comments = new Comments();
-		Member member = new Member();
-		member.setMemberId(commentsPostDto.getMemberId());
-
-		comments.setContent(commentsPostDto.getContent());
-		comments.setParentId(commentsPostDto.getParentId());
-		comments.setContent(comments.getContent());
-
-		return comments;
-	};*/
-
 	Comments commentsPatchDtoToComments(CommentsDto.Patch commentsPatchDto);
 
 	@Mappings({@Mapping(source = "member.memberId", target = "memberId"),
 	@Mapping(source = "board.boardId", target = "boardId")})
 	CommentsDto.Response commentsToCommentsResponseDto(Comments comments);
 
-	// @Mappings({@Mapping(source = "memberId", target = "member"),
-	// 	@Mapping(source = "commentsId", target = "comments")})
 	CommentsLike commentsLikeDtoToCommentsLike(CommentsLikeDto commentsLikeDto);
-
 }
