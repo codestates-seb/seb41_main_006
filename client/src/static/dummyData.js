@@ -88,3 +88,97 @@ export const dummyPosts = [
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
   },
 ];
+
+export const dummyUsers = [
+  {
+    id: 1,
+    user: '규성',
+    petName: '둥이',
+    petBreed: '말티즈',
+    petGender: '수컷',
+    petNeutered: true,
+    petAge: 10,
+    address: '송파구 잠실7동',
+    aboutDog: '유저의 설명? 강아지의 설명?',
+    petImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  },
+  {
+    id: 2,
+    user: '규성',
+    petName: '둥이',
+    petBreed: '말티즈',
+    petGender: '수컷',
+    petNeutered: true,
+    petAge: 10,
+    address: '송파구 잠실7동',
+    aboutDog: '유저의 설명? 강아지의 설명?',
+    petImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  },
+  {
+    id: 3,
+    user: '규성',
+    petName: '둥이',
+    petBreed: '말티즈',
+    petGender: '수컷',
+    petNeutered: true,
+    petAge: 10,
+    address: '송파구 잠실7동',
+    aboutDog: '유저의 설명? 강아지의 설명?',
+    petImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  },
+  {
+    id: 4,
+    user: '규성',
+    petName: '둥이',
+    petBreed: '말티즈',
+    petGender: '수컷',
+    petNeutered: true,
+    petAge: 10,
+    address: '송파구 잠실7동',
+    aboutDog: '유저의 설명? 강아지의 설명?',
+    petImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  },
+  {
+    id: 5,
+    user: '규성',
+    petName: '둥이',
+    petBreed: '말티즈',
+    petGender: '수컷',
+    petNeutered: true,
+    petAge: 10,
+    address: '송파구 잠실7동',
+    aboutDog: '유저의 설명? 강아지의 설명?',
+    petImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  },
+  {
+    id: 6,
+    user: '규성',
+    petName: '둥이',
+    petBreed: '말티즈',
+    petGender: '수컷',
+    petNeutered: true,
+    petAge: 10,
+    address: '송파구 잠실7동',
+    aboutDog: '유저의 설명? 강아지의 설명?',
+    petImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  },
+  {
+    id: 7,
+    user: '규성',
+    petName: '둥이',
+    petBreed: '말티즈',
+    petGender: '수컷',
+    petNeutered: true,
+    petAge: 10,
+    address: '송파구 잠실7동',
+    aboutDog: '유저의 설명? 강아지의 설명?',
+    petImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+  },
+];

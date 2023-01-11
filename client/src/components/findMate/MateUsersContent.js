@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import MatePostList from './MatePostList';
+import MateUserList from './MateUserList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
@@ -15,21 +15,16 @@ const UsersContentRow = styled.div`
   ${flexRowCenter}
   width: 100%;
   justify-content: space-between;
-  > div {
-    ${flexRowCenter}
-  }
 `;
 
-const MateUserContent = () => {
+const MateUsersContent = () => {
   const navigate = useNavigate();
   return (
     <UsersContentLayOut>
       <UsersContentRow>
-        <div>
-          <Title as="h3" size="medium">
-            산책 메이트
-          </Title>
-        </div>
+        <Title as="h3" size="medium">
+          산책 메이트
+        </Title>
         <Button
           color="second"
           size="small"
@@ -40,9 +35,9 @@ const MateUserContent = () => {
           상세 조건
         </Button>
       </UsersContentRow>
-      <MatePostList />
+      <MateUserList />
     </UsersContentLayOut>
   );
 };
 
-export default MateUserContent;
+export default MateUsersContent;

@@ -5,7 +5,7 @@ import MatePostCard from './MatePostCard';
 const PostList = styled.ul`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(316px, 1fr));
   grid-column-gap: 1.25rem;
   grid-row-gap: 1.5rem;
 `;
