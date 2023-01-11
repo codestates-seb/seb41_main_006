@@ -24,11 +24,38 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1rem;
   }
 
+  button{
+    cursor: pointer;
+  }
+
+  a{
+    text-decoration: none;
+
+    &:visited{
+      text-decoration: none;
+      color: none;
+    }
+  }
+
+  /* input 기본 스타일 초기화 */
+  input { 
+    -webkit-appearance : none;
+    -moz-appearance:none; 
+    appearance:none;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  li{
+    list-style: none;
+  }
+
+
   .App{
     background-color: var(--bg-color);
     width: 100vw;
     min-height: 100vh;
-    height: 100vh;
     display: flex;
     justify-content: center;
   }
