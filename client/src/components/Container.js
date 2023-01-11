@@ -6,7 +6,6 @@ const Container = styled.div`
   width: 100%;
   max-width: 1200px;
   height: 100%;
-  color: var(--main-color);
 `;
 
 export default Container;

@@ -47,12 +47,15 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  li{
+    list-style: none;
+  }
+
 
   .App{
     background-color: var(--bg-color);
     width: 100vw;
     min-height: 100vh;
-    height: 100vh;
     display: flex;
     justify-content: center;
   }
