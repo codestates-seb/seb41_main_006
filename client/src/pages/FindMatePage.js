@@ -6,7 +6,7 @@ import Container from '../components/Container';
 import SearchAddress from '../components/findMate/SearchAddressBox';
 import FindMateTab from '../components/findMate/FindMateTab';
 import MatePostsContent from '../components/findMate/MatePostsContent';
-
+import MateUserContent from '../components/findMate/MateUserContent';
 const FindMateContainer = styled(Container)`
   display: flex;
   flex-direction: column;
@@ -51,9 +51,9 @@ const FindMatePage = () => {
       <FindMateBottom>
         <FindMateTab />
         <Routes>
-          <Route path="users" element={<div>유저</div>}></Route>
+          <Route path="users" element={<MateUserContent />}></Route>
           <Route path="posts" element={<MatePostsContent />}></Route>
-          <Route path="*" element={<div>유저</div>}></Route>
+          <Route path="*" element={<MateUserContent />}></Route>
         </Routes>
       </FindMateBottom>
     </FindMateContainer>

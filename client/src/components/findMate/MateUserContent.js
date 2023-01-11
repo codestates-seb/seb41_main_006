@@ -5,12 +5,12 @@ import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
 
-const PostsContentLayOut = styled.div`
+const UsersContentLayOut = styled.div`
   ${flexColCenter}
   padding: 2rem;
 `;
 
-const PostsContentRow = styled.div`
+const UsersContentRow = styled.div`
   ${flexRowCenter}
   width: 100%;
   justify-content: space-between;
@@ -19,25 +19,23 @@ const PostsContentRow = styled.div`
   }
 `;
 
-const MatePostsContent = () => {
+const MateUserContent = () => {
   const navigate = useNavigate();
   return (
-    <PostsContentLayOut>
-      <PostsContentRow>
+    <UsersContentLayOut>
+      <UsersContentRow>
         <div>
-          <Title as="h3" size={'medium'}>
-            산책 모임
-          </Title>
+          <Title size="medium">산책 메이트</Title>
           <input type="date"></input>
           <input type="time"></input>
         </div>
         <Button color="main" onClick={() => navigate('/')}>
           글 작성
         </Button>
-      </PostsContentRow>
+      </UsersContentRow>
       <MatePostList />
-    </PostsContentLayOut>
+    </UsersContentLayOut>
   );
 };
 
-export default MatePostsContent;
+export default MateUserContent;

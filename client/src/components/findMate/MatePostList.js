@@ -11,7 +11,7 @@ const PostList = styled.ul`
 `;
 
 const PostItem = styled.li`
-  height: 13.75rem;
+  height: 13.25rem;
 `;
 
 const MatePostList = () => {
