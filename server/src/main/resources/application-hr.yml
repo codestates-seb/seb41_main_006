@@ -1,0 +1,26 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  h2:
+    console:
+      path: /h2
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;
+    schema: classpath:/org/springframework/batch/core/schema-h2.sql # 스키마 위치
+  jpa:
+    hibernate:
+      ddl-auto: create # 스키마 자동 생성
+    properties:
+      hibernate:
+        format_sql: true
+#        show_sql: true # SQL 쿼리 출력
+  batch:
+    job:
+      enabled: true # 시작과 동시에 실행되는 건 방지
+
+#logging:
+#  level:
+#    org.hibernate.sql: debug
+#    org.hibernate.type: trace
