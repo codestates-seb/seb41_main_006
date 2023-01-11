@@ -1,9 +1,12 @@
 package com.mainproject.server.domain.board.dto;
 
 import com.mainproject.server.domain.board.entity.Board;
+import com.mainproject.server.domain.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -48,11 +51,14 @@ public class BoardDto {
     @Builder
     public static class Response {
         private Long boardId;
+        private Member member; // 가넝?
         private String title;
         private String content;
         private int countLike;
         private LocalDateTime appointTime;
         private String meetingPlace;
         private Board.BoardStatus boardStatus;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 }

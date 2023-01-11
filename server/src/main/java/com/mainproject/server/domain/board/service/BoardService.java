@@ -61,7 +61,7 @@ public class BoardService {
     public Page<Board> searchBoard(int page, int size, String keyword) {
         Pageable pageable = PageRequest.of(page-1, size, Sort.by("boardId").descending());
 
-        return boardRepository.findByTitleContaining(pageable, keyword);
+        return boardRepository.findByMeetingPlaceContaining(pageable, keyword);
     }
 
     public void deleteBoard(long boardId) {
