@@ -12,7 +12,7 @@ function App() {
       <GlobalStyle />
       <Header></Header>
       <Routes>
-        <Route path="/mate" element={<FindMatePage />}></Route>
+        <Route path="/mate/*" element={<FindMatePage />}></Route>
         <Route path="/signup" element={<SignUpPage />}></Route>
         <Route path="/inputuserinfo" element={<InputUserInfoPage />}></Route>
         <Route path="/mypage" element={<MyPage />}></Route>
