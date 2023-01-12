@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = GenderValidator.class)
 public @interface Gender {
-    String message() default "성별은 '남', '여'로만 지정할 수 있습니다.";
+    String message() default "성별은 'F', 'M'로만 지정할 수 있습니다.";
     Class[] groups() default {};
     Class[] payload() default {};
 }

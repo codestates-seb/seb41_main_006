@@ -9,6 +9,6 @@ public class GenderValidator implements ConstraintValidator<Gender, String> {
         if(value == null) {
             return false;
         }
-        return value.matches("^[여남]$");
+        return value.matches("^[FM]$");
     }
 }
