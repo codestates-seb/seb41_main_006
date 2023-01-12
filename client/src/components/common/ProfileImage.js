@@ -8,6 +8,7 @@ const ProfileBox = styled(CenterBox)`
         width: ${size};
         height: ${size};
         border-radius: ${size};
+        box-shadow: 0 4px 4px rgba(1, 1, 1, 0.2);
       `;
     }}
   }
@@ -27,6 +28,7 @@ const ProfileImage = ({ size, src, name }) => {
 ProfileImage.defaultProps = {
   size: '16px',
   name: 'user',
+  src: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
 };
 
 export default ProfileImage;

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { flexRowCenter, flexColCenter } from '../style/styleVariable';
+import HeaderNav from './header/HeaderNav';
 
 const SHeader = styled.header`
   ${flexColCenter}
@@ -14,6 +15,7 @@ const SHeader = styled.header`
 `;
 
 const HeaderContainer = styled.div`
+  position: relative;
   ${flexRowCenter}
   justify-content: space-between;
   width: 100%;
@@ -34,30 +36,6 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const HeaderNav = styled.nav`
-  ${flexRowCenter}
-  gap: 1rem;
-
-  a {
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 3px;
-  }
-
-  a:hover {
-    background-color: var(--bg-dark-color);
-  }
-
-  button {
-    color: var(--main-color);
-    outline: 1px solid var(--main-color);
-    font-weight: 500;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 3px;
-  }
-`;
-
 const Header = () => {
   return (
     <SHeader>
@@ -65,11 +43,7 @@ const Header = () => {
         <Link className="logo" to={'/'}>
           <span>킁킁</span>메이트
         </Link>
-        <HeaderNav>
-          <Link to={'/mate'}>메이트 찾기</Link>
-          <Link to={'/chat'}>채팅</Link>
-          <button>로그인</button>
-        </HeaderNav>
+        <HeaderNav />
       </HeaderContainer>
     </SHeader>
   );

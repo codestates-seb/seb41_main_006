@@ -1,6 +1,7 @@
 import Header from './components/Header';
 import GlobalStyle from './GlobalStyle';
 import { Routes, Route } from 'react-router-dom';
+import MainPage from './pages/MainPage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostPage from './pages/PostPage';
 import PostEditPage from './pages/PostEditPage';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />}></Route>
         <Route path="/inputuserinfo" element={<InputUserInfoPage />}></Route>
         <Route path="/mypage/*" element={<MyPage />}></Route>
+        <Route path="/*" element={<MainPage />}></Route>
       </Routes>
     </div>
   );
