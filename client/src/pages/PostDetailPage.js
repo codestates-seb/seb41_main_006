@@ -7,6 +7,8 @@ import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
 import { dummyComments } from '../static/dummyData';
 // import { useParams } from 'react-router-dom';
+import PetInfoCard from '../components/myPage/PetInfoCard';
+import { petInfo } from '../static/dummyMyPetinfo';
 
 const Containerr = styled(Container)`
   .comment {
@@ -124,7 +126,8 @@ const PostDetailPage = () => {
           <CommentList />
         </div>
         <div className="right-box">
-          <div className="dog-info">강아지정보</div>
+          {/* <div className="dog-info">강아지정보</div> */}
+          <PetInfoCard pet={petInfo[0]} />
           <Map />
         </div>
       </MainContainer>
