@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.member.service;
 
+import com.mainproject.server.auth.utils.CustomAuthorityUtils;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.repository.MemberRepository;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -7,7 +8,7 @@ import com.mainproject.server.exception.ExceptionCode;
 import com.mainproject.server.utils.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.sql.Update;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +21,17 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomBeanUtils<Member> customBeanUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils customAuthorityUtils;
 
     /*회원 신규 가입*/
     public Member createMember(Member member) {
+        // 비밀번호 암호화
+        String encodePassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encodePassword);
+        // 권한 정보 세팅
+        member.setRoles(customAuthorityUtils.createRole());
+
         return memberRepository.save(member);
     }
 
