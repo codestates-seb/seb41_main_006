@@ -62,8 +62,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = delegateAccessToken(member, base64EncodedSecretKey); // access token 생성
         String refreshToken = delegateRefreshToken(member, base64EncodedSecretKey); // refresh token 생성
 
-        response.addHeader("Authorization", "Bearer " + accessToken);
-        response.addHeader("Refresh", refreshToken);
+        response.addHeader(JwtTokenizer.ACCESS_TOKEN_HEADER, JwtTokenizer.TOKEN_PREFIX + accessToken);
+        response.addHeader(JwtTokenizer.REFRESH_TOKEN_HEADER, refreshToken);
 
         this.getSuccessHandler().onAuthenticationSuccess(request,response,authResult);
 

@@ -2,11 +2,16 @@ package com.mainproject.server.config;
 
 import com.mainproject.server.auth.JwtTokenizer;
 import com.mainproject.server.auth.filter.JwtAuthenticationFilter;
+import com.mainproject.server.auth.filter.JwtVerificationFilter;
+import com.mainproject.server.auth.handler.MemberAccessDeniedHandler;
+import com.mainproject.server.auth.handler.MemberAuthenticationEntryPoint;
 import com.mainproject.server.auth.handler.MemberAuthenticationFailureHandler;
 import com.mainproject.server.auth.handler.MemberAuthenticationSuccessHandler;
+import com.mainproject.server.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,6 +32,7 @@ import java.util.Arrays;
 public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
+    private final CustomAuthorityUtils customAuthorityUtils;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,8 +46,21 @@ public class SecurityConfiguration {
                 .formLogin().disable(); // form login 인증 방식 사용 x
         // jwt 인증 필터 적용
         http.apply(new CustomFilterConfigurer());
+        // jwt 검증 실패 예외처리 및 권한 예외처리
+        http.exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .accessDeniedHandler(new MemberAccessDeniedHandler());
+        // todo api 권한 이렇게 해도 될까...
         http.authorizeHttpRequests()
-                .anyRequest().permitAll();
+                .antMatchers(HttpMethod.POST, "/members", "/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/members/{member-id:[\\d]+}",
+                        "/members*", "/pets/*", "boards/*", "/comments*").permitAll()
+                .anyRequest().authenticated();
+
+//                .antMatchers("/members/**/my-page", "/members/**/posts").authenticated()
+//                .antMatchers(HttpMethod.DELETE, "/members/{member-id:[\\d]+}").hasRole("ROLE_USER")
+//                .antMatchers("/logout").authenticated()
+//                .anyRequest().authenticated();
 
         return http.build();
     }
@@ -77,7 +96,11 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
-            builder.addFilter(jwtAuthenticationFilter);
+
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils);
+
+            builder.addFilter(jwtAuthenticationFilter)
+                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
 
         }
     }

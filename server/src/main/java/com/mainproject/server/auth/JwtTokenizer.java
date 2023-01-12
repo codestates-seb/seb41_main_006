@@ -23,6 +23,11 @@ import java.util.Map;
 @Component
 @Getter
 public class JwtTokenizer {
+    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String ACCESS_TOKEN_HEADER = "Authorization";
+
+    public static final String REFRESH_TOKEN_HEADER = "Refresh";
+
     @Value("${jwt-secret-key}")
     private String secretKey;
 
