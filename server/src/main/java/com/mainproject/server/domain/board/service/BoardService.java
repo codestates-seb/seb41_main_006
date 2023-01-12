@@ -2,6 +2,8 @@ package com.mainproject.server.domain.board.service;
 
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.board.repository.BoardRepository;
+import com.mainproject.server.domain.member.entity.Member;
+import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,14 +22,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final MemberService memberService;
 
     public Board createBoard(Board board) {
         board.setCountLike(0);
         board.setBoardStatus(Board.BoardStatus.BOARD_OPEN);
 
-        Board saveBoard = boardRepository.save(board);
-
-       return saveBoard;
+       //return saveBoard;
+        return boardRepository.save(board);
     }
 
     public Board updateBoard(Board board) {
@@ -50,10 +53,12 @@ public class BoardService {
        return boardRepository.save(findBoard);
     }
 
+    @Transactional(readOnly = true)
     public Board findBoard(Long boardId) {
         return findVerifiedBoard(boardId);
     }
 
+    @Transactional(readOnly = true)
     public Page<Board> findBoards(int page, int size) {
         Pageable pageable = PageRequest.of(page-1, size, Sort.by("boardId").descending());
 
