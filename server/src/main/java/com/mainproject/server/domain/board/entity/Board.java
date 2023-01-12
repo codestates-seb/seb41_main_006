@@ -38,7 +38,7 @@ public class Board extends Auditable {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private BoardStatus boardStatus = BoardStatus.BOARD_FINDING;
+    private BoardStatus boardStatus = BoardStatus.BOARD_OPEN;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -59,10 +59,9 @@ public class Board extends Auditable {
         this.member = member;
     }
 
-    public enum BoardStatus { // 스케줄러 or batch 자동화?
-        BOARD_FINDING("메이트 구하는 중"),
-        BOARD_FOUND("메이트 구하기 종료"),
-        BOARD_EXPIRED("기간 만료");
+    public enum BoardStatus {
+        BOARD_OPEN("모집 중"),
+        BOARD_CLOSE("모집 종료");
         private String status;
 
         BoardStatus(String status) {

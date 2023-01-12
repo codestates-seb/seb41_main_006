@@ -18,9 +18,5 @@ spring:
 #        show_sql: true # SQL 쿼리 출력
   batch:
     job:
-      enabled: true # 시작과 동시에 실행되는 건 방지
+      enabled: false # 시작과 동시에 실행되는 건 방지
 
-#logging:
-#  level:
-#    org.hibernate.sql: debug
-#    org.hibernate.type: trace

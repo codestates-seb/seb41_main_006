@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +22,7 @@ public class BoardService {
 
     public Board createBoard(Board board) {
         board.setCountLike(0);
-        board.setBoardStatus(Board.BoardStatus.BOARD_FINDING);
+        board.setBoardStatus(Board.BoardStatus.BOARD_OPEN);
 
         Board saveBoard = boardRepository.save(board);
 
