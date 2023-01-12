@@ -1,14 +1,84 @@
 import styled from 'styled-components';
+import { FaRegCalendar } from 'react-icons/fa';
+import { BiTimeFive } from 'react-icons/bi';
+import { MdPlace } from 'react-icons/md';
 
-const Container = styled.div`
-  background-color: red;
+const MapContainer = styled.div`
   color: black;
   width: 100%;
-  height: 200px;
+  /* height: 200px; */
+  height: 30rem;
+  /* border: 1px solid black; */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
+    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
+    0 8px 16px rgba(0, 0, 0, 0.11);
+
+  .meet-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+
+    input {
+      border-radius: 10px;
+      padding: 2px 6px;
+      border: 1px solid #b7a69e;
+      font-size: 16px;
+    }
+  }
+
+  .map-box {
+    padding: 10px;
+
+    input {
+      width: 100%;
+      border-radius: 10px;
+      padding: 2px 6px;
+      border: 1px solid #b7a69e;
+      font-size: 16px;
+    }
+  }
+
+  label {
+    display: block;
+    color: #401809;
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
 `;
 
 const Map = () => {
-  return <Container>지도</Container>;
+  return (
+    <MapContainer>
+      <div className="meet-info">
+        <div className="meet-date">
+          <label htmlFor="date-input">
+            <FaRegCalendar />
+            날짜
+          </label>
+          <input type="date" id="date-input"></input>
+        </div>
+        <div className="meet-time">
+          <label htmlFor="time-input">
+            <BiTimeFive />
+            시간
+          </label>
+          <input type="time" id="time-input"></input>
+        </div>
+      </div>
+      <div className="map-box">
+        <form className="map-form">
+          <label htmlFor="meet-place">
+            <MdPlace />
+            만나는 장소
+          </label>
+          <input type="text" id="meet-place"></input>
+        </form>
+      </div>
+    </MapContainer>
+  );
 };
 
 export default Map;

@@ -1,94 +1,89 @@
 import styled from 'styled-components';
-import { CheckButton, CancelButton } from '../components/Button';
+import Map from '../components/Map';
+import Container from '../components/Container';
+import { PostSubmitBtn, CancelButton } from '../components/Button';
+// import { useParams } from 'react-router-dom';
 
-const Container = styled.div`
+const Containerr = styled(Container)`
   textarea {
-    height: 42px;
     width: 100%;
-    border: none;
+    height: 42px;
     resize: none;
+    border: none;
     background-color: transparent;
 
     :focus {
       outline: none;
     }
-
-    ::placeholder {
-      color: #b7a69e;
-    }
   }
 `;
 
-const PostHeader = styled.div`
-  .post-title {
-    textarea {
-      font-size: 24px;
-      font-weight: bold;
-      border-bottom: 1px solid #a79689;
-    }
-  }
-
-  .post-content {
-    textarea {
-      font-size: 14px;
-      padding: 20px;
-    }
-  }
-`;
-
-const PostContent = styled.div`
-  height: 600px;
+const HeaderContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  //align-items: center;
+  flex-direction: column;
+  border-bottom: 1px solid black;
 
-  .post-content {
-    width: 400px;
-  }
-
-  .meet-location {
-    width: 400px;
-    height: 500px;
+  /* .post-title {
     display: flex;
-    /* justify-content: center; */
-    flex-wrap: wrap;
-    padding: 10px;
-    color: #401809;
-    font-weight: bold;
-    background-color: #ffffff;
-    border-radius: 10px;
+    height: 40px;
+    align-items: center;
 
-    input {
-      border-radius: 10px;
-      height: 24px;
-      border: 1px solid #b7a69e;
-    }
+    .title {
+      margin-right: 30px;
+      font-size: 26px;
+      font-weight: bold;
+      color: #401809;
+      text-align: center;
+    } 
+  }*/
 
-    .meet-date,
-    .meet-time {
-      width: 50%;
+  /* .post-title {
+    text-align: center;
+    .title {
     }
+  } */
 
-    .meet-place,
-    .meet-place-map {
-      width: 100%;
-    }
-
-    .meet-place-map {
-      height: 200px;
-      /* background-color: black; */
-    }
+  .post-title {
+    vertical-align: middle;
+  }
+  .title {
+    /* align-items: center; */
+    /* padding-left: 10px; */
+    vertical-align: middle;
+    padding: 13px 10px;
   }
 `;
 
-const ButtonContainer = styled.div`
+const MainContainer = styled.div`
+  display: flex;
+  margin: 20px 10px 0 10px;
+
+  .post-content {
+    width: 720px;
+    /* height: 300px; */
+    height: 30rem;
+    padding: 20px;
+
+    textarea {
+      height: 100%;
+    }
+  }
+
+  .right-box {
+    width: 100%;
+    margin-left: 40px;
+  }
+`;
+
+const BtnContainer = styled.div`
+  margin-top: 48px;
   text-align: center;
   /* background-color: skyblue; */
 
   button {
-    width: 100px;
-    height: 50px;
-    font-size: 30px;
+    /* width: 100px; */
+    /* height: 50px; */
+    font-size: 20px;
     border-radius: 10px;
   }
 
@@ -97,51 +92,41 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const PostPage = () => {
+const PostEditPage = () => {
+  // const { mateId } = useParams();
+
   return (
-    <Container>
-      <PostHeader>
+    <Containerr>
+      <HeaderContainer>
         <div className="post-title">
-          <textarea placeholder="제목을 입력하세요"></textarea>
-        </div>
-      </PostHeader>
-      <PostContent>
-        <div className="post-content">
-          <textarea placeholder="내용을 입력하세요"></textarea>
-        </div>
-        <div className="meet-location">
-          <div className="meet-date">
-            <label className="date" htmlFor="dateInput">
-              {' '}
-              날짜 <br />
-              <input type="date" id="dateInput"></input>
-            </label>
+          <div>
+            <textarea className="title" defaultValue="제목 수정"></textarea>
           </div>
-          <div className="meet-time">
-            <label className="time" htmlFor="timeInput">
-              시간 <br />
-              <input type="time" id="timeInput"></input>
-            </label>
-          </div>
-          <div className="meet-place">
-            <label className="place" htmlFor="placeInput">
-              만나는 장소 <br />
-              <input
-                type="place"
-                id="placeInput"
-                placeholder="원하는 장소를 검색해주세요"
-              ></input>
-            </label>
-          </div>
-          <div className="meet-place-map">map</div>
         </div>
-      </PostContent>
-      <ButtonContainer>
-        <CheckButton>등록</CheckButton>
+      </HeaderContainer>
+      <MainContainer>
+        <div className="left-box">
+          {/* <div className="post-content">
+            안녕하세요~ 말티즈 둥이 키우는 집사입니다. 귀엽고 깜찍하고
+            사랑스럽고 예쁜 아이입니다. 같이 산책하면서 재밌는 시간 보내요! 생각
+            있으신 분은 댓글 달아주세요~!
+          </div> */}
+          <textarea
+            className="post-content"
+            defaultValue="내용 수정"
+          ></textarea>
+          {/* <div className="dog-info">강아지 정보</div> */}
+        </div>
+        <div className="right-box">
+          <Map />
+        </div>
+      </MainContainer>
+      <BtnContainer>
+        <PostSubmitBtn>수정</PostSubmitBtn>
         <CancelButton>취소</CancelButton>
-      </ButtonContainer>
-    </Container>
+      </BtnContainer>
+    </Containerr>
   );
 };
 
-export default PostPage;
+export default PostEditPage;

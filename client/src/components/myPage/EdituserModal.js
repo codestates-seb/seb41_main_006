@@ -1,17 +1,35 @@
 import styled from 'styled-components';
-import Container from '../components/Container';
+import { useRef } from 'react';
+// import Container from '../Container';
 
-const SContainer = styled(Container)`
+const SBackground = styled.div`
+  background-color: rgba(217, 217, 217, 0.8);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
   display: flex;
   justify-content: center;
 `;
+// const SContainer = styled(Container)`
+//   display: flex;
+//   justify-content: center;
+//   background-color: gray;
+// `;
 const SInputInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 25%;
   margin-top: 100px;
   text-align: center;
   color: var(--main-font-color);
   font-weight: 500;
+  background-color: var(--bg-color);
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
   input {
     border: 1px solid #b7a69e;
   }
@@ -84,7 +102,8 @@ const SInputInfoContainer = styled.div`
           color: var(--sec-color);
           font-weight: 500;
           :hover {
-            background-color: var(--bg-color);
+            background-color: var(--main-font-color);
+            color: white;
           }
         }
       }
@@ -121,6 +140,7 @@ const SInputInfoContainer = styled.div`
       border: 1px solid #b7a69e;
       border-radius: 5px;
       padding: 10px 0 0 10px;
+      outline: none;
       ::placeholder {
         color: var(--sec-color);
         font-weight: 500;
@@ -129,9 +149,21 @@ const SInputInfoContainer = styled.div`
   }
 `;
 
-const InputUserInfoPage = () => {
+const EdituserModal = ({ Modal, setModal }) => {
+  const outside = useRef();
+
+  const handleModalClose = (e) => {
+    if (Modal && outside.current === e.target) {
+      setModal(false);
+    }
+  };
   return (
-    <SContainer>
+    <SBackground
+      ref={outside}
+      onClick={(e) => {
+        handleModalClose(e);
+      }}
+    >
       <SInputInfoContainer>
         <div className="title">집사 정보 입력</div>
         <div className="input-container">
@@ -169,10 +201,17 @@ const InputUserInfoPage = () => {
           <div>인사말</div>
           <textarea placeholder="인사말을 입력하세요"></textarea>
         </div>
-        <button className="next-button">가입 완료</button>
+        <button
+          className="next-button"
+          onClick={() => {
+            setModal(!Modal);
+          }}
+        >
+          수정 완료
+        </button>
       </SInputInfoContainer>
-    </SContainer>
+    </SBackground>
   );
 };
 
-export default InputUserInfoPage;
+export default EdituserModal;

@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
-export const CheckButton = styled.button`
+export const PostSubmitBtn = styled.button`
   color: white;
-  height: ${(props) => (props.height ? props.height : '32')}px;
+  width: ${(props) => (props.width ? props.width : '96')}px;
+  height: ${(props) => (props.height ? props.height : '55')}px;
   /* border-radius: 4px; */
   padding: 7px 12px;
   border: none; /* border: 1px solid #398df7; */
@@ -20,7 +21,8 @@ export const CheckButton = styled.button`
 
 export const CancelButton = styled.button`
   color: #ca7c62;
-  height: ${(props) => (props.height ? props.height : '32')}px;
+  width: ${(props) => (props.width ? props.width : '96')}px;
+  height: ${(props) => (props.height ? props.height : '55')}px;
   border-radius: 4px;
   padding: 6px 12px;
   background-color: transparent;
@@ -52,14 +54,17 @@ export const StateButton = styled.button`
   } */
 `;
 
-export const TagButton = styled.button`
-  background-color: #e1ecf4;
-  color: #3a739d;
+export const CommentButton = styled.button`
+  width: 66px;
+  height: 33px;
+  background-color: #a79689;
+  color: #ffffff;
   padding: 3px 7px;
-  border-radius: 4px;
+  border: none;
+  border-radius: 10px;
   margin-right: 6px;
-  font-size: var(--font-size-0-8rem);
-  font-family: var(--font-family-tag);
+  font-size: 16px;
+  /* font-family: var(--font-family-tag); */
 
   :hover {
     background-color: #d4e2ef;

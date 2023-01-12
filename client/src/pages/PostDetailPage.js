@@ -3,6 +3,10 @@ import { StateButton } from '../components/Button';
 import { FaHeart } from 'react-icons/fa';
 import Map from '../components/Map';
 import Container from '../components/Container';
+import AddComment from '../components/matePost/AddComment';
+import CommentList from '../components/matePost/CommentList';
+import { dummyComments } from '../static/dummyData';
+// import { useParams } from 'react-router-dom';
 
 const Containerr = styled(Container)`
   .comment {
@@ -69,15 +73,23 @@ const MainContainer = styled.div`
     height: 300px;
   }
 
+  .right-box {
+    width: 100%;
+    margin-left: 40px;
+  }
+
   .dog-info {
-    background-color: blue;
-    width: 720px;
+    background-color: skyblue;
+    /* width: 720px;
     height: 130px;
-    margin: 20px 0;
+    margin: 20px 0; */
+    margin-bottom: 34px;
   }
 `;
 
 const PostDetailPage = () => {
+  // const { mateId } = useParams();
+
   return (
     <Containerr>
       <HeaderContainer>
@@ -105,10 +117,14 @@ const PostDetailPage = () => {
             있으신 분은 댓글 달아주세요~!
           </div>
           {/* <div className="dog-info">강아지 정보</div> */}
-          <div className="comment">댓글</div>
+          <div className="comment-cnt">
+            <h3>댓글 {dummyComments.length}개</h3>
+          </div>
+          <AddComment />
+          <CommentList />
         </div>
         <div className="right-box">
-          <div>강아지정보</div>
+          <div className="dog-info">강아지정보</div>
           <Map />
         </div>
       </MainContainer>
