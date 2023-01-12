@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Title from '../common/Title';
 import UserFilterForm from './UserFilterForm';
+
 const ModalBackDrop = styled.div`
   position: fixed; // 보이는 화면에서 위치가 고정
   top: 0;
@@ -15,11 +16,27 @@ const ModalBackDrop = styled.div`
 `;
 
 const UserFilterModalView = styled.div`
-  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 2rem;
   width: 27.5rem;
-  height: 40rem;
+  height: 38rem;
   border-radius: 10px;
   background-color: var(--bg-color);
+
+  > button {
+    border: none;
+    background: none;
+    color: var(--sec-color);
+    font-weight: 500;
+    font-size: 1rem;
+    width: 3rem;
+    height: 2rem;
+    margin-left: auto;
+  }
+  > h1 {
+    margin-bottom: 1rem;
+  }
 `;
 
 const UserFilterModal = ({ setIsFilterModalOpen }) => {
@@ -30,7 +47,9 @@ const UserFilterModal = ({ setIsFilterModalOpen }) => {
     <ModalBackDrop onClick={closeModalHandler}>
       <UserFilterModalView onClick={(e) => e.stopPropagation()}>
         <button onClick={closeModalHandler}>취소</button>
-        <Title size="small">어떤 산책 메이트를 원하시나요?</Title>
+        <Title as="h1" size="small">
+          어떤 산책 메이트를 원하시나요?
+        </Title>
         <UserFilterForm />
       </UserFilterModalView>
     </ModalBackDrop>

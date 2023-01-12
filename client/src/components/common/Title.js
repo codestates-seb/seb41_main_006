@@ -30,7 +30,7 @@ const Title = ({ children, as, size }) => {
  */
 Title.defaultProps = {
   size: 'medium',
-  as: 'div',
+  as: 'h1',
 };
 
 export default Title;
