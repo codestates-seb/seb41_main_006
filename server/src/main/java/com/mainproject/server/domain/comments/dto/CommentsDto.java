@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class CommentsDto {
@@ -46,6 +47,7 @@ public class CommentsDto {
 	}
 
 	@AllArgsConstructor
+	@NoArgsConstructor
 	@Getter
 	@Setter
 	public static class Response{
@@ -55,7 +57,6 @@ public class CommentsDto {
 		private String content;
 		private Long parentId;
 		private int depth;
-		private int countLike;
 		private LocalDateTime createdAt;
 		private LocalDateTime modifiedAt;
 	}
