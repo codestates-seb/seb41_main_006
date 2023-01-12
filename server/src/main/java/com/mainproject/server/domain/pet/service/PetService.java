@@ -1,5 +1,7 @@
 package com.mainproject.server.domain.pet.service;
 
+import com.mainproject.server.domain.member.entity.Member;
+import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.domain.pet.repository.PetRepository;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,16 +22,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PetService {
     private final PetRepository petRepository;
+    private final MemberService memberService;
 
-    public Pet createPet(Pet pet) {
+    public Pet createPet(Pet pet, Member member) {
+        Member findMember = memberService.validateVerifyMember(member.getMemberId());
 
-        verifyOverlapByPetName(pet.getName());
+        verifyOverlapByPetName(pet.getName(), findMember);
 
         return petRepository.save(pet);
     }
-    public Pet updatePet(Pet pet) {
+    public Pet updatePet(Pet pet, Member member) {
 
         Pet findPet = findVerifiedPet(pet.getPetId());
+
+        verifyPetOwner(findPet, member.getMemberId());
 
         Optional.ofNullable(pet.getName())
                 .ifPresent(findPet::setName);
@@ -67,13 +74,18 @@ public class PetService {
 
         return petPage;
     }
-    public void deletePets(long petId) {
-        petRepository.deleteById(petId);
+    public void deletePets(long petId, Member member) {
+        Pet findPet = findVerifiedPet(petId);
+        verifyPetOwner(findPet, member.getMemberId());
+
+        petRepository.delete(findPet);
     }
-    // member안에 pet 정보에서 조회하도록 수정 해야 함
-    private void verifyOverlapByPetName(String name) {
+
+    private void verifyOverlapByPetName(String name, Member member) {
+
         Optional<Pet> optionalPet = petRepository.findByName(name);
-        if(optionalPet.isPresent()) {
+        Pet pet = optionalPet.get();
+        if(pet.getMember().getMemberId() == member.getMemberId()) {
             throw new BusinessLogicException(ExceptionCode.PET_EXISTS);
         }
     }
@@ -84,6 +96,12 @@ public class PetService {
                 () -> new BusinessLogicException(ExceptionCode.PET_NOT_FOUND));
 
         return findPet;
+    }
+
+    private void verifyPetOwner(Pet pet, long memberId) {
+        if(pet.getMember().getMemberId() != memberId) {
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+        }
     }
 
 }

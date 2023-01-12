@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.pet.controller;
 
+import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.dto.PetDto;
 import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.domain.pet.mapper.PetMapper;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,27 +30,35 @@ public class PetController {
     private final PetMapper mapper;
 
     @PostMapping
-    public ResponseEntity postPet(@Valid @RequestBody PetDto.Post petPostDto) {
+    public ResponseEntity postPet(@Valid @RequestBody PetDto.Post petPostDto,
+                                  @AuthenticationPrincipal Member member) {
+        if (member != null) {
+            Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), member);
 
-       Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto));
+            PetDto.Response response = mapper.petToPetResponseDto(pet);
 
-       PetDto.Response response = mapper.petToPetResponseDto(pet);
-
-       return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PatchMapping("/{pet-id}")
     public ResponseEntity patchPet(@PathVariable("pet-id") @Positive long petId,
-                                   @Valid @RequestBody PetDto.Patch petPatchDto) {
+                                   @Valid @RequestBody PetDto.Patch petPatchDto,
+                                   @AuthenticationPrincipal Member member) {
+        if(member != null) {
+            Pet pet = mapper.petPatchDtoToPet(petPatchDto);
+            pet.setPetId(petId);
 
-        Pet pet = mapper.petPatchDtoToPet(petPatchDto);
-        pet.setPetId(petId);
+            petService.updatePet(pet, member);
 
-        petService.updatePet(pet);
+            PetDto.Response response = mapper.petToPetResponseDto(pet);
 
-        PetDto.Response response = mapper.petToPetResponseDto(pet);
-
-        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+            return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
     }
     @GetMapping("/{pet-id}")
     public ResponseEntity getPet(@Positive @PathVariable("pet-id") long petId) {
@@ -86,11 +96,15 @@ public class PetController {
     }
 
     @DeleteMapping("/{pet-id}")
-    public ResponseEntity deletePet(@PathVariable("pet-id") @Positive long petId) {
+    public ResponseEntity deletePet(@PathVariable("pet-id") @Positive long petId,
+                                    @AuthenticationPrincipal Member member) {
+        if(member != null) {
+            petService.deletePets(petId, member);
 
-        petService.deletePets(petId);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }
