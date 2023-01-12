@@ -21,7 +21,7 @@ function App() {
         <Route path="/mate/*" element={<FindMatePage />}></Route>
         <Route path="/signup" element={<SignUpPage />}></Route>
         <Route path="/inputuserinfo" element={<InputUserInfoPage />}></Route>
-        <Route path="/mypage" element={<MyPage />}></Route>
+        <Route path="/mypage/*" element={<MyPage />}></Route>
       </Routes>
     </div>
   );

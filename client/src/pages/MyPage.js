@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import Container from '../components/Container';
-import PetInfo from '../components/PetInfo';
+import PostInfo from '../components/myPage/PostInfo';
+import { Link, useLocation, Routes, Route } from 'react-router-dom';
+import UserInfo from '../components/myPage/UserInfo';
+import PetInfo from '../components/myPage/PetInfo';
 
 const SContainer = styled(Container)`
   display: flex;
@@ -13,33 +16,67 @@ const SContainer = styled(Container)`
     display: flex;
     justify-content: space-around;
     height: 5%;
-    button {
-      background-color: rgba(167, 150, 137, 0.4);
-      width: 15%;
-      border: none;
-      text-align: center;
-      border-radius: 5px;
-      height: 25px;
-      cursor: pointer;
-      :hover {
-        background-color: var(--main-font-color);
-        color: white;
-      }
-    }
+  }
+`;
+const TabLink = styled(Link)`
+  background-color: rgba(167, 150, 137, 0.4);
+  width: 15%;
+  border: none;
+  text-align: center;
+  border-radius: 5px;
+  height: 25px;
+  cursor: pointer;
+  :visited {
+    color: var(--main-font-color);
+  }
+  :hover {
+    background-color: var(--main-font-color);
+    color: white;
+  }
+  &.focus {
+    background-color: var(--main-font-color);
+    color: white;
   }
 `;
 
 const MyPage = () => {
+  const { pathname } = useLocation();
   return (
-    <SContainer>
-      <div className="Tap-container">
-        <button>나의 정보</button>
-        <button>강아지 정보</button>
-        <button>나의 모임</button>
-        <button>알림</button>
-      </div>
-      <PetInfo />
-    </SContainer>
+    <>
+      <SContainer>
+        <div className="Tap-container">
+          <TabLink
+            className={
+              pathname === '/mypage' || pathname === '/mypage/userinfo'
+                ? 'focus'
+                : ''
+            }
+            to="userinfo"
+          >
+            나의 정보
+          </TabLink>
+          <TabLink
+            className={pathname === '/mypage/petinfo' ? 'focus' : ''}
+            to="petinfo"
+          >
+            강아지 정보
+          </TabLink>
+          <TabLink
+            className={pathname === '/mypage/myposts' ? 'focus' : ''}
+            to="myposts"
+          >
+            나의 모임
+          </TabLink>
+          <TabLink>알림</TabLink>
+        </div>
+        <Routes>
+          <Route path="/" element={<UserInfo />}></Route>
+          <Route path="userinfo" element={<UserInfo />}></Route>
+          <Route path="petinfo" element={<PetInfo />}></Route>
+          <Route path="myposts" element={<PostInfo />}></Route>
+        </Routes>
+      </SContainer>
+    </>
   );
 };
 
