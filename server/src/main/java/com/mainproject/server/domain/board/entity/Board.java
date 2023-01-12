@@ -44,7 +44,7 @@ public class Board extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     public List<Comments> commentList = new ArrayList<>();
 
 

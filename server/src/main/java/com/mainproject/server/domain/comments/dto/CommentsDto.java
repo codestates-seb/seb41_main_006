@@ -27,7 +27,6 @@ public class CommentsDto {
 		private String content;
 
 		@Positive
-		@Nullable
 		private Long parentId;
 	}
 
@@ -35,7 +34,10 @@ public class CommentsDto {
 	@AllArgsConstructor
 	@Getter
 	public static class Patch{
+		@Positive
 		private Long commentsId;
+
+		@NotBlank(message = "내용은 공백이 아니어야 합니다.")
 		private String content;
 
 		public void setCommentsId(Long commentsId){
@@ -53,7 +55,6 @@ public class CommentsDto {
 		private String content;
 		private Long parentId;
 		private int depth;
-		private int commentsOrder;
 		private int countLike;
 		private LocalDateTime createdAt;
 		private LocalDateTime modifiedAt;

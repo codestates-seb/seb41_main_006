@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,16 +45,13 @@ public class Comments extends Auditable {
 	@Column
 	private int depth;
 
-	@Column
-	private int commentsOrder;
-
 	// 댓글 ~ 회원 (N : 1)
 	@ManyToOne
 	@JoinColumn(name = "member_id")
 	private Member member;
 
 	// 댓글 ~ 게시물 (N : 1)
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
 	private Board board;
 
@@ -68,5 +66,5 @@ public class Comments extends Auditable {
 
 	// 자기 참조 관계 : 대댓글 ~ 댓글 (N : 1)
 	@OneToMany(mappedBy = "parentComments", cascade = CascadeType.REMOVE)
-	private List<Comments> replies = new ArrayList<>();
+	private List<Comments> replyComments = new ArrayList<>();
 }

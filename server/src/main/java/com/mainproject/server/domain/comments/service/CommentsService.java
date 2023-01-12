@@ -19,15 +19,36 @@ public class CommentsService {
 	// ----- 댓글 등록
 	public Comments createComments(Comments comments){
 
-		Comments createdComments = commentsRepository.save(comments);
+		Comments createdComments = new Comments();
+		createdComments.setBoard(comments.getBoard());
+		createdComments.setMember(comments.getMember());
+		createdComments.setContent(comments.getContent());
+		createdComments.setDepth(0);
 
 		// 댓글 저장
-		return createdComments;
+		return commentsRepository.save(createdComments);
 	}
 
 	// ----- 대댓글 등록
-	public Comments createReComments(){
-		return null;
+	public Comments createReComments(Long parentId, Comments comments){
+
+		Comments parent = commentsRepository.findById(parentId).orElse(null);
+		//parent 가 null 이면 (댓글의 경우) exception
+		if(parent == null){
+			throw new IllegalArgumentException("Invalid parentId");
+		}
+		Comments replyComments = new Comments();
+		replyComments.setContent(comments.getContent());
+		replyComments.setBoard(comments.getBoard());
+		replyComments.setMember(comments.getMember());
+		replyComments.setParentComments(parent);
+		replyComments.setDepth(parent.getDepth() + 1);
+		parent.getReplyComments().add(replyComments);
+
+		//대댓글 저장
+		commentsRepository.save(replyComments);
+
+		return replyComments;
 	}
 
 	// ----- 댓글 수정
