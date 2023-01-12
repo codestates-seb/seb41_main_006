@@ -53,7 +53,10 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
 
-
+  .hidden{
+    visibility: hidden;
+  }
+  
   .App{
     background-color: var(--bg-color);
     width: 100vw;
