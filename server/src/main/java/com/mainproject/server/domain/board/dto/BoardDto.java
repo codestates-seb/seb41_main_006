@@ -1,15 +1,22 @@
 package com.mainproject.server.domain.board.dto;
 
 import com.mainproject.server.domain.board.entity.Board;
+import com.mainproject.server.domain.comments.dto.CommentsDto;
 import com.mainproject.server.domain.member.entity.Member;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BoardDto {
     @Getter
@@ -48,17 +55,21 @@ public class BoardDto {
         private Board.BoardStatus boardStatus;
     }
     @Getter
+    @Setter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
         private Long boardId;
-        private Member member; 
+        private Member member;
         private String title;
         private String content;
-        private int countLike;
         private LocalDateTime appointTime;
         private String meetingPlace;
         private Board.BoardStatus boardStatus;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
+
+        private List<CommentsDto.Response> comments;
     }
 }

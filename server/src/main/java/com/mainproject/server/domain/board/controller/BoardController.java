@@ -33,7 +33,7 @@ public class BoardController {
     @PostMapping
     public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post boardPostDto) {
         Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto));
-        BoardDto.Response response = mapper.boardToPostResponseDto(board);
+        BoardDto.Response response = mapper.boardToBoardResponseDto(board);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
@@ -45,7 +45,7 @@ public class BoardController {
         board.setBoardId(boardId);
         Board updateBoard = boardService.updateBoard(board);
 
-        BoardDto.Response response = mapper.boardToPostResponseDto(updateBoard);
+        BoardDto.Response response = mapper.boardToBoardResponseDto(updateBoard);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
@@ -53,7 +53,7 @@ public class BoardController {
     @GetMapping("/{board-id}")
     public ResponseEntity getBoard(@Positive @PathVariable("board-id") long boardId) {
         Board findBoard = boardService.findBoard(boardId);
-        BoardDto.Response response = mapper.boardToPostResponseDto(findBoard);
+        BoardDto.Response response = mapper.boardToBoardResponseDto(findBoard);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }

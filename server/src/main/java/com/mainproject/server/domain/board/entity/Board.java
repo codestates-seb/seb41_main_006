@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Formula;
+
 @Entity
 @Getter
 @Setter
@@ -26,8 +28,9 @@ public class Board extends Auditable {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private int countLike = 0;
+    @Column
+    @Formula("(select count(*) from board_like b where b.board_id = board_id and b.like_status = 'LIKE')")
+    private int countLike;
 
     @Column(nullable = false)
     private LocalDateTime appointTime;
