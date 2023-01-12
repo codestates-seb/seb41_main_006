@@ -13,15 +13,3 @@ export const media = {
     }
   `,
 };
-
-const titleSize = {
-  large: '2rem',
-  medium: '1.75rem',
-  small: '1.25rem',
-};
-
-export const title = (size = 'medium') => css`
-  color: var(--main-font-color);
-  font-size: ${titleSize[size]};
-  font-weight: 600;
-`;

@@ -1,13 +1,18 @@
 import styled from 'styled-components';
 import { flexRowCenter } from '../../style/styleVariable';
-import { title } from '../../style/styleUtils';
 import ProfileImage from '../common/ProfileImage';
+import Title from '../common/Title';
 import { IoLocationSharp } from 'react-icons/io5';
 import { AiTwotoneCalendar } from 'react-icons/ai';
 import { FiClock } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 
 const PostCard = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,7 +29,6 @@ const PostCard = styled.div`
     gap: 0.1rem;
     margin-bottom: 1rem;
     h4 {
-      ${title('small')}
       margin-bottom: 0.5rem;
     }
 
@@ -61,7 +65,9 @@ const MatePostCard = ({ post }) => {
   return (
     <PostCard>
       <div className="post-card--top">
-        <h4>{post.title}</h4>
+        <Title as="h4" size="small">
+          {post.title}
+        </Title>
         <div>
           <IoLocationSharp />
           <span>{post.address}</span>

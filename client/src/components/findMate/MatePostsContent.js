@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MatePostList from './MatePostList';
 import Button from '../common/Button';
-import { title } from '../../style/styleUtils';
+import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
 
 const PostsContentLayOut = styled.div`
@@ -18,9 +18,6 @@ const PostsContentRow = styled.div`
     ${flexRowCenter}
   }
 `;
-const MatePostsTitle = styled.h3`
-  ${title('medium')}
-`;
 
 const MatePostsContent = () => {
   const navigate = useNavigate();
@@ -28,7 +25,9 @@ const MatePostsContent = () => {
     <PostsContentLayOut>
       <PostsContentRow>
         <div>
-          <MatePostsTitle>산책 모임</MatePostsTitle>
+          <Title as="h3" size={'medium'}>
+            산책 모임
+          </Title>
           <input type="date"></input>
           <input type="time"></input>
         </div>

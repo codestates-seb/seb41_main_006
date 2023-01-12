@@ -36,14 +36,17 @@ const sizes = {
   large: {
     height: '3rem',
     fontSize: '1.25rem',
+    padding: '1rem',
   },
   medium: {
     height: '2.25rem',
     fontSize: '1rem',
+    padding: '0.8rem',
   },
   small: {
     height: '1.75rem',
     fontSize: '0.875rem',
+    padding: '0.5rem',
   },
 };
 
@@ -51,6 +54,8 @@ const sizeStyles = css`
   ${({ size }) => css`
     height: ${sizes[size].height};
     font-size: ${sizes[size].fontSize};
+    padding-left: ${sizes[size].padding};
+    padding-right: ${sizes[size].padding};
   `}
 `;
 
@@ -77,8 +82,6 @@ const StyledButton = styled.button`
   color: white;
   font-weight: 600;
   cursor: pointer;
-  padding-left: 1rem;
-  padding-right: 1rem;
 
   /* 크기 */
   ${sizeStyles}

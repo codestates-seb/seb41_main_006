@@ -14,5 +14,5 @@ export const flexRowCenter = css`
 export const flexColCenter = css`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
 `;
