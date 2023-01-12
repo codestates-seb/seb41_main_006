@@ -12,6 +12,8 @@ const PostList = styled.ul`
 
 const PostItem = styled.li`
   height: 13.25rem;
+  position: relative;
+  padding-top: 60%;
 `;
 
 const MatePostList = () => {

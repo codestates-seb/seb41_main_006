@@ -8,6 +8,11 @@ import { FiClock } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 
 const PostCard = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
