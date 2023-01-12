@@ -55,6 +55,20 @@ public class CommentsController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
+	// ----- 대댓글 등록
+	@PostMapping("/{parent-id}")
+	public ResponseEntity postReplyComments(@Positive @PathVariable("parent-id") Long parentId,
+											@Valid @RequestBody CommentsDto.Post commentsPostDto){
+
+		Comments createdComments = commentsService.createReComments(parentId, mapper.commentsPostDtoToComments(commentsPostDto));
+
+		CommentsDto.Response response = mapper.commentsToCommentsResponseDto(createdComments);
+
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+
+
+
 	// ----- 댓글 수정
 	@PatchMapping("/{comments-id}")
 	public ResponseEntity patchComments(@Positive @PathVariable("comments-id") Long commentsId,

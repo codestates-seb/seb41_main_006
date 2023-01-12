@@ -20,7 +20,8 @@ public interface CommentsMapper {
 	Comments commentsPatchDtoToComments(CommentsDto.Patch commentsPatchDto);
 
 	@Mappings({@Mapping(source = "member.memberId", target = "memberId"),
-	@Mapping(source = "board.boardId", target = "boardId")})
+	@Mapping(source = "board.boardId", target = "boardId"),
+	@Mapping(source = "parentComments.commentsId", target = "parentId")})
 	CommentsDto.Response commentsToCommentsResponseDto(Comments comments);
 
 	CommentsLike commentsLikeDtoToCommentsLike(CommentsLikeDto commentsLikeDto);
