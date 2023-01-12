@@ -51,7 +51,7 @@ public class BoardDto {
     @Builder
     public static class Response {
         private Long boardId;
-        private Member member; // 가넝?
+        private Member member; 
         private String title;
         private String content;
         private int countLike;
