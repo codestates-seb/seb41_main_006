@@ -4,6 +4,7 @@ import MatePostList from './MatePostList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
+import { dummyPosts } from '../../static/dummyData';
 
 const PostsContentLayOut = styled.div`
   ${flexColCenter}
@@ -35,7 +36,7 @@ const MatePostsContent = () => {
           글 작성
         </Button>
       </PostsContentRow>
-      <MatePostList />
+      <MatePostList postList={dummyPosts} />
     </PostsContentLayOut>
   );
 };

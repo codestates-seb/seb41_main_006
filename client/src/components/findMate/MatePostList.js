@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { dummyPosts } from '../../static/dummyData';
 import MatePostCard from './MatePostCard';
 
 const PostList = styled.ul`
@@ -16,10 +15,10 @@ const PostItem = styled.li`
   padding-top: 60%;
 `;
 
-const MatePostList = () => {
+const MatePostList = ({ postList }) => {
   return (
     <PostList>
-      {dummyPosts.map((el) => (
+      {postList.map((el) => (
         <PostItem key={el.id}>
           <MatePostCard post={el} />
         </PostItem>
