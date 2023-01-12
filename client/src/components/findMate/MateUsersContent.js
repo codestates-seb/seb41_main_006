@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import styled from 'styled-components';
 import MateUserList from './MateUserList';
+import UserFilterModal from './UserFilterModal';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
@@ -18,24 +19,27 @@ const UsersContentRow = styled.div`
 `;
 
 const MateUsersContent = () => {
-  const navigate = useNavigate();
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  const openModalHandler = () => {
+    setIsFilterModalOpen(true);
+  };
+
   return (
     <UsersContentLayOut>
       <UsersContentRow>
         <Title as="h3" size="medium">
           산책 메이트
         </Title>
-        <Button
-          color="second"
-          size="small"
-          outline
-          onClick={() => navigate('/')}
-        >
+        <Button color="second" size="small" outline onClick={openModalHandler}>
           <MdFilterListAlt />
           상세 조건
         </Button>
       </UsersContentRow>
       <MateUserList />
+      {isFilterModalOpen ? (
+        <UserFilterModal setIsFilterModalOpen={setIsFilterModalOpen} />
+      ) : null}
     </UsersContentLayOut>
   );
 };

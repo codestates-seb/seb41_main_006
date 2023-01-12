@@ -4,6 +4,7 @@ import ProfileImage from '../common/ProfileImage.js';
 import Title from '../common/Title';
 
 const UserCard = styled(ColCenterBox)`
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
   background-color: white;
   justify-content: space-between;
   width: 100%;
