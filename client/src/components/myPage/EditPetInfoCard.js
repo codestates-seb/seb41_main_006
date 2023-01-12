@@ -13,7 +13,7 @@ const CardContainer = styled.div`
   }
   img {
     width: 100%;
-    height: 200px;
+    height: 20rem;
     border-radius: 10px;
   }
   .Info {
@@ -44,7 +44,7 @@ const CardContainer = styled.div`
   }
 `;
 
-const PetInfoCard = ({ pet }) => {
+const EditPetInfoCard = ({ pet, setEditModal, EditModal }) => {
   return (
     <CardContainer>
       <img src={pet.pet_img} alt=""></img>
@@ -57,14 +57,19 @@ const PetInfoCard = ({ pet }) => {
       <div className="Introduce">{pet.Introduce}</div>
       <div className="Edit">
         <button>
-          <MdModeEdit />
+          <MdModeEdit
+            size="20"
+            onClick={() => {
+              setEditModal(!EditModal);
+            }}
+          />
         </button>
         <button>
-          <RiDeleteBinFill />
+          <RiDeleteBinFill size="20" />
         </button>
       </div>
     </CardContainer>
   );
 };
 
-export default PetInfoCard;
+export default EditPetInfoCard;
