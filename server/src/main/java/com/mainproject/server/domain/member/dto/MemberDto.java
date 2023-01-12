@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.member.dto;
 
 import com.mainproject.server.domain.member.entity.Member;
+import com.mainproject.server.validator.Gender;
 import com.mainproject.server.validator.NotSpace;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class MemberDto {
         //todo enum 하나 빼서 강아지 성별이랑 같이 쓰도록?
         // enum을 검증하는 validation 어노테이션도 추가?
         @NotBlank
+        @Gender
         private String gender;
 
         //todo 얘는 검증 어떻게 하지?
