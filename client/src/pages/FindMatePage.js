@@ -45,7 +45,7 @@ const FindMatePage = () => {
     <FindMateContainer>
       <FindMateTop>
         <h1>어떤 지역에서 찾고 싶으신가요?</h1>
-        <SearchAddress address={address} setAddress={setAddress} />
+        <SearchAddress setAddress={setAddress} />
         {address ? <h2>{address}</h2> : <h2>송파구 잠실 7동</h2>}
       </FindMateTop>
       <FindMateBottom>

@@ -2,13 +2,12 @@ import styled from 'styled-components';
 import { IoLocationSharp } from 'react-icons/io5';
 import { BiTargetLock } from 'react-icons/bi';
 
-const SearchAddress = ({ address, setAddress }) => {
+const SearchAddress = ({ setAddress }) => {
   const handleKeyUp = (e) => {
     if (e.key === 'Enter') {
-      if (address === '') {
+      if (e.target.value === '') {
         return;
       }
-      console.log(address);
       setAddress(e.target.value);
     }
   };
@@ -17,9 +16,7 @@ const SearchAddress = ({ address, setAddress }) => {
       <IoLocationSharp className="location-icon" />
       <AdderssInput
         type="text"
-        value={address}
         placeholder="동 이름을 검색하세요"
-        onChange={(e) => setAddress(e.target.value)}
         onKeyUp={handleKeyUp}
       ></AdderssInput>
       <LocationButton>
