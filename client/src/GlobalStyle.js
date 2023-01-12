@@ -26,6 +26,8 @@ const GlobalStyle = createGlobalStyle`
 
   button{
     cursor: pointer;
+    background: none;
+    border: none;
   }
 
   a{
@@ -61,7 +63,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   :root {
-    --header-height: 90px;
+    --header-height: 80px;
 
     /** color */
     --bg-color: #fbf7f2;
