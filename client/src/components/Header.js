@@ -36,15 +36,22 @@ const HeaderContainer = styled.div`
 
 const HeaderNav = styled.nav`
   ${flexRowCenter}
-  gap: 2rem;
+  gap: 1rem;
 
   a {
     font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+  }
+
+  a:hover {
+    background-color: var(--bg-dark-color);
   }
 
   button {
-    background-color: var(--bg-dark-color);
-    color: var(--sec-color);
+    color: var(--main-color);
+    outline: 1px solid var(--main-color);
+    font-weight: 500;
     font-size: 1rem;
     padding: 0.5rem 1rem;
     border-radius: 3px;
@@ -60,6 +67,7 @@ const Header = () => {
         </Link>
         <HeaderNav>
           <Link to={'/mate'}>메이트 찾기</Link>
+          <Link to={'/chat'}>채팅</Link>
           <button>로그인</button>
         </HeaderNav>
       </HeaderContainer>
