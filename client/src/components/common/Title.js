@@ -4,6 +4,7 @@ const titleSize = {
   large: '2rem',
   medium: '1.8rem', // 28px
   small: '1.5rem', //24px
+  xsmall: '1.25rem',
 };
 
 const StyledTitle = styled.h1`
@@ -29,7 +30,7 @@ const Title = ({ children, as, size }) => {
  */
 Title.defaultProps = {
   size: 'medium',
-  as: 'h1',
+  as: 'div',
 };
 
 export default Title;

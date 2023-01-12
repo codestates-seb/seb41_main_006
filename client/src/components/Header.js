@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 const SHeader = styled.header`
+  z-index: 10;
   background-color: #fbf7f2;
   height: var(--header-height);
   color: var(--main-font-color);
