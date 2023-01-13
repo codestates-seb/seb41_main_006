@@ -8,11 +8,14 @@ import com.mainproject.server.domain.board.service.BoardLikeService;
 import com.mainproject.server.domain.board.service.BoardService;
 import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.dto.SingleResponseDto;
+import com.mainproject.server.exception.ExceptionCode;
 import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,19 +34,35 @@ public class BoardController {
     private final BoardMapper mapper;
 
     @PostMapping
-    public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post boardPostDto) {
-        Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto));
+    public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post boardPostDto,
+                                    Authentication authentication) {
+        String memberEmail = authentication.getName();
+
+        if(memberEmail == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
+
+        Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto), memberEmail);
+
         BoardDto.Response response = mapper.boardToBoardResponseDto(board);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
+
     }
 
     @PatchMapping("/{board-id}")
     public ResponseEntity patchBoard(@Positive @PathVariable("board-id") long boardId,
-                                     @Valid @RequestBody BoardDto.Patch boardPatchDto) {
+                                     @Valid @RequestBody BoardDto.Patch boardPatchDto,
+                                     Authentication authentication) {
+        String memberEmail = authentication.getName();
+
+        if(memberEmail == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
+
         Board board = mapper.boardPatchDtoToPost(boardPatchDto);
         board.setBoardId(boardId);
-        Board updateBoard = boardService.updateBoard(board);
+        Board updateBoard = boardService.updateBoard(board, memberEmail);
 
         BoardDto.Response response = mapper.boardToBoardResponseDto(updateBoard);
 
@@ -91,8 +110,14 @@ public class BoardController {
     }
 
     @DeleteMapping("/{board-id}")
-    public ResponseEntity deleteBoard(@Positive @PathVariable("board-id") long boardId) {
-        boardService.deleteBoard(boardId);
+    public ResponseEntity deleteBoard(@Positive @PathVariable("board-id") long boardId,
+                                      Authentication authentication) {
+        String memberEmail = authentication.getName();
+        if(memberEmail == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
+
+        boardService.deleteBoard(boardId, memberEmail);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

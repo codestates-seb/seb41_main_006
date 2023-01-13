@@ -50,26 +50,21 @@ public class BoardDto {
 
         @NotBlank(message = "약속 장소를 입력해주세요.")
         private String meetingPlace;
-
-        @NotNull
-        private Board.BoardStatus boardStatus;
     }
     @Getter
-    @Setter
     @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
     public static class Response {
         private Long boardId;
-        private Member member;
         private String title;
         private String content;
         private LocalDateTime appointTime;
         private String meetingPlace;
         private Board.BoardStatus boardStatus;
+
+        private Member member;
+        private List<CommentsDto.Response> comments;
+
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-
-        private List<CommentsDto.Response> comments;
     }
 }

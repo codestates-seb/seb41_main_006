@@ -32,7 +32,7 @@ public class BoardTasklet implements Tasklet {
         }
         for(Board board : findBoards) {
             board.setBoardStatus(Board.BoardStatus.BOARD_CLOSE);
-            boardService.updateBoard(board);
+            boardRepository.save(board);
         }
         log.info("=====End Change Board Status======");
         return RepeatStatus.FINISHED;

@@ -20,26 +20,42 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BoardMapper {
 
-    Board boardPostDtoToPost (BoardDto.Post postPostDto);
+    default Board boardPostDtoToPost (BoardDto.Post postPostDto) {
+        if ( postPostDto == null ) {
+            return null;
+        }
+
+        Board board = new Board();
+
+        board.setTitle( postPostDto.getTitle() );
+        board.setContent( postPostDto.getContent() );
+        board.setAppointTime( postPostDto.getAppointTime() );
+        board.setMeetingPlace( postPostDto.getMeetingPlace() );
+        board.setBoardStatus(Board.BoardStatus.BOARD_OPEN);
+        board.setCountLike(0);
+
+        return board;
+    }
     Board boardPatchDtoToPost (BoardDto.Patch postPatchDto);
 
     @Mapping(source = "member.memberId", target = "memberId")
     default BoardDto.Response boardToBoardResponseDto(Board board){
-
-        BoardDto.Response boardResponseDto = new BoardDto.Response();
-
-        boardResponseDto.setBoardId(board.getBoardId());
-        boardResponseDto.setMember(board.getMember());
-        boardResponseDto.setTitle(board.getTitle());
-        boardResponseDto.setContent(board.getContent());
-        boardResponseDto.setAppointTime(board.getAppointTime());
-        boardResponseDto.setMeetingPlace(board.getMeetingPlace());
-        boardResponseDto.setBoardStatus(board.getBoardStatus());
-        boardResponseDto.setCreatedAt(board.getCreatedAt());
-        boardResponseDto.setModifiedAt(board.getModifiedAt());
-
         List<Comments> comments= board.getCommentList();
-        boardResponseDto.setComments(commentsToCommentsResponseDtos(comments));
+
+
+        BoardDto.Response boardResponseDto = BoardDto.Response
+                .builder()
+                .boardId(board.getBoardId())
+                .member(board.getMember())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .appointTime(board.getAppointTime())
+                .meetingPlace(board.getMeetingPlace())
+                .boardStatus(board.getBoardStatus())
+                .createdAt(board.getCreatedAt())
+                .modifiedAt(board.getModifiedAt())
+                .comments(commentsToCommentsResponseDtos(comments))
+                .build();
 
         return boardResponseDto;
     }

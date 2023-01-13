@@ -26,6 +26,7 @@ public class Board extends Auditable {
     private String title;
 
     @Column(nullable = false)
+    @Lob
     private String content;
 
     @Column
