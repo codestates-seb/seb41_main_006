@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { close } from '../../store/modules/modalSlice';
+import { closeModal } from '../store/modules/modalSlice';
 import styled from 'styled-components';
 
 const ModalBackDrop = styled.div`
@@ -34,7 +34,7 @@ const GlobalModal = () => {
 
   // 모달 외부를 클릭했을 때 모달은 닫힌다.
   const handleModalClose = () => {
-    dispatch(close());
+    dispatch(closeModal());
   };
 
   return (

@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
 import App from './App';
-import GlobalModal from './components/common/GlobalModal';
+import GlobalModal from './components/GlobalModal';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

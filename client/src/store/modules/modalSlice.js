@@ -12,20 +12,20 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     /** modal open */
-    open: (state, action) => {
+    openModal: (state, action) => {
       const { type, props } = action.payload;
       state.type = type;
       state.props = props;
     },
     /** modal close */
-    close: () => {
+    closeModal: () => {
       return initialState;
     },
   },
 });
 
 /*---------- 액션 생성 함수 ----------*/
-export const { open, close } = modalSlice.actions;
+export const { openModal, closeModal } = modalSlice.actions;
 
 /*---------- Slice의 Reducer를 export ----------*/
 export default modalSlice.reducer;
