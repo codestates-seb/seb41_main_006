@@ -29,9 +29,9 @@ public class PetService {
     public Pet createPet(Pet pet, String email) {
 
         verifyOverlapByPetName(pet.getName(), email);
-        Member member = memberRepository.findByEmail(email).get();
-
-        pet.setMember(member);
+//        Member member = memberRepository.findByEmail(email).get();
+//
+//        pet.setMember(member);
 
         return petRepository.save(pet);
     }
