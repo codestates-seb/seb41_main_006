@@ -3,13 +3,14 @@ import { useState } from 'react';
 import EdituserModal from './EdituserModal';
 import UserInfoCard from './UsetInfoCard';
 import { dummyUserInfo } from '../../static/dummyUserInfo';
+import UsetInfoModal from './UsetInfoModal';
 
 const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 70%;
-  button {
+  .edit-account {
     width: 15%;
     height: 40px;
     background-color: var(--sec-color);
@@ -23,27 +24,43 @@ const UserInfoContainer = styled.div`
       color: white;
     }
   }
-  :last-child {
-    margin-bottom: 50px;
+  .delete-account {
+    margin: 2% 0 5% 0;
+    cursor: pointer;
+    background-color: var(--bg-color);
+    border: none;
+    :visited {
+      color: var(--sec-color);
+    }
   }
 `;
 
 const UserInfo = () => {
   const [Modal, setModal] = useState(false);
+  const [DeleteModal, setDeleteModal] = useState(false);
   return (
     <>
       <UserInfoContainer>
         <UserInfoCard dummyUserInfo={dummyUserInfo[0]} />
         <button
+          className="edit-account"
           onClick={() => {
             setModal(!Modal);
           }}
         >
           정보 수정
         </button>
-        <div>회원 탈퇴</div>
+        <button
+          className="delete-account"
+          onClick={() => {
+            setDeleteModal(!DeleteModal);
+          }}
+        >
+          회원 탈퇴
+        </button>
       </UserInfoContainer>
       {Modal ? <EdituserModal setModal={setModal} Modal={Modal} /> : ''}
+      {DeleteModal ? <UsetInfoModal /> : ''}
     </>
   );
 };
