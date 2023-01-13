@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 // import { dummyComments } from '../../static/dummyData';
-import { CommentButton } from '../Button';
+import { CommentBtn } from '../Button';
 
 const CommentContainer = styled.div`
   width: 100%;
@@ -23,6 +23,10 @@ const CommentContainer = styled.div`
 
     ::placeholder {
       color: #b7a69e;
+    }
+
+    :focus {
+      outline: none;
     }
   }
 
@@ -48,7 +52,7 @@ const AddComment = () => {
       </div> */}
       <textarea placeholder="댓글을 작성하세요"></textarea>
       {/* <button>작성</button> */}
-      <CommentButton>작성</CommentButton>
+      <CommentBtn>작성</CommentBtn>
     </CommentContainer>
   );
 };

@@ -2,16 +2,16 @@ import styled from 'styled-components';
 import { FaUserCircle, FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState } from 'react';
 
-const CommentBox = styled.div`
+const RecommentBox = styled.div`
   height: 100%;
 
-  .comment-left {
+  .recomment-left {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .comment-user-info {
+  .recomment-user-info {
     display: flex;
     /* align-items: center; */
 
@@ -21,31 +21,32 @@ const CommentBox = styled.div`
     }
   }
 
-  .comment-username {
+  .recomment-username {
     font-size: 14px;
     color: #000000;
     font-weight: bold;
   }
 
-  .comment-createAt,
-  .comment-like {
+  .recomment-createAt,
+  .recomment-like {
     font-size: 12px;
     padding-right: 10px;
   }
 
-  .comment-createAt {
+  .recomment-createAt {
     color: #a79689;
   }
 
-  .comment-like {
-    color: #401809;
+  .recomment-like {
+    color: #ca7c62;
   }
-  .comment-like-total {
+  .recomment-like-total {
     padding-left: 3px;
   }
 
-  .comment-right {
+  .recomment-right {
     padding-right: 20px;
+    color: #ca7c62;
 
     button {
       /* background-color: transparent; */
@@ -54,7 +55,7 @@ const CommentBox = styled.div`
     }
   }
 
-  .comment-content {
+  .recomment-content {
     padding-bottom: 12px;
   }
 `;
@@ -67,24 +68,24 @@ const Recomment = ({ post }) => {
   };
 
   return (
-    <CommentBox>
-      <div className="comment-left">
-        <div className="comment-user-info">
+    <RecommentBox>
+      <div className="recomment-left">
+        <div className="recomment-user-info">
           <div className="user-profile">
             <FaUserCircle />
           </div>
           <div>
-            <span className="comment-username">{post.author}</span>
+            <span className="recomment-username">{post.author}</span>
             <div>
-              <span className="comment-createAt">2023.01.05 15:30</span>
-              <span className="comment-like">
+              <span className="recomment-createAt">2023.01.05 15:30</span>
+              <span className="recomment-like">
                 <FaHeart />
-                <span className="comment-like-total">{post.likes}</span>
+                <span className="recomment-like-total">{post.likes}</span>
               </span>
             </div>
           </div>
         </div>
-        <div className="comment-right">
+        <div className="recomment-right">
           {like ? (
             <FaHeart onClick={handleLikeClick} />
           ) : (
@@ -92,8 +93,8 @@ const Recomment = ({ post }) => {
           )}
         </div>
       </div>
-      <div className="comment-content">{post.content}</div>
-    </CommentBox>
+      <div className="recomment-content">{post.content}</div>
+    </RecommentBox>
   );
 };
 

@@ -2,6 +2,7 @@ export const dummyPosts = [
   {
     id: 1,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥일',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',
@@ -13,6 +14,7 @@ export const dummyPosts = [
   {
     id: 2,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥이',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',
@@ -24,6 +26,7 @@ export const dummyPosts = [
   {
     id: 3,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥삼',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',
@@ -35,6 +38,7 @@ export const dummyPosts = [
   {
     id: 4,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥이',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',
@@ -46,6 +50,7 @@ export const dummyPosts = [
   {
     id: 5,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥이',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',
@@ -57,6 +62,7 @@ export const dummyPosts = [
   {
     id: 6,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥이',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',
@@ -68,6 +74,7 @@ export const dummyPosts = [
   {
     id: 7,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥이',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',
@@ -79,6 +86,7 @@ export const dummyPosts = [
   {
     id: 8,
     title: '같이 산책해요!',
+    content: '같이 산책하실 분 댓글 달아주세요~!',
     author: '둥이',
     address: '송파구 잠실7동 OOO앞',
     date: '2023.01.05(목)',

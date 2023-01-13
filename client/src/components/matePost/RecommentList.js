@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { dummyRecomments } from '../../static/dummyData';
 import Recomment from './Recomment';
+import AddComment from './AddComment';
 
-const CommentList = styled.ul`
-  width: 720px;
+const RecommList = styled.ul`
+  width: 700px;
   /* display: grid; */
   /* grid-template-columns: repeat(3, 1fr); */
   /* grid-column-gap: 1.25rem; */
@@ -12,10 +13,10 @@ const CommentList = styled.ul`
   margin-top: 10px;
   margin-left: 20px;
   border-radius: 10px;
-  padding: 12px 0 0 16px;
+  padding: 12px 16px 0 16px;
 `;
 
-const CommentItem = styled.li`
+const RecommentItem = styled.li`
   /* height: 13.75rem; */
   height: 100%;
   margin-bottom: 28px;
@@ -24,13 +25,14 @@ const CommentItem = styled.li`
 
 const RecommentList = () => {
   return (
-    <CommentList>
+    <RecommList>
+      <AddComment />
       {dummyRecomments.map((el) => (
-        <CommentItem key={el.id}>
+        <RecommentItem key={el.id}>
           <Recomment post={el} />
-        </CommentItem>
+        </RecommentItem>
       ))}
-    </CommentList>
+    </RecommList>
   );
 };
 

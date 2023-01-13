@@ -13,8 +13,9 @@ const CommentBox = styled.ul`
 const CommentItem = styled.li`
   /* height: 13.75rem; */
   height: 100%;
-  margin-bottom: 28px;
-  border-bottom: 1px solid #a79689;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ebe6e1;
+  padding-bottom: 12px;
 `;
 
 const CommentList = () => {

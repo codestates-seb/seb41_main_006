@@ -3,6 +3,7 @@ import Map from '../components/Map';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
+import { dummyPosts } from '../static/dummyData';
 
 const Containerr = styled(Container)`
   textarea {
@@ -21,7 +22,23 @@ const Containerr = styled(Container)`
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #a79689;
+  padding-bottom: 6px;
+
+  textarea {
+    font-size: 24px;
+    overflow: hidden;
+    vertical-align: middle;
+    padding: 13px 0;
+    font-weight: bold;
+    color: #401809;
+
+    ::placeholder {
+      color: #b7a69e;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
 
   /* .post-title {
     display: flex;
@@ -42,31 +59,27 @@ const HeaderContainer = styled.div`
     .title {
     }
   } */
-
-  .post-title {
-    vertical-align: middle;
-  }
-  .title {
-    /* align-items: center; */
-    /* padding-left: 10px; */
-    vertical-align: middle;
-    padding: 13px 10px;
-  }
 `;
 
 const MainContainer = styled.div`
   display: flex;
   margin: 20px 10px 0 10px;
 
+  textarea {
+    height: 100%;
+    font-size: 18px;
+
+    ::placeholder {
+      color: #b7a69e;
+      font-size: 18px;
+    }
+  }
+
   .post-content {
     width: 720px;
     /* height: 300px; */
     height: 30rem;
-    padding: 20px;
-
-    textarea {
-      height: 100%;
-    }
+    /* padding: 10px; */
   }
 
   .right-box {
@@ -76,7 +89,7 @@ const MainContainer = styled.div`
 `;
 
 const BtnContainer = styled.div`
-  margin-top: 48px;
+  margin-top: 80px;
   text-align: center;
   /* background-color: skyblue; */
 
@@ -100,21 +113,13 @@ const PostEditPage = () => {
       <HeaderContainer>
         <div className="post-title">
           <div>
-            <textarea className="title" defaultValue="제목 수정"></textarea>
+            <textarea className="title">{dummyPosts[0].title}</textarea>
           </div>
         </div>
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          {/* <div className="post-content">
-            안녕하세요~ 말티즈 둥이 키우는 집사입니다. 귀엽고 깜찍하고
-            사랑스럽고 예쁜 아이입니다. 같이 산책하면서 재밌는 시간 보내요! 생각
-            있으신 분은 댓글 달아주세요~!
-          </div> */}
-          <textarea
-            className="post-content"
-            defaultValue="내용 수정"
-          ></textarea>
+          <textarea className="post-content">{dummyPosts[0].content}</textarea>
           {/* <div className="dog-info">강아지 정보</div> */}
         </div>
         <div className="right-box">

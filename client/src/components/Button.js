@@ -54,7 +54,7 @@ export const StateButton = styled.button`
   } */
 `;
 
-export const CommentButton = styled.button`
+export const CommentBtn = styled.button`
   width: 66px;
   height: 33px;
   background-color: #a79689;
@@ -67,7 +67,7 @@ export const CommentButton = styled.button`
   /* font-family: var(--font-family-tag); */
 
   :hover {
-    background-color: #d4e2ef;
+    background-color: var(--main-font-color);
   }
 `;
 
