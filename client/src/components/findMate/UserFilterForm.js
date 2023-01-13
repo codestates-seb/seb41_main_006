@@ -1,14 +1,34 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import userFilterList from '../../static/userFilterList';
 import styled from 'styled-components';
 import Button from '../common/Button';
+import Title from '../common/Title';
 import { RowCenterBox } from '../FlexBoxs';
 
-const UserFilterLabel = styled.label`
+const FilterForm = styled.form`
+  flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const FilterList = styled.ul`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  .filter-item {
+    h2 {
+      margin-bottom: 0.5rem;
+    }
+  }
+`;
+
+const FilterLabel = styled.label`
+  display: flex;
   justify-content: center;
   > span {
+    margin-right: 0.5rem;
     border: none;
     cursor: pointer;
     background-color: white;
@@ -16,11 +36,11 @@ const UserFilterLabel = styled.label`
     color: var(--sec-color);
     border-radius: 2rem;
     font-weight: 600;
-    box-shadow: 2px 2px 10px rgba(1, 1, 1, 0.1);
+    box-shadow: 2px 2px 4px rgba(1, 1, 1, 0.1);
   }
 
   input:checked + span {
-    border: solid 1px var(--sec-color);
+    outline: solid 2px var(--sec-color);
   }
 `;
 
@@ -72,38 +92,46 @@ const UserFilterForm = () => {
     console.log(filterValues);
   };
 
+  useEffect(() => {
+    console.log(filterValues);
+  }, [filterValues]);
+
   return (
-    <form onSubmit={handleSubmit}>
-      {userFilterList.map((el) => {
-        return (
-          <div key={el.id}>
-            <div>{el.title}</div>
-            <RowCenterBox>
-              {el.inputList.map((input) => {
-                return (
-                  <UserFilterLabel key={input.id}>
-                    <input
-                      type={el.type}
-                      name={el.name}
-                      value={input.value}
-                      onChange={
-                        el.type === 'checkbox'
-                          ? handleCheckboxChange
-                          : handleChange
-                      }
-                    />
-                    <span>{input.label}</span>
-                  </UserFilterLabel>
-                );
-              })}
-            </RowCenterBox>
-          </div>
-        );
-      })}
-      <Button type="submit" color="second" size="medium" fullWidth>
+    <FilterForm onSubmit={handleSubmit}>
+      <FilterList>
+        {userFilterList.map((el) => {
+          return (
+            <li className="filter-item" key={el.id}>
+              <Title as="h2" size="xsmall">
+                {el.title}
+              </Title>
+              <RowCenterBox>
+                {el.inputList.map((input) => {
+                  return (
+                    <FilterLabel key={input.id}>
+                      <input
+                        type={el.type}
+                        name={el.name}
+                        value={input.value}
+                        onChange={
+                          el.type === 'checkbox'
+                            ? handleCheckboxChange
+                            : handleChange
+                        }
+                      />
+                      <span>{input.label}</span>
+                    </FilterLabel>
+                  );
+                })}
+              </RowCenterBox>
+            </li>
+          );
+        })}
+      </FilterList>
+      <Button color="second" size="large" fullWidth>
         적용하기
       </Button>
-    </form>
+    </FilterForm>
   );
 };
 

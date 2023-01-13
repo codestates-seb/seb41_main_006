@@ -26,6 +26,8 @@ const GlobalStyle = createGlobalStyle`
 
   button{
     cursor: pointer;
+    background: none;
+    border: none;
   }
 
   a{
@@ -51,7 +53,10 @@ const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
 
-
+  .hidden{
+    visibility: hidden;
+  }
+  
   .App{
     background-color: var(--bg-color);
     width: 100vw;
@@ -61,7 +66,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   :root {
-    --header-height: 90px;
+    --header-height: 80px;
 
     /** color */
     --bg-color: #fbf7f2;

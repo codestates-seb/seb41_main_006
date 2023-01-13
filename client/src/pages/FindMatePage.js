@@ -11,6 +11,7 @@ const FindMateContainer = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 2rem;
 `;
 
 const FindMateTop = styled.div`
