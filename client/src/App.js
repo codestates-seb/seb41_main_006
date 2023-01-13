@@ -9,6 +9,7 @@ import FindMatePage from './pages/FindMatePage';
 import SignUpPage from './pages/SignUpPage';
 import InputUserInfoPage from './pages/InputUserInfoPage';
 import MyPage from './pages/MyPage';
+import ChattingPage from './pages/ChattingPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />}></Route>
         <Route path="/inputuserinfo" element={<InputUserInfoPage />}></Route>
         <Route path="/mypage/*" element={<MyPage />}></Route>
+        <Route path="/chat/*" element={<ChattingPage />}></Route>
         <Route path="/*" element={<MainPage />}></Route>
       </Routes>
     </div>
