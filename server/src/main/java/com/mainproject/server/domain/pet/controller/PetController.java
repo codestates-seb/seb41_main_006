@@ -6,11 +6,13 @@ import com.mainproject.server.domain.pet.mapper.PetMapper;
 import com.mainproject.server.domain.pet.service.PetService;
 import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.dto.SingleResponseDto;
+import com.mainproject.server.exception.ExceptionCode;
 import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,28 +30,42 @@ public class PetController {
     private final PetMapper mapper;
 
     @PostMapping
-    public ResponseEntity postPet(@Valid @RequestBody PetDto.Post petPostDto) {
+    public ResponseEntity postPet(@Valid @RequestBody PetDto.Post petPostDto,
+                                  Authentication authentication) {
 
-       Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto));
+        String MemberEmail = authentication.getName();
 
-       PetDto.Response response = mapper.petToPetResponseDto(pet);
+        if (MemberEmail == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
 
-       return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
+        Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), MemberEmail);
+
+        PetDto.Response response = mapper.petToPetResponseDto(pet);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{pet-id}")
     public ResponseEntity patchPet(@PathVariable("pet-id") @Positive long petId,
-                                   @Valid @RequestBody PetDto.Patch petPatchDto) {
+                                   @Valid @RequestBody PetDto.Patch petPatchDto,
+                                   Authentication authentication) {
+        String memberEmail = authentication.getName();
+
+        if(memberEmail == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
 
         Pet pet = mapper.petPatchDtoToPet(petPatchDto);
         pet.setPetId(petId);
 
-        petService.updatePet(pet);
+        petService.updatePet(pet, memberEmail);
 
         PetDto.Response response = mapper.petToPetResponseDto(pet);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
+    // 회원이 등록한 강아지 한마리만 가져오기
     @GetMapping("/{pet-id}")
     public ResponseEntity getPet(@Positive @PathVariable("pet-id") long petId) {
         Pet pet = petService.findPet(petId);
@@ -57,7 +73,7 @@ public class PetController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
-
+    // 강아지 전체 목록 페이지네이션
     @GetMapping
     public ResponseEntity getPets(@Positive @RequestParam(defaultValue = "1") int page,
                                   @Positive @RequestParam(defaultValue = "10") int size) {
@@ -69,7 +85,7 @@ public class PetController {
 
         return new ResponseEntity<>(new MultiResponseDto<>(responses, pageInfo), HttpStatus.OK);
     }
-
+    // 강아지 크기 별로 검색
     @GetMapping("/search")
     public ResponseEntity searchPets(@Positive @RequestParam(defaultValue = "1")  int page,
                                   @Positive @RequestParam(defaultValue = "10")  int size,
@@ -86,9 +102,14 @@ public class PetController {
     }
 
     @DeleteMapping("/{pet-id}")
-    public ResponseEntity deletePet(@PathVariable("pet-id") @Positive long petId) {
+    public ResponseEntity deletePet(@PathVariable("pet-id") @Positive long petId,
+                                    Authentication authentication) {
+        String memberEmail = authentication.getName();
 
-        petService.deletePets(petId);
+        if(memberEmail == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
+        petService.deletePets(petId, memberEmail);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.pet.dto;
 
+import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.validator.Gender;
 import lombok.Builder;
@@ -23,6 +24,9 @@ public class PetDto {
         @Gender
         private String gender;
 
+        @NotBlank(message = "이미지를 추가해주세요.")
+        private String profileImage;
+
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
 
@@ -40,9 +44,7 @@ public class PetDto {
     @Builder
     public static class Patch {
 
-        private Long petId;
-
-        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$", message = "한글, 영어를 사용하여 10자 이내로 작성해주세요.")
+        @Pattern(regexp = "^[가-힣a-zA-Z]{1,10}$", message = "한글 또는 영어를 사용하여 10자 이내로 작성해주세요.")
         private String name;
 
         @Pattern(regexp = "^[0-9]{1,2}$", message = "최대 2글자까지만 허용합니다.")
@@ -50,6 +52,10 @@ public class PetDto {
 
         @Gender
         private String gender;
+
+        @NotBlank(message = "이미지를 추가해주세요.")
+        private String profileImage;
+
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
@@ -68,6 +74,8 @@ public class PetDto {
     @Builder
     public static class Response {
         private Long petId;
+        private Member member;
+        private String profileImage;
         private String name;
         private String age;
         private String gender;
