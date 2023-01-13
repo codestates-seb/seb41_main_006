@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FaUserCircle, FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FaUserCircle, FaHeart, FaRegHeart, FaPlus } from 'react-icons/fa';
 import { useState } from 'react';
 import RecommentList from './RecommentList';
 
@@ -39,7 +39,7 @@ const CommentBox = styled.div`
   }
 
   .comment-like {
-    color: #401809;
+    color: #ca7c62;
   }
   .comment-like-total {
     padding-left: 3px;
@@ -47,6 +47,7 @@ const CommentBox = styled.div`
 
   .comment-right {
     padding-right: 20px;
+    color: #ca7c62;
 
     button {
       /* background-color: transparent; */
@@ -57,6 +58,22 @@ const CommentBox = styled.div`
 
   .comment-content {
     padding-bottom: 12px;
+  }
+
+  .recomment-btn {
+    border: none;
+    background-color: transparent;
+    color: #ca7c62;
+
+    .plus-icon {
+      font-size: 12px;
+    }
+
+    span {
+      font-size: 15px;
+      font-weight: bold;
+      padding-left: 4px;
+    }
   }
 `;
 
@@ -100,8 +117,9 @@ const Comment = ({ post }) => {
         </div>
       </div>
       <div className="comment-content">{post.content}</div>
-      <button className="recomment" onClick={handleRecommentsClick}>
-        +답글 달기
+      <button className="recomment-btn" onClick={handleRecommentsClick}>
+        <FaPlus className="plus-icon" />
+        <span>답글 달기</span>
       </button>
       {comments && <RecommentList comments={comments} />}
     </CommentBox>
