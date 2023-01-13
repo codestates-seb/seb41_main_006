@@ -8,18 +8,23 @@ const ProfileBox = styled(CenterBox)`
         width: ${size};
         height: ${size};
         border-radius: ${size};
-        box-shadow: 0 4px 4px rgba(1, 1, 1, 0.2);
       `;
     }}
   }
+
+  ${(props) =>
+    props.shadow &&
+    css`
+      box-shadow: 0 4px 4px rgba(1, 1, 1, 0.2);
+    `}
 `;
 
 /**
  * 원형의 profile 이미지를 반환
  */
-const ProfileImage = ({ size, src, name }) => {
+const ProfileImage = ({ size, src, name, shadow }) => {
   return (
-    <ProfileBox size={size}>
+    <ProfileBox size={size} shadow={shadow}>
       <img src={src} alt={`${name}'s profile`}></img>
     </ProfileBox>
   );
