@@ -5,7 +5,7 @@ const Container = styled.div`
   background-color: var(--bg-color);
   width: 100%;
   max-width: 1200px;
-  height: 100%;
+  min-height: calc(100vh - var(--header-height));
 `;
 
 export default Container;
