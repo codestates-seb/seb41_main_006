@@ -17,8 +17,11 @@ function App() {
       <Header></Header>
       <Routes>
         <Route path="/mate/posts/:mateId" element={<PostDetailPage />}></Route>
-        <Route path="/post-mate" element={<PostPage />}></Route>
-        <Route path="/post-edit" element={<PostEditPage />}></Route>
+        <Route path="/newmate" element={<PostPage />}></Route>
+        <Route
+          path="/mate/posts/:mateId/edit"
+          element={<PostEditPage />}
+        ></Route>
         <Route path="/mate/*" element={<FindMatePage />}></Route>
         <Route path="/signup" element={<SignUpPage />}></Route>
         <Route path="/inputuserinfo" element={<InputUserInfoPage />}></Route>

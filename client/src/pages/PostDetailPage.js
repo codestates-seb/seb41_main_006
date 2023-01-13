@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 import { StateButton } from '../components/Button';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import Map from '../components/Map';
 import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
 import { dummyComments } from '../static/dummyData';
 // import { useParams } from 'react-router-dom';
+import PetInfoCard from '../components/myPage/PetInfoCard';
+import { petInfo } from '../static/dummyMyPetinfo';
+import DeleteModal from '../components/DeleteModal';
+import { FindMateDate } from '../utils/dateConvert';
+import { useState } from 'react';
 
 const Containerr = styled(Container)`
   .comment {
@@ -18,7 +23,7 @@ const Containerr = styled(Container)`
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #a79689;
 
   .post-title {
     display: flex;
@@ -49,17 +54,30 @@ const HeaderContainer = styled.div`
 
     .post-like {
       font-size: 14px;
-      color: #401809;
+      color: #ca7c62;
+
+      span {
+        padding-left: 3px;
+      }
     }
 
-    .post-edit {
+    .post-btn {
       margin-left: auto;
-      margin-right: 10px;
-      color: #401809;
     }
 
-    .post-del {
+    .post-edit,
+    .post-del,
+    .post-like-btn {
+      margin-left: 10px;
       color: #401809;
+      border: none;
+      background-color: transparent;
+      font-size: 16px;
+    }
+
+    .post-like-btn {
+      padding-right: 16px;
+      color: #ca7c62;
     }
   }
 `;
@@ -69,26 +87,43 @@ const MainContainer = styled.div`
   margin: 20px 10px 0 10px;
 
   .post-content {
-    width: 720px;
+    /* width: 720px; */
+    width: 100%;
     height: 300px;
+  }
+
+  .comment-cnt {
+    color: #401809;
+    margin-bottom: 6px;
   }
 
   .right-box {
     width: 100%;
-    margin-left: 40px;
+    margin-left: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .dog-info {
-    background-color: skyblue;
     /* width: 720px;
     height: 130px;
     margin: 20px 0; */
     margin-bottom: 34px;
+    width: 80%;
+    text-align: center;
+    align-items: center;
   }
 `;
 
 const PostDetailPage = () => {
   // const { mateId } = useParams();
+  const [modal, setModal] = useState(false);
+
+  const handelDelClick = () => {
+    // modalView(true, '정말 삭제하시겠습니까?');
+    setModal(true);
+  };
 
   return (
     <Containerr>
@@ -98,15 +133,20 @@ const PostDetailPage = () => {
           <StateButton>모집중</StateButton>
         </div>
         <div className="post-info">
-          <div className="post-createAt">2023.01.05 15:28</div>
+          <div className="post-createAt">{FindMateDate(new Date())}</div>
           <div className="post-like">
-            <span>
-              <FaHeart />
-            </span>
+            <FaHeart />
             <span>3</span>
           </div>
-          <div className="post-edit">수정</div>
-          <div className="post-del">삭제</div>
+          <div className="post-btn">
+            <button className="post-edit">수정</button>
+            <button className="post-del" onClick={handelDelClick}>
+              삭제
+            </button>
+            <button className="post-like-btn">
+              <FaRegHeart />
+            </button>
+          </div>
         </div>
       </HeaderContainer>
       <MainContainer>
@@ -122,9 +162,13 @@ const PostDetailPage = () => {
           </div>
           <AddComment />
           <CommentList />
+          {modal ? <DeleteModal /> : null}
         </div>
         <div className="right-box">
-          <div className="dog-info">강아지정보</div>
+          {/* <div className="dog-info">강아지정보</div> */}
+          <div className="dog-info">
+            <PetInfoCard pet={petInfo[0]} />
+          </div>
           <Map />
         </div>
       </MainContainer>

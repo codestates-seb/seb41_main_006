@@ -8,6 +8,7 @@ const MapContainer = styled.div`
   width: 100%;
   /* height: 200px; */
   height: 30rem;
+  padding: 10px;
   /* border: 1px solid black; */
   background-color: #ffffff;
   border-radius: 10px;
@@ -35,17 +36,25 @@ const MapContainer = styled.div`
     input {
       width: 100%;
       border-radius: 10px;
-      padding: 2px 6px;
+      padding: 3px 6px;
       border: 1px solid #b7a69e;
       font-size: 16px;
     }
+  }
+
+  .mmet-date {
+    width: 20px;
   }
 
   label {
     display: block;
     color: #401809;
     font-weight: bold;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
+  }
+
+  span {
+    padding-left: 8px;
   }
 `;
 
@@ -56,14 +65,14 @@ const Map = () => {
         <div className="meet-date">
           <label htmlFor="date-input">
             <FaRegCalendar />
-            날짜
+            <span>날짜</span>
           </label>
           <input type="date" id="date-input"></input>
         </div>
         <div className="meet-time">
           <label htmlFor="time-input">
             <BiTimeFive />
-            시간
+            <span>시간</span>
           </label>
           <input type="time" id="time-input"></input>
         </div>
@@ -72,7 +81,7 @@ const Map = () => {
         <form className="map-form">
           <label htmlFor="meet-place">
             <MdPlace />
-            만나는 장소
+            <span>만나는 장소</span>
           </label>
           <input type="text" id="meet-place"></input>
         </form>

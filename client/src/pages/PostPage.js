@@ -21,7 +21,22 @@ const Containerr = styled(Container)`
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #a79689;
+  padding-bottom: 6px;
+
+  textarea {
+    font-size: 24px;
+    overflow: hidden;
+    vertical-align: middle;
+    padding: 13px 0;
+    font-weight: bold;
+
+    ::placeholder {
+      color: #b7a69e;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
 
   /* .post-title {
     display: flex;
@@ -42,31 +57,27 @@ const HeaderContainer = styled.div`
     .title {
     }
   } */
-
-  .post-title {
-    vertical-align: middle;
-  }
-  .title {
-    /* align-items: center; */
-    /* padding-left: 10px; */
-    vertical-align: middle;
-    padding: 13px 10px;
-  }
 `;
 
 const MainContainer = styled.div`
   display: flex;
   margin: 20px 10px 0 10px;
 
+  textarea {
+    height: 100%;
+    font-size: 18px;
+
+    ::placeholder {
+      color: #b7a69e;
+      font-size: 18px;
+    }
+  }
+
   .post-content {
     width: 720px;
     /* height: 300px; */
     height: 30rem;
-    padding: 20px;
-
-    textarea {
-      height: 100%;
-    }
+    /* padding: 10px; */
   }
 
   .right-box {
@@ -76,7 +87,7 @@ const MainContainer = styled.div`
 `;
 
 const BtnContainer = styled.div`
-  margin-top: 48px;
+  margin-top: 80px;
   text-align: center;
   /* background-color: skyblue; */
 
@@ -125,7 +136,7 @@ const PostPage = () => {
         </div>
       </MainContainer>
       <BtnContainer>
-        <PostSubmitBtn>작성</PostSubmitBtn>
+        <PostSubmitBtn>등록</PostSubmitBtn>
         <CancelButton>취소</CancelButton>
       </BtnContainer>
     </Containerr>
