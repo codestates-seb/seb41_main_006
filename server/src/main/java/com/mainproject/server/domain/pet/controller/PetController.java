@@ -1,5 +1,8 @@
 package com.mainproject.server.domain.pet.controller;
 
+import com.mainproject.server.auth.userdetails.MemberDetails;
+import com.mainproject.server.auth.userdetails.MemberDetailsService;
+import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.dto.PetDto;
 import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.domain.pet.mapper.PetMapper;
@@ -13,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +35,14 @@ public class PetController {
 
     @PostMapping
     public ResponseEntity postPet(@Valid @RequestBody PetDto.Post petPostDto,
-                                  Authentication authentication) {
+                                  @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        String MemberEmail = authentication.getName();
 
-        if (MemberEmail == null) {
+        if (memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
-        Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), MemberEmail);
+        Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), memberDetails);
 
         PetDto.Response response = mapper.petToPetResponseDto(pet);
 
@@ -49,17 +52,16 @@ public class PetController {
     @PatchMapping("/{pet-id}")
     public ResponseEntity patchPet(@PathVariable("pet-id") @Positive long petId,
                                    @Valid @RequestBody PetDto.Patch petPatchDto,
-                                   Authentication authentication) {
-        String memberEmail = authentication.getName();
+                                   @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if(memberEmail == null) {
+        if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Pet pet = mapper.petPatchDtoToPet(petPatchDto);
         pet.setPetId(petId);
 
-        petService.updatePet(pet, memberEmail);
+        petService.updatePet(pet, memberDetails);
 
         PetDto.Response response = mapper.petToPetResponseDto(pet);
 
@@ -103,13 +105,12 @@ public class PetController {
 
     @DeleteMapping("/{pet-id}")
     public ResponseEntity deletePet(@PathVariable("pet-id") @Positive long petId,
-                                    Authentication authentication) {
-        String memberEmail = authentication.getName();
+                                    @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if(memberEmail == null) {
+        if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
-        petService.deletePets(petId, memberEmail);
+        petService.deletePets(petId, memberDetails);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

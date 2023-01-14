@@ -57,6 +57,7 @@ public class BoardDto {
         private Long boardId;
         private String title;
         private String content;
+        private int countLike;
         private LocalDateTime appointTime;
         private String meetingPlace;
         private Board.BoardStatus boardStatus;

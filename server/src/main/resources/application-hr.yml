@@ -7,7 +7,7 @@ spring:
       path: /h2
       enabled: true
   datasource:
-    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;
+    url: jdbc:h2:mem:test
     schema: classpath:/org/springframework/batch/core/schema-h2.sql # 스키마 위치
   jpa:
     hibernate:
