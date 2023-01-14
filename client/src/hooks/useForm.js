@@ -7,10 +7,10 @@ import { useState, useEffect } from 'react';
  * @param {Function} form.validate value 검증하는 함수
  * @returns
  */
-function useForm({ initialValues, onSubmit, validate }) {
-  // values 관리
+function useForm({ initialValues, onSubmit, validateList, validateFunctions }) {
+  // 각 input의 value
   const [values, setValues] = useState(initialValues);
-  // 에러 : 에러가 있는 input이 있다면
+  // 각 input의 에러
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,22 +20,32 @@ function useForm({ initialValues, onSubmit, validate }) {
     setValues({ ...values, [name]: value });
   };
 
+  /** 입력 란 focus 해제 이벤트를 다루는 함수 실행 */
+  // 이메일, 비밀번호, 비밀번호 유효성 검사
+  const validateValue = (event) => {
+    const { name, value } = event.target;
+    setErrors({ ...errors, [name]: validateFunctions[name](value) });
+  };
+
   /** 제출 이벤트를 다루는 함수 */
   const handleSubmit = async (event) => {
     setIsLoading(true);
     event.preventDefault();
-    await new Promise((r) => setTimeout(r, 1000));
-    setErrors(validate(values));
-  };
 
-  const handleReset = () => {
-    setValues(initialValues);
-    setErrors({});
-    setIsLoading(false);
+    // 유효성 검사가 필요한 input에 대하여 검사 실시
+    const newErrors = {};
+    for (let val of validateList) {
+      let errMsg = validateFunctions[val](values[val]);
+      // 유효하지 않은 값이 존재함
+      if (errMsg) {
+        newErrors[val] = errMsg;
+      }
+    }
+    setErrors(newErrors);
   };
 
   useEffect(() => {
-    // submit 중...
+    // submit 중임
     if (isLoading) {
       // 만약 에러가 없다면
       if (Object.keys(errors).length === 0) {
@@ -45,15 +55,15 @@ function useForm({ initialValues, onSubmit, validate }) {
       // 에러가 있다면 submit 취소
       setIsLoading(false);
     }
-  }, [errors]);
+  }, [isLoading]);
 
   return {
     values,
     errors,
     isLoading,
     handleChange,
+    validateValue,
     handleSubmit,
-    handleReset,
   };
 }
 
