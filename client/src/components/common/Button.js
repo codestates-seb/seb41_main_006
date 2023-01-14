@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { darken, lighten } from 'polished';
+import PropTypes from 'prop-types';
 
 const colors = {
   main: '#CA7C62',
@@ -114,6 +115,14 @@ function Button({ children, color, size, outline, fullWidth, ...rest }) {
 Button.defaultProps = {
   color: 'main',
   size: 'medium',
+};
+
+Button.propTypes = {
+  children: PropTypes.string,
+  color: PropTypes.string,
+  size: PropTypes.string,
+  outline: PropTypes.bool,
+  fullWidth: PropTypes.bool,
 };
 
 export default Button;
