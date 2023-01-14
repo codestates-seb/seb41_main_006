@@ -26,7 +26,8 @@ public class CommentsService {
 		createdComments.setDepth(0);
 
 		// 댓글 저장
-		return commentsRepository.save(createdComments);
+		commentsRepository.save(createdComments);
+		return createdComments;
 	}
 
 	// ----- 대댓글 등록
@@ -41,13 +42,13 @@ public class CommentsService {
 		replyComments.setContent(comments.getContent());
 		replyComments.setBoard(comments.getBoard());
 		replyComments.setMember(comments.getMember());
-		replyComments.setParentComments(parent);
 		replyComments.setDepth(parent.getDepth() + 1);
+
+		replyComments.setParentComments(parent);
 		parent.getReplyComments().add(replyComments);
 
 		//대댓글 저장
 		commentsRepository.save(replyComments);
-
 		return replyComments;
 	}
 
