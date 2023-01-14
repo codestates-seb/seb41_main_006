@@ -30,45 +30,7 @@ public class MemberDetailsService implements UserDetailsService {
         Optional<Member> byEmail = memberRepository.findByEmail(username);
         Member member = byEmail.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
-        return new MemberDetails(member);
+        return new MemberDetails(customAuthorityUtils, member);
     }
-    class MemberDetails extends Member implements UserDetails {
 
-        MemberDetails(Member member) {
-            setMemberId(member.getMemberId());
-            setEmail(member.getEmail());
-            setPassword(member.getPassword());
-            setRoles(member.getRoles());
-        }
-
-        @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-            return customAuthorityUtils.createAuthorities(this.getRoles());
-        }
-
-        @Override
-        public String getUsername() {
-            return this.getEmail();
-        }
-
-        @Override
-        public boolean isAccountNonExpired() {
-            return true;
-        }
-
-        @Override
-        public boolean isAccountNonLocked() {
-            return true;
-        }
-
-        @Override
-        public boolean isCredentialsNonExpired() {
-            return true;
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return true;
-        }
-    }
 }

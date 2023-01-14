@@ -74,7 +74,6 @@ public class PetDto {
     @Builder
     public static class Response {
         private Long petId;
-        private Member member;
         private String profileImage;
         private String name;
         private String age;
@@ -83,5 +82,6 @@ public class PetDto {
         private boolean neutered;
         private String aboutDog;
         private String breed;
+        private Member member; // 회원이 작성한 글, 댓글, 강아지정보까지 다 들어오게 되어있음
     }
 }

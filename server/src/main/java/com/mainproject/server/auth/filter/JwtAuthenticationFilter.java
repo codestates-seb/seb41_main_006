@@ -3,6 +3,7 @@ package com.mainproject.server.auth.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mainproject.server.auth.JwtTokenizer;
 import com.mainproject.server.auth.dto.LoginDto;
+import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -56,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
-        Member member = (Member) authResult.getPrincipal();
+        MemberDetails member = (MemberDetails) authResult.getPrincipal();
 
         String base64EncodedSecretKey = jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey());
         String accessToken = delegateAccessToken(member, base64EncodedSecretKey); // access token 생성
@@ -69,7 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     }
 
-    private String delegateAccessToken(Member member, String base64EncodedSecretKey) {
+    private String delegateAccessToken(MemberDetails member, String base64EncodedSecretKey) {
         /*payload에 memberId, email, roles 추가*/
         Map<String, Object> claims = new HashMap<>();
         claims.put("memberId", member.getMemberId());
@@ -83,7 +84,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return accessToken;
     }
 
-    private String delegateRefreshToken(Member member, String base64EncodedSecretKey) {
+    private String delegateRefreshToken(MemberDetails member, String base64EncodedSecretKey) {
         String subject = member.getEmail();
         Date tokenExpiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, tokenExpiration, base64EncodedSecretKey);

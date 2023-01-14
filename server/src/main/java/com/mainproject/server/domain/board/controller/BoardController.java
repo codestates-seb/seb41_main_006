@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.board.controller;
 
+import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.board.dto.BoardDto;
 import com.mainproject.server.domain.board.dto.BoardLikeDto;
 import com.mainproject.server.domain.board.entity.Board;
@@ -35,14 +36,13 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post boardPostDto,
-                                    Authentication authentication) {
-        String memberEmail = authentication.getName();
+                                    @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if(memberEmail == null) {
+        if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
-        Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto), memberEmail);
+        Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto), memberDetails);
 
         BoardDto.Response response = mapper.boardToBoardResponseDto(board);
 
@@ -53,16 +53,15 @@ public class BoardController {
     @PatchMapping("/{board-id}")
     public ResponseEntity patchBoard(@Positive @PathVariable("board-id") long boardId,
                                      @Valid @RequestBody BoardDto.Patch boardPatchDto,
-                                     Authentication authentication) {
-        String memberEmail = authentication.getName();
+                                     @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if(memberEmail == null) {
+        if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Board board = mapper.boardPatchDtoToPost(boardPatchDto);
         board.setBoardId(boardId);
-        Board updateBoard = boardService.updateBoard(board, memberEmail);
+        Board updateBoard = boardService.updateBoard(board, memberDetails);
 
         BoardDto.Response response = mapper.boardToBoardResponseDto(updateBoard);
 
@@ -77,22 +76,11 @@ public class BoardController {
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
+    // search 값이 존재하면 검색된 값만 반환, search 값이 없으면 단순 목록 조회
     @GetMapping
-    public ResponseEntity getBoards(@Positive @RequestParam(defaultValue = "1") int page,
-                                    @Positive @RequestParam(defaultValue = "10") int size) {
-        Page<Board> boardPage = boardService.findBoards(page, size);
-        PageInfo pageInfo = new PageInfo(page, size, (int) boardPage.getTotalElements(), boardPage.getTotalPages());
-
-        List<Board> boardList = boardPage.getContent();
-        List<BoardDto.Response> responses = mapper.boardsToPostResponseDtos(boardList);
-
-        return new ResponseEntity<>(new MultiResponseDto<>(responses, pageInfo), HttpStatus.OK);
-    }
-
-    @GetMapping("/search")
     public ResponseEntity searchBoards(@Positive @RequestParam(defaultValue = "1") int page,
                                        @Positive @RequestParam(defaultValue = "10") int size,
-                                       @RequestParam(value = "keyword") String keyword) { // 위치 정보 어떻게?
+                                       @RequestParam(value = "search") String keyword) { // 위치로 검색
         Page<Board> boardPage;
 
         if(keyword != null) {
@@ -111,13 +99,12 @@ public class BoardController {
 
     @DeleteMapping("/{board-id}")
     public ResponseEntity deleteBoard(@Positive @PathVariable("board-id") long boardId,
-                                      Authentication authentication) {
-        String memberEmail = authentication.getName();
-        if(memberEmail == null) {
+                                      @AuthenticationPrincipal MemberDetails memberDetails) {
+        if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
-        boardService.deleteBoard(boardId, memberEmail);
+        boardService.deleteBoard(boardId, memberDetails);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

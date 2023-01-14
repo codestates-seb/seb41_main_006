@@ -1,9 +1,9 @@
 package com.mainproject.server.domain.board.service;
 
+import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.board.repository.BoardRepository;
 import com.mainproject.server.domain.member.entity.Member;
-import com.mainproject.server.domain.member.repository.MemberRepository;
 import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
@@ -21,21 +21,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
-    public Board createBoard(Board board, String email) {
+    public Board createBoard(Board board, MemberDetails memberDetails) {
 
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
         board.setMember(member);
 
         return boardRepository.save(board);
     }
 
-    public Board updateBoard(Board board, String email) {
+    public Board updateBoard(Board board, MemberDetails memberDetails) {
 
        Board findBoard = findVerifiedBoard(board.getBoardId());
 
-       validateBoardWriter(findBoard, email);
+       validateBoardWriter(findBoard, memberDetails.getMemberId());
 
        Optional.ofNullable(board.getTitle())
                .ifPresent(findBoard::setTitle);
@@ -73,10 +73,10 @@ public class BoardService {
         return boardRepository.findByMeetingPlaceContaining(pageable, keyword);
     }
 
-    public void deleteBoard(Long boardId, String email) {
+    public void deleteBoard(Long boardId, MemberDetails memberDetails) {
         Board findBoard = findVerifiedBoard(boardId);
 
-        validateBoardWriter(findBoard, email);
+        validateBoardWriter(findBoard, memberDetails.getMemberId());
 
         boardRepository.delete(findBoard);
     }
@@ -89,9 +89,9 @@ public class BoardService {
         return findBoard;
     }
 
-    public void validateBoardWriter(Board board, String email) {
+    public void validateBoardWriter(Board board, long memberId) {
 
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = memberService.validateVerifyMember(memberId);
 
         if(board.getMember() != member) {
             throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);

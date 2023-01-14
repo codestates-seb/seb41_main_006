@@ -1,7 +1,9 @@
 package com.mainproject.server.auth.filter;
 
 import com.mainproject.server.auth.JwtTokenizer;
+import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.auth.utils.CustomAuthorityUtils;
+import com.mainproject.server.domain.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -61,10 +63,21 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
+        // claims로 생성한 MemberDetails 객체로 Authentication 객체를 생성하면 Security Context에 MemberDetails 저장 가능
+        // @AuthenticationPrincipal 은 security Context에 저장된 principal를 불러오기 때문에 MemberDetails를 가져올 수 있음
+        long memberId = Long.parseLong(String.valueOf(claims.get("memberId")));
         String username = (String) claims.get("username");
-        List<GrantedAuthority> authorities = customAuthorityUtils.createAuthorities((List<String>)claims.get("roles"));
+        List<String> roles = (List<String>)claims.get("roles");
+        List<GrantedAuthority> authorities = customAuthorityUtils.createAuthorities(roles);
+
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setEmail(username);
+        member.setRoles(roles);
+        MemberDetails memberDetails = new MemberDetails(customAuthorityUtils, member);
+
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(username, null, authorities);
+                new UsernamePasswordAuthenticationToken(memberDetails, null, authorities);
         // 시큐리티 세션에 접근해서 Authentication 객체 저장
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }

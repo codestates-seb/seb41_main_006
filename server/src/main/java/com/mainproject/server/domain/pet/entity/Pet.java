@@ -45,7 +45,7 @@ public class Pet extends Auditable {
     @Column(nullable = false)
     private String breed;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
