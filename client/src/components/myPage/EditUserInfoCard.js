@@ -1,35 +1,14 @@
 import styled from 'styled-components';
-import { useRef } from 'react';
-// import Container from '../Container';
+import { useState } from 'react';
+import SelectAge from '../Select';
 
-const SBackground = styled.div`
-  background-color: rgba(217, 217, 217, 0.8);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  display: flex;
-  justify-content: center;
-`;
-// const SContainer = styled(Container)`
-//   display: flex;
-//   justify-content: center;
-//   background-color: gray;
-// `;
 const SInputInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 25%;
-  margin-top: 100px;
   text-align: center;
+  margin-top: 50px;
   color: var(--main-font-color);
   font-weight: 500;
-  background-color: var(--bg-color);
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
   input {
     border: 1px solid #b7a69e;
   }
@@ -106,18 +85,15 @@ const SInputInfoContainer = styled.div`
             color: white;
           }
         }
+        .selected {
+          background-color: var(--main-font-color);
+          color: white;
+        }
       }
     }
     .age-select {
       display: flex;
       padding: 10px;
-      select {
-        text-align: center;
-        margin-left: 24px;
-        flex-grow: 1;
-        border-radius: 5px;
-        border: 1px solid #b7a69e;
-      }
     }
   }
   .address-container {
@@ -140,7 +116,6 @@ const SInputInfoContainer = styled.div`
       border: 1px solid #b7a69e;
       border-radius: 5px;
       padding: 10px 0 0 10px;
-      outline: none;
       ::placeholder {
         color: var(--sec-color);
         font-weight: 500;
@@ -149,69 +124,57 @@ const SInputInfoContainer = styled.div`
   }
 `;
 
-const EdituserModal = ({ Modal, setModal }) => {
-  const outside = useRef();
-
-  const handleModalClose = (e) => {
-    if (Modal && outside.current === e.target) {
-      setModal(false);
-    }
-  };
+const EditUserInfoCard = () => {
+  const [genderSelect, setGenderSelect] = useState([false, false]);
   return (
-    <SBackground
-      ref={outside}
-      onClick={(e) => {
-        handleModalClose(e);
-      }}
-    >
-      <SInputInfoContainer>
-        <div className="title">집사 정보 입력</div>
-        <div className="input-container">
-          <div className="image-container">
-            <div></div>
-            <button>이미지 업로드</button>
-            <button>이미지 삭제</button>
+    <SInputInfoContainer>
+      <div className="title">집사 정보 입력</div>
+      <div className="input-container">
+        <div className="image-container">
+          <div></div>
+          <button>이미지 업로드</button>
+          <button>이미지 삭제</button>
+        </div>
+        <div>
+          <div className="nickname-input">
+            <div>닉네임</div>
+            <input placeholder="닉네임"></input>
           </div>
-          <div>
-            <div className="nickname-input">
-              <div>닉네임</div>
-              <input placeholder="닉네임"></input>
-            </div>
-            <div className="gender-select">
-              <div>성별</div>
-              <div className="gender-button">
-                <button>남</button>
-                <button>여</button>
-              </div>
-            </div>
-            <div className="age-select">
-              <div>나이</div>
-              <select>
-                <option value="1">10대</option>
-                <option value="2">20대</option>
-                <option value="3">30대</option>
-                <option value="4">40대 이상</option>
-              </select>
+          <div className="gender-select">
+            <div>성별</div>
+            <div className="gender-button">
+              <button
+                className={genderSelect[0] ? 'selected' : ''}
+                onClick={() => {
+                  setGenderSelect([true, false]);
+                }}
+              >
+                남
+              </button>
+              <button
+                className={genderSelect[1] ? 'selected' : ''}
+                onClick={() => {
+                  setGenderSelect([false, true]);
+                }}
+              >
+                여
+              </button>
             </div>
           </div>
+          <div className="age-select">
+            <div>나이</div>
+            <SelectAge />
+          </div>
         </div>
-        <div className="address-container">
-          <div>주소</div>
-          <input placeholder="주소를 검색하세요"></input>
-          <div>인사말</div>
-          <textarea placeholder="인사말을 입력하세요"></textarea>
-        </div>
-        <button
-          className="next-button"
-          onClick={() => {
-            setModal(!Modal);
-          }}
-        >
-          수정 완료
-        </button>
-      </SInputInfoContainer>
-    </SBackground>
+      </div>
+      <div className="address-container">
+        <div>주소</div>
+        <input placeholder="주소를 검색하세요"></input>
+        <div>인사말</div>
+        <textarea placeholder="인사말을 입력하세요"></textarea>
+      </div>
+    </SInputInfoContainer>
   );
 };
 
-export default EdituserModal;
+export default EditUserInfoCard;
