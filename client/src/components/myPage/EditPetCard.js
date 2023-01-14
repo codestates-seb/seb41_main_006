@@ -112,7 +112,7 @@ const Scheckbox = styled.input`
 `;
 
 const EditPetCard = () => {
-  const [isMale, setIsMale] = useState(true);
+  const [genderSelect, setGenderSelect] = useState([false, false]);
   return (
     <>
       <h2>강아지 정보 수정</h2>
@@ -137,17 +137,17 @@ const EditPetCard = () => {
           <div className="gender-button">
             <div>성별</div>
             <button
-              className={isMale ? 'selected' : ''}
+              className={genderSelect[0] ? 'selected' : ''}
               onClick={() => {
-                setIsMale(true);
+                setGenderSelect([true, false]);
               }}
             >
               수컷
             </button>
             <button
-              className={isMale ? '' : 'selected'}
+              className={genderSelect[1] ? 'selected' : ''}
               onClick={() => {
-                setIsMale(false);
+                setGenderSelect([false, true]);
               }}
             >
               암컷

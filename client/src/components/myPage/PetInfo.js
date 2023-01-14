@@ -3,8 +3,8 @@ import EditPetInfoCard from './EditPetInfoCard';
 import { petInfo } from '../../static/dummyMyPetinfo';
 import { FaDog } from 'react-icons/fa';
 import { useState } from 'react';
-import EditPetModal from './EditPetModal';
-import AddPetInfoModal from './AddPetInfoModal';
+import EditPetModal from './Modal/EditPetModal';
+import AddPetInfoModal from './Modal/AddPetInfoModal';
 
 const PetContainer = styled.ul`
   display: flex;
