@@ -74,6 +74,7 @@ const GlobalStyle = createGlobalStyle`
     --main-color: #CA7C62;
     --sec-color: #A79689;
     --main-font-color: #401809;
+    --error-color: #D64751;
   }         
 `;
 

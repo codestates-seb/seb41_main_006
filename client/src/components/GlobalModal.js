@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
+import LoginModal from './login/LoginModal';
 import styled from 'styled-components';
 
 const ModalBackDrop = styled.div`
@@ -20,7 +21,9 @@ const ModalContainer = styled.div`
   width: max-content;
 `;
 
-const MODAL_COMPONENTS = {};
+const MODAL_COMPONENTS = {
+  login: LoginModal,
+};
 
 const GlobalModal = () => {
   const dispatch = useDispatch();
