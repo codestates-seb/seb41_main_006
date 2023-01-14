@@ -1,8 +1,13 @@
 package com.mainproject.server.domain.board.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
+import com.mainproject.server.domain.board.dto.BoardDto;
 import com.mainproject.server.domain.board.entity.Board;
+import com.mainproject.server.domain.board.mapper.BoardMapper;
 import com.mainproject.server.domain.board.repository.BoardRepository;
+import com.mainproject.server.domain.comments.entity.Comments;
+import com.mainproject.server.domain.comments.repository.CommentsRepository;
+import com.mainproject.server.domain.comments.service.CommentsService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -15,13 +20,21 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final BoardMapper boardMapper;
     private final MemberService memberService;
+    private final CommentsService commentsService;
+    private final CommentsRepository commentsRepository;
+
 
     public Board createBoard(Board board, MemberDetails memberDetails) {
 
@@ -55,9 +68,13 @@ public class BoardService {
        return boardRepository.save(findBoard);
     }
 
+    // ----- 특정 게시글 조회 (댓글, 대댓글 함께)
     @Transactional(readOnly = true)
-    public Board findBoard(Long boardId) {
-        return findVerifiedBoard(boardId);
+    public BoardDto.Response getBoardWithSortedCommentsAndReplies(Long boardId){
+        Board findBoard = findVerifiedBoard(boardId);
+        findBoard.setCommentList(getSortedCommentsByBoard(findBoard));
+
+        return boardMapper.boardToBoardResponseDto(findBoard);
     }
 
     @Transactional(readOnly = true)
@@ -96,5 +113,29 @@ public class BoardService {
         if(board.getMember() != member) {
             throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
         }
+    }
+
+    // 댓글, 대댓글 정렬
+    public List<Comments> getSortedCommentsByBoard(Board board) {
+        List<Comments> comments = commentsRepository.findAllByBoardOrderByCreatedAtAscParentCommentsCommentsId(board);
+
+        Map<Long, Comments> commentsMap = comments.stream().collect(Collectors.toMap(Comments::getCommentsId, c -> c));
+        List<Comments> rootComments = comments.stream().filter(c -> c.getParentComments() == null).collect(Collectors.toList());
+        List<Comments> result = new ArrayList<>();
+
+        for (Comments rootComment : rootComments) {
+            result.addAll(getCommentsInOrder(rootComment));
+        }
+        return result;
+    }
+
+    private List<Comments> getCommentsInOrder(Comments comment) {
+        List<Comments> result = new ArrayList<>();
+        result.add(comment);
+
+        for (Comments reply : comment.getReplyComments()) {
+            result.addAll(getCommentsInOrder(reply));
+        }
+        return result;
     }
 }

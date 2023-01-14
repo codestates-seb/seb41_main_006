@@ -27,7 +27,10 @@ import com.mainproject.server.domain.comments.service.CommentsLikeService;
 import com.mainproject.server.domain.comments.service.CommentsService;
 import com.mainproject.server.domain.member.entity.Member;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("/comments")
 public class CommentsController {
@@ -35,13 +38,6 @@ public class CommentsController {
 	private final CommentsService commentsService;
 	private final CommentsLikeService commentsLikeService;
 	private final CommentsMapper mapper;
-
-	public CommentsController(CommentsService commentsService, CommentsLikeService commentsLikeService,
-		CommentsMapper mapper) {
-		this.commentsService = commentsService;
-		this.commentsLikeService = commentsLikeService;
-		this.mapper = mapper;
-	}
 
 
 	// ----- 댓글 등록

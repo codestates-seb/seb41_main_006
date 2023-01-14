@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Formula;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.member.entity.Member;
@@ -60,11 +61,12 @@ public class Comments extends Auditable {
 	private List<CommentsLike> commentsLikes = new ArrayList<>();
 
 	// 자기 참조 관계 : 댓글 ~ 대댓글 (1 : N)
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "parent_id")
 	private Comments parentComments;
 
 	// 자기 참조 관계 : 대댓글 ~ 댓글 (N : 1)
 	@OneToMany(mappedBy = "parentComments", cascade = CascadeType.REMOVE)
+	@JsonBackReference
 	private List<Comments> replyComments = new ArrayList<>();
 }

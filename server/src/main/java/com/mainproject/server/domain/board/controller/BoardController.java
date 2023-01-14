@@ -70,8 +70,8 @@ public class BoardController {
 
     @GetMapping("/{board-id}")
     public ResponseEntity getBoard(@Positive @PathVariable("board-id") long boardId) {
-        Board findBoard = boardService.findBoard(boardId);
-        BoardDto.Response response = mapper.boardToBoardResponseDto(findBoard);
+
+        BoardDto.Response response = boardService.getBoardWithSortedCommentsAndReplies(boardId);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
