@@ -33,7 +33,6 @@ public class BoardService {
     private final BoardMapper boardMapper;
     private final MemberService memberService;
     private final CommentsService commentsService;
-    private final CommentsRepository commentsRepository;
 
 
     public Board createBoard(Board board, MemberDetails memberDetails) {
@@ -72,7 +71,7 @@ public class BoardService {
     @Transactional(readOnly = true)
     public BoardDto.Response getBoardWithSortedCommentsAndReplies(Long boardId){
         Board findBoard = findVerifiedBoard(boardId);
-        findBoard.setCommentList(getSortedCommentsByBoard(findBoard));
+        findBoard.setCommentList(commentsService.getSortedCommentsByBoard(findBoard));
 
         return boardMapper.boardToBoardResponseDto(findBoard);
     }
@@ -113,29 +112,5 @@ public class BoardService {
         if(board.getMember() != member) {
             throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
         }
-    }
-
-    // 댓글, 대댓글 정렬
-    public List<Comments> getSortedCommentsByBoard(Board board) {
-        List<Comments> comments = commentsRepository.findAllByBoardOrderByCreatedAtAscParentCommentsCommentsId(board);
-
-        Map<Long, Comments> commentsMap = comments.stream().collect(Collectors.toMap(Comments::getCommentsId, c -> c));
-        List<Comments> rootComments = comments.stream().filter(c -> c.getParentComments() == null).collect(Collectors.toList());
-        List<Comments> result = new ArrayList<>();
-
-        for (Comments rootComment : rootComments) {
-            result.addAll(getCommentsInOrder(rootComment));
-        }
-        return result;
-    }
-
-    private List<Comments> getCommentsInOrder(Comments comment) {
-        List<Comments> result = new ArrayList<>();
-        result.add(comment);
-
-        for (Comments reply : comment.getReplyComments()) {
-            result.addAll(getCommentsInOrder(reply));
-        }
-        return result;
     }
 }

@@ -1,9 +1,14 @@
 package com.mainproject.server.domain.comments.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.comments.repository.CommentsRepository;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -79,5 +84,29 @@ public class CommentsService {
 			optionalComments.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENTS_NOT_FOUND));
 
 		return findComments;
+	}
+
+	// 댓글, 대댓글 정렬
+	public List<Comments> getSortedCommentsByBoard(Board board) {
+		List<Comments> comments = commentsRepository.findAllByBoardOrderByCreatedAtAscParentCommentsCommentsId(board);
+
+		Map<Long, Comments> commentsMap = comments.stream().collect(Collectors.toMap(Comments::getCommentsId, c -> c));
+		List<Comments> rootComments = comments.stream().filter(c -> c.getParentComments() == null).collect(Collectors.toList());
+		List<Comments> result = new ArrayList<>();
+
+		for (Comments rootComment : rootComments) {
+			result.addAll(getCommentsInOrder(rootComment));
+		}
+		return result;
+	}
+
+	private List<Comments> getCommentsInOrder(Comments comment) {
+		List<Comments> result = new ArrayList<>();
+		result.add(comment);
+
+		for (Comments reply : comment.getReplyComments()) {
+			result.addAll(getCommentsInOrder(reply));
+		}
+		return result;
 	}
 }
