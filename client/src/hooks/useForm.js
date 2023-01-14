@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
  * @param {Object} form
  * @param {Object} form.initialValues 초기 상태값
  * @param {Function} form.onSubmit 제출 시 작동하는 함수
- * @param {Function} form.validate value 검증하는 함수
+ * @param {Array} form.validateList 유효성 검사가 필요한 input list
+ * @param {Object} form.validateFunctions value 검증하는 함수들
  * @returns
  */
 function useForm({ initialValues, onSubmit, validateList, validateFunctions }) {
