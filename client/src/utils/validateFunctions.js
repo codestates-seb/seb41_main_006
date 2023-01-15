@@ -10,5 +10,5 @@ export function isEmailValid(email) {
 }
 
 export function isPasswordValid(password) {
-  return PASSWORD_RULE.text(password);
+  return PASSWORD_RULE.test(password);
 }

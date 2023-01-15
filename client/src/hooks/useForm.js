@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 
+// 이후 유저 가입 폼으로 사용하면 좋을듯
 /**
  * @param {Object} form
  * @param {Object} form.initialValues 초기 상태값
  * @param {Function} form.onSubmit 제출 시 작동하는 함수
- * @param {Array} form.validateList 유효성 검사가 필요한 input list
- * @param {Object} form.validateFunctions value 검증하는 함수들
+ * @param {Function} form.validate  제출 시 value 검증하는 함수
  * @returns
  */
-function useForm({ initialValues, onSubmit, validateList, validateFunctions }) {
+function useForm({ initialValues, onSubmit, validate }) {
   // 각 input의 value
   const [values, setValues] = useState(initialValues);
   // 각 input의 에러
@@ -21,28 +21,12 @@ function useForm({ initialValues, onSubmit, validateList, validateFunctions }) {
     setValues({ ...values, [name]: value });
   };
 
-  /** 입력 란 focus 해제 이벤트를 다루는 함수 실행 */
-  // 이메일, 비밀번호, 비밀번호 유효성 검사
-  const validateValue = (event) => {
-    const { name, value } = event.target;
-    setErrors({ ...errors, [name]: validateFunctions[name](value) });
-  };
-
   /** 제출 이벤트를 다루는 함수 */
   const handleSubmit = async (event) => {
     setIsLoading(true);
     event.preventDefault();
-
-    // 유효성 검사가 필요한 input에 대하여 검사 실시
-    const newErrors = {};
-    for (let val of validateList) {
-      let errMsg = validateFunctions[val](values[val]);
-      // 유효하지 않은 값이 존재함
-      if (errMsg) {
-        newErrors[val] = errMsg;
-      }
-    }
-    setErrors(newErrors);
+    await new Promise((r) => setTimeout(r, 1000));
+    setErrors(validate(values));
   };
 
   useEffect(() => {
@@ -63,7 +47,6 @@ function useForm({ initialValues, onSubmit, validateList, validateFunctions }) {
     errors,
     isLoading,
     handleChange,
-    validateValue,
     handleSubmit,
   };
 }
