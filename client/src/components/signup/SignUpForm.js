@@ -74,6 +74,7 @@ const SignUpForm = () => {
     if (emailError) {
       email.setError(emailError);
     } else {
+      email.setError('');
       alert('해당 메일로 인증 메일을 전송했습니다.');
       setIsEmailAuthModalOpen(true);
     }
@@ -92,7 +93,12 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (isLoading) {
-      if (!email.error && !password.error && !confirmPassword.error) {
+      if (
+        !email.error &&
+        !password.error &&
+        !confirmPassword.error &&
+        isEmailVerified
+      ) {
         alert('회원가입 완료');
       } else {
         setIsLoading(false);
@@ -117,6 +123,7 @@ const SignUpForm = () => {
           auth={true}
           onClick={handleEmailAuthOpenClick}
         ></AuthInput>
+        {isEmailVerified ? <p>인증 완료!</p> : null}
       </div>
       <AuthInput
         label="비밀번호"
