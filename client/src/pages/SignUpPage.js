@@ -3,6 +3,7 @@ import Container from '../components/Container';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../store/modules/modalSlice';
 import SignUpForm from '../components/signup/SignUpForm';
+import Title from '../components/common/Title';
 
 const SignUpContainer = styled(Container)`
   display: flex;
@@ -12,15 +13,11 @@ const SignUpContainer = styled(Container)`
 const SInputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 25%;
   height: 50%;
   margin-top: 100px;
-  .title {
-    text-align: center;
-    color: var(--main-font-color);
-    font-size: 2rem;
-    font-weight: 500;
-  }
   .text-container {
     display: flex;
     align-items: center;
@@ -57,7 +54,9 @@ const SignUpPage = () => {
   return (
     <SignUpContainer>
       <SInputContainer>
-        <div className="title">회원가입</div>
+        <Title as="h1" size="large" className="title">
+          회원가입
+        </Title>
         <SignUpForm />
         <div className="text-container">
           <div>회원이신가요?</div>

@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
-import Button from '../common/Button';
 import AuthInput from '../common/AuthInput';
 import useInput from '../../hooks/useInput';
 import loginValidate from '../../utils/loginValidate';
+import styled from 'styled-components';
+import Button from '../common/Button';
+
+const SLoginForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
 
 const LoginForm = () => {
   const email = useInput('');
@@ -41,7 +49,7 @@ const LoginForm = () => {
   }, [isLoading]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <SLoginForm onSubmit={handleSubmit}>
       <AuthInput
         label="이메일"
         type="text"
@@ -64,8 +72,10 @@ const LoginForm = () => {
         onBlur={handleCheckPassword}
         placeholder="비밀번호를 입력하세요"
       ></AuthInput>
-      <Button fullWidth>로그인</Button>
-    </form>
+      <Button size="large" fullWidth>
+        로그인
+      </Button>
+    </SLoginForm>
   );
 };
 
