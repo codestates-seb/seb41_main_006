@@ -1,12 +1,22 @@
 import { useEffect, useState } from 'react';
 import useInput from '../../hooks/useInput';
 import AuthInput from '../common/AuthInput';
-import Button from '../common/Button';
 import {
   emailValidate,
   passwordValidate,
   confirmPasswordValidate,
 } from '../../utils/signUpValidate';
+import styled from 'styled-components';
+import Button from '../common/Button';
+
+const SSignUpForm = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+`;
 
 const SignUpForm = () => {
   // value 지정
@@ -67,7 +77,7 @@ const SignUpForm = () => {
   }, [isLoading]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <SSignUpForm onSubmit={handleSubmit}>
       <AuthInput
         label="이메일"
         type="text"
@@ -101,10 +111,10 @@ const SignUpForm = () => {
         onBlur={handleCheckConfirmPassword}
         placeholder="비밀번호 확인"
       ></AuthInput>
-      <Button type="submit" fullWidth>
+      <Button size="large" type="submit" fullWidth>
         시작
       </Button>
-    </form>
+    </SSignUpForm>
   );
 };
 

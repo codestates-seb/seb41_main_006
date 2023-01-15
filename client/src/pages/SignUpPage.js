@@ -23,20 +23,21 @@ const SInputContainer = styled.div`
   }
   .text-container {
     display: flex;
+    align-items: center;
     justify-content: center;
-    div {
-      margin-right: 30px;
+    gap: 1rem;
+
+    > div {
       color: #a5a5a5;
+      font-size: 1rem;
+    }
+
+    > button {
+      color: var(--sec-color);
+      font-weight: 500;
+      font-size: 1rem;
     }
   }
-  /* input {
-    line-height: 40px;
-    margin: 15px 0;
-    border: 1px solid #b7a69e;
-    border-radius: 10px;
-    padding-left: 5px;
-    outline: none;
-  } */
   > button {
     line-height: 40px;
     border: 0;
@@ -46,14 +47,6 @@ const SInputContainer = styled.div`
     margin: 15px 0;
     font-size: 1.5rem;
     font-weight: 500;
-  }
-`;
-
-const SButton = styled.button`
-  text-decoration: none;
-  :visited,
-  :link {
-    color: #ad8b73;
   }
 `;
 
@@ -68,7 +61,7 @@ const SignUpPage = () => {
         <SignUpForm />
         <div className="text-container">
           <div>회원이신가요?</div>
-          <SButton onClick={handleLoginClick}>로그인</SButton>
+          <button onClick={handleLoginClick}>로그인</button>
         </div>
       </SInputContainer>
     </SignUpContainer>

@@ -5,10 +5,6 @@ const AuthInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
 
-  & + & {
-    margin-top: 0.5rem;
-  }
-
   > .error-msg {
     font-size: 0.75rem;
     color: var(--error-color);
