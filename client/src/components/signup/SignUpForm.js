@@ -8,7 +8,7 @@ import {
 } from '../../utils/signUpValidate';
 import styled from 'styled-components';
 import Button from '../common/Button';
-import EmailAuth from './EmailAuth';
+import EmailAuthModal from './EmailAuthModal';
 
 const SSignUpForm = styled.form`
   width: 100%;
@@ -17,6 +17,12 @@ const SSignUpForm = styled.form`
   gap: 0.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
+
+  > .email-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
 `;
 
 const SignUpForm = () => {
@@ -27,12 +33,12 @@ const SignUpForm = () => {
   // 제출 시 loading 상태
   const [isLoading, setIsLoading] = useState(false);
   // 이메일 인증 부분 open
-  const [isEmailAuthOpen, setIsEmailAuthOpen] = useState(false);
+  const [isEmailAuthModlOpen, setIsEmailAuthModalOpen] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const handleCheckEmail = (event) => {
     const { value } = event.target;
     email.setError(emailValidate(value));
-    setIsEmailAuthOpen(true);
   };
 
   const handleCheckPassword = (event) => {
@@ -57,6 +63,20 @@ const SignUpForm = () => {
     confirmPassword.setError(
       confirmPasswordValidate(confirmPassword.value, password.value)
     );
+
+    if (email.value && !isEmailVerified) {
+      email.setError('이메일 인증이 완료되지 않았습니다');
+    }
+  };
+
+  const handleEmailAuthOpenClick = () => {
+    const emailError = emailValidate(email.value);
+    if (emailError) {
+      email.setError(emailError);
+    } else {
+      alert('해당 메일로 인증 메일을 전송했습니다.');
+      setIsEmailAuthModalOpen(true);
+    }
   };
 
   // 비밀번호, 비밀번호 확인 일치하는지 확인
@@ -80,30 +100,24 @@ const SignUpForm = () => {
     }
   }, [isLoading]);
 
-  useEffect(() => {
-    // 이메일을 작성했고 이메일에 대한 에러가 없다면
-    if (email.value && !email.error) {
-      // 이메일 인증 화면이 열린다.
-      setIsEmailAuthOpen(true);
-    } else {
-      setIsEmailAuthOpen(false);
-    }
-  }, [email.error]);
-
   return (
     <SSignUpForm onSubmit={handleSubmit}>
-      <AuthInput
-        label="이메일"
-        type="text"
-        id="loginEmail"
-        name="email"
-        value={email.value}
-        error={email.error}
-        onChange={email.handleChange}
-        onBlur={handleCheckEmail}
-        placeholder="이메일을 입력하세요"
-      ></AuthInput>
-      {isEmailAuthOpen ? <EmailAuth /> : null}
+      <div className="email-container">
+        <AuthInput
+          className="email-input"
+          label="이메일"
+          type="text"
+          id="loginEmail"
+          name="email"
+          value={email.value}
+          error={email.error}
+          onChange={email.handleChange}
+          onBlur={handleCheckEmail}
+          placeholder="이메일을 입력하세요"
+          auth={true}
+          onClick={handleEmailAuthOpenClick}
+        ></AuthInput>
+      </div>
       <AuthInput
         label="비밀번호"
         type="password"
@@ -129,6 +143,13 @@ const SignUpForm = () => {
       <Button size="large" type="submit" fullWidth>
         시작
       </Button>
+      {isEmailAuthModlOpen ? (
+        <EmailAuthModal
+          email={email.value}
+          setIsEmailAuthModalOpen={setIsEmailAuthModalOpen}
+          setIsEmailVerified={setIsEmailVerified}
+        />
+      ) : null}
     </SSignUpForm>
   );
 };

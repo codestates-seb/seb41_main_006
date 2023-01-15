@@ -8,6 +8,8 @@ import Title from '../components/common/Title';
 const SignUpContainer = styled(Container)`
   display: flex;
   justify-content: center;
+  width: 30rem;
+  height: 35rem;
 `;
 
 const SInputContainer = styled.div`
@@ -15,8 +17,8 @@ const SInputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 2rem;
-  width: 25%;
-  height: 50%;
+  width: 60%;
+  height: 70%;
   margin-top: 100px;
   .text-container {
     display: flex;

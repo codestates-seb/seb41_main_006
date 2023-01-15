@@ -2,13 +2,32 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const AuthInputWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-
+  position: relative;
   > .error-msg {
     font-size: 0.75rem;
     color: var(--error-color);
     padding-left: 0.675rem;
+  }
+
+  > .email-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    > div {
+      flex: 1;
+    }
+
+    > button {
+      background-color: var(--sec-color);
+      height: 100%;
+      width: 3rem;
+      border-radius: 0.5rem;
+      color: white;
+    }
   }
 `;
 
@@ -20,9 +39,14 @@ const InputBox = styled.div`
   gap: 0.375rem;
   padding: 0.625rem 0.875rem;
   border-radius: 0.5rem;
+  position: relative;
 
   &.error {
     border: 2px solid var(--error-color);
+  }
+
+  &.email {
+    /* border-radius: 0.5rem 0 0 0.5rem; */
   }
 
   > label {
@@ -44,11 +68,37 @@ const AuthInput = ({
   value,
   placeholder,
   error,
+  auth,
+  onClick,
   ...rest
 }) => {
+  if (auth) {
+    return (
+      <AuthInputWrapper>
+        <div className="email-wrapper">
+          <InputBox type="text" className={`email ${error ? 'error' : ''}`}>
+            <label htmlFor={id}>{label}</label>
+            <input
+              type={type}
+              id={id}
+              name={name}
+              value={value}
+              placeholder={placeholder}
+              {...rest}
+            ></input>
+          </InputBox>
+          <button type="button" onClick={onClick}>
+            인증
+          </button>
+        </div>
+        <p className="error-msg">{error}</p>
+      </AuthInputWrapper>
+    );
+  }
+
   return (
     <AuthInputWrapper>
-      <InputBox type="text" className={error ? 'error' : null}>
+      <InputBox type="text" className={error ? 'error' : ''}>
         <label htmlFor={id}>{label}</label>
         <input
           type={type}
@@ -77,6 +127,8 @@ AuthInput.propTypes = {
   value: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   error: PropTypes.string,
+  auth: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 export default AuthInput;
