@@ -8,6 +8,7 @@ import {
 } from '../../utils/signUpValidate';
 import styled from 'styled-components';
 import Button from '../common/Button';
+import EmailAuth from './EmailAuth';
 
 const SSignUpForm = styled.form`
   width: 100%;
@@ -25,10 +26,13 @@ const SignUpForm = () => {
   const confirmPassword = useInput('');
   // 제출 시 loading 상태
   const [isLoading, setIsLoading] = useState(false);
+  // 이메일 인증 부분 open
+  const [isEmailAuthOpen, setIsEmailAuthOpen] = useState(false);
 
   const handleCheckEmail = (event) => {
     const { value } = event.target;
     email.setError(emailValidate(value));
+    setIsEmailAuthOpen(true);
   };
 
   const handleCheckPassword = (event) => {
@@ -76,6 +80,16 @@ const SignUpForm = () => {
     }
   }, [isLoading]);
 
+  useEffect(() => {
+    // 이메일을 작성했고 이메일에 대한 에러가 없다면
+    if (email.value && !email.error) {
+      // 이메일 인증 화면이 열린다.
+      setIsEmailAuthOpen(true);
+    } else {
+      setIsEmailAuthOpen(false);
+    }
+  }, [email.error]);
+
   return (
     <SSignUpForm onSubmit={handleSubmit}>
       <AuthInput
@@ -89,6 +103,7 @@ const SignUpForm = () => {
         onBlur={handleCheckEmail}
         placeholder="이메일을 입력하세요"
       ></AuthInput>
+      {isEmailAuthOpen ? <EmailAuth /> : null}
       <AuthInput
         label="비밀번호"
         type="password"

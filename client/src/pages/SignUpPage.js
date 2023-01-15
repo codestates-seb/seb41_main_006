@@ -14,7 +14,7 @@ const SInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding-top: 2rem;
   width: 25%;
   height: 50%;
   margin-top: 100px;

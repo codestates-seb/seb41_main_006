@@ -17,20 +17,20 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding-top: 2rem;
   width: 60%;
   height: 70%;
-  gap: 1rem;
+  gap: 0.5rem;
 
   > .text-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
 
     > span {
       color: #a5a5a5;
       font-size: 1rem;
+      margin-right: 1rem;
     }
 
     > a {
