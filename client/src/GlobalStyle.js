@@ -2,13 +2,13 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
+    font-family: 'Spoqa Han Sans Neo', 'IBM Plex Sans KR',"Helvetica", "Arial", sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
   body {
-    font-family: 'Spoqa Han Sans Neo','IBM Plex Sans KR', "Helvetica", "Arial", sans-serif;
     line-height: 1.5;
   }
 
