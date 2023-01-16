@@ -1,4 +1,8 @@
 spring:
+  redis:
+    port: 6379
+    host: localhost
+#    password: ${redis-password}
   h2:
     console:
       path: /h2

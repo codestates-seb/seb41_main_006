@@ -14,7 +14,7 @@ public class MemberAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        log.info("Login Success, user={}", authentication.getPrincipal());
+        log.info("Login Success, username={}", authentication.getPrincipal());
     }
 }
 

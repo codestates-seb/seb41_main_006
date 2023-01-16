@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Component
+/*@Component
 @Slf4j
 @RequiredArgsConstructor
 public class BoardScheduler {
@@ -32,4 +32,4 @@ public class BoardScheduler {
             log.error(e.getMessage());
         }
     }
-}
+}*/
