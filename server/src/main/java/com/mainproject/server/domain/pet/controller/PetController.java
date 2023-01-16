@@ -61,9 +61,8 @@ public class PetController {
         Pet pet = mapper.petPatchDtoToPet(petPatchDto);
         pet.setPetId(petId);
 
-        petService.updatePet(pet, memberDetails);
-
-        PetDto.Response response = mapper.petToPetResponseDto(pet);
+        Pet updatePet = petService.updatePet(pet, memberDetails);
+        PetDto.Response response = mapper.petToPetResponseDto(updatePet);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
