@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import MatePostCard from './MatePostCard';
+import { Link } from 'react-router-dom';
 
 const PostList = styled.ul`
   width: 100%;
@@ -20,7 +21,9 @@ const MatePostList = ({ postList }) => {
     <PostList>
       {postList.map((el) => (
         <PostItem key={el.id}>
-          <MatePostCard post={el} />
+          <Link to={`/mate/posts/${el.id}`}>
+            <MatePostCard post={el} />
+          </Link>
         </PostItem>
       ))}
     </PostList>

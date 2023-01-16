@@ -27,6 +27,10 @@ const FilterList = styled.ul`
 const FilterLabel = styled.label`
   display: flex;
   justify-content: center;
+
+  > input {
+    appearance: none;
+  }
   > span {
     margin-right: 0.5rem;
     border: none;

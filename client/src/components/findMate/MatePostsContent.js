@@ -15,6 +15,7 @@ const PostsContentRow = styled.div`
   ${flexRowCenter}
   width: 100%;
   justify-content: space-between;
+  margin-bottom: 1rem;
   > div {
     ${flexRowCenter}
   }
@@ -32,7 +33,7 @@ const MatePostsContent = () => {
           <input type="date"></input>
           <input type="time"></input>
         </div>
-        <Button color="main" onClick={() => navigate('/')}>
+        <Button color="main" onClick={() => navigate('/newmate')}>
           글 작성
         </Button>
       </PostsContentRow>
