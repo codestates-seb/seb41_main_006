@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     line-height: 1.5;
+    background-color: var(--bg-color);
   }
 
   h2, p {
@@ -28,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
     background: none;
     border: none;
+    text-decoration: none;
   }
 
   a{

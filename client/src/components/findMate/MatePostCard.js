@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { flexRowCenter } from '../../style/styleVariable';
 import ProfileImage from '../common/ProfileImage';
 import Title from '../common/Title';
+import useOpenUserInfoModal from '../../hooks/useOpenUserInfoModal';
 import { IoLocationSharp } from 'react-icons/io5';
 import { AiTwotoneCalendar } from 'react-icons/ai';
 import { FiClock } from 'react-icons/fi';
@@ -47,7 +49,8 @@ const PostCard = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    div {
+    div,
+    button {
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -62,30 +65,34 @@ const PostCard = styled.div`
 `;
 
 const MatePostCard = ({ post }) => {
+  const handleClickUser = useOpenUserInfoModal(post.authorId);
+
   return (
     <PostCard>
-      <div className="post-card--top">
-        <Title as="h4" size="small">
-          {post.title}
-        </Title>
-        <div>
-          <IoLocationSharp />
-          <span>{post.address}</span>
+      <Link to={`/mate/posts/${post.id}`}>
+        <div className="post-card--top">
+          <Title as="h4" size="small">
+            {post.title}
+          </Title>
+          <div>
+            <IoLocationSharp />
+            <span>{post.address}</span>
+          </div>
+          <div>
+            <AiTwotoneCalendar />
+            <span>{post.date}</span>
+          </div>
+          <div>
+            <FiClock />
+            <span>{post.time}</span>
+          </div>
         </div>
-        <div>
-          <AiTwotoneCalendar />
-          <span>{post.date}</span>
-        </div>
-        <div>
-          <FiClock />
-          <span>{post.time}</span>
-        </div>
-      </div>
+      </Link>
       <div className="post-card--bottom">
-        <div>
+        <button onClick={handleClickUser}>
           <ProfileImage src={post.profile_img} name={post.author} size="2rem" />
           <span>{post.author}</span>
-        </div>
+        </button>
         <div>
           <FaHeart />
           {post.likes}

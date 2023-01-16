@@ -1,15 +1,17 @@
-import styled from 'styled-components';
 import { useState } from 'react';
+import styled from 'styled-components';
+import Title from '../common/Title';
 import EdituserModal from './Modal/EdituserModal';
 import UserInfoCard from './UsetInfoCard';
-import { dummyUserInfo } from '../../static/dummyUserInfo';
 import WithdrawalModal from '../WithdrawalModal';
+import { dummyUserInfo } from '../../static/dummyUserInfo';
 
 const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 70%;
+  gap: 1.5rem;
   .edit-account {
     width: 15%;
     height: 40px;
@@ -25,7 +27,6 @@ const UserInfoContainer = styled.div`
     }
   }
   .delete-account {
-    margin: 2% 0 5% 0;
     cursor: pointer;
     background-color: var(--bg-color);
     border: none;
@@ -41,7 +42,8 @@ const UserInfo = () => {
   return (
     <>
       <UserInfoContainer>
-        <UserInfoCard dummyUserInfo={dummyUserInfo[0]} />
+        <Title as="h2">나의 정보</Title>
+        <UserInfoCard userInfo={dummyUserInfo[0]} />
         <button
           className="edit-account"
           onClick={() => {
