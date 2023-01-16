@@ -69,9 +69,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(JwtTokenizer.ACCESS_TOKEN_HEADER, JwtTokenizer.TOKEN_PREFIX + accessToken);
         response.addHeader(JwtTokenizer.REFRESH_TOKEN_HEADER, refreshToken);
 
-        /*refresh token 레디스에 저장*/
+        /*현재 refresh token을 키로 하는 데이터가 없으면 refresh token 레디스에 저장*/
         log.info("set refresh token in Redis: {}", refreshToken);
-        redisService.setRefreshToken(refreshToken, member.getEmail(), jwtTokenizer.getRefreshTokenExpirationMinutes());
+        if (redisService.getRefreshToken(refreshToken) == null) {
+            redisService.setRefreshToken(refreshToken, member.getEmail(), jwtTokenizer.getRefreshTokenExpirationMinutes());
+        }
 
         this.getSuccessHandler().onAuthenticationSuccess(request,response,authResult);
 

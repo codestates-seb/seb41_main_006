@@ -1,17 +1,20 @@
 package com.mainproject.server.auth.filter;
 
 import com.mainproject.server.auth.JwtTokenizer;
+import com.mainproject.server.auth.service.RedisService;
 import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.auth.utils.CustomAuthorityUtils;
 import com.mainproject.server.domain.member.entity.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -28,6 +31,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
+
+    private final RedisService redisService;
 
     /*access 토큰 검증 성공 시 다음 필터 진행*/
     @Override
@@ -58,6 +63,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private Map<String, Object> verifyJws(HttpServletRequest request) {
         String jws = request.getHeader(JwtTokenizer.ACCESS_TOKEN_HEADER).replace(JwtTokenizer.TOKEN_PREFIX, "");
 
+        if (StringUtils.hasText(redisService.getAccessToken(jws))) {
+            throw new UnsupportedJwtException("사용할 수 없는 토큰");
+        }
         // secret key로 지정한 문자열 base64로 인코딩
         String base64EncodedSecretKey = jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey());
 
