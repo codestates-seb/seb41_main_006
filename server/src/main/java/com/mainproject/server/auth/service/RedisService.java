@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -21,7 +22,20 @@ public class RedisService {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         // refresh token 만료시간 이후 삭제
         valueOperations.set(refreshToken, email, Duration.ofMinutes(expirationMinutes));
+        log.info("만료 시간, 분: {}", Duration.ofMinutes(expirationMinutes));
     }
+
+    public void setAccessTokenLogout(String accessToken, long expiration) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+        String expireFormatString = String.format("%d min, %d sec",
+                TimeUnit.MILLISECONDS.toMinutes(expiration),
+                TimeUnit.MILLISECONDS.toSeconds(expiration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(expiration))
+        );
+        log.info("access token 만료 시간, {}", expireFormatString);
+    }
+
 
     /*저장된 refresh token 가져오기*/
     public String getRefreshToken(String refreshToken) {
@@ -30,8 +44,15 @@ public class RedisService {
         return valueOperations.get(refreshToken);
     }
 
+    public String getAccessToken(String accessToken) {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        return valueOperations.get(accessToken);
+    }
+
     /*저장된 refresh token 삭제(로그아웃 구현 시 사용)*/
     public void deleteRefreshToken(String refreshToken) {
+        // delete 메서드는 삭제되면 true를 반환함.
         redisTemplate.delete(refreshToken);
     }
+
 }

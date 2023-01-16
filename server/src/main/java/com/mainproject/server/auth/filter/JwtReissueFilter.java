@@ -10,6 +10,7 @@ import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -39,14 +40,16 @@ public class JwtReissueFilter extends OncePerRequestFilter {
         // reissue 경로가 아닌 경우 혹은 refresh 값이 빈 문자열이거나 null인 경우
         return !request.getMethod().equals("POST")
                 || !path.equals("/reissue")
-                || StringUtil.isNullOrEmpty(refreshToken);
+                || !StringUtils.hasText(refreshToken);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         String refreshToken = request.getHeader(JwtTokenizer.REFRESH_TOKEN_HEADER);
+
         try {
             //refresh token 유효성 검증
             jwtTokenizer.getClaims(refreshToken,
@@ -59,6 +62,7 @@ public class JwtReissueFilter extends OncePerRequestFilter {
             String accessToken = delegateAccessToken(memberDetails, base64EncodedSecretKey);
 
             response.setHeader(JwtTokenizer.ACCESS_TOKEN_HEADER, JwtTokenizer.TOKEN_PREFIX + accessToken);
+            response.setCharacterEncoding("utf-8");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write("재발급 성공");
 
@@ -71,6 +75,7 @@ public class JwtReissueFilter extends OncePerRequestFilter {
 //        filterChain.doFilter(request, response);
     }
 
+    /*access 토큰 생성*/
     private String delegateAccessToken(MemberDetails memberDetails, String base64EncodedSecretKey) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("memberId", memberDetails.getMemberId());

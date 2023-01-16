@@ -1,11 +1,8 @@
 package com.mainproject.server.auth.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mainproject.server.auth.utils.ErrorResponder;
-import com.mainproject.server.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
