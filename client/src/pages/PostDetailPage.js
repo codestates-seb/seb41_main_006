@@ -1,19 +1,20 @@
 import styled from 'styled-components';
-import { StateButton } from '../components/Button';
+import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import Map from '../components/Map';
+import Map from '../components/matePost/Map';
 import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
 import { dummyComments } from '../static/dummyData';
-// import { useParams } from 'react-router-dom';
-import PetInfoCard from '../components/myPage/PetInfoCard';
-import { petInfo } from '../static/dummyMyPetinfo';
 import DeleteModal from '../components/DeleteModal';
-import { FindMateDate } from '../utils/dateConvert';
+import { MatePostDate } from '../utils/dateConvert';
 import { useState } from 'react';
+import UserInfoCard from '../components/myPage/UsetInfoCard';
+import { dummyUserInfo } from '../static/dummyUserInfo';
 
-const Containerr = styled(Container)`
+const ContainerBox = styled(Container)`
+  padding-top: 20px;
+
   .comment {
     background-color: yellow;
     height: 100px;
@@ -105,19 +106,20 @@ const MainContainer = styled.div`
     align-items: center;
   }
 
-  .dog-info {
-    /* width: 720px;
-    height: 130px;
-    margin: 20px 0; */
-    margin-bottom: 34px;
-    width: 80%;
-    text-align: center;
+  .map-info {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .user-info {
+    width: 110%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
   }
 `;
 
 const PostDetailPage = () => {
-  // const { mateId } = useParams();
   const [modal, setModal] = useState(false);
 
   const handelDelClick = () => {
@@ -126,14 +128,15 @@ const PostDetailPage = () => {
   };
 
   return (
-    <Containerr>
+    <ContainerBox>
       <HeaderContainer>
         <div className="post-title">
           <div className="title">같이 산책해요~!!</div>
-          <StateButton>모집중</StateButton>
+          <OpenBtn>모집중</OpenBtn>
+          <CloseBtn>모집마감</CloseBtn>
         </div>
         <div className="post-info">
-          <div className="post-createAt">{FindMateDate(new Date())}</div>
+          <div className="post-createAt">{MatePostDate(new Date())}</div>
           <div className="post-like">
             <FaHeart />
             <span>3</span>
@@ -156,7 +159,6 @@ const PostDetailPage = () => {
             사랑스럽고 예쁜 아이입니다. 같이 산책하면서 재밌는 시간 보내요! 생각
             있으신 분은 댓글 달아주세요~!
           </div>
-          {/* <div className="dog-info">강아지 정보</div> */}
           <div className="comment-cnt">
             <h3>댓글 {dummyComments.length}개</h3>
           </div>
@@ -165,14 +167,15 @@ const PostDetailPage = () => {
           {modal ? <DeleteModal /> : null}
         </div>
         <div className="right-box">
-          {/* <div className="dog-info">강아지정보</div> */}
-          <div className="dog-info">
-            <PetInfoCard pet={petInfo[0]} />
+          <div className="user-info">
+            <UserInfoCard dummyUserInfo={dummyUserInfo[0]} />
           </div>
-          <Map />
+          <div className="map-info">
+            <Map />
+          </div>
         </div>
       </MainContainer>
-    </Containerr>
+    </ContainerBox>
   );
 };
 

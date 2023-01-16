@@ -1,7 +1,6 @@
 // 모임 글 상세 페이지 날짜 형식 (YYYY.MM.DD HH:MM)
 export const MatePostDate = (createAt) => {
   const utcDate = new Date(createAt);
-  console.log(utcDate);
 
   const year = utcDate.getFullYear();
   const month = String(utcDate.getMonth() + 1).padStart(2, '0');

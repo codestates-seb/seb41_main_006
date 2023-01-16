@@ -317,3 +317,18 @@ export const dummyUsers = [
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
   },
 ];
+
+export const dogInfo = [
+  {
+    id: 1,
+    dogList: ['둥일', '둥이', '둥삼'],
+  },
+  {
+    id: 2,
+    dogList: ['둥일', '둥이', '둥삼', '둥사'],
+  },
+  {
+    id: 3,
+    dogList: ['둥일', '둥이'],
+  },
+];

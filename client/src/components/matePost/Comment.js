@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FaUserCircle, FaHeart, FaRegHeart, FaPlus } from 'react-icons/fa';
 import { useState } from 'react';
 import RecommentList from './RecommentList';
+import { MatePostDate } from '../../utils/dateConvert';
 
 const CommentBox = styled.div`
   height: 100%;
@@ -22,27 +23,33 @@ const CommentBox = styled.div`
     }
   }
 
+  .comment-detail-info {
+    padding-top: 5px;
+  }
+
   .comment-username {
     font-size: 14px;
     color: #000000;
     font-weight: bold;
   }
 
-  .comment-createAt,
+  .comment-sub-info,
   .comment-like {
     font-size: 12px;
-    padding-right: 10px;
+    padding-right: 3px;
   }
 
-  .comment-createAt {
+  .comment-sub-info {
     color: #a79689;
   }
 
-  .comment-like {
-    color: #ca7c62;
+  .comment-createAt {
+    padding-right: 6px;
   }
+
+  .comment-like,
   .comment-like-total {
-    padding-left: 3px;
+    color: #ca7c62;
   }
 
   .comment-right {
@@ -50,7 +57,6 @@ const CommentBox = styled.div`
     color: #ca7c62;
 
     button {
-      /* background-color: transparent; */
       font-size: 22px;
       border: none;
     }
@@ -75,6 +81,12 @@ const CommentBox = styled.div`
       padding-left: 4px;
     }
   }
+
+  .comment-detail-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 `;
 
 const Comment = ({ post }) => {
@@ -97,14 +109,16 @@ const Comment = ({ post }) => {
           <div className="user-profile">
             <FaUserCircle />
           </div>
-          <div>
+          <div className="comment-detail-info">
             <span className="comment-username">{post.author}</span>
-            <div>
-              <span className="comment-createAt">2023.01.05 15:30</span>
+            <div className="comment-sub-info">
+              <span className="comment-createAt">
+                {MatePostDate(new Date())}
+              </span>
               <span className="comment-like">
                 <FaHeart />
-                <span className="comment-like-total">{post.likes}</span>
               </span>
+              <span className="comment-like-total">{post.likes}</span>
             </div>
           </div>
         </div>

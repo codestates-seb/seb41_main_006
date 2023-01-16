@@ -40,14 +40,14 @@ const GlobalStyle = createGlobalStyle`
   }
 
   /* input 기본 스타일 초기화 */
-  input { 
+  /* input { 
     -webkit-appearance : none;
     -moz-appearance:none; 
     appearance:none;
     &:focus {
       outline: none;
     }
-  }
+  } */
 
   li{
     list-style: none;
@@ -63,6 +63,7 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100vh;
     display: flex;
     justify-content: center;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
   }
 
   :root {
