@@ -318,17 +318,19 @@ export const dummyUsers = [
   },
 ];
 
-export const dogInfo = [
+export const dummyChatList = [
   {
     id: 1,
-    dogList: ['둥일', '둥이', '둥삼'],
+    body: '안녕하세요! 네 참여가능합니다!',
+    chatRoomName: '둥일',
+    profile_img:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
   },
   {
     id: 2,
-    dogList: ['둥일', '둥이', '둥삼', '둥사'],
-  },
-  {
-    id: 3,
-    dogList: ['둥일', '둥이'],
+    body: '지금은 모집이 마감되었습니다ㅜㅜ',
+    chatRoomName: '둥이',
+    profile_img:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
   },
 ];

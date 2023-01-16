@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import EditPetCard from './EditPetCard';
-import { CancelButton, PostSubmitBtn } from '../Button';
+import EditPetCard from '../EditPetCard';
+import { CancelButton, PostSubmitBtn } from '../../Button';
 import { useRef } from 'react';
 
 const SBackground = styled.div`

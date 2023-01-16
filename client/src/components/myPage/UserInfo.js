@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import EdituserModal from './EdituserModal';
+import EdituserModal from './Modal/EdituserModal';
 import UserInfoCard from './UsetInfoCard';
 import { dummyUserInfo } from '../../static/dummyUserInfo';
-import UsetInfoModal from './UsetInfoModal';
+import WithdrawalModal from '../WithdrawalModal';
 
 const UserInfoContainer = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const UserInfo = () => {
         </button>
       </UserInfoContainer>
       {Modal ? <EdituserModal setModal={setModal} Modal={Modal} /> : ''}
-      {DeleteModal ? <UsetInfoModal /> : ''}
+      {DeleteModal ? <WithdrawalModal /> : ''}
     </>
   );
 };

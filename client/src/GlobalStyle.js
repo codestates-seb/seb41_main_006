@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: "Helvetica", "Arial", sans-serif;
+    font-family: 'Spoqa Han Sans Neo','IBM Plex Sans KR', "Helvetica", "Arial", sans-serif;
     line-height: 1.5;
   }
 
