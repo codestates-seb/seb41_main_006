@@ -2,13 +2,13 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
+    font-family: 'Spoqa Han Sans Neo', 'IBM Plex Sans KR',"Helvetica", "Arial", sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
 
   body {
-    font-family: 'Spoqa Han Sans Neo','IBM Plex Sans KR', "Helvetica", "Arial", sans-serif;
     line-height: 1.5;
   }
 
@@ -75,6 +75,7 @@ const GlobalStyle = createGlobalStyle`
     --main-color: #CA7C62;
     --sec-color: #A79689;
     --main-font-color: #401809;
+    --error-color: #D64751;
   }         
 `;
 

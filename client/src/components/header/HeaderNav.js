@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../store/modules/modalSlice';
 import styled from 'styled-components';
 import HeaderMyPageBox from './HeaderMyPageBox';
 
@@ -31,6 +33,9 @@ const SHeaderNav = styled.nav`
 
 const HeaderNav = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const dispatch = useDispatch();
+  const handleLoginClick = () => dispatch(openModal({ type: 'login' }));
+
   if (isLogin)
     return (
       <SHeaderNav>
@@ -43,7 +48,7 @@ const HeaderNav = () => {
     return (
       <SHeaderNav>
         <Link to={'/mate'}>메이트 찾기</Link>
-        <button className="login-btn" onClick={() => setIsLogin(true)}>
+        <button className="login-btn" onClick={handleLoginClick}>
           로그인
         </button>
       </SHeaderNav>

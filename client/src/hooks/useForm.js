@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 
+// 이후 유저 가입 폼으로 사용하면 좋을듯
 /**
  * @param {Object} form
  * @param {Object} form.initialValues 초기 상태값
  * @param {Function} form.onSubmit 제출 시 작동하는 함수
- * @param {Function} form.validate value 검증하는 함수
+ * @param {Function} form.validate  제출 시 value 검증하는 함수
  * @returns
  */
 function useForm({ initialValues, onSubmit, validate }) {
-  // values 관리
+  // 각 input의 value
   const [values, setValues] = useState(initialValues);
-  // 에러 : 에러가 있는 input이 있다면
+  // 각 input의 에러
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,14 +29,8 @@ function useForm({ initialValues, onSubmit, validate }) {
     setErrors(validate(values));
   };
 
-  const handleReset = () => {
-    setValues(initialValues);
-    setErrors({});
-    setIsLoading(false);
-  };
-
   useEffect(() => {
-    // submit 중...
+    // submit 중임
     if (isLoading) {
       // 만약 에러가 없다면
       if (Object.keys(errors).length === 0) {
@@ -45,7 +40,7 @@ function useForm({ initialValues, onSubmit, validate }) {
       // 에러가 있다면 submit 취소
       setIsLoading(false);
     }
-  }, [errors]);
+  }, [isLoading]);
 
   return {
     values,
@@ -53,7 +48,6 @@ function useForm({ initialValues, onSubmit, validate }) {
     isLoading,
     handleChange,
     handleSubmit,
-    handleReset,
   };
 }
 
