@@ -15,6 +15,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/*
 @Slf4j
 @RequiredArgsConstructor
 public class BoardTasklet implements Tasklet {
@@ -38,3 +39,4 @@ public class BoardTasklet implements Tasklet {
         return RepeatStatus.FINISHED;
     }
 }
+*/

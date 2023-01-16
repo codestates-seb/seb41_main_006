@@ -3,10 +3,11 @@ package com.mainproject.server.auth.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mainproject.server.auth.JwtTokenizer;
 import com.mainproject.server.auth.dto.LoginDto;
+import com.mainproject.server.auth.service.RedisService;
 import com.mainproject.server.auth.userdetails.MemberDetails;
-import com.mainproject.server.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,9 +29,12 @@ import java.util.Map;
 /*loginfrom 인증 방식 비활성화 해서 현재 시큐리티 필터 체인에 UsernamePasswordAuthenticationFilter가 없음
  * UsernamePasswordAuthenticationFilter 상속해서 인증 필터 만듦*/
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationmanager;
     private final JwtTokenizer jwtTokenizer;
+
+    private final RedisService redisService;
 
     @SneakyThrows
     @Override
@@ -45,8 +49,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
-        // authentication 객체가 session영역에 저장됨 -> return 하면 그렇게 됨
-        // return 하는 이유는 권환 관리를 security가 대신 해주기 때문임
+        // authentication 객체가 security context에 저장됨
         return authenticationmanager.authenticate(authenticationToken);
 
     }
@@ -65,6 +68,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.addHeader(JwtTokenizer.ACCESS_TOKEN_HEADER, JwtTokenizer.TOKEN_PREFIX + accessToken);
         response.addHeader(JwtTokenizer.REFRESH_TOKEN_HEADER, refreshToken);
+
+        /*refresh token 레디스에 저장*/
+        log.info("set refresh token in Redis: {}", refreshToken);
+        redisService.setRefreshToken(refreshToken, member.getEmail(), jwtTokenizer.getRefreshTokenExpirationMinutes());
 
         this.getSuccessHandler().onAuthenticationSuccess(request,response,authResult);
 
