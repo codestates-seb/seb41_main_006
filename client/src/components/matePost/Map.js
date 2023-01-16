@@ -24,7 +24,7 @@ const MapContainer = styled.div`
 
     input {
       border-radius: 10px;
-      padding: 2px 6px;
+      padding: 3px 6px;
       border: 1px solid #b7a69e;
       font-size: 16px;
     }
@@ -36,14 +36,10 @@ const MapContainer = styled.div`
     input {
       width: 100%;
       border-radius: 10px;
-      padding: 3px 6px;
+      padding: 4px 6px;
       border: 1px solid #b7a69e;
       font-size: 16px;
     }
-  }
-
-  .mmet-date {
-    width: 20px;
   }
 
   label {

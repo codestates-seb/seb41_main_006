@@ -1,10 +1,12 @@
 import styled from 'styled-components';
-import Map from '../components/Map';
+import Map from '../components/matePost/Map';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
 
-const Containerr = styled(Container)`
+const ContainerBox = styled(Container)`
+  padding-top: 44px;
+
   textarea {
     width: 100%;
     height: 42px;
@@ -84,6 +86,12 @@ const MainContainer = styled.div`
     width: 100%;
     margin-left: 40px;
   }
+
+  /* .selct-dog {
+    background-color: red;
+    height: 20%;
+    margin-bottom: 40px;
+  } */
 `;
 
 const BtnContainer = styled.div`
@@ -107,7 +115,7 @@ const PostPage = () => {
   // const { mateId } = useParams();
 
   return (
-    <Containerr>
+    <ContainerBox>
       <HeaderContainer>
         <div className="post-title">
           <div>
@@ -132,6 +140,8 @@ const PostPage = () => {
           {/* <div className="dog-info">강아지 정보</div> */}
         </div>
         <div className="right-box">
+          {/* <div className="selct-dog">Select Dog</div> */}
+
           <Map />
         </div>
       </MainContainer>
@@ -139,7 +149,7 @@ const PostPage = () => {
         <PostSubmitBtn>등록</PostSubmitBtn>
         <CancelButton>취소</CancelButton>
       </BtnContainer>
-    </Containerr>
+    </ContainerBox>
   );
 };
 
