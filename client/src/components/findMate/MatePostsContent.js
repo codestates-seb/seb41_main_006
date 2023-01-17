@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getBoardList } from '../../api/board/board';
 import styled from 'styled-components';
 import MatePostList from './MatePostList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
-import { dummyPosts } from '../../static/dummyData';
 
 const PostsContentLayOut = styled.div`
   ${flexColCenter}
@@ -23,6 +24,12 @@ const PostsContentRow = styled.div`
 
 const MatePostsContent = () => {
   const navigate = useNavigate();
+  const [postList, setPostList] = useState([]);
+
+  useEffect(() => {
+    getBoardList().then((data) => setPostList(data));
+  }, []);
+
   return (
     <PostsContentLayOut>
       <PostsContentRow>
@@ -37,7 +44,7 @@ const MatePostsContent = () => {
           글 작성
         </Button>
       </PostsContentRow>
-      <MatePostList postList={dummyPosts} />
+      <MatePostList postList={postList} />
     </PostsContentLayOut>
   );
 };

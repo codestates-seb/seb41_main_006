@@ -3,7 +3,7 @@ import Map from '../components/matePost/Map';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
-import { dummyPosts } from '../static/dummyData';
+import dummyBoards from '../api/board/dummyBoards';
 // import SelectDog from '../components/matePost/SelectDog';
 
 const ContainerBox = styled(Container)`
@@ -116,13 +116,13 @@ const PostEditPage = () => {
       <HeaderContainer>
         <div className="post-title">
           <div>
-            <textarea className="title">{dummyPosts[0].title}</textarea>
+            <textarea className="title">{dummyBoards[0].title}</textarea>
           </div>
         </div>
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          <textarea className="post-content">{dummyPosts[0].content}</textarea>
+          <textarea className="post-content">{dummyBoards[0].content}</textarea>
           {/* <div className="dog-info">강아지 정보</div> */}
         </div>
         <div className="right-box">

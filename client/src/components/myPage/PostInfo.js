@@ -1,11 +1,11 @@
 import MatePostList from '../findMate/MatePostList';
-import { dummyPosts } from '../../static/dummyData';
+import dummyBoards from '../../api/board/dummyBoards';
 
 const PostInfo = () => {
   return (
     <>
       <h2>나의 모임</h2>
-      <MatePostList postList={dummyPosts} />
+      <MatePostList postList={dummyBoards} />
     </>
   );
 };

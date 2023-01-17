@@ -4,7 +4,7 @@ import Title from '../common/Title';
 import EdituserModal from './Modal/EdituserModal';
 import UserInfoCard from './UsetInfoCard';
 import WithdrawalModal from '../WithdrawalModal';
-import { dummyUserInfo } from '../../static/dummyUserInfo';
+import { dummyUserInfo } from '../../api/dummyData/dummyUserInfo';
 
 const UserInfoContainer = styled.div`
   display: flex;

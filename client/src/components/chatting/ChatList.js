@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
-import { dummyChatList } from '../../static/dummyData';
+import { dummyChatList } from '../../api/dummyData/dummyData';
 
 const ChatItem = styled.li`
   display: flex;

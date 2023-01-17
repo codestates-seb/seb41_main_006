@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { dummyRecomments } from '../../static/dummyData';
+import { dummyRecomments } from '../../api/dummyData/dummyData';
 import Recomment from './Recomment';
 import AddComment from './AddComment';
 

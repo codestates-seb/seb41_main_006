@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import MateUserCard from './MateUserCard';
-import { dummyUsers } from '../../static/dummyData';
+import dummyMembers from '../../api/dummyData/dummyMembers';
 
 const UserList = styled.ul`
   width: 90%;
@@ -21,7 +21,7 @@ const MateUserList = () => {
   return (
     <UserList>
       <button>이전</button>
-      {dummyUsers.map((el) => (
+      {dummyMembers.map((el) => (
         <UserItem key={el.id}>
           <MateUserCard user={el} />
         </UserItem>

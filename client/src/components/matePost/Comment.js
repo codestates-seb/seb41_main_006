@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FaUserCircle, FaHeart, FaRegHeart, FaPlus } from 'react-icons/fa';
 import { useState } from 'react';
 import RecommentList from './RecommentList';
-import { MatePostDate } from '../../utils/dateConvert';
+import { convertCreatedAt } from '../../utils/dateConvert';
 
 const CommentBox = styled.div`
   height: 100%;
@@ -113,7 +113,7 @@ const Comment = ({ post }) => {
             <span className="comment-username">{post.author}</span>
             <div className="comment-sub-info">
               <span className="comment-createAt">
-                {MatePostDate(new Date())}
+                {convertCreatedAt(new Date())}
               </span>
               <span className="comment-like">
                 <FaHeart />

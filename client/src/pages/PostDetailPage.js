@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useOpenUserInfoModal from '../hooks/useOpenUserInfoModal';
-import styled from 'styled-components';
 
+import styled from 'styled-components';
 import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
@@ -11,9 +11,9 @@ import PostMeetInfo from '../components/matePost/PostMeetInfo';
 import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
-import { MatePostDate } from '../utils/dateConvert';
-import { dummyUserInfo } from '../static/dummyUserInfo';
-import { dummyComments } from '../static/dummyData';
+import { convertCreatedAt } from '../utils/dateConvert';
+import { dummyUserInfo } from '../api/dummyData/dummyUserInfo';
+import { dummyComments } from '../api/dummyData/dummyData';
 
 const ContainerBox = styled(Container)`
   padding-top: 20px;
@@ -150,7 +150,7 @@ const PostDetailPage = () => {
           <CloseBtn>모집마감</CloseBtn>
         </div>
         <div className="post-info">
-          <div className="post-createAt">{MatePostDate(new Date())}</div>
+          <div className="post-createAt">{convertCreatedAt(new Date())}</div>
           <div className="post-like">
             <FaHeart />
             <span>3</span>

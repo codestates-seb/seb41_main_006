@@ -65,7 +65,7 @@ const PostCard = styled.div`
 `;
 
 const MatePostCard = ({ post }) => {
-  const handleClickUser = useOpenUserInfoModal(post.authorId);
+  const handleClickUser = useOpenUserInfoModal(post?.member?.id);
 
   return (
     <PostCard>
@@ -76,26 +76,30 @@ const MatePostCard = ({ post }) => {
           </Title>
           <div>
             <IoLocationSharp />
-            <span>{post.address}</span>
+            <span>{post.meetingPlace}</span>
           </div>
           <div>
             <AiTwotoneCalendar />
-            <span>{post.date}</span>
+            <span>{post.appointDate}</span>
           </div>
           <div>
             <FiClock />
-            <span>{post.time}</span>
+            <span>{post.appointTime}</span>
           </div>
         </div>
       </Link>
       <div className="post-card--bottom">
         <button onClick={handleClickUser}>
-          <ProfileImage src={post.profile_img} name={post.author} size="2rem" />
-          <span>{post.author}</span>
+          <ProfileImage
+            src={post.authorImg}
+            name={post.authorName}
+            size="2rem"
+          />
+          <span>{post.authorName}</span>
         </button>
         <div>
           <FaHeart />
-          {post.likes}
+          {post.countLike}
         </div>
       </div>
     </PostCard>

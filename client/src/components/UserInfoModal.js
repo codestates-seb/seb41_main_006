@@ -1,6 +1,6 @@
 import PetInfoCard from './myPage/PetInfoCard';
-import { dummyUserInfo } from '../static/dummyUserInfo';
-import { petInfo } from '../static/dummyMyPetinfo';
+import { dummyUserInfo } from '../api/dummyData/dummyUserInfo';
+import { petInfo } from '../api/dummyData/dummyMyPetinfo';
 import styled from 'styled-components';
 import UserInfoCard from './myPage/UsetInfoCard';
 import Button from './common/Button';
