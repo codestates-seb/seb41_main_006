@@ -2,11 +2,15 @@ package com.mainproject.server.config;
 
 import com.mainproject.server.auth.JwtTokenizer;
 import com.mainproject.server.auth.filter.JwtAuthenticationFilter;
+import com.mainproject.server.auth.filter.JwtLogoutFilter;
+import com.mainproject.server.auth.filter.JwtReissueFilter;
 import com.mainproject.server.auth.filter.JwtVerificationFilter;
 import com.mainproject.server.auth.handler.MemberAccessDeniedHandler;
 import com.mainproject.server.auth.handler.MemberAuthenticationEntryPoint;
 import com.mainproject.server.auth.handler.MemberAuthenticationFailureHandler;
 import com.mainproject.server.auth.handler.MemberAuthenticationSuccessHandler;
+import com.mainproject.server.auth.service.RedisService;
+import com.mainproject.server.auth.userdetails.MemberDetailsService;
 import com.mainproject.server.auth.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +37,8 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
+    private final RedisService redisService;
+    private final MemberDetailsService memberDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +49,8 @@ public class SecurityConfiguration {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable()
                 .httpBasic().disable() // http basic 인증 방식 사용 x
-                .formLogin().disable(); // form login 인증 방식 사용 x
+                .formLogin().disable() // form login 인증 방식 사용 x
+                .logout().disable();
         // jwt 인증 필터 적용
         http.apply(new CustomFilterConfigurer());
         // jwt 검증 실패 예외처리 및 권한 예외처리
@@ -53,7 +60,7 @@ public class SecurityConfiguration {
         // todo api 권한 이렇게 해도 될까...
         http.authorizeHttpRequests()
                 .antMatchers("/h2/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/members", "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/members", "auth/login", "/reissue").permitAll()
                 .antMatchers(HttpMethod.GET, "/members/{member-id:[\\d]+}",
                         "/members*", "/pets/*", "boards/*", "/comments*").permitAll()
                 .anyRequest().authenticated();
@@ -94,15 +101,22 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, redisService);
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
+            jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils);
+            JwtVerificationFilter jwtVerificationFilter =
+                    new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils,redisService);
+
+            JwtReissueFilter jwtReissueFilter = new JwtReissueFilter(redisService, jwtTokenizer, memberDetailsService);
+
+            JwtLogoutFilter jwtLogoutFilter = new JwtLogoutFilter(jwtTokenizer, redisService);
 
             builder.addFilter(jwtAuthenticationFilter)
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
-
+                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class)
+                    .addFilterAfter(jwtReissueFilter, JwtVerificationFilter.class)
+                    .addFilterAfter(jwtLogoutFilter, JwtVerificationFilter.class);
         }
     }
 }
