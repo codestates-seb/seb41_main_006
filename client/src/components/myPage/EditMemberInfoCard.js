@@ -124,7 +124,7 @@ const SInputInfoContainer = styled.div`
   }
 `;
 
-const EditUserInfoCard = () => {
+const EditMemberInfoCard = () => {
   const [genderSelect, setGenderSelect] = useState([false, false]);
   return (
     <SInputInfoContainer>
@@ -177,4 +177,4 @@ const EditUserInfoCard = () => {
   );
 };
 
-export default EditUserInfoCard;
+export default EditMemberInfoCard;

@@ -2,7 +2,7 @@ import PetInfoCard from './PetInfoCard';
 import { dummyUserInfo } from '../../static/dummyUserInfo';
 import { petInfo } from '../../static/dummyMyPetinfo';
 import styled from 'styled-components';
-import ShowUserCard from './ShowUserCard';
+import ShowMemberCard from './ShowMemberCard';
 
 const SContainer = styled.div`
   display: flex;
@@ -25,15 +25,15 @@ const SBackground = styled.div`
   align-items: center;
 `;
 
-const UsetInfoModal = () => {
+const MemberInfoModal = () => {
   return (
     <SBackground>
       <SContainer>
-        <ShowUserCard dummyUserInfo={dummyUserInfo[0]} />
+        <ShowMemberCard dummyUserInfo={dummyUserInfo[0]} />
         <PetInfoCard pet={petInfo[0]} />
       </SContainer>
     </SBackground>
   );
 };
 
-export default UsetInfoModal;
+export default MemberInfoModal;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Title from '../common/Title';
-import UserFilterForm from './UserFilterForm';
+import MemberFilterForm from './MemberFilterForm';
 
 const ModalBackDrop = styled.div`
   position: fixed; // 보이는 화면에서 위치가 고정
@@ -39,7 +39,7 @@ const UserFilterModalView = styled.div`
   }
 `;
 
-const UserFilterModal = ({ setIsFilterModalOpen }) => {
+const MemberFilterModal = ({ setIsFilterModalOpen }) => {
   const closeModalHandler = () => {
     setIsFilterModalOpen(false);
   };
@@ -50,10 +50,10 @@ const UserFilterModal = ({ setIsFilterModalOpen }) => {
         <Title as="h1" size="small">
           어떤 산책 메이트를 원하시나요?
         </Title>
-        <UserFilterForm />
+        <MemberFilterForm />
       </UserFilterModalView>
     </ModalBackDrop>
   );
 };
 
-export default UserFilterModal;
+export default MemberFilterModal;

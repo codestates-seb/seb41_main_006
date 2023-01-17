@@ -61,7 +61,7 @@ const PostCard = styled.div`
   }
 `;
 
-const MatePostCard = ({ post }) => {
+const MateBoardCard = ({ post }) => {
   return (
     <PostCard>
       <div className="post-card--top">
@@ -95,4 +95,4 @@ const MatePostCard = ({ post }) => {
   );
 };
 
-export default MatePostCard;
+export default MateBoardCard;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import EdituserModal from './Modal/EdituserModal';
-import UserInfoCard from './UsetInfoCard';
+import EditMemberModal from './Modal/EditMemberModal';
+import MemberInfoCard from './MemberInfoCard';
 import { dummyUserInfo } from '../../static/dummyUserInfo';
 import WithdrawalModal from '../WithdrawalModal';
 
@@ -35,13 +35,13 @@ const UserInfoContainer = styled.div`
   }
 `;
 
-const UserInfo = () => {
+const MemberInfo = () => {
   const [Modal, setModal] = useState(false);
   const [DeleteModal, setDeleteModal] = useState(false);
   return (
     <>
       <UserInfoContainer>
-        <UserInfoCard dummyUserInfo={dummyUserInfo[0]} />
+        <MemberInfoCard dummyUserInfo={dummyUserInfo[0]} />
         <button
           className="edit-account"
           onClick={() => {
@@ -59,10 +59,10 @@ const UserInfo = () => {
           회원 탈퇴
         </button>
       </UserInfoContainer>
-      {Modal ? <EdituserModal setModal={setModal} Modal={Modal} /> : ''}
+      {Modal ? <EditMemberModal setModal={setModal} Modal={Modal} /> : ''}
       {DeleteModal ? <WithdrawalModal /> : ''}
     </>
   );
 };
 
-export default UserInfo;
+export default MemberInfo;

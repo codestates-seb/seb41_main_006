@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Container from '../components/Container';
 import SearchAddress from '../components/findMate/SearchAddressBox';
 import FindMateTab from '../components/findMate/FindMateTab';
-import MatePostsContent from '../components/findMate/MatePostsContent';
-import MateUsersContent from '../components/findMate/MateUsersContent';
+import MateBoardConent from '../components/findMate/MateBoardContent';
+import MateMemberContent from '../components/findMate/MateMemberContent';
 
 const FindMateContainer = styled(Container)`
   display: flex;
@@ -52,9 +52,9 @@ const FindMatePage = () => {
       <FindMateBottom>
         <FindMateTab />
         <Routes>
-          <Route path="users" element={<MateUsersContent />}></Route>
-          <Route path="posts" element={<MatePostsContent />}></Route>
-          <Route path="*" element={<MateUsersContent />}></Route>
+          <Route path="members" element={<MateMemberContent />}></Route>
+          <Route path="boards" element={<MateBoardConent />}></Route>
+          <Route path="*" element={<MateMemberContent />}></Route>
         </Routes>
       </FindMateBottom>
     </FindMateContainer>
