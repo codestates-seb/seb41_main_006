@@ -8,7 +8,7 @@ spring:
       path: /h2
       enabled: true
   datasource:
-    url: jdbc:mysql://main-ui-db.cme0fy03xlfx.ap-northeast-2.rds.amazonaws.com:13306/main_ui_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: ${DB.URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
     username : ${DB.USERNAME}
     password : ${DB.PASSWORD}
