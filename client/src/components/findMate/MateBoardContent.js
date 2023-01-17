@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import MatePostList from './MatePostList';
+import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
@@ -20,7 +20,7 @@ const PostsContentRow = styled.div`
   }
 `;
 
-const MatePostsContent = () => {
+const MateBoardConent = () => {
   const navigate = useNavigate();
   return (
     <PostsContentLayOut>
@@ -36,9 +36,9 @@ const MatePostsContent = () => {
           글 작성
         </Button>
       </PostsContentRow>
-      <MatePostList postList={dummyPosts} />
+      <MateBoardList postList={dummyPosts} />
     </PostsContentLayOut>
   );
 };
 
-export default MatePostsContent;
+export default MateBoardConent;

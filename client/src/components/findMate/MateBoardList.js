@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import MatePostCard from './MatePostCard';
+import MateBoardCard from './MateBoardCard';
 
 const PostList = styled.ul`
   width: 100%;
@@ -15,16 +15,16 @@ const PostItem = styled.li`
   padding-top: 60%;
 `;
 
-const MatePostList = ({ postList }) => {
+const MateBoardList = ({ postList }) => {
   return (
     <PostList>
       {postList.map((el) => (
         <PostItem key={el.id}>
-          <MatePostCard post={el} />
+          <MateBoardCard post={el} />
         </PostItem>
       ))}
     </PostList>
   );
 };
 
-export default MatePostList;
+export default MateBoardList;

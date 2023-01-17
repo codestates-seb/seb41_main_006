@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { IoLocationSharp } from 'react-icons/io5';
+import { PostSubmitBtn } from '../Button';
 
 const CardContainer = styled.div`
   width: 50%;
@@ -11,8 +12,8 @@ const CardContainer = styled.div`
     margin-bottom: 1%;
   }
   img {
-    width: 150px;
-    height: 150px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
   }
   .Userinfo {
@@ -37,15 +38,17 @@ const CardContainer = styled.div`
   }
   .Introduce {
     margin-top: 5%;
-    height: 100px;
+    height: 70px;
     text-align: center;
   }
 `;
-
-const UserInfoCard = ({ dummyUserInfo }) => {
+const Chatbtn = styled(PostSubmitBtn)`
+  font-size: 1.2rem;
+  border-radius: 5px;
+`;
+const ShowMemberCard = ({ dummyUserInfo }) => {
   return (
     <CardContainer>
-      <h2>나의 정보</h2>
       <img src={dummyUserInfo.profile_img} alt="" />
       <div>{dummyUserInfo.nickname}</div>
       <div className="Userinfo">
@@ -64,8 +67,10 @@ const UserInfoCard = ({ dummyUserInfo }) => {
         <div>{dummyUserInfo.address}</div>
       </div>
       <div className="Introduce">{dummyUserInfo.introduce}</div>
+      <Chatbtn width="250" height="40">
+        채팅하기
+      </Chatbtn>
     </CardContainer>
   );
 };
-
-export default UserInfoCard;
+export default ShowMemberCard;

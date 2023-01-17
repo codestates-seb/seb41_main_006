@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import MateUserCard from './MateUserCard';
+import MateMemberCard from './MateMemberCard';
 import { dummyUsers } from '../../static/dummyData';
 
 const UserList = styled.ul`
@@ -13,16 +13,16 @@ const UserList = styled.ul`
 const UserItem = styled.li`
   height: 20rem;
 `;
-const MateUserList = () => {
+const MateMemberList = () => {
   return (
     <UserList>
       {dummyUsers.map((el) => (
         <UserItem key={el.id}>
-          <MateUserCard user={el} />
+          <MateMemberCard user={el} />
         </UserItem>
       ))}
     </UserList>
   );
 };
 
-export default MateUserList;
+export default MateMemberList;

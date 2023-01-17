@@ -1,8 +1,11 @@
 import styled from 'styled-components';
-import MapContainer from '../components/matePost/MapContainer';
+// import Map from '../components/matePost/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
+import { dummyPosts } from '../static/dummyData';
+import MapContainer from '../components/matePost/MapContainer';
+// import SelectDog from '../components/matePost/SelectDog';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -32,6 +35,7 @@ const HeaderContainer = styled.div`
     vertical-align: middle;
     padding: 13px 0;
     font-weight: bold;
+    color: #401809;
 
     ::placeholder {
       color: #b7a69e;
@@ -39,26 +43,6 @@ const HeaderContainer = styled.div`
       font-weight: bold;
     }
   }
-
-  /* .post-title {
-    display: flex;
-    height: 40px;
-    align-items: center;
-
-    .title {
-      margin-right: 30px;
-      font-size: 26px;
-      font-weight: bold;
-      color: #401809;
-      text-align: center;
-    } 
-  }*/
-
-  /* .post-title {
-    text-align: center;
-    .title {
-    }
-  } */
 `;
 
 const MainContainer = styled.div`
@@ -77,31 +61,23 @@ const MainContainer = styled.div`
 
   .post-content {
     width: 720px;
-    /* height: 300px; */
     height: 30rem;
-    /* padding: 10px; */
+  }
+
+  .left-box {
+    margin-right: 80px;
   }
 
   .right-box {
-    width: 100%;
     margin-left: 40px;
   }
-
-  /* .selct-dog {
-    background-color: red;
-    height: 20%;
-    margin-bottom: 40px;
-  } */
 `;
 
 const BtnContainer = styled.div`
   margin-top: 80px;
   text-align: center;
-  /* background-color: skyblue; */
 
   button {
-    /* width: 100px; */
-    /* height: 50px; */
     font-size: 20px;
     border-radius: 10px;
   }
@@ -111,7 +87,7 @@ const BtnContainer = styled.div`
   }
 `;
 
-const PostPage = () => {
+const BoardEditPage = () => {
   // const { mateId } = useParams();
 
   return (
@@ -119,30 +95,22 @@ const PostPage = () => {
       <HeaderContainer>
         <div className="post-title">
           <div>
-            <textarea
-              className="title"
-              placeholder="제목을 입력하세요"
-            ></textarea>
+            <textarea className="title">{dummyPosts[0].title}</textarea>
           </div>
         </div>
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          <textarea
-            className="post-content"
-            placeholder="내용을 입력하세요"
-          ></textarea>
+          <textarea className="post-content">{dummyPosts[0].content}</textarea>
         </div>
-        <div className="right-box">
-          <MapContainer />
-        </div>
+        <MapContainer />
       </MainContainer>
       <BtnContainer>
-        <PostSubmitBtn>등록</PostSubmitBtn>
+        <PostSubmitBtn>수정</PostSubmitBtn>
         <CancelButton>취소</CancelButton>
       </BtnContainer>
     </ContainerBox>
   );
 };
 
-export default PostPage;
+export default BoardEditPage;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Container from '../components/Container';
-import EditUserInfoCard from '../components/myPage/EditUserInfoCard';
+import EditMemberInfoCard from '../components/myPage/EditMemberInfoCard';
 
 const SContainer = styled(Container)`
   display: flex;
@@ -23,15 +23,15 @@ const SInputInfoContainer = styled.div`
   }
 `;
 
-const InputUserInfoPage = () => {
+const InputMemberInfoPage = () => {
   return (
     <SContainer>
       <SInputInfoContainer>
-        <EditUserInfoCard />
+        <EditMemberInfoCard />
         <button className="next-button">가입 완료</button>
       </SInputInfoContainer>
     </SContainer>
   );
 };
 
-export default InputUserInfoPage;
+export default InputMemberInfoPage;

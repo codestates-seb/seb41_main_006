@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useRef } from 'react';
 // import Container from '../Container';
-import EditUserInfoCard from '../EditUserInfoCard';
+import EditMemberInfoCard from '../EditMemberInfoCard';
 import { PostSubmitBtn } from '../../Button';
 
 const SBackground = styled.div`
@@ -33,7 +33,7 @@ const Submitbtn = styled(PostSubmitBtn)`
   border-radius: 10px;
 `;
 
-const EdituserModal = ({ Modal, setModal }) => {
+const EditMemberModal = ({ Modal, setModal }) => {
   const outside = useRef();
 
   const handleModalClose = (e) => {
@@ -49,7 +49,7 @@ const EdituserModal = ({ Modal, setModal }) => {
       }}
     >
       <ModalContainer>
-        <EditUserInfoCard />
+        <EditMemberInfoCard />
         <Submitbtn
           onClick={() => {
             setModal(!Modal);
@@ -62,4 +62,4 @@ const EdituserModal = ({ Modal, setModal }) => {
   );
 };
 
-export default EdituserModal;
+export default EditMemberModal;

@@ -8,7 +8,7 @@ import { dummyComments } from '../static/dummyData';
 import DeleteModal from '../components/DeleteModal';
 import { MatePostDate } from '../utils/dateConvert';
 import { useState } from 'react';
-import UserInfoCard from '../components/myPage/UsetInfoCard';
+import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import { dummyUserInfo } from '../static/dummyUserInfo';
 import MapContainer from '../components/matePost/MapContainer';
 
@@ -119,7 +119,7 @@ const MainContainer = styled.div`
   }
 `;
 
-const PostDetailPage = () => {
+const BoardDetailPage = () => {
   const [modal, setModal] = useState(false);
 
   const handelDelClick = () => {
@@ -168,7 +168,7 @@ const PostDetailPage = () => {
         </div>
         <div className="right-box">
           <div className="user-info">
-            <UserInfoCard dummyUserInfo={dummyUserInfo[0]} />
+            <MemberInfoCard dummyUserInfo={dummyUserInfo[0]} />
           </div>
           <div className="map-info">
             <MapContainer />
@@ -179,4 +179,4 @@ const PostDetailPage = () => {
   );
 };
 
-export default PostDetailPage;
+export default BoardDetailPage;

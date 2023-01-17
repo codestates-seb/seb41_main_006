@@ -33,7 +33,7 @@ const UserCardBody = styled(ColCenterBox)`
   }
 `;
 
-const MateUserCard = ({ user }) => {
+const MateMemberCard = ({ user }) => {
   return (
     <UserCard>
       <UserCardHeader>
@@ -60,4 +60,4 @@ const MateUserCard = ({ user }) => {
   );
 };
 
-export default MateUserCard;
+export default MateMemberCard;
