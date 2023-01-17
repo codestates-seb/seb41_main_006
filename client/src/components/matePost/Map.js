@@ -1,88 +1,68 @@
-import styled from 'styled-components';
-import { FaRegCalendar } from 'react-icons/fa';
-import { BiTimeFive } from 'react-icons/bi';
-import { MdPlace } from 'react-icons/md';
+import { useEffect } from 'react';
 
-const MapContainer = styled.div`
-  color: black;
-  width: 100%;
-  /* height: 200px; */
-  height: 30rem;
-  padding: 10px;
-  /* border: 1px solid black; */
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
-    0 8px 16px rgba(0, 0, 0, 0.11);
+const { kakao } = window;
 
-  .meet-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
+const Map = ({ searchPlace }) => {
+  useEffect(() => {
+    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    const container = document.getElementById('map');
+    const options = {
+      center: new kakao.maps.LatLng(33.450701, 126.570667),
+      level: 3,
+    };
+    const map = new kakao.maps.Map(container, options);
 
-    input {
-      border-radius: 10px;
-      padding: 3px 6px;
-      border: 1px solid #b7a69e;
-      font-size: 16px;
-    }
-  }
+    const ps = new kakao.maps.services.Places();
 
-  .map-box {
-    padding: 10px;
+    const placesSearchCB = (data, status) => {
+      console.log('data', data);
+      if (status === kakao.maps.services.Status.OK) {
+        const bounds = new kakao.maps.LatLngBounds();
 
-    input {
-      width: 100%;
-      border-radius: 10px;
-      padding: 4px 6px;
-      border: 1px solid #b7a69e;
-      font-size: 16px;
-    }
-  }
+        for (let i = 0; i < data.length; i++) {
+          displayMarker(data[i]);
+          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+        }
+        map.setBounds(bounds);
+      }
+    };
 
-  label {
-    display: block;
-    color: #401809;
-    font-weight: bold;
-    padding-bottom: 8px;
-  }
+    ps.keywordSearch(searchPlace, placesSearchCB);
 
-  span {
-    padding-left: 8px;
-  }
-`;
+    // 지도 위에 마커 표시
+    const displayMarker = (place) => {
+      const marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(place.y, place.x),
+      });
 
-const Map = () => {
+      kakao.maps.event.addListener(marker, 'click', function () {
+        infowindow.setContent(
+          '<div style="padding: 5px; font-size: 12px;">' +
+            `<a href="${place.place_url}">` +
+            place.place_name +
+            '</a>' +
+            '</div>' +
+            '<div style="padding: 5px; font-size: 12px;">' +
+            place.address_name +
+            '</div>'
+        );
+        infowindow.open(map, marker);
+      });
+    };
+  }, [searchPlace]);
+
   return (
-    <MapContainer>
-      <div className="meet-info">
-        <div className="meet-date">
-          <label htmlFor="date-input">
-            <FaRegCalendar />
-            <span>날짜</span>
-          </label>
-          <input type="date" id="date-input"></input>
-        </div>
-        <div className="meet-time">
-          <label htmlFor="time-input">
-            <BiTimeFive />
-            <span>시간</span>
-          </label>
-          <input type="time" id="time-input"></input>
-        </div>
-      </div>
-      <div className="map-box">
-        <form className="map-form">
-          <label htmlFor="meet-place">
-            <MdPlace />
-            <span>만나는 장소</span>
-          </label>
-          <input type="text" id="meet-place"></input>
-        </form>
-      </div>
-    </MapContainer>
+    <div
+      style={{
+        width: '100%',
+        display: 'inline-block',
+        marginLeft: '5px',
+        marginRight: '5px',
+      }}
+    >
+      <div id="map" style={{ width: '99%', height: '500px' }}></div>
+    </div>
   );
 };
 

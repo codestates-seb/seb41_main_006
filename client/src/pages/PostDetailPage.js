@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import Map from '../components/matePost/Map';
 import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
@@ -11,6 +10,7 @@ import { MatePostDate } from '../utils/dateConvert';
 import { useState } from 'react';
 import UserInfoCard from '../components/myPage/UsetInfoCard';
 import { dummyUserInfo } from '../static/dummyUserInfo';
+import MapContainer from '../components/matePost/MapContainer';
 
 const ContainerBox = styled(Container)`
   padding-top: 20px;
@@ -171,7 +171,7 @@ const PostDetailPage = () => {
             <UserInfoCard dummyUserInfo={dummyUserInfo[0]} />
           </div>
           <div className="map-info">
-            <Map />
+            <MapContainer />
           </div>
         </div>
       </MainContainer>

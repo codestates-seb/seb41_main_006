@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import Map from '../components/matePost/Map';
+// import Map from '../components/matePost/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
 import { dummyPosts } from '../static/dummyData';
+import MapContainer from '../components/matePost/MapContainer';
 // import SelectDog from '../components/matePost/SelectDog';
 
 const ContainerBox = styled(Container)`
@@ -42,26 +43,6 @@ const HeaderContainer = styled.div`
       font-weight: bold;
     }
   }
-
-  /* .post-title {
-    display: flex;
-    height: 40px;
-    align-items: center;
-
-    .title {
-      margin-right: 30px;
-      font-size: 26px;
-      font-weight: bold;
-      color: #401809;
-      text-align: center;
-    } 
-  }*/
-
-  /* .post-title {
-    text-align: center;
-    .title {
-    }
-  } */
 `;
 
 const MainContainer = styled.div`
@@ -80,13 +61,14 @@ const MainContainer = styled.div`
 
   .post-content {
     width: 720px;
-    /* height: 300px; */
     height: 30rem;
-    /* padding: 10px; */
+  }
+
+  .left-box {
+    margin-right: 80px;
   }
 
   .right-box {
-    width: 100%;
     margin-left: 40px;
   }
 `;
@@ -94,11 +76,8 @@ const MainContainer = styled.div`
 const BtnContainer = styled.div`
   margin-top: 80px;
   text-align: center;
-  /* background-color: skyblue; */
 
   button {
-    /* width: 100px; */
-    /* height: 50px; */
     font-size: 20px;
     border-radius: 10px;
   }
@@ -123,11 +102,8 @@ const PostEditPage = () => {
       <MainContainer>
         <div className="left-box">
           <textarea className="post-content">{dummyPosts[0].content}</textarea>
-          {/* <div className="dog-info">강아지 정보</div> */}
         </div>
-        <div className="right-box">
-          <Map />
-        </div>
+        <MapContainer />
       </MainContainer>
       <BtnContainer>
         <PostSubmitBtn>수정</PostSubmitBtn>
