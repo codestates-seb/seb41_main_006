@@ -28,10 +28,9 @@ const Map = ({ searchPlace }) => {
     // 마커 커스텀
     const imgSrc =
         'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb9mhL8%2FbtrWBcjqH22%2FEERoT6xVXkSTCAwvT5X7Z0%2Fimg.png',
-      imgSize = new kakao.maps.Size(45, 50),
-      imgOption = { offset: new kakao.maps.Point(27, 69) };
+      imgSize = new kakao.maps.Size(45, 50);
 
-    const markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize, imgOption),
+    const markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize),
       markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
 
     const marker = new kakao.maps.Marker({
