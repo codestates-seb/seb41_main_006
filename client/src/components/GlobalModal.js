@@ -24,7 +24,7 @@ const ModalContainer = styled.div`
 
 const MODAL_COMPONENTS = {
   login: LoginModal,
-  user: MemberInfoModal,
+  member: MemberInfoModal,
 };
 
 const GlobalModal = () => {
