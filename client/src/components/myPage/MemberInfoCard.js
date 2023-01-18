@@ -38,36 +38,48 @@ const UsefInfoWrapper = styled.div`
   }
 `;
 
-const MemberInfoCard = ({ userInfo }) => {
+const MemberInfoCard = ({ memberInfo }) => {
   return (
     <CardContainer>
       <ProfileImage
-        src={userInfo.profile_img}
-        name={userInfo.nickname}
+        src={memberInfo.profileImage}
+        name={memberInfo.nickName}
         size="100px"
       />
-      <div className="user-name">{userInfo.nickname}</div>
+      <div className="user-name">{memberInfo.nickName}</div>
       <UsefInfoWrapper>
         <div>
           <RowCenterBox>
             <BsFillPersonFill />
             정보
           </RowCenterBox>
-          <span>{userInfo.age}</span>
+          <span>{memberInfo.age}살</span>
           <span>/</span>
-          <span>{userInfo.male ? '남' : '여'}</span>
+          <span>{memberInfo.gender === 'M' ? '남' : '여'}</span>
         </div>
         <div>
           <RowCenterBox>
             <IoLocationSharp />
             <span>지역</span>
           </RowCenterBox>
-          <span>{userInfo.address}</span>
+          <span>{memberInfo.address}</span>
         </div>
       </UsefInfoWrapper>
-      <div className="user-introduce">{userInfo.introduce}</div>
+      <div className="user-introduce">{memberInfo.aboutMe}</div>
     </CardContainer>
   );
+};
+
+MemberInfoCard.defaultProps = {
+  memberInfo: {
+    profileImage:
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+    nickName: '',
+    age: 0,
+    gender: 'M',
+    address: '',
+    aboutMe: '',
+  },
 };
 
 export default MemberInfoCard;

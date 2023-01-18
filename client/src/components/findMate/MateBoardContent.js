@@ -24,10 +24,10 @@ const PostsContentRow = styled.div`
 
 const MateBoardConent = () => {
   const navigate = useNavigate();
-  const [postList, setPostList] = useState([]);
+  const [boardList, setBoardList] = useState([]);
 
   useEffect(() => {
-    getBoardList().then((data) => setPostList(data));
+    getBoardList().then((data) => setBoardList(data));
   }, []);
 
   return (
@@ -44,7 +44,7 @@ const MateBoardConent = () => {
           글 작성
         </Button>
       </PostsContentRow>
-      <MateBoardList postList={postList} />
+      <MateBoardList boardList={boardList} />
     </PostsContentLayOut>
   );
 };

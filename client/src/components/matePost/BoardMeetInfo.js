@@ -46,7 +46,7 @@ const InfoLabelBox = styled.div`
   }
 `;
 
-const BoardMeetInfo = () => {
+const BoardMeetInfo = ({ meetInfo }) => {
   return (
     <MeetInfoContainer>
       <div className="meet-info">
@@ -55,14 +55,14 @@ const BoardMeetInfo = () => {
             <FaRegCalendar />
             <span>날짜</span>
           </InfoLabelBox>
-          <span className="meet-info--content">2022.01.23 (목)</span>
+          <span className="meet-info--content">{meetInfo?.appointDate}</span>
         </div>
         <div className="meet-time">
           <InfoLabelBox>
             <BiTimeFive />
             <span>시간</span>
           </InfoLabelBox>
-          <span className="meet-info--content">오후 7시</span>
+          <span className="meet-info--content">{meetInfo?.appointTime}</span>
         </div>
       </div>
       <div className="meet-location">
@@ -70,9 +70,9 @@ const BoardMeetInfo = () => {
           <MdPlace />
           <span>만나는 장소</span>
         </InfoLabelBox>
-        <span className="meet-info--content">경기도 의정부시 신곡동</span>
+        <span className="meet-info--content">{meetInfo?.meetingPlace}</span>
         <div className="meet-map" id="map">
-          <Map searchPlace={'경기도 의정부시 신곡동'} />
+          <Map searchPlace={meetInfo?.meetingPlace} />
         </div>
       </div>
     </MeetInfoContainer>

@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { flexRowCenter } from '../../style/styleVariable';
 import ProfileImage from '../common/ProfileImage';
 import Title from '../common/Title';
-import useOpenUserInfoModal from '../../hooks/useOpenUserInfoModal';
+import { openModal } from '../../store/modules/modalSlice';
+import { useDispatch } from 'react-redux';
 import { IoLocationSharp } from 'react-icons/io5';
 import { AiTwotoneCalendar } from 'react-icons/ai';
 import { FiClock } from 'react-icons/fi';
@@ -65,7 +66,12 @@ const PostCard = styled.div`
 `;
 
 const MateBoardCard = ({ post }) => {
-  const handleClickUser = useOpenUserInfoModal(post?.member?.id);
+  const dispatch = useDispatch();
+
+  const handleClickMember = (memberId) => {
+    dispatch(openModal({ type: 'member', props: { memberId } }));
+  };
+
   return (
     <PostCard>
       <Link to={`/mate/boards/${post.id}`}>
@@ -88,7 +94,7 @@ const MateBoardCard = ({ post }) => {
         </div>
       </Link>
       <div className="post-card--bottom">
-        <button onClick={handleClickUser}>
+        <button onClick={() => handleClickMember(post.authorId)}>
           <ProfileImage
             src={post.authorImg}
             name={post.authorName}
