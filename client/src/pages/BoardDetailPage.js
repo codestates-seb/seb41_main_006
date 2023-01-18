@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
-import DeleteModal from '../components/DeleteModal';
 import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { convertCreatedAt } from '../utils/dateConvert';
@@ -136,7 +135,7 @@ const BoardDetailPage = () => {
 
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
-  const [modal, setModal] = useState(false);
+  // const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
 
   const handleClickUser = (memberId) => {
@@ -144,8 +143,7 @@ const BoardDetailPage = () => {
   };
 
   const handelDelClick = () => {
-    // modalView(true, '정말 삭제하시겠습니까?');
-    setModal(true);
+    dispatch(openModal({ type: 'delete' }));
   };
 
   useEffect(() => {
@@ -194,7 +192,6 @@ const BoardDetailPage = () => {
           </div>
           <AddComment />
           <CommentList comments={board.comments} />
-          {modal ? <DeleteModal /> : null}
         </div>
         <div className="right-box">
           <MemberInfoCard memberInfo={board.member} />
