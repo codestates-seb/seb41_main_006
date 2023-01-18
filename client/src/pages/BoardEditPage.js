@@ -95,13 +95,15 @@ const BoardEditPage = () => {
       <HeaderContainer>
         <div className="post-title">
           <div>
-            <textarea className="title">{dummyBoards[0].title}</textarea>
+            <textarea className="title">{dummyBoards.data[0].title}</textarea>
           </div>
         </div>
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          <textarea className="post-content">{dummyBoards[0].content}</textarea>
+          <textarea className="post-content">
+            {dummyBoards.data[0].content}
+          </textarea>
         </div>
         <MapContainer />
       </MainContainer>
