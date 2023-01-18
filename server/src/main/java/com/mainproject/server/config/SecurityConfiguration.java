@@ -60,7 +60,7 @@ public class SecurityConfiguration {
         // todo api 권한 이렇게 해도 될까...
         http.authorizeHttpRequests()
                 .antMatchers("/h2/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/members", "auth/login", "/reissue").permitAll()
+                .antMatchers(HttpMethod.POST, "/members", "/login", "/reissue").permitAll()
                 .antMatchers(HttpMethod.GET, "/members/{member-id:[\\d]+}",
                         "/members*", "/pets/*", "boards/*", "/comments*").permitAll()
                 .anyRequest().authenticated();

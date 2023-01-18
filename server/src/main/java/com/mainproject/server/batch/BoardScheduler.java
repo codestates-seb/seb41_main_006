@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-/*@Component
+@Component
 @Slf4j
 @RequiredArgsConstructor
 public class BoardScheduler {
@@ -20,8 +20,7 @@ public class BoardScheduler {
     private final Job job;
     private final BatchConfig batchConfig;
 
-    @Scheduled(cron = "0 0/30 * * * *")  // 30분마다 도는 스케줄러
-//    @Scheduled(cron = "0/5 * * * * *")
+//    @Scheduled(cron = "0 0/30 * * * *")  // 30분마다 도는 스케줄러
     public void runJob() {
 
         try{
@@ -32,4 +31,4 @@ public class BoardScheduler {
             log.error(e.getMessage());
         }
     }
-}*/
+}

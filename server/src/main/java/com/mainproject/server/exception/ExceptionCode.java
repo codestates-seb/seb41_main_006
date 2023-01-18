@@ -12,6 +12,7 @@ public enum ExceptionCode {
     PET_EXISTS(CONFLICT.value(), "Pet Exists" ),
     BOARD_NOT_FOUND(NOT_FOUND.value(),"Board not Found"),
     COMMENTS_NOT_FOUND(404, "Comment Not Found"),
+    CHATROOM_NOT_FOUND(NOT_FOUND.value(), "ChatRoom Not Found"),
     NOT_AUTHORIZED(UNAUTHORIZED.value(), "Not_Authorized");
 
     @Getter

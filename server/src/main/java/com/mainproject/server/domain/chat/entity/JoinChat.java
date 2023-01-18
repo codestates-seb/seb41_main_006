@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.chat.entity;
 
 import com.mainproject.server.domain.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 public class JoinChat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

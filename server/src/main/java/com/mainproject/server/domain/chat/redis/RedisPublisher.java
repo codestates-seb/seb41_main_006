@@ -13,5 +13,6 @@ public class RedisPublisher { // 채팅방에 입장해 메세지를 작성하�
 
     public void publish(ChannelTopic topic, ChatMessage message) {
         redisTemplate.convertAndSend(topic.getTopic(), message);
+
     }
 }
