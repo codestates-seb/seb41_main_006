@@ -3,7 +3,7 @@ import MapContainer from '../components/matePost/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
-// import SelectDog from '../components/matePost/SelectDog';
+import { useNavigate } from 'react-router-dom';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -40,26 +40,6 @@ const HeaderContainer = styled.div`
       font-weight: bold;
     }
   }
-
-  /* .post-title {
-    display: flex;
-    height: 40px;
-    align-items: center;
-
-    .title {
-      margin-right: 30px;
-      font-size: 26px;
-      font-weight: bold;
-      color: #401809;
-      text-align: center;
-    } 
-  }*/
-
-  /* .post-title {
-    text-align: center;
-    .title {
-    }
-  } */
 `;
 
 const MainContainer = styled.div`
@@ -78,31 +58,20 @@ const MainContainer = styled.div`
 
   .post-content {
     width: 720px;
-    /* height: 300px; */
     height: 30rem;
-    /* padding: 10px; */
   }
 
   .right-box {
     width: 100%;
     margin-left: 40px;
   }
-
-  /* .selct-dog {
-    background-color: red;
-    height: 20%;
-    margin-bottom: 40px;
-  } */
 `;
 
 const BtnContainer = styled.div`
   margin-top: 80px;
   text-align: center;
-  /* background-color: skyblue; */
 
   button {
-    /* width: 100px; */
-    /* height: 50px; */
     font-size: 20px;
     border-radius: 10px;
   }
@@ -114,6 +83,7 @@ const BtnContainer = styled.div`
 
 const BoardPage = () => {
   // const { mateId } = useParams();
+  const navigate = useNavigate();
 
   return (
     <ContainerBox>
@@ -140,7 +110,9 @@ const BoardPage = () => {
       </MainContainer>
       <BtnContainer>
         <PostSubmitBtn>등록</PostSubmitBtn>
-        <CancelButton>취소</CancelButton>
+        <CancelButton onClick={() => navigate('/mate/boards')}>
+          취소
+        </CancelButton>
       </BtnContainer>
     </ContainerBox>
   );
