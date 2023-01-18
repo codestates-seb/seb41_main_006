@@ -1,11 +1,17 @@
 import MateBoardList from '../findMate/MateBoardList';
-import { dummyPosts } from '../../static/dummyData';
+import { getMemberBoardList } from '../../api/member/member';
+import { useState } from 'react';
 
-const BoardInfo = () => {
+const BoardInfo = ({ memberId }) => {
+  const [myBoardList, setMyBoardList] = useState([]);
+  useState(() => {
+    getMemberBoardList(memberId).then((data) => setMyBoardList(data));
+  }, [memberId]);
+
   return (
     <>
       <h2>나의 모임</h2>
-      <MateBoardList postList={dummyPosts} />
+      <MateBoardList boardList={myBoardList} />
     </>
   );
 };

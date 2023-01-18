@@ -1,7 +1,10 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { flexRowCenter } from '../../style/styleVariable';
 import ProfileImage from '../common/ProfileImage';
 import Title from '../common/Title';
+import { openModal } from '../../store/modules/modalSlice';
+import { useDispatch } from 'react-redux';
 import { IoLocationSharp } from 'react-icons/io5';
 import { AiTwotoneCalendar } from 'react-icons/ai';
 import { FiClock } from 'react-icons/fi';
@@ -47,7 +50,8 @@ const PostCard = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    div {
+    div,
+    button {
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -62,33 +66,45 @@ const PostCard = styled.div`
 `;
 
 const MateBoardCard = ({ post }) => {
+  const dispatch = useDispatch();
+
+  const handleClickMember = (memberId) => {
+    dispatch(openModal({ type: 'member', props: { memberId } }));
+  };
+
   return (
     <PostCard>
-      <div className="post-card--top">
-        <Title as="h4" size="small">
-          {post.title}
-        </Title>
-        <div>
-          <IoLocationSharp />
-          <span>{post.address}</span>
+      <Link to={`/mate/boards/${post.id}`}>
+        <div className="post-card--top">
+          <Title as="h4" size="small">
+            {post.title}
+          </Title>
+          <div>
+            <IoLocationSharp />
+            <span>{post.meetingPlace}</span>
+          </div>
+          <div>
+            <AiTwotoneCalendar />
+            <span>{post.appointDate}</span>
+          </div>
+          <div>
+            <FiClock />
+            <span>{post.appointTime}</span>
+          </div>
         </div>
-        <div>
-          <AiTwotoneCalendar />
-          <span>{post.date}</span>
-        </div>
-        <div>
-          <FiClock />
-          <span>{post.time}</span>
-        </div>
-      </div>
+      </Link>
       <div className="post-card--bottom">
-        <div>
-          <ProfileImage src={post.profile_img} name={post.author} size="2rem" />
-          <span>{post.author}</span>
-        </div>
+        <button onClick={() => handleClickMember(post.authorId)}>
+          <ProfileImage
+            src={post.authorImg}
+            name={post.authorName}
+            size="2rem"
+          />
+          <span>{post.authorName}</span>
+        </button>
         <div>
           <FaHeart />
-          {post.likes}
+          {post.countLike}
         </div>
       </div>
     </PostCard>

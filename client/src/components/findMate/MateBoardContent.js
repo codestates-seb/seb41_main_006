@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getBoardList } from '../../api/board/board';
 import styled from 'styled-components';
 import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
-import { dummyPosts } from '../../static/dummyData';
 
 const PostsContentLayOut = styled.div`
   ${flexColCenter}
@@ -15,6 +16,7 @@ const PostsContentRow = styled.div`
   ${flexRowCenter}
   width: 100%;
   justify-content: space-between;
+  margin-bottom: 1rem;
   > div {
     ${flexRowCenter}
   }
@@ -22,6 +24,12 @@ const PostsContentRow = styled.div`
 
 const MateBoardConent = () => {
   const navigate = useNavigate();
+  const [boardList, setBoardList] = useState([]);
+
+  useEffect(() => {
+    getBoardList().then((data) => setBoardList(data));
+  }, []);
+
   return (
     <PostsContentLayOut>
       <PostsContentRow>
@@ -32,11 +40,11 @@ const MateBoardConent = () => {
           <input type="date"></input>
           <input type="time"></input>
         </div>
-        <Button color="main" onClick={() => navigate('/')}>
+        <Button color="main" onClick={() => navigate('/newmate')}>
           글 작성
         </Button>
       </PostsContentRow>
-      <MateBoardList postList={dummyPosts} />
+      <MateBoardList boardList={boardList} />
     </PostsContentLayOut>
   );
 };

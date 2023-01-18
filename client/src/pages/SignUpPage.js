@@ -16,10 +16,10 @@ const SInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 2rem;
+  padding-top: 5rem;
   width: 60%;
   height: 70%;
-  margin-top: 100px;
+
   .text-container {
     display: flex;
     align-items: center;
