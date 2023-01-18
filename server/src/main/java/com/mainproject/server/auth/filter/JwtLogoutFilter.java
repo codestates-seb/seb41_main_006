@@ -38,16 +38,18 @@ public class JwtLogoutFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         // request로 부터 access token과 refresh token을 받는다.
         // redis에서 refresh token을 key로 가지는 데이터가 있는지 확인한다.
         // 해당 키-값 쌍 데이터를 제거한다.
         // access token 유효성 검증은 앞의 verification filter에서 진행
         // 로그아웃 된 토큰 검사도 verification filter에서 진행
+
         String accessToken = resolveAccessToken(request, response);
         String refreshToken = resolveRefreshToken(request, response);
         redisService.deleteRefreshToken(refreshToken);
-
         // access token payload 뽑기
         Jws<Claims> claims =
                 jwtTokenizer.getClaims(accessToken,
@@ -55,6 +57,7 @@ public class JwtLogoutFilter extends OncePerRequestFilter {
         long remainExpiration = calculateRemainExpiration(claims);
         // access token 값을 키로 logout 문자열을 값으로 하는 데이터 레디스에 저장, 만료 시간 명시
         redisService.setAccessTokenLogout(accessToken, remainExpiration);
+
 
         response.setStatus(HttpStatus.OK.value());
         response.setCharacterEncoding("utf-8");
@@ -66,7 +69,7 @@ public class JwtLogoutFilter extends OncePerRequestFilter {
     private String resolveAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String bearerToken = request.getHeader(JwtTokenizer.ACCESS_TOKEN_HEADER);
         if (!StringUtils.hasText(bearerToken) || !bearerToken.startsWith(JwtTokenizer.TOKEN_PREFIX)) {
-            log.debug("Header hasn't contain access token, Authorization: {}", bearerToken);
+            log.info("Header hasn't contain access token, Authorization: {}", bearerToken);
             ErrorResponder.sendErrorResponse(response, HttpStatus.BAD_REQUEST);
         }
         return bearerToken.replace(JwtTokenizer.TOKEN_PREFIX, "");
@@ -75,8 +78,8 @@ public class JwtLogoutFilter extends OncePerRequestFilter {
     // refresh token 뽑기
     private String resolveRefreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String refreshToken = request.getHeader(JwtTokenizer.REFRESH_TOKEN_HEADER);
-        if (StringUtils.hasText(refreshToken)) {
-            log.debug("Header hasn't contain refresh token, Authorization: {}", refreshToken);
+        if (!StringUtils.hasText(refreshToken)) {
+            log.info("Header hasn't contain refresh token, Refresh: {}", refreshToken);
             ErrorResponder.sendErrorResponse(response, HttpStatus.BAD_REQUEST);
         }
         return refreshToken;

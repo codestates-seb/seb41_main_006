@@ -1,4 +1,16 @@
 logging:
   level:
     root: info
-
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${email-username}
+    password: ${email-password}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

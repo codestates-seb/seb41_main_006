@@ -2,6 +2,7 @@ package com.mainproject.server.response;
 
 import com.mainproject.server.exception.ExceptionCode;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
+@Slf4j
 public class ErrorResponse {
     private int status;
     private String message;
