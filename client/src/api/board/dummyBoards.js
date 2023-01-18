@@ -73,7 +73,7 @@ const dummyBoards = {
       content: '우리 강쥐랑 친구할 사람 + 시간 변경요',
       countLike: 0,
       appointTime: '2023-01-10T13:00:00',
-      meetingPlace: '부산 해운대구 중동',
+      meetingPlace: '경기도 의정부시 신곡동',
       boardStatus: 'BOARD_OPEN',
       member: {
         memberId: 2,
