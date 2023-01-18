@@ -1,16 +1,20 @@
+import { useState } from 'react';
+import useOpenUserInfoModal from '../hooks/useOpenUserInfoModal';
+
 import styled from 'styled-components';
-import { OpenBtn, CloseBtn } from '../components/Button';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
-import { dummyComments } from '../static/dummyData';
 import DeleteModal from '../components/DeleteModal';
-import { MatePostDate } from '../utils/dateConvert';
-import { useState } from 'react';
+import { OpenBtn, CloseBtn } from '../components/Button';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
+import { convertCreatedAt } from '../utils/dateConvert';
+import { dummyUserInfo } from '../api/dummyData/dummyUserInfo';
+import { dummyComments } from '../api/dummyData/dummyData';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
-import { dummyUserInfo } from '../static/dummyUserInfo';
-import MapContainer from '../components/matePost/MapContainer';
+// import MapContainer from '../components/matePost/MapContainer';
+import BoardMeetInfo from '../components/matePost/BoardMeetInfo';
 
 const ContainerBox = styled(Container)`
   padding-top: 20px;
@@ -101,26 +105,37 @@ const MainContainer = styled.div`
   .right-box {
     width: 100%;
     margin-left: 80px;
+    padding: 2.5rem 1.5rem;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
 
-  .map-info {
-    width: 100%;
-    margin-top: 20px;
+    height: 48rem;
+
+    background-color: white;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   }
 
   .user-info {
-    width: 110%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .post-meet-info {
+    /* position: sticky;
+    top: calc(var(--header-height) + 1.25rem); */
+    width: 100%;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--main-font-color);
   }
 `;
 
 const BoardDetailPage = () => {
   const [modal, setModal] = useState(false);
+  const handleClickUser = useOpenUserInfoModal(1);
 
   const handelDelClick = () => {
     // modalView(true, '정말 삭제하시겠습니까?');
@@ -136,7 +151,7 @@ const BoardDetailPage = () => {
           <CloseBtn>모집마감</CloseBtn>
         </div>
         <div className="post-info">
-          <div className="post-createAt">{MatePostDate(new Date())}</div>
+          <div className="post-createAt">{convertCreatedAt(new Date())}</div>
           <div className="post-like">
             <FaHeart />
             <span>3</span>
@@ -167,11 +182,11 @@ const BoardDetailPage = () => {
           {modal ? <DeleteModal /> : null}
         </div>
         <div className="right-box">
-          <div className="user-info">
-            <MemberInfoCard dummyUserInfo={dummyUserInfo[0]} />
-          </div>
-          <div className="map-info">
-            <MapContainer />
+          <button className="user-info" onClick={handleClickUser}>
+            <MemberInfoCard userInfo={dummyUserInfo[0]} />
+          </button>
+          <div className="post-meet-info">
+            <BoardMeetInfo />
           </div>
         </div>
       </MainContainer>

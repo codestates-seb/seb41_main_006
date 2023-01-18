@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
-import { dummyPosts } from '../static/dummyData';
+import dummyBoards from '../api/board/dummyBoards';
 import MapContainer from '../components/matePost/MapContainer';
 // import SelectDog from '../components/matePost/SelectDog';
 
@@ -95,13 +95,13 @@ const BoardEditPage = () => {
       <HeaderContainer>
         <div className="post-title">
           <div>
-            <textarea className="title">{dummyPosts[0].title}</textarea>
+            <textarea className="title">{dummyBoards[0].title}</textarea>
           </div>
         </div>
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          <textarea className="post-content">{dummyPosts[0].content}</textarea>
+          <textarea className="post-content">{dummyBoards[0].content}</textarea>
         </div>
         <MapContainer />
       </MainContainer>

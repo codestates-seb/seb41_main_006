@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import MateMemberCard from './MateMemberCard';
-import { dummyUsers } from '../../static/dummyData';
+import dummyMembers from '../../api/dummyData/dummyMembers';
 
 const UserList = styled.ul`
   width: 90%;
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 1rem;
-  grid-row-gap: 1.5rem;
+  grid-row-gap: 1.5rem; */
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
 `;
 
 const UserItem = styled.li`
@@ -16,11 +19,13 @@ const UserItem = styled.li`
 const MateMemberList = () => {
   return (
     <UserList>
-      {dummyUsers.map((el) => (
+      <button>이전</button>
+      {dummyMembers.map((el) => (
         <UserItem key={el.id}>
           <MateMemberCard user={el} />
         </UserItem>
       ))}
+      <button>다음</button>
     </UserList>
   );
 };

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import EditPetInfoCard from './EditPetInfoCard';
-import { petInfo } from '../../static/dummyMyPetinfo';
+import { petInfo } from '../../api/dummyData/dummyMyPetinfo';
 import { FaDog } from 'react-icons/fa';
 import { useState } from 'react';
 import EditPetModal from './Modal/EditPetModal';

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import EditMemberModal from './Modal/EditMemberModal';
 import MemberInfoCard from './MemberInfoCard';
-import { dummyUserInfo } from '../../static/dummyUserInfo';
+import { dummyUserInfo } from '../../api/dummyData/dummyUserInfo';
 import WithdrawalModal from '../WithdrawalModal';
 
 const UserInfoContainer = styled.div`

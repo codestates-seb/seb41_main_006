@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { dummyComments } from '../../static/dummyData';
+import { dummyComments } from '../../api/dummyData/dummyData';
 import Comment from './Comment';
 
 const CommentBox = styled.ul`
