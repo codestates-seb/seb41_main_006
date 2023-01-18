@@ -1,5 +1,5 @@
-import AroundWalk from '../../Images/AroundWalk.png';
-import AroundWalkDog from '../../Images/AroundWalkDog.png';
+import AroundWalkDog from '../../static/images/AroundWalkDog.png';
+import AroundWalk from '../../static/images/AroundWalk.png';
 import styled from 'styled-components';
 import Fade from 'react-reveal/Fade';
 

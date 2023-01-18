@@ -1,5 +1,5 @@
 import Container from '../Container';
-import Mainbackground from '../../Images/MainBackground.png';
+import Mainbackground from '../../static/images/MainBackground.png';
 import styled, { keyframes } from 'styled-components';
 import { PostSubmitBtn } from '../../components/Button';
 import { Link } from 'react-router-dom';

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import MeetingWalk from '../../Images/MeetingWalk.png';
-import MeetingList from '../../Images/MeetingList.png';
+import MeetingWalk from '../../static/images/MeetingWalk.png';
+import MeetingList from '../../static/images/MeetingList.png';
 import Fade from 'react-reveal/Fade';
 
 const MainSecondContainer = styled.div`
