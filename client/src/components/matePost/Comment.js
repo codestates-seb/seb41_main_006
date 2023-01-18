@@ -89,7 +89,7 @@ const CommentBox = styled.div`
   }
 `;
 
-const Comment = ({ post }) => {
+const Comment = ({ comment }) => {
   const [like, setLike] = useState(false);
 
   const handleLikeClick = () => {
@@ -110,7 +110,7 @@ const Comment = ({ post }) => {
             <FaUserCircle />
           </div>
           <div className="comment-detail-info">
-            <span className="comment-username">{post.author}</span>
+            <span className="comment-username">{comment.author}</span>
             <div className="comment-sub-info">
               <span className="comment-createAt">
                 {convertCreatedAt(new Date())}
@@ -118,7 +118,7 @@ const Comment = ({ post }) => {
               <span className="comment-like">
                 <FaHeart />
               </span>
-              <span className="comment-like-total">{post.likes}</span>
+              <span className="comment-like-total">{comment.likes}</span>
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ const Comment = ({ post }) => {
           )}
         </div>
       </div>
-      <div className="comment-content">{post.content}</div>
+      <div className="comment-content">{comment.content}</div>
       <button className="recomment-btn" onClick={handleRecommentsClick}>
         <FaPlus className="plus-icon" />
         <span>답글 달기</span>
