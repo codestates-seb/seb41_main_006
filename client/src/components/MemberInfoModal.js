@@ -1,6 +1,6 @@
+import { useEffect, useState } from 'react';
 import PetInfoCard from './myPage/PetInfoCard';
-import { dummyUserInfo } from '../api/dummyData/dummyUserInfo';
-import { petInfo } from '../api/dummyData/dummyMyPetinfo';
+import { getMemberInfo } from '../api/member/member';
 import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
 import Button from './common/Button';
@@ -8,12 +8,14 @@ import Button from './common/Button';
 const SContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 42rem;
-  height: 27rem;
+  flex-wrap: wrap;
+  width: 46em;
+  height: 28rem;
   background-color: var(--bg-color);
   border-radius: 10px;
+  padding: 1rem;
 
-  > .userInfo-container {
+  > .memberInfo-container {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -33,15 +35,27 @@ const SContainer = styled.div`
   }
 `;
 
-const MemberInfoModal = () => {
+const MemberInfoModal = ({ memberId }) => {
+  const [member, setMember] = useState({
+    pets: [],
+  });
+
+  useEffect(() => {
+    getMemberInfo(memberId).then((data) => {
+      console.log(data);
+      setMember(data);
+    });
+  }, [memberId]);
+
   return (
     <SContainer>
-      <div className="userInfo-container">
-        <MemberInfoCard userInfo={dummyUserInfo[0]} />
+      <div className="memberInfo-container">
+        <MemberInfoCard memberInfo={member} />
         <Button>채팅하기</Button>
       </div>
       <div className="petInfo-container">
-        <PetInfoCard pet={petInfo[0]} />
+        <h2>강아지 소개</h2>
+        <PetInfoCard pet={member.pets[0]} />
       </div>
     </SContainer>
   );

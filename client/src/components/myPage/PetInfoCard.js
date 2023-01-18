@@ -35,17 +35,16 @@ const CardContainer = styled.div`
 const PetInfoCard = ({ pet }) => {
   return (
     <CardContainer>
-      <h2>강아지 소개</h2>
-      <img src={pet.pet_img} alt=""></img>
+      <img src={pet?.profileImage} alt=""></img>
       <Title as="h3" size="small">
-        {pet.name}
+        {pet?.name}
       </Title>
       <div className="Info">
-        <div>🐶 {pet.age}살</div>
-        <div>{pet.male ? '수컷' : '암컷'}</div>
-        <div>{pet.breed}</div>
+        <div>🐶 {pet?.age}살</div>
+        <div>{pet?.gender === 'M' ? '수컷' : '암컷'}</div>
+        <div>{pet?.breed}</div>
       </div>
-      <div className="Introduce">{pet.Introduce}</div>
+      <div className="Introduce">{pet?.aboutDog}</div>
     </CardContainer>
   );
 };

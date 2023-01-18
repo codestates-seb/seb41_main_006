@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import MateMemberCard from './MateMemberCard';
-import dummyMembers from '../../api/dummyData/dummyMembers';
+// import MateMemberCard from './MateMemberCard';
+// import dummyMembers from '../../api/member/dummyMembers';
 
 const UserList = styled.ul`
   width: 90%;
@@ -13,18 +13,18 @@ const UserList = styled.ul`
   overflow: hidden;
 `;
 
-const UserItem = styled.li`
-  height: 20rem;
-`;
+// const UserItem = styled.li`
+//   height: 20rem;
+// `;
 const MateMemberList = () => {
   return (
     <UserList>
       <button>이전</button>
-      {dummyMembers.map((el) => (
+      {/* {dummyMembers.map((el) => (
         <UserItem key={el.id}>
           <MateMemberCard user={el} />
         </UserItem>
-      ))}
+      ))} */}
       <button>다음</button>
     </UserList>
   );
