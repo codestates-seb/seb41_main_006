@@ -83,7 +83,7 @@ public class BoardController {
                                        @RequestParam(value = "search") String keyword) { // 위치로 검색
         Page<Board> boardPage;
 
-        if(keyword != null) {
+        if(keyword != null || !keyword.isEmpty()) {
             boardPage = boardService.searchBoard(page, size, keyword);
         } else {
             boardPage = boardService.findBoards(page, size);
