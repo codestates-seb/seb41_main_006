@@ -75,6 +75,11 @@ const Map = ({ searchPlace }) => {
         );
         infowindow.open(map, marker);
       });
+
+      // 장소 검색한 후 클릭으로 새로운 장소 지정 시 기존 마커 제거
+      kakao.maps.event.addListener(map, 'click', function () {
+        marker.setMap(null);
+      });
     };
 
     // 지도 클릭으로 장소 지정
