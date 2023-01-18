@@ -102,7 +102,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 //        UsernamePasswordAuthenticationToken authenticationToken =
 //                new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-        log.info("세션에 저장할 authentication 객체 = {}", authenticationToken);
+        log.info("Set Authentication in security context, {}", authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 }

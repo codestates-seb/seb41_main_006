@@ -2,6 +2,9 @@ spring:
   output:
     ansi:
       enabled: always
+  redis :
+    host: localhost
+    port: 6379
   h2:
     console:
       path: /h2
