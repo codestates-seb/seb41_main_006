@@ -55,7 +55,6 @@ public class JwtReissueFilter extends OncePerRequestFilter {
             jwtTokenizer.getClaims(refreshToken,
                     jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey()));
             String memberEmail = redisService.getRefreshToken(refreshToken);
-            log.info("memberEmail = {}",memberEmail);
             MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(memberEmail);
             //base64 인코딩된 시크릿 키 가져오기
             String base64EncodedSecretKey = jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey());
