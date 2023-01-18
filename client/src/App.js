@@ -23,7 +23,7 @@ function App() {
         ></Route>
         <Route path="/newmate" element={<BoardPage />}></Route>
         <Route
-          path="/mate/boards/:mateId/edit"
+          path="/mate/boards/:boardId/edit"
           element={<BoardEditPage />}
         ></Route>
         <Route path="/mate/*" element={<FindMatePage />}></Route>

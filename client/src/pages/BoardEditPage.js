@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-// import Map from '../components/matePost/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
-// import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import dummyBoards from '../api/board/dummyBoards';
 import MapContainer from '../components/matePost/MapContainer';
-// import SelectDog from '../components/matePost/SelectDog';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -88,7 +86,8 @@ const BtnContainer = styled.div`
 `;
 
 const BoardEditPage = () => {
-  // const { mateId } = useParams();
+  const { boardId } = useParams();
+  const navigate = useNavigate();
 
   return (
     <ContainerBox>
@@ -109,7 +108,9 @@ const BoardEditPage = () => {
       </MainContainer>
       <BtnContainer>
         <PostSubmitBtn>수정</PostSubmitBtn>
-        <CancelButton>취소</CancelButton>
+        <CancelButton onClick={() => navigate(`/mate/boards/${boardId}`)}>
+          취소
+        </CancelButton>
       </BtnContainer>
     </ContainerBox>
   );

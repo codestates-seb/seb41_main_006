@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getBoardById } from '../api/board/board';
-
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -11,7 +10,6 @@ import CommentList from '../components/matePost/CommentList';
 import DeleteModal from '../components/DeleteModal';
 import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-
 import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/matePost/BoardMeetInfo';
@@ -134,6 +132,8 @@ const MainContainer = styled.div`
 `;
 
 const BoardDetailPage = () => {
+  const navigate = useNavigate();
+
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
   const [modal, setModal] = useState(false);
@@ -171,7 +171,12 @@ const BoardDetailPage = () => {
             <span>{board.countLike}</span>
           </div>
           <div className="post-btn">
-            <button className="post-edit">수정</button>
+            <button
+              className="post-edit"
+              onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
+            >
+              수정
+            </button>
             <button className="post-del" onClick={handelDelClick}>
               삭제
             </button>
