@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import { FaRegCalendar } from 'react-icons/fa';
 import { BiTimeFive } from 'react-icons/bi';
 import { MdPlace } from 'react-icons/md';
+import Map from './Map';
 
 const MeetInfoContainer = styled.div`
   width: 100%;
-  height: 30rem;
   padding: 0 1rem;
 
   > .meet-info {
@@ -26,6 +26,12 @@ const MeetInfoContainer = styled.div`
     padding-left: 1.5rem;
     padding-top: 3rem;
   }
+
+  .meet-map {
+    margin-top: 16px;
+    height: 17rem;
+    width: 100%;
+  }
 `;
 
 const InfoLabelBox = styled.div`
@@ -40,7 +46,7 @@ const InfoLabelBox = styled.div`
   }
 `;
 
-const PostMeetInfo = () => {
+const BoardMeetInfo = () => {
   return (
     <MeetInfoContainer>
       <div className="meet-info">
@@ -64,11 +70,13 @@ const PostMeetInfo = () => {
           <MdPlace />
           <span>만나는 장소</span>
         </InfoLabelBox>
-        <span className="meet-info--content">서울 송파구 잠실 7동</span>
-        <div>map</div>
+        <span className="meet-info--content">경기도 의정부시 신곡동</span>
+        <div className="meet-map" id="map">
+          <Map searchPlace={'경기도 의정부시 신곡동'} />
+        </div>
       </div>
     </MeetInfoContainer>
   );
 };
 
-export default PostMeetInfo;
+export default BoardMeetInfo;

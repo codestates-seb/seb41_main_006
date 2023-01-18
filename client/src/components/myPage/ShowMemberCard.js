@@ -46,7 +46,7 @@ const Chatbtn = styled(PostSubmitBtn)`
   font-size: 1.2rem;
   border-radius: 5px;
 `;
-const ShowUserCard = ({ dummyUserInfo }) => {
+const ShowMemberCard = ({ dummyUserInfo }) => {
   return (
     <CardContainer>
       <img src={dummyUserInfo.profile_img} alt="" />
@@ -73,4 +73,4 @@ const ShowUserCard = ({ dummyUserInfo }) => {
     </CardContainer>
   );
 };
-export default ShowUserCard;
+export default ShowMemberCard;

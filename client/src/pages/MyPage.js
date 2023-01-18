@@ -1,8 +1,8 @@
 import { Link, useLocation, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
-import PostInfo from '../components/myPage/PostInfo';
-import UserInfo from '../components/myPage/UserInfo';
+import BoardInfo from '../components/myPage/BoardInfo';
+import MemberInfo from '../components/myPage/MemberInfo';
 import PetInfo from '../components/myPage/PetInfo';
 
 const SContainer = styled(Container)`
@@ -50,33 +50,33 @@ const MyPage = () => {
         <div className="tap-container">
           <TabLink
             className={
-              pathname === '/mypage' || pathname === '/mypage/userinfo'
+              pathname === '/mypage' || pathname === '/mypage/memberInfo'
                 ? 'focus'
                 : ''
             }
-            to="userinfo"
+            to="memberInfo"
           >
             나의 정보
           </TabLink>
           <TabLink
-            className={pathname === '/mypage/petinfo' ? 'focus' : ''}
-            to="petinfo"
+            className={pathname === '/mypage/petInfo' ? 'focus' : ''}
+            to="petInfo"
           >
             강아지 정보
           </TabLink>
           <TabLink
-            className={pathname === '/mypage/myposts' ? 'focus' : ''}
-            to="myposts"
+            className={pathname === '/mypage/myBoards' ? 'focus' : ''}
+            to="myBoards"
           >
             나의 모임
           </TabLink>
           <TabLink>알림</TabLink>
         </div>
         <Routes>
-          <Route path="/" element={<UserInfo />}></Route>
-          <Route path="userinfo" element={<UserInfo />}></Route>
-          <Route path="petinfo" element={<PetInfo />}></Route>
-          <Route path="myposts" element={<PostInfo />}></Route>
+          <Route path="/" element={<MemberInfo />}></Route>
+          <Route path="memberInfo" element={<MemberInfo />}></Route>
+          <Route path="petInfo" element={<PetInfo />}></Route>
+          <Route path="myBoards" element={<BoardInfo />}></Route>
         </Routes>
       </SContainer>
     </>

@@ -2,7 +2,7 @@ import PetInfoCard from './myPage/PetInfoCard';
 import { dummyUserInfo } from '../api/dummyData/dummyUserInfo';
 import { petInfo } from '../api/dummyData/dummyMyPetinfo';
 import styled from 'styled-components';
-import UserInfoCard from './myPage/UsetInfoCard';
+import MemberInfoCard from './myPage/MemberInfoCard';
 import Button from './common/Button';
 
 const SContainer = styled.div`
@@ -33,11 +33,11 @@ const SContainer = styled.div`
   }
 `;
 
-const UserInfoModal = () => {
+const MemberInfoModal = () => {
   return (
     <SContainer>
       <div className="userInfo-container">
-        <UserInfoCard userInfo={dummyUserInfo[0]} />
+        <MemberInfoCard userInfo={dummyUserInfo[0]} />
         <Button>채팅하기</Button>
       </div>
       <div className="petInfo-container">
@@ -47,4 +47,4 @@ const UserInfoModal = () => {
   );
 };
 
-export default UserInfoModal;
+export default MemberInfoModal;

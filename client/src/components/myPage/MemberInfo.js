@@ -1,17 +1,15 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import Title from '../common/Title';
-import EdituserModal from './Modal/EdituserModal';
-import UserInfoCard from './UsetInfoCard';
-import WithdrawalModal from '../WithdrawalModal';
+import { useState } from 'react';
+import EditMemberModal from './Modal/EditMemberModal';
+import MemberInfoCard from './MemberInfoCard';
 import { dummyUserInfo } from '../../api/dummyData/dummyUserInfo';
+import WithdrawalModal from '../WithdrawalModal';
 
 const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 70%;
-  gap: 1.5rem;
   .edit-account {
     width: 15%;
     height: 40px;
@@ -27,6 +25,7 @@ const UserInfoContainer = styled.div`
     }
   }
   .delete-account {
+    margin: 2% 0 5% 0;
     cursor: pointer;
     background-color: var(--bg-color);
     border: none;
@@ -36,14 +35,13 @@ const UserInfoContainer = styled.div`
   }
 `;
 
-const UserInfo = () => {
+const MemberInfo = () => {
   const [Modal, setModal] = useState(false);
   const [DeleteModal, setDeleteModal] = useState(false);
   return (
     <>
       <UserInfoContainer>
-        <Title as="h2">나의 정보</Title>
-        <UserInfoCard userInfo={dummyUserInfo[0]} />
+        <MemberInfoCard dummyUserInfo={dummyUserInfo[0]} />
         <button
           className="edit-account"
           onClick={() => {
@@ -61,10 +59,10 @@ const UserInfo = () => {
           회원 탈퇴
         </button>
       </UserInfoContainer>
-      {Modal ? <EdituserModal setModal={setModal} Modal={Modal} /> : ''}
+      {Modal ? <EditMemberModal setModal={setModal} Modal={Modal} /> : ''}
       {DeleteModal ? <WithdrawalModal /> : ''}
     </>
   );
 };
 
-export default UserInfo;
+export default MemberInfo;

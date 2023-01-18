@@ -46,15 +46,15 @@ const FindMateTab = () => {
       <div className="tabs">
         <TabLink
           className={
-            pathname === '/mate' || pathname === '/mate/users' ? 'focus' : ''
+            pathname === '/mate' || pathname === '/mate/members' ? 'focus' : ''
           }
-          to="users"
+          to="members"
         >
           산책 메이트
         </TabLink>
         <TabLink
-          className={pathname === '/mate/posts' ? 'focus' : ''}
-          to="posts"
+          className={pathname === '/mate/boards' ? 'focus' : ''}
+          to="boards"
         >
           산책 모임
         </TabLink>

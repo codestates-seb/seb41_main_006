@@ -6,14 +6,15 @@ import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
 import DeleteModal from '../components/DeleteModal';
-import UserInfoCard from '../components/myPage/UsetInfoCard';
-import PostMeetInfo from '../components/matePost/PostMeetInfo';
 import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 import { convertCreatedAt } from '../utils/dateConvert';
 import { dummyUserInfo } from '../api/dummyData/dummyUserInfo';
 import { dummyComments } from '../api/dummyData/dummyData';
+import MemberInfoCard from '../components/myPage/MemberInfoCard';
+// import MapContainer from '../components/matePost/MapContainer';
+import BoardMeetInfo from '../components/matePost/BoardMeetInfo';
 
 const ContainerBox = styled(Container)`
   padding-top: 20px;
@@ -110,7 +111,7 @@ const MainContainer = styled.div`
     flex-direction: column;
     align-items: center;
 
-    height: 80rem;
+    height: 48rem;
 
     background-color: white;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
@@ -123,8 +124,8 @@ const MainContainer = styled.div`
     align-items: center;
   }
   .post-meet-info {
-    position: sticky;
-    top: calc(var(--header-height) + 1.25rem);
+    /* position: sticky;
+    top: calc(var(--header-height) + 1.25rem); */
     width: 100%;
     margin-top: 2rem;
     padding-top: 2rem;
@@ -132,7 +133,7 @@ const MainContainer = styled.div`
   }
 `;
 
-const PostDetailPage = () => {
+const BoardDetailPage = () => {
   const [modal, setModal] = useState(false);
   const handleClickUser = useOpenUserInfoModal(1);
 
@@ -182,10 +183,10 @@ const PostDetailPage = () => {
         </div>
         <div className="right-box">
           <button className="user-info" onClick={handleClickUser}>
-            <UserInfoCard userInfo={dummyUserInfo[0]} />
+            <MemberInfoCard userInfo={dummyUserInfo[0]} />
           </button>
           <div className="post-meet-info">
-            <PostMeetInfo />
+            <BoardMeetInfo />
           </div>
         </div>
       </MainContainer>
@@ -193,4 +194,4 @@ const PostDetailPage = () => {
   );
 };
 
-export default PostDetailPage;
+export default BoardDetailPage;

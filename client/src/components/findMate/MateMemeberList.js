@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import MateUserCard from './MateUserCard';
+import MateMemberCard from './MateMemberCard';
 import dummyMembers from '../../api/dummyData/dummyMembers';
 
 const UserList = styled.ul`
@@ -16,14 +16,13 @@ const UserList = styled.ul`
 const UserItem = styled.li`
   height: 20rem;
 `;
-
-const MateUserList = () => {
+const MateMemberList = () => {
   return (
     <UserList>
       <button>이전</button>
       {dummyMembers.map((el) => (
         <UserItem key={el.id}>
-          <MateUserCard user={el} />
+          <MateMemberCard user={el} />
         </UserItem>
       ))}
       <button>다음</button>
@@ -31,4 +30,4 @@ const MateUserList = () => {
   );
 };
 
-export default MateUserList;
+export default MateMemberList;

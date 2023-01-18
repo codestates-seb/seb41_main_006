@@ -48,7 +48,7 @@ const FilterLabel = styled.label`
   }
 `;
 
-const UserFilterForm = () => {
+const MemberFilterForm = () => {
   // 체크 박스의 경우 값을 배열로 관리하기 위해 초기 값 지정
   const initialValues = useMemo(() => {
     const init = {};
@@ -139,4 +139,4 @@ const UserFilterForm = () => {
   );
 };
 
-export default UserFilterForm;
+export default MemberFilterForm;

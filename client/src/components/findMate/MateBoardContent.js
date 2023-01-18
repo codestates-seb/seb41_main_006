@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getBoardList } from '../../api/board/board';
 import styled from 'styled-components';
-import MatePostList from './MatePostList';
+import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
@@ -22,7 +22,7 @@ const PostsContentRow = styled.div`
   }
 `;
 
-const MatePostsContent = () => {
+const MateBoardConent = () => {
   const navigate = useNavigate();
   const [postList, setPostList] = useState([]);
 
@@ -44,9 +44,9 @@ const MatePostsContent = () => {
           글 작성
         </Button>
       </PostsContentRow>
-      <MatePostList postList={postList} />
+      <MateBoardList postList={postList} />
     </PostsContentLayOut>
   );
 };
 
-export default MatePostsContent;
+export default MateBoardConent;

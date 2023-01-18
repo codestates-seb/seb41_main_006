@@ -64,12 +64,11 @@ const PostCard = styled.div`
   }
 `;
 
-const MatePostCard = ({ post }) => {
+const MateBoardCard = ({ post }) => {
   const handleClickUser = useOpenUserInfoModal(post?.member?.id);
-
   return (
     <PostCard>
-      <Link to={`/mate/posts/${post.id}`}>
+      <Link to={`/mate/boards/${post.id}`}>
         <div className="post-card--top">
           <Title as="h4" size="small">
             {post.title}
@@ -106,4 +105,4 @@ const MatePostCard = ({ post }) => {
   );
 };
 
-export default MatePostCard;
+export default MateBoardCard;

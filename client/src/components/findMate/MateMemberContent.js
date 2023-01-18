@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import MateUserList from './MateUserList';
-import UserFilterModal from './UserFilterModal';
+import MateUserList from './MateMemeberList';
+import MemberFilterModal from './MemberFilterModal';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
@@ -18,7 +18,7 @@ const UsersContentRow = styled.div`
   justify-content: space-between;
 `;
 
-const MateUsersContent = () => {
+const MateMemberContent = () => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const openModalHandler = () => {
@@ -38,10 +38,10 @@ const MateUsersContent = () => {
       </UsersContentRow>
       <MateUserList />
       {isFilterModalOpen ? (
-        <UserFilterModal setIsFilterModalOpen={setIsFilterModalOpen} />
+        <MemberFilterModal setIsFilterModalOpen={setIsFilterModalOpen} />
       ) : null}
     </UsersContentLayOut>
   );
 };
 
-export default MateUsersContent;
+export default MateMemberContent;

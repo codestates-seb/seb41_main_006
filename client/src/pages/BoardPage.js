@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import Map from '../components/matePost/Map';
+import MapContainer from '../components/matePost/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
+// import SelectDog from '../components/matePost/SelectDog';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -111,7 +112,7 @@ const BtnContainer = styled.div`
   }
 `;
 
-const PostPage = () => {
+const BoardPage = () => {
   // const { mateId } = useParams();
 
   return (
@@ -128,21 +129,13 @@ const PostPage = () => {
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          {/* <div className="post-content">
-            안녕하세요~ 말티즈 둥이 키우는 집사입니다. 귀엽고 깜찍하고
-            사랑스럽고 예쁜 아이입니다. 같이 산책하면서 재밌는 시간 보내요! 생각
-            있으신 분은 댓글 달아주세요~!
-          </div> */}
           <textarea
             className="post-content"
             placeholder="내용을 입력하세요"
           ></textarea>
-          {/* <div className="dog-info">강아지 정보</div> */}
         </div>
         <div className="right-box">
-          {/* <div className="selct-dog">Select Dog</div> */}
-
-          <Map />
+          <MapContainer />
         </div>
       </MainContainer>
       <BtnContainer>
@@ -153,4 +146,4 @@ const PostPage = () => {
   );
 };
 
-export default PostPage;
+export default BoardPage;

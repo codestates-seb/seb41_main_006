@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
 import LoginModal from './login/LoginModal';
 import styled from 'styled-components';
-import UserInfoModal from './UserInfoModal';
+import MemberInfoModal from './MemberInfoModal';
 
 const ModalBackDrop = styled.div`
   position: fixed; // 보이는 화면에서 위치가 고정
@@ -24,7 +24,7 @@ const ModalContainer = styled.div`
 
 const MODAL_COMPONENTS = {
   login: LoginModal,
-  user: UserInfoModal,
+  user: MemberInfoModal,
 };
 
 const GlobalModal = () => {

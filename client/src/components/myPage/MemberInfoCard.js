@@ -38,7 +38,7 @@ const UsefInfoWrapper = styled.div`
   }
 `;
 
-const UserInfoCard = ({ userInfo }) => {
+const MemberInfoCard = ({ userInfo }) => {
   return (
     <CardContainer>
       <ProfileImage
@@ -70,4 +70,4 @@ const UserInfoCard = ({ userInfo }) => {
   );
 };
 
-export default UserInfoCard;
+export default MemberInfoCard;
