@@ -18,7 +18,7 @@ function App() {
       <Header></Header>
       <Routes>
         <Route
-          path="/mate/boards/:mateId"
+          path="/mate/boards/:boardId"
           element={<BoardDetailPage />}
         ></Route>
         <Route path="/newmate" element={<BoardPage />}></Route>

@@ -1,16 +1,20 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getBoardById } from '../api/board/board';
+
+import { openModal } from '../store/modules/modalSlice';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { OpenBtn, CloseBtn } from '../components/Button';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import Container from '../components/Container';
 import AddComment from '../components/matePost/AddComment';
 import CommentList from '../components/matePost/CommentList';
-import { dummyComments } from '../static/dummyData';
 import DeleteModal from '../components/DeleteModal';
-import { MatePostDate } from '../utils/dateConvert';
-import { useState } from 'react';
+import { OpenBtn, CloseBtn } from '../components/Button';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
+import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
-import { dummyUserInfo } from '../static/dummyUserInfo';
-import MapContainer from '../components/matePost/MapContainer';
+import BoardMeetInfo from '../components/matePost/BoardMeetInfo';
 
 const ContainerBox = styled(Container)`
   padding-top: 20px;
@@ -101,45 +105,70 @@ const MainContainer = styled.div`
   .right-box {
     width: 100%;
     margin-left: 80px;
+    padding: 2.5rem 1.5rem;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    height: 51rem;
+
+    background-color: white;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   }
 
-  .map-info {
+  .user-info-btn {
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--main-color);
+  }
+  .post-meet-info {
+    /* position: sticky;
+    top: calc(var(--header-height) + 1.25rem); */
     width: 100%;
-    margin-top: 20px;
-  }
-
-  .user-info {
-    width: 110%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--main-font-color);
   }
 `;
 
 const BoardDetailPage = () => {
+  const { boardId } = useParams();
+  const [board, setBoard] = useState({});
   const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleClickUser = (memberId) => {
+    dispatch(openModal({ type: 'member', props: { memberId } }));
+  };
 
   const handelDelClick = () => {
     // modalView(true, '정말 삭제하시겠습니까?');
     setModal(true);
   };
 
+  useEffect(() => {
+    getBoardById(Number(boardId)).then((data) => {
+      setBoard(data);
+    });
+
+    console.log(board);
+  }, [boardId]);
+
   return (
     <ContainerBox>
       <HeaderContainer>
         <div className="post-title">
-          <div className="title">같이 산책해요~!!</div>
+          <div className="title">{board.title}</div>
           <OpenBtn>모집중</OpenBtn>
           <CloseBtn>모집마감</CloseBtn>
         </div>
         <div className="post-info">
-          <div className="post-createAt">{MatePostDate(new Date())}</div>
+          <div className="post-createAt">{convertCreatedAt(new Date())}</div>
           <div className="post-like">
             <FaHeart />
-            <span>3</span>
+            <span>{board.countLike}</span>
           </div>
           <div className="post-btn">
             <button className="post-edit">수정</button>
@@ -154,24 +183,24 @@ const BoardDetailPage = () => {
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          <div className="post-content">
-            안녕하세요~ 말티즈 둥이 키우는 집사입니다. 귀엽고 깜찍하고
-            사랑스럽고 예쁜 아이입니다. 같이 산책하면서 재밌는 시간 보내요! 생각
-            있으신 분은 댓글 달아주세요~!
-          </div>
+          <div className="post-content">{board.content}</div>
           <div className="comment-cnt">
-            <h3>댓글 {dummyComments.length}개</h3>
+            <h3>댓글 {board.commentsLength}개</h3>
           </div>
           <AddComment />
-          <CommentList />
+          <CommentList comments={board.comments} />
           {modal ? <DeleteModal /> : null}
         </div>
         <div className="right-box">
-          <div className="user-info">
-            <MemberInfoCard dummyUserInfo={dummyUserInfo[0]} />
-          </div>
-          <div className="map-info">
-            <MapContainer />
+          <MemberInfoCard memberInfo={board.member} />
+          <button
+            className="user-info-btn"
+            onClick={() => handleClickUser(board.member.memberId)}
+          >
+            {'> 상세 정보'}
+          </button>
+          <div className="post-meet-info">
+            <BoardMeetInfo meetInfo={board.meetInfo} />
           </div>
         </div>
       </MainContainer>

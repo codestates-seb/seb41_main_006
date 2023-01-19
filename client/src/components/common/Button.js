@@ -118,7 +118,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([(PropTypes.element, PropTypes.string)]),
   color: PropTypes.string,
   size: PropTypes.string,
   outline: PropTypes.bool,

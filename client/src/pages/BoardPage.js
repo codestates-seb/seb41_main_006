@@ -3,6 +3,7 @@ import MapContainer from '../components/matePost/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
+// import SelectDog from '../components/matePost/SelectDog';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;

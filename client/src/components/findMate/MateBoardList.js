@@ -15,10 +15,10 @@ const PostItem = styled.li`
   padding-top: 60%;
 `;
 
-const MateBoardList = ({ postList }) => {
+const MateBoardList = ({ boardList }) => {
   return (
     <PostList>
-      {postList.map((el) => (
+      {boardList.map((el) => (
         <PostItem key={el.id}>
           <MateBoardCard post={el} />
         </PostItem>

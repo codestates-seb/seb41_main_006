@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { dummyComments } from '../../static/dummyData';
 import Comment from './Comment';
 
 const CommentBox = styled.ul`
@@ -18,16 +17,20 @@ const CommentItem = styled.li`
   padding-bottom: 12px;
 `;
 
-const CommentList = () => {
+const CommentList = ({ comments }) => {
   return (
     <CommentBox>
-      {dummyComments.map((el) => (
+      {comments?.map((el) => (
         <CommentItem key={el.id}>
-          <Comment post={el} />
+          <Comment comment={el} />
         </CommentItem>
       ))}
     </CommentBox>
   );
 };
+
+// CommentList.defaultProps = {
+//   comments: [],
+// };
 
 export default CommentList;

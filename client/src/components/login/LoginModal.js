@@ -19,8 +19,8 @@ const LoginContainer = styled.div`
   align-items: center;
   padding-top: 2rem;
   width: 60%;
-  height: 70%;
-  gap: 0.5rem;
+  height: 80%;
+  gap: 1rem;
 
   > .text-container {
     display: flex;

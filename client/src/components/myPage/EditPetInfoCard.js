@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { MdModeEdit } from 'react-icons/md';
 import { RiDeleteBinFill } from 'react-icons/ri';
+import PetInfoCard from './PetInfoCard';
 
 const CardContainer = styled.div`
   display: flex;
@@ -47,14 +48,7 @@ const CardContainer = styled.div`
 const EditPetInfoCard = ({ pet, setEditModal, EditModal }) => {
   return (
     <CardContainer>
-      <img src={pet.pet_img} alt=""></img>
-      <div>{pet.name}</div>
-      <div className="Info">
-        <div>🐶 {pet.age}살</div>
-        <div>{pet.male ? '남' : '여'}</div>
-        <div>{pet.breed}</div>
-      </div>
-      <div className="Introduce">{pet.Introduce}</div>
+      <PetInfoCard pet={pet} />
       <div className="Edit">
         <button>
           <MdModeEdit
