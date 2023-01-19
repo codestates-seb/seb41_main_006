@@ -10,6 +10,8 @@ import com.mainproject.server.domain.comments.repository.CommentsRepository;
 import com.mainproject.server.domain.comments.service.CommentsService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
+import com.mainproject.server.domain.pet.entity.Pet;
+import com.mainproject.server.domain.pet.service.PetService;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +35,16 @@ public class BoardService {
     private final BoardMapper boardMapper;
     private final MemberService memberService;
     private final CommentsService commentsService;
+    private final PetService petService;
 
 
     public Board createBoard(Board board, MemberDetails memberDetails) {
 
         Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
+        Pet pet = petService.findPet(board.getPet().getPetId());
+
         board.setMember(member);
+        board.setPet(pet);
 
         return boardRepository.save(board);
     }
@@ -63,6 +69,11 @@ public class BoardService {
 
        Optional.ofNullable(board.getBoardStatus())
                .ifPresent(findBoard::setBoardStatus);
+
+       if(board.getPet().getPetId() != null) {
+           Pet pet = petService.findPet(board.getPet().getPetId());
+           findBoard.setPet(pet);
+       }
 
        return boardRepository.save(findBoard);
     }
