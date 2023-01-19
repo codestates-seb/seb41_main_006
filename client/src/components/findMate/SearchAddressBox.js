@@ -16,7 +16,7 @@ const SearchAddress = ({ setAddress }) => {
       <IoLocationSharp className="location-icon" />
       <AdderssInput
         type="text"
-        placeholder="동 이름을 검색하세요"
+        placeholder="시/도 또는 시/군/구 또는 읍/면/동 이름을 검색하세요"
         onKeyUp={handleKeyUp}
       ></AdderssInput>
       <LocationButton>
