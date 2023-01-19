@@ -131,13 +131,24 @@ const EditMemberInfoCard = () => {
   const [genderSelect, setGenderSelect] = useState([false, false]);
   const [profile, setProfile] = useState(null);
   const ImgRef = useRef();
+  const FileValue = 'image';
   //버튼 누르면 인풋 연결
   const handleImgUpload = () => {
     ImgRef.current.click();
   };
   //인풋에서 이미지 업로드 시 스테이트 변경
   const handleImgChange = (e) => {
-    setProfile(e.target.files[0]);
+    if (e.target.files === undefined) {
+      return;
+    }
+    //파일 확장자 , 크기 걸러줌
+    if (!e.target.files[0].type.includes(FileValue)) {
+      alert('허용된 확장자가 아닙니다.');
+    } else if (e.target.files[0].size > 5 * 1024 * 1024) {
+      alert('최대 파일 용량은 5MB입니다.');
+    } else {
+      setProfile(e.target.files[0]);
+    }
   };
   console.log(profile);
   return (

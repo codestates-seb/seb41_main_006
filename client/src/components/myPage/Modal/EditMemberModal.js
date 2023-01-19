@@ -28,7 +28,7 @@ const ModalContainer = styled.div`
 `;
 const Submitbtn = styled(PostSubmitBtn)`
   margin: 30px 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   border-radius: 10px;
 `;
