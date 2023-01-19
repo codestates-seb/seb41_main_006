@@ -9,6 +9,8 @@ import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.comments.mapper.CommentsMapper;
 import com.mainproject.server.domain.member.entity.Member;
 
+import com.mainproject.server.domain.pet.dto.PetDto;
+import com.mainproject.server.domain.pet.entity.Pet;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -31,17 +33,50 @@ public interface BoardMapper {
         board.setContent( postPostDto.getContent() );
         board.setAppointTime( postPostDto.getAppointTime() );
         board.setMeetingPlace( postPostDto.getMeetingPlace() );
+        board.setPet(postToPet(postPostDto));
         board.setBoardStatus(Board.BoardStatus.BOARD_OPEN);
         board.setCountLike(0);
 
         return board;
     }
-    Board boardPatchDtoToPost (BoardDto.Patch postPatchDto);
+
+    default Pet postToPet(BoardDto.Post post) {
+        if(post == null) {
+            return null;
+        }
+        Pet pet = new Pet();
+        pet.setPetId(post.getPetId());
+        return pet;
+    }
+    default Board boardPatchDtoToPost(BoardDto.Patch postPatchDto) {
+        if ( postPatchDto == null ) {
+            return null;
+        }
+
+        Board board = new Board();
+
+        board.setTitle( postPatchDto.getTitle() );
+        board.setContent( postPatchDto.getContent() );
+        board.setAppointTime( postPatchDto.getAppointTime() );
+        board.setMeetingPlace( postPatchDto.getMeetingPlace() );
+        board.setPet(patchToPet(postPatchDto));
+
+        return board;
+    }
+
+    default Pet patchToPet(BoardDto.Patch patch) {
+        if(patch == null) {
+            return null;
+        }
+        Pet pet = new Pet();
+        pet.setPetId(patch.getPetId());
+        return pet;
+    }
 
     @Mapping(source = "member.memberId", target = "memberId")
     default BoardDto.Response boardToBoardResponseDto(Board board){
         List<Comments> comments= board.getCommentList();
-
+        Pet pet = board.getPet();
 
         BoardDto.Response boardResponseDto = BoardDto.Response
                 .builder()
@@ -51,6 +86,7 @@ public interface BoardMapper {
                 .content(board.getContent())
                 .appointTime(board.getAppointTime())
                 .meetingPlace(board.getMeetingPlace())
+                .pet(petToPetResponseWithoutMemberDto(pet))
                 .boardStatus(board.getBoardStatus())
                 .createdAt(board.getCreatedAt())
                 .modifiedAt(board.getModifiedAt())
@@ -63,6 +99,8 @@ public interface BoardMapper {
 
     // ----- Comments
     List<CommentsDto.Response> commentsToCommentsResponseDtos(List<Comments> comments);
+
+    PetDto.ResponseWithoutMember petToPetResponseWithoutMemberDto(Pet pet);
 
     @Mappings({@Mapping(source = "member.memberId", target = "memberId"),
         @Mapping(source = "board.boardId", target = "boardId"),
