@@ -35,9 +35,8 @@ const UserInfoContainer = styled.div`
   }
 `;
 
-
 const MemberInfo = ({ member }) => {
-  const [Modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [DeleteModal, setDeleteModal] = useState(false);
   return (
     <>
