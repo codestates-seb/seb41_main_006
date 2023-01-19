@@ -35,6 +35,7 @@ const UserInfoContainer = styled.div`
   }
 `;
 
+
 const MemberInfo = ({ member }) => {
   const [Modal, setModal] = useState(false);
   const [DeleteModal, setDeleteModal] = useState(false);
@@ -46,7 +47,7 @@ const MemberInfo = ({ member }) => {
         <button
           className="edit-account"
           onClick={() => {
-            setModal(!Modal);
+            setEditModal(!editModal);
           }}
         >
           정보 수정
@@ -60,7 +61,11 @@ const MemberInfo = ({ member }) => {
           회원 탈퇴
         </button>
       </UserInfoContainer>
-      {Modal ? <EditMemberModal setModal={setModal} Modal={Modal} /> : ''}
+      {editModal ? (
+        <EditMemberModal setModal={setEditModal} Modal={editModal} />
+      ) : (
+        ''
+      )}
       {DeleteModal ? <WithdrawalModal /> : ''}
     </>
   );

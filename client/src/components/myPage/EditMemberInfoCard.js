@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import SelectAge from '../Select';
 
 const SInputInfoContainer = styled.div`
@@ -33,6 +33,9 @@ const SInputInfoContainer = styled.div`
       display: flex;
       flex-direction: column;
       padding-right: 10px;
+      .Img-upload {
+        display: none;
+      }
       div {
         background-color: white;
         width: 100px;
@@ -126,13 +129,30 @@ const SInputInfoContainer = styled.div`
 
 const EditMemberInfoCard = () => {
   const [genderSelect, setGenderSelect] = useState([false, false]);
+  const [profile, setProfile] = useState(null);
+  const ImgRef = useRef();
+  //버튼 누르면 인풋 연결
+  const handleImgUpload = () => {
+    ImgRef.current.click();
+  };
+  //인풋에서 이미지 업로드 시 스테이트 변경
+  const handleImgChange = (e) => {
+    setProfile(e.target.files[0]);
+  };
+  console.log(profile);
   return (
     <SInputInfoContainer>
       <div className="title">집사 정보 입력</div>
       <div className="input-container">
         <div className="image-container">
           <div></div>
-          <button>이미지 업로드</button>
+          <button onClick={handleImgUpload}>이미지 업로드</button>
+          <input
+            type="file"
+            className="Img-upload"
+            ref={ImgRef}
+            onChange={handleImgChange}
+          ></input>
           <button>이미지 삭제</button>
         </div>
         <div>
