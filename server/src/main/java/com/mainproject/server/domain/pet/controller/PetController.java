@@ -74,6 +74,20 @@ public class PetController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
+    // 회원이 등록한 강아지 목록 가져오기
+    @GetMapping("/my-pets")
+    public ResponseEntity getPets(@Positive @RequestParam(defaultValue = "1") int page,
+                                  @Positive @RequestParam(defaultValue = "10") int size,
+                                  @AuthenticationPrincipal MemberDetails memberDetails) {
+
+        Page<Pet> petPage = petService.findMyPets(page, size, memberDetails);
+
+        PageInfo pageInfo = new PageInfo(page, size, (int)petPage.getTotalElements(), petPage.getTotalPages());
+        List<Pet> pets = petPage.getContent();
+        List<PetDto.Response> responses = mapper.petListToPetResponseDtos(pets);
+
+        return new ResponseEntity<>(new MultiResponseDto<>(responses, pageInfo), HttpStatus.OK);
+    }
 
     // search(petSize) 값이 존재하면 검색된 값만 반환, search 값이 없으면 단순 목록 조회
     @GetMapping
