@@ -4,6 +4,7 @@ import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.comments.dto.CommentsDto;
 import com.mainproject.server.domain.member.entity.Member;
 
+import com.mainproject.server.domain.pet.dto.PetDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +35,10 @@ public class BoardDto {
 
         @NotBlank(message = "약속 장소를 입력해주세요.")
         private String meetingPlace;
+
+        @NotNull(message = "강아지를 선택해주세요.")
+        private long petId;
+
     }
     @Getter
     @Builder
@@ -50,6 +55,9 @@ public class BoardDto {
 
         @NotBlank(message = "약속 장소를 입력해주세요.")
         private String meetingPlace;
+
+        @NotNull(message = "강아지를 선택해주세요.")
+        private long petId;
     }
     @Getter
     @Builder
@@ -60,9 +68,10 @@ public class BoardDto {
         private int countLike;
         private LocalDateTime appointTime;
         private String meetingPlace;
+        private PetDto.ResponseWithoutMember pet;
         private Board.BoardStatus boardStatus;
 
-        private Member member;
+        private Member member; // 수정 해야함
         private List<CommentsDto.Response> comments;
 
         private LocalDateTime createdAt;

@@ -9,6 +9,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 
 public class PetDto {
     @Getter
@@ -56,7 +57,6 @@ public class PetDto {
         @NotBlank(message = "이미지를 추가해주세요.")
         private String profileImage;
 
-
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
 
@@ -83,5 +83,25 @@ public class PetDto {
         private String aboutDog;
         private String breed;
         private Member member; // 회원이 작성한 글, 댓글, 강아지정보까지 다 들어오게 되어있음
+
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
+    @Getter
+    @Builder
+    public static class ResponseWithoutMember {
+
+        private Long petId;
+        private String profileImage;
+        private String name;
+        private String age;
+        private String gender;
+        private Pet.PetSize petSize;
+        private boolean neutered;
+        private String aboutDog;
+        private String breed;
+
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
     }
 }
