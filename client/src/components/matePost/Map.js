@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
-const { kakao } = window;
 
 const MapBox = styled.div`
   width: 100%;
@@ -13,6 +12,8 @@ const MapContent = styled.div`
   width: 99%;
   height: 500px;
 `;
+
+const { kakao } = window;
 
 const Map = ({ searchPlace }) => {
   useEffect(() => {
@@ -53,14 +54,30 @@ const Map = ({ searchPlace }) => {
 
     ps.keywordSearch(searchPlace, placesSearchCB);
 
-    // 지도 위에 마커 표시 & 마커 클릭 시 인포윈도우 표시
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    let hCode; // 행정 코드 변수
+
+    // 행정 코드 값을 가져와서 행정 코드 변수에 저장
+    const callback = function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        hCode = result[0].address.h_code;
+        // console.log(result[0].address.region_3depth_h_name);
+        console.log('최종 행정 코드', hCode);
+      }
+    };
+
+    // 검색한 장소에 마커 표시
     const displayMarker = (place) => {
+      console.log(place);
       const marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(place.y, place.x),
         image: markerImg,
       });
+      geocoder.addressSearch(place.address_name, callback);
 
+      // 마커 클릭 시 인포윈도우 표시
       kakao.maps.event.addListener(marker, 'click', function () {
         infowindow.setContent(
           '<div style="padding: 5px; font-size: 12px;">' +
@@ -73,19 +90,24 @@ const Map = ({ searchPlace }) => {
             '</div>'
         );
         infowindow.open(map, marker);
+
+        // 마커 클릭 시 지번 주소를 이용해서 행정 코드 값을 가져옴
+        // geocoder.addressSearch(place.address_name, callback);
       });
 
       // 장소 검색한 후 클릭으로 새로운 장소 지정 시 기존 마커 제거
+      // 행정 코드 값도 빈 문자열로 재할당
       kakao.maps.event.addListener(map, 'click', function () {
         marker.setMap(null);
+        hCode = '';
+        console.log('다른 곳 클릭하면', hCode);
       });
     };
 
     // 지도 클릭으로 장소 지정
-    const geocoder = new kakao.maps.services.Geocoder();
-
     kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
       searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+        console.log(result);
         if (status === kakao.maps.services.Status.OK) {
           const content =
             '<div style="padding: 5px; font-size: 12px;">' +
@@ -98,6 +120,8 @@ const Map = ({ searchPlace }) => {
           infowindow.setContent(content);
           infowindow.open(map, marker);
         }
+        // 지도 클릭 시 지번 주소를 이용해서 행정 코드 값을 가져옴
+        geocoder.addressSearch(result[0].address.address_name, callback);
       });
     });
 
