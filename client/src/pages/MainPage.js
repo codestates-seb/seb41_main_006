@@ -4,20 +4,26 @@ import Container from '../components/Container';
 import styled from 'styled-components';
 import MainThirdPage from '../components/MainPage/MainThirdPage';
 import Footer from '../components/Footer';
+import { ColCenterBox } from '../components/FlexBoxs';
 
 const SContainer = styled(Container)`
   display: flex;
   flex-direction: column;
 `;
+const MainContainer = styled(ColCenterBox)`
+  width: 100%;
+`;
 
 const MainPage = () => {
   return (
-    <SContainer>
-      <MainFirstPage />
-      <MainSecondPage />
-      <MainThirdPage />
+    <MainContainer>
+      <SContainer>
+        <MainFirstPage />
+        <MainSecondPage />
+        <MainThirdPage />
+      </SContainer>
       <Footer />
-    </SContainer>
+    </MainContainer>
   );
 };
 
