@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getBoardById } from '../api/board/board';
-
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Container from '../components/Container';
-import DeleteModal from '../components/DeleteModal';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
 // import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-
 import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
@@ -134,11 +131,13 @@ const MainContainer = styled.div`
 `;
 
 const BoardDetailPage = () => {
+  const navigate = useNavigate();
+
   const { boardId } = useParams();
   const [board, setBoard] = useState({
     comments: [],
   });
-  const [modal, setModal] = useState(false);
+
   const dispatch = useDispatch();
 
   const handleClickMember = (memberId) => {
@@ -146,8 +145,7 @@ const BoardDetailPage = () => {
   };
 
   const handelDelClick = () => {
-    // modalView(true, '정말 삭제하시겠습니까?');
-    setModal(true);
+    dispatch(openModal({ type: 'delete' }));
   };
 
   useEffect(() => {
@@ -176,7 +174,12 @@ const BoardDetailPage = () => {
             <span>{board.countLike}</span>
           </div>
           <div className="post-btn">
-            <button className="post-edit">수정</button>
+            <button
+              className="post-edit"
+              onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
+            >
+              수정
+            </button>
             <button className="post-del" onClick={handelDelClick}>
               삭제
             </button>
@@ -190,7 +193,6 @@ const BoardDetailPage = () => {
         <div className="left-box">
           <div className="post-content">{board.content}</div>
           <CommentContainer comments={board.comments} />
-          {modal ? <DeleteModal /> : null}
         </div>
         <div className="right-box">
           <MemberInfoCard memberInfo={board.member} />

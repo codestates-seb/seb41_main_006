@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
@@ -39,8 +39,24 @@ const FindMateBottom = styled.div`
   width: 100%;
 `;
 
+const { kakao } = window;
+
 const FindMatePage = () => {
   const [address, setAddress] = useState('');
+
+  // 주소 - 좌표 변환 객체
+  const geocoder = new kakao.maps.services.Geocoder();
+
+  // 주소로 좌표 검색하기 -> 법정 코드 값 가져오기
+  useEffect(() => {
+    geocoder.addressSearch(address, function (result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+        const bCode = result[0].address.b_code;
+        console.log(result[0].address.address_name);
+        console.log(bCode);
+      }
+    });
+  });
 
   return (
     <FindMateContainer>

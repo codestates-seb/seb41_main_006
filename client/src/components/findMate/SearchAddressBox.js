@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { IoLocationSharp } from 'react-icons/io5';
 import { BiTargetLock } from 'react-icons/bi';
+// import { findMateGet } from '../../api/findMate';
 
 const SearchAddress = ({ setAddress }) => {
   const handleKeyUp = (e) => {
@@ -11,15 +12,62 @@ const SearchAddress = ({ setAddress }) => {
       setAddress(e.target.value);
     }
   };
+
+  // 현재 위치로 목록 받아오기
+  const { kakao } = window;
+
+  const geoFind = () => {
+    // 현재 위치 파악해서 x, y 좌표 얻기
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude; // 위도
+          const lng = position.coords.longitude; // 경도
+
+          // 좌표로 주소 얻기
+          const geocoder = new kakao.maps.services.Geocoder();
+          const coord = new kakao.maps.LatLng(lat, lng);
+
+          const callback = function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              console.log(result[0].address.address_name);
+            }
+
+            // 주소로 법정 코드 얻기
+            geocoder.addressSearch(
+              result[0].address.address_name,
+              function (result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                  const bCode = result[0].address.b_code;
+                  console.log('법정 코드', bCode);
+                  // findMateGet(bCode);
+                }
+              }
+            );
+          };
+
+          geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+        },
+        (err) => {
+          console.log(err.message);
+        }
+      );
+    }
+  };
+
+  const handleLocClick = () => {
+    geoFind();
+  };
+
   return (
     <SearchAddressBox>
       <IoLocationSharp className="location-icon" />
       <AdderssInput
         type="text"
-        placeholder="동 이름을 검색하세요"
+        placeholder="시/도 또는 시/군/구 또는 읍/면/동 이름을 검색하세요"
         onKeyUp={handleKeyUp}
       ></AdderssInput>
-      <LocationButton>
+      <LocationButton onClick={handleLocClick}>
         <BiTargetLock />
         현재 위치
       </LocationButton>

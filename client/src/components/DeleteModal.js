@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { PostSubmitBtn } from './Button';
 import { RiAlertFill } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../store/modules/modalSlice';
 
 const ModalInner = styled.div`
   position: fixed;
@@ -55,6 +57,12 @@ const ModalInner = styled.div`
 `;
 
 const DeleteModal = () => {
+  const dispatch = useDispatch();
+
+  const handleDelClick = () => {
+    dispatch(closeModal({ type: 'delete' }));
+  };
+
   return (
     <ModalInner>
       <div className="modal-message">
@@ -65,7 +73,12 @@ const DeleteModal = () => {
         <PostSubmitBtn height="38" type="button" className="btn">
           예
         </PostSubmitBtn>
-        <PostSubmitBtn height="38" type="button" className="btn">
+        <PostSubmitBtn
+          height="38"
+          type="button"
+          className="btn"
+          onClick={handleDelClick}
+        >
           아니오
         </PostSubmitBtn>
       </div>

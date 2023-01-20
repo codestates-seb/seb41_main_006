@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import { FaRegCalendar } from 'react-icons/fa';
 import { BiTimeFive } from 'react-icons/bi';
+// import { TbCalendarTime } from 'react-icons/tb';
 import { MdPlace } from 'react-icons/md';
 import { useState } from 'react';
 import Map from './Map';
+// import DatePicker from 'react-datepicker';
 
 const MapBox = styled.div`
   color: black;
@@ -60,7 +62,7 @@ const MapBox = styled.div`
   }
 `;
 
-const MapContainer = () => {
+const MapContainer = ({ setLocInfo }) => {
   const [inputPlace, setInputPlace] = useState('');
   const [place, setPlace] = useState('');
 
@@ -74,10 +76,26 @@ const MapContainer = () => {
     setInputPlace('');
   };
 
+  // const [startDate, setStartDate] = useState(new Date());
+
+  // const filterPassedTime = (time) => {
+  //   const currentDate = new Date();
+  //   const selectedDate = new Date(time);
+
+  //   return currentDate.getTime() < selectedDate.getTime();
+  // };
+
   return (
     <MapBox>
       <form className="inputForm" onSubmit={handleSubmit}>
         <div className="meet-info">
+          {/* <TbCalendarTime /> */}
+          {/* <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            showTimeSelect
+            dateFormat="yyyy.MM.dd hh:mm"
+          /> */}
           <div className="meet-date">
             <label htmlFor="date-input">
               <FaRegCalendar />
@@ -93,6 +111,7 @@ const MapContainer = () => {
             <input type="time" id="time-input"></input>
           </div>
         </div>
+
         <div className="map-box">
           <label htmlFor="meet-place">
             <MdPlace />
@@ -106,7 +125,7 @@ const MapContainer = () => {
             value={inputPlace}
           ></input>
           <div className="meet-map" id="map">
-            <Map searchPlace={place} />
+            <Map searchPlace={place} setLocInfo={setLocInfo} />
           </div>
         </div>
       </form>

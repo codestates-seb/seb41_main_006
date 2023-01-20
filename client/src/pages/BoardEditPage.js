@@ -1,5 +1,5 @@
 // import { useState, useEffect } from 'react';
-// import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // import { getBoardById } from '../api/board/board';
 import styled from 'styled-components';
 import Container from '../components/Container';
@@ -89,7 +89,8 @@ const BtnContainer = styled.div`
 `;
 
 const BoardEditPage = () => {
-  // const { boardId } = useParams();
+  const { boardId } = useParams();
+  const navigate = useNavigate();
   // const [board, setBoard] = useState({});
 
   // useEffect(() => {
@@ -117,7 +118,9 @@ const BoardEditPage = () => {
       </MainContainer>
       <BtnContainer>
         <PostSubmitBtn>수정</PostSubmitBtn>
-        <CancelButton>취소</CancelButton>
+        <CancelButton onClick={() => navigate(`/mate/boards/${boardId}`)}>
+          취소
+        </CancelButton>
       </BtnContainer>
     </ContainerBox>
   );
