@@ -8,6 +8,7 @@ import javax.validation.constraints.Positive;
 import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,10 +47,10 @@ public class CommentsDto {
 		}
 	}
 
-	@AllArgsConstructor
-	@NoArgsConstructor
-	@Getter
 	@Setter
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class Response{
 		private Long commentsId;
 		private Long boardId;
@@ -58,6 +59,7 @@ public class CommentsDto {
 		private String content;
 		private Long parentId;
 		private int depth;
+		private int countLike;
 		private LocalDateTime createdAt;
 		private LocalDateTime modifiedAt;
 	}

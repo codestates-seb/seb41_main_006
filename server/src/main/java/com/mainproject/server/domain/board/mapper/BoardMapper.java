@@ -85,6 +85,7 @@ public interface BoardMapper {
                 .member(memberToSimpleResponseDto(board.getMember()))
                 .title(board.getTitle())
                 .content(board.getContent())
+                .countLike(board.getCountLike())
                 .appointTime(board.getAppointTime())
                 .meetingPlace(board.getMeetingPlace())
                 .pet(petToPetResponseWithoutMemberDto(pet))

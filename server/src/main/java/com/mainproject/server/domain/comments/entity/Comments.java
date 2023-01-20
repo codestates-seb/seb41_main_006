@@ -46,9 +46,6 @@ public class Comments extends Auditable {
 	@Column
 	private int depth;
 
-	@Column
-	private String nickName;
-
 	// 댓글 ~ 회원 (N : 1)
 	@ManyToOne
 	@JoinColumn(name = "member_id")
