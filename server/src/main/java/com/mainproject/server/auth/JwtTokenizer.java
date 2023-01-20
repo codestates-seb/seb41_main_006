@@ -99,4 +99,9 @@ public class JwtTokenizer {
         SecretKey key = Keys.hmacShaKeyFor(decodedSecretKey);
         return key;
     }
+
+    // jwt 유효성 검증
+    public boolean validateToken(String jwt) {
+        return this.getClaims(jwt, encodeSecretKeyWithBase64(secretKey)) != null;
+    }
 }
