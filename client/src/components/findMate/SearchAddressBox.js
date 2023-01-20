@@ -30,23 +30,26 @@ const SearchAddress = ({ setAddress }) => {
 
           const callback = function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
-              console.log(result[0].address.address_name);
+              console.log(result);
+              console.log(result[0]);
+              console.log('법정 코드', result[0].code);
+              setAddress(result[0].address_name);
             }
 
             // 주소로 법정 코드 얻기
-            geocoder.addressSearch(
-              result[0].address.address_name,
-              function (result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                  const bCode = result[0].address.b_code;
-                  console.log('법정 코드', bCode);
-                  // findMateGet(bCode);
-                }
-              }
-            );
+            // geocoder.addressSearch(
+            //   result[0].address.address_name,
+            //   function (result, status) {
+            //     if (status === kakao.maps.services.Status.OK) {
+            //       const bCode = result[0].address.b_code;
+            //       console.log('법정 코드', bCode);
+            //       // findMateGet(bCode);
+            //     }
+            //   }
+            // );
           };
 
-          geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+          geocoder.coord2RegionCode(coord.getLng(), coord.getLat(), callback);
         },
         (err) => {
           console.log(err.message);
