@@ -1,11 +1,8 @@
 package com.mainproject.server.domain.chat.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
-import com.mainproject.server.domain.chat.dto.ChatDto;
-import com.mainproject.server.domain.chat.entity.ChatMessage;
-import com.mainproject.server.domain.chat.entity.ChatRoom;
 import com.mainproject.server.domain.chat.entity.JoinChat;
-import com.mainproject.server.domain.chat.repository.RoomRepository;
+import com.mainproject.server.domain.chat.entity.ChatRoom;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -45,7 +41,7 @@ public class ChatService {
     }
 
     // sender의 채팅방 목록 + sender와 receiver의 채팅메세지 내역 -> joinChat?
-    public List<ChatMessage> getChatMessage(long receiverId, MemberDetails memberDetails) {
+    public List<JoinChat> getChatMessage(long receiverId, MemberDetails memberDetails) {
         // sender의 joinchat 중에 receiver가 있는 chatroom찾기?
         List<JoinChat> joinChats = findJoinChats(receiverId, memberDetails.getMemberId());
         return null;

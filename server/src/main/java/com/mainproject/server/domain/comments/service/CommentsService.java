@@ -27,7 +27,6 @@ public class CommentsService {
 		Comments createdComments = new Comments();
 		createdComments.setBoard(comments.getBoard());
 		createdComments.setMember(comments.getMember());
-		createdComments.setNickName(comments.getMember().getNickName());
 		createdComments.setContent(comments.getContent());
 		createdComments.setDepth(0);
 
@@ -48,7 +47,6 @@ public class CommentsService {
 		replyComments.setContent(comments.getContent());
 		replyComments.setBoard(comments.getBoard());
 		replyComments.setMember(comments.getMember());
-		replyComments.setNickName(comments.getMember().getNickName());
 		replyComments.setDepth(parent.getDepth() + 1);
 
 		replyComments.setParentComments(parent);

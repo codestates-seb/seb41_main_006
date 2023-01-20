@@ -1,9 +1,7 @@
 package com.mainproject.server.domain.chat.redis;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mainproject.server.domain.chat.entity.ChatMessage;
+import com.mainproject.server.domain.chat.entity.JoinChat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
@@ -25,8 +23,8 @@ public class RedisSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try{
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            ChatMessage chatMessage = mapper.readValue(publishMessage, ChatMessage.class);
-            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getJoinChat().getChatRoom().getChatRoomId(), chatMessage);
+            JoinChat joinChat = mapper.readValue(publishMessage, JoinChat.class);
+            messagingTemplate.convertAndSend("/sub/chat/room/" + joinChat.getChatRoom().getChatRoomId(), joinChat);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
