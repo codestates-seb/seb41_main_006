@@ -84,4 +84,19 @@ public class PetDto {
         private String breed;
         private Member member; // 회원이 작성한 글, 댓글, 강아지정보까지 다 들어오게 되어있음
     }
+
+    /*회원 정보 포함 안하고 강아지 정보만 DTO로 매핑*/
+    @Getter
+    @Builder
+    public static class SimpleResponse {
+        private Long petId;
+        private String profileImage;
+        private String name;
+        private String age;
+        private String gender;
+        private Pet.PetSize petSize;
+        private boolean neutered;
+        private String aboutDog;
+        private String breed;
+    }
 }

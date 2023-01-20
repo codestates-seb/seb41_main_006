@@ -13,4 +13,8 @@ public interface PetMapper {
     PetDto.Response petToPetResponseDto(Pet pet);
     List<PetDto.Response> petListToPetResponseDtos(List<Pet> pets);
     Pet.PetSize StringGetPetSize(String keyword);
+
+    PetDto.SimpleResponse petToSimpleResponseDto(Pet pet);
+
+    List<PetDto.SimpleResponse> petListToSimpleResponseDtos(List<Pet> pets);
 }

@@ -6,9 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 public class GenderValidator implements ConstraintValidator<Gender, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if(value == null) {
-            return false;
-        }
-        return value.matches("^[FM]$");
+
+        return value == null || value.matches("^[FM]$");
     }
 }

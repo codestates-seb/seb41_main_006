@@ -6,6 +6,7 @@ import com.mainproject.server.domain.pet.entity.Pet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,9 +39,14 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MemberAge memberAge;
+
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
+
 
     private String profileImage;
 
@@ -51,6 +57,7 @@ public class Member extends Auditable {
 
     @JsonIgnore //pet-member 무한 조회 안되게 하는 어노테이션
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 100)
     private List<Pet> pets = new ArrayList<>();
 
     public void addPets(Pet pet) {
@@ -70,6 +77,20 @@ public class Member extends Auditable {
         private String memberStatus;
         MemberStatus(String memberStatus) {
             this.memberStatus = memberStatus;
+        }
+    }
+
+    public enum MemberAge {
+        TEENS("10대"),
+        TWENTIES("20대"),
+        THIRTIES("30대"),
+        FORTIES("40대 이상");
+
+        @Getter
+        private String memberAge;
+
+        MemberAge(String memberAge) {
+            this.memberAge = memberAge;
         }
     }
 }
