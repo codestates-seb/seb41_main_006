@@ -72,7 +72,31 @@ const dummyMembers = {
           profileImage:
             'https://i.ibb.co/Rj5b3xs/Kakao-Talk-Photo-2023-01-12-00-46-38.jpg',
         },
+        {
+          petId: 3,
+          name: '둥삼',
+          gender: 'F',
+          breed: '말티즈',
+          petSize: 'DOG_S',
+          age: 4,
+          neutred: false,
+          aboutDog: '낯가림이 조금 심하며 , 산책이 조금 길어지면 안걸음',
+          profileImage:
+            'https://i.ibb.co/Rj5b3xs/Kakao-Talk-Photo-2023-01-12-00-46-38.jpg',
+        },
       ],
+    },
+    {
+      memberId: 3,
+      nickName: '선영',
+      age: 26,
+      gender: 'F',
+      address: '서울시 송파구 잠실 7동',
+      memberStatus: 'MEMBER_ACTIVE',
+      aboutMe: '강아지를 키우진 않지만 강아지를 너무 좋아해요!',
+      profileImage:
+        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+      pets: [],
     },
   ],
 };
