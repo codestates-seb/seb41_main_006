@@ -2,6 +2,7 @@ package com.mainproject.server.domain.board.dto;
 
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.comments.dto.CommentsDto;
+import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 
 import com.mainproject.server.domain.pet.dto.PetDto;
@@ -70,10 +71,10 @@ public class BoardDto {
         private int countLike;
         private LocalDateTime appointTime;
         private String meetingPlace;
-        private PetDto.ResponseWithoutMember pet;
+        private PetDto.SimpleResponse pet;
         private Board.BoardStatus boardStatus;
 
-        private Member member; // 수정 해야함
+        private MemberDto.SimpleResponse member;
         private List<CommentsDto.Response> comments;
 
         private LocalDateTime createdAt;

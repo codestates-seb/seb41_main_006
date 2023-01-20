@@ -113,4 +113,11 @@ public class MemberDto {
         private List<PetDto.SimpleResponse> petsInfo;
 
     }
+
+    @Getter
+    @Builder
+    public static class ResponseOnlyMemberName {
+        private long memberId;
+        private String nickName;
+    }
 }

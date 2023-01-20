@@ -50,4 +50,6 @@ public interface MemberMapper {
 //    MemberDto.ResponseWithPets memberToMemberResponseWithPetsDto(Member member);
 
     List<MemberDto.ResponseWithPets> membersToMemberResponseWithPetsDto(List<Member> member);
+
+    MemberDto.ResponseOnlyMemberName memberToMemberResponseOnlyMemberName(Member member);
 }
