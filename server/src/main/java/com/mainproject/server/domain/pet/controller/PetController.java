@@ -61,9 +61,8 @@ public class PetController {
         Pet pet = mapper.petPatchDtoToPet(petPatchDto);
         pet.setPetId(petId);
 
-        petService.updatePet(pet, memberDetails);
-
-        PetDto.Response response = mapper.petToPetResponseDto(pet);
+        Pet updatePet = petService.updatePet(pet, memberDetails);
+        PetDto.Response response = mapper.petToPetResponseDto(updatePet);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
@@ -75,25 +74,33 @@ public class PetController {
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
-    // 강아지 전체 목록 페이지네이션
-    @GetMapping
+    // 회원이 등록한 강아지 목록 가져오기
+    @GetMapping("/my-pets")
     public ResponseEntity getPets(@Positive @RequestParam(defaultValue = "1") int page,
-                                  @Positive @RequestParam(defaultValue = "10") int size) {
-        Page<Pet> pets = petService.findPets(page, size);
-        PageInfo pageInfo = new PageInfo(page, size, (int)pets.getTotalElements(), pets.getTotalPages());
+                                  @Positive @RequestParam(defaultValue = "10") int size,
+                                  @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        List<Pet> petList = pets.getContent();
-        List<PetDto.Response> responses = mapper.petListToPetResponseDtos(petList);
+        Page<Pet> petPage = petService.findMyPets(page, size, memberDetails);
+
+        PageInfo pageInfo = new PageInfo(page, size, (int)petPage.getTotalElements(), petPage.getTotalPages());
+        List<Pet> pets = petPage.getContent();
+        List<PetDto.ResponseWithoutMember> responses = mapper.petListToPetResponseWithoutMemberDtos(pets);
 
         return new ResponseEntity<>(new MultiResponseDto<>(responses, pageInfo), HttpStatus.OK);
     }
-    // 강아지 크기 별로 검색
-    @GetMapping("/search")
+
+    // search(petSize) 값이 존재하면 검색된 값만 반환, search 값이 없으면 단순 목록 조회
+    @GetMapping
     public ResponseEntity searchPets(@Positive @RequestParam(defaultValue = "1")  int page,
                                   @Positive @RequestParam(defaultValue = "10")  int size,
-                                  @RequestParam(value = "pet_size") String keyword) {
+                                  @RequestParam(value = "search") String keyword) {
+        Page<Pet> petPage;
 
-        Page<Pet> petPage = petService.findPetByKeyword(page, size, mapper.StringGetPetSize(keyword));
+        if(keyword != null || !keyword.isEmpty()) {
+            petPage = petService.findPetByPetSize(page, size, mapper.StringGetPetSize(keyword));
+        } else {
+            petPage = petService.findPets(page, size);
+        }
 
         PageInfo pageInfo = new PageInfo(page, size, (int) petPage.getTotalElements(), petPage.getTotalPages());
 

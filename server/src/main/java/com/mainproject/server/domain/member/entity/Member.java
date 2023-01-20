@@ -2,6 +2,7 @@ package com.mainproject.server.domain.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mainproject.server.audit.Auditable;
+import com.mainproject.server.domain.chat.entity.JoinChat;
 import com.mainproject.server.domain.pet.entity.Pet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,10 +61,21 @@ public class Member extends Auditable {
     @BatchSize(size = 100)
     private List<Pet> pets = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<JoinChat> joinChats = new ArrayList<>();
+
     public void addPets(Pet pet) {
         this.pets.add(pet);
         if (pet.getMember() != this) {
             pet.setMember(this);
+        }
+    }
+
+    public void addJoinChats(JoinChat joinChat) {
+        this.joinChats.add(joinChat);
+        if(joinChat.getMember() != this) {
+            joinChat.setMember(this);
         }
     }
 

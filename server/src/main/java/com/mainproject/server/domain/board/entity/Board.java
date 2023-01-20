@@ -3,6 +3,7 @@ package com.mainproject.server.domain.board.entity;
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.member.entity.Member;
+import com.mainproject.server.domain.pet.entity.Pet;
 import lombok.*;
 
 import javax.persistence.*;
@@ -56,6 +57,14 @@ public class Board extends Auditable {
         if(comments.getBoard() != this) {
             comments.setBoard(this);
         }
+    }
+
+    @OneToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
+
+    public void addPet(Pet pet) {
+        this.pet = pet;
     }
 
     public void addMember(Member member) {

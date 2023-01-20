@@ -74,8 +74,20 @@ public class PetService {
 
         return petPage;
     }
+
     @Transactional(readOnly = true)
-    public Page<Pet> findPetByKeyword(int page, int size, Pet.PetSize petSize) {
+    public Page<Pet> findMyPets(int page, int size, MemberDetails memberDetails) {
+
+        Pageable pageable = PageRequest.of(page-1, size, Sort.by("petId").descending());
+
+        Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
+
+        Page<Pet> petPage = petRepository.findByMember(pageable, member);
+        return petPage;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Pet> findPetByPetSize(int page, int size, Pet.PetSize petSize) {
         // keyword -> Pet.PetSize 타입
         Pageable pageable = PageRequest.of(page-1, size, Sort.by("petId").descending());
 
