@@ -13,7 +13,8 @@ public enum ExceptionCode {
     BOARD_NOT_FOUND(NOT_FOUND.value(),"Board not Found"),
     COMMENTS_NOT_FOUND(404, "Comment Not Found"),
     CHATROOM_NOT_FOUND(NOT_FOUND.value(), "ChatRoom Not Found"),
-    NOT_AUTHORIZED(UNAUTHORIZED.value(), "Not_Authorized");
+    NOT_AUTHORIZED(UNAUTHORIZED.value(), "Not_Authorized"),
+    EMAIL_VERIFICATION_FAILED(BAD_REQUEST.value(), "Code Has Not Matched");
 
     @Getter
     private int status;

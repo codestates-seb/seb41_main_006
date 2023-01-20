@@ -1,5 +1,8 @@
 package com.mainproject.server.helper.email;
 
+import com.mainproject.server.auth.service.RedisService;
+import com.mainproject.server.exception.BusinessLogicException;
+import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,6 +22,8 @@ public class EmailService {
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
 
+    private final RedisService redisService;
+
     public String sendEmail(String destEmail) throws MessagingException {
         String verificationCode = createVerificationCode();
         Context context = new Context();
@@ -34,6 +39,7 @@ public class EmailService {
         mimeMessageHelper.setText(mailTemplate, true);
 
         emailSender.send(mimeMessage);
+        redisService.setVerificationCode(destEmail, verificationCode);
         log.info("Success sending email");
 
         return verificationCode;
@@ -41,23 +47,38 @@ public class EmailService {
 
     private String createVerificationCode() {
         Random random = new Random();
-        StringBuffer key = new StringBuffer();
+        String code = null;
 
-        for (int i = 0; i < 8; i++) {
-            int index = random.nextInt(3);
+        while (code == null || isDuplicateCode(code)) {
+            StringBuilder codeBuilder = new StringBuilder();
+            for (int i = 0; i < 8; i++) {
+                int index = random.nextInt(3);
 
-            switch (index) {
-                case 0:
-                    key.append((char) ((int) random.nextInt(26) + 97)); // a~z
-                    break;
-                case 1:
-                    key.append((char) ((int) random.nextInt(26) + 65)); // A~Z
-                    break;
-                case 2:
-                    key.append(random.nextInt(9)); // 0~9
-                    break;
+                switch (index) {
+                    case 0:
+                        codeBuilder.append((char) ((int) random.nextInt(26) + 97)); // a~z
+                        break;
+                    case 1:
+                        codeBuilder.append((char) ((int) random.nextInt(26) + 65)); // A~Z
+                        break;
+                    case 2:
+                        codeBuilder.append(random.nextInt(9)); // 0~9
+                        break;
+                }
             }
+            code = codeBuilder.toString();
         }
-        return key.toString();
+
+        return code;
+    }
+
+    private boolean isDuplicateCode(String code) {
+        return redisService.isExistsCode(code);
+    }
+
+    public void verifyEmail(String email, String code) {
+        if (!email.equals(redisService.getEmailForCode(code))) {
+            throw new BusinessLogicException(ExceptionCode.EMAIL_VERIFICATION_FAILED);
+        }
     }
 }
