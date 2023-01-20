@@ -37,8 +37,6 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberMapper memberMapper;
 
-//    private final PetMapper petMapper;
-
     /*회원 가입*/
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
@@ -62,8 +60,8 @@ public class MemberController {
     /*특정 주소를 가지고 있는 회원 전체 조회*/
     @GetMapping
     public ResponseEntity getMembersWithAddress(@RequestParam("address") String address,
-                                                @RequestParam("page") int page,
-                                                @RequestParam("size") int size) {
+                                                @Positive @RequestParam("page") int page,
+                                                @Positive @RequestParam("size") int size) {
 
         Page<Member> membersWithAddress = memberService.findMembersWithAddress(address, page - 1, size);
 
@@ -79,13 +77,22 @@ public class MemberController {
                 HttpStatus.OK);
     }
 
+    /*특정 회원 정보 조회*/
+    @GetMapping("/{member-id}")
+    public ResponseEntity getMemberInfoWithPets(@Positive @PathVariable("member-id") long memberId) {
+        Member member = memberService.findMember(memberId);
+        return new ResponseEntity(
+                new SingleResponseDto<>(
+                        memberMapper.memberToMemberResponseWithPetsDto(member)), HttpStatus.OK);
+    }
+
     /*마이 페이지 회원 정보 조회*/
     @GetMapping("/{member-id}/my-page")
     public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId) {
-        Member mypageInfo = memberService.getMypageInfo(memberId);
+        Member member = memberService.findMember(memberId);
 
         return new ResponseEntity(
-                new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(mypageInfo)), HttpStatus.OK);
+                new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(member)), HttpStatus.OK);
     }
 
     /*회원 탈퇴*/
