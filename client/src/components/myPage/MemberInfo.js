@@ -61,7 +61,11 @@ const MemberInfo = ({ member }) => {
         </button>
       </UserInfoContainer>
       {editModal ? (
-        <EditMemberModal setModal={setEditModal} Modal={editModal} />
+        <EditMemberModal
+          setModal={setEditModal}
+          Modal={editModal}
+          MemberInfo={member}
+        />
       ) : (
         ''
       )}
