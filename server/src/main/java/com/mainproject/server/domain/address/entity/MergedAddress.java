@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "mergedAddress")
+@Entity
 public class MergedAddress {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
