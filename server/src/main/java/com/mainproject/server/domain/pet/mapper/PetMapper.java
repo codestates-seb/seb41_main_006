@@ -12,8 +12,6 @@ public interface PetMapper {
     Pet petPatchDtoToPet (PetDto.Patch petPatchDto);
     PetDto.Response petToPetResponseDto(Pet pet);
     List<PetDto.Response> petListToPetResponseDtos(List<Pet> pets);
-    PetDto.ResponseWithoutMember petToPetResponseWithoutMemberDto(Pet pet);
-    List<PetDto.ResponseWithoutMember> petListToPetResponseWithoutMemberDtos(List<Pet> pets);
     Pet.PetSize StringGetPetSize(String keyword);
 
     PetDto.SimpleResponse petToSimpleResponseDto(Pet pet);

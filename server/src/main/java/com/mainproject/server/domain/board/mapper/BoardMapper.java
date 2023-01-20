@@ -7,6 +7,7 @@ import com.mainproject.server.domain.board.entity.BoardLike;
 import com.mainproject.server.domain.comments.dto.CommentsDto;
 import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.comments.mapper.CommentsMapper;
+import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 
 import com.mainproject.server.domain.pet.dto.PetDto;
@@ -81,7 +82,7 @@ public interface BoardMapper {
         BoardDto.Response boardResponseDto = BoardDto.Response
                 .builder()
                 .boardId(board.getBoardId())
-                .member(board.getMember())
+                .member(memberToSimpleResponseDto(board.getMember()))
                 .title(board.getTitle())
                 .content(board.getContent())
                 .appointTime(board.getAppointTime())
@@ -100,7 +101,9 @@ public interface BoardMapper {
     // ----- Comments
     List<CommentsDto.Response> commentsToCommentsResponseDtos(List<Comments> comments);
 
-    PetDto.ResponseWithoutMember petToPetResponseWithoutMemberDto(Pet pet);
+    PetDto.SimpleResponse petToPetResponseWithoutMemberDto(Pet pet);
+
+    MemberDto.SimpleResponse memberToSimpleResponseDto(Member member);
 
     @Mappings({@Mapping(source = "member.memberId", target = "memberId"),
         @Mapping(source = "member.nickName", target = "nickName"),

@@ -1,23 +1,14 @@
 package com.mainproject.server.domain.chat.controller;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
-import com.mainproject.server.domain.chat.dto.ChatDto;
-import com.mainproject.server.domain.chat.entity.ChatMessage;
-import com.mainproject.server.domain.chat.entity.ChatRoom;
-import com.mainproject.server.domain.chat.service.ChatService;
-import com.mainproject.server.domain.chat.service.RoomService;
 import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.Positive;
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +16,7 @@ import java.util.List;
 public class ChatController {
 
     // 유저페이지에서 채팅방 조회
-    @GetMapping
+    @PostMapping
     public ResponseEntity getOrCreateRoom(@Positive @RequestParam(name = "receiver") long receiverId,
                                           @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {

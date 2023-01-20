@@ -84,7 +84,7 @@ public class PetController {
 
         PageInfo pageInfo = new PageInfo(page, size, (int)petPage.getTotalElements(), petPage.getTotalPages());
         List<Pet> pets = petPage.getContent();
-        List<PetDto.ResponseWithoutMember> responses = mapper.petListToPetResponseWithoutMemberDtos(pets);
+        List<PetDto.SimpleResponse> responses = mapper.petListToSimpleResponseDtos(pets);
 
         return new ResponseEntity<>(new MultiResponseDto<>(responses, pageInfo), HttpStatus.OK);
     }
