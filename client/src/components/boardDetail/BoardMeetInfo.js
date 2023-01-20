@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+import {
+  convertAppointDate,
+  convertAppointTime,
+} from '../../utils/dateConvert';
 import { FaRegCalendar } from 'react-icons/fa';
 import { BiTimeFive } from 'react-icons/bi';
 import { MdPlace } from 'react-icons/md';
@@ -55,14 +59,18 @@ const BoardMeetInfo = ({ meetInfo }) => {
             <FaRegCalendar />
             <span>날짜</span>
           </InfoLabelBox>
-          <span className="meet-info--content">{meetInfo?.appointDate}</span>
+          <span className="meet-info--content">
+            {convertAppointDate(meetInfo?.appointTime)}
+          </span>
         </div>
         <div className="meet-time">
           <InfoLabelBox>
             <BiTimeFive />
             <span>시간</span>
           </InfoLabelBox>
-          <span className="meet-info--content">{meetInfo?.appointTime}</span>
+          <span className="meet-info--content">
+            {convertAppointTime(meetInfo?.appointTime)}
+          </span>
         </div>
       </div>
       <div className="meet-location">

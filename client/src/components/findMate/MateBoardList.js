@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import MateBoardCard from './MateBoardCard';
 
-const PostList = styled.ul`
+const BoardList = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(316px, 1fr));
@@ -9,7 +9,7 @@ const PostList = styled.ul`
   grid-row-gap: 1.5rem;
 `;
 
-const PostItem = styled.li`
+const BoardItem = styled.li`
   height: 13.25rem;
   position: relative;
   padding-top: 60%;
@@ -17,13 +17,13 @@ const PostItem = styled.li`
 
 const MateBoardList = ({ boardList }) => {
   return (
-    <PostList>
+    <BoardList>
       {boardList.map((el) => (
-        <PostItem key={el.id}>
-          <MateBoardCard post={el} />
-        </PostItem>
+        <BoardItem key={el.id}>
+          <MateBoardCard board={el} />
+        </BoardItem>
       ))}
-    </PostList>
+    </BoardList>
   );
 };
 

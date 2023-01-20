@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import MapContainer from '../components/matePost/MapContainer';
+import MapContainer from '../components/boardDetail/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';

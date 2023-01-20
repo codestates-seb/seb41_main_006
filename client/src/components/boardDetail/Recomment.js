@@ -1,6 +1,9 @@
 import styled from 'styled-components';
-import { FaUserCircle, FaHeart, FaRegHeart } from 'react-icons/fa';
+import ProfileImage from '../common/ProfileImage';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../store/modules/modalSlice';
 
 const RecommentBox = styled.div`
   height: 100%;
@@ -13,6 +16,7 @@ const RecommentBox = styled.div`
 
   .recomment-user-info {
     display: flex;
+    margin-bottom: 1rem;
     /* align-items: center; */
 
     .user-profile {
@@ -60,8 +64,13 @@ const RecommentBox = styled.div`
   }
 `;
 
-const Recomment = ({ post }) => {
+const Recomment = ({ recomment }) => {
+  const dispatch = useDispatch();
   const [like, setLike] = useState(false);
+
+  const handleClickMember = (memberId) => {
+    dispatch(openModal({ type: 'member', props: { memberId } }));
+  };
 
   const handleLikeClick = () => {
     setLike(!like);
@@ -71,16 +80,31 @@ const Recomment = ({ post }) => {
     <RecommentBox>
       <div className="recomment-left">
         <div className="recomment-user-info">
-          <div className="user-profile">
-            <FaUserCircle />
-          </div>
+          <button
+            className="user-profile"
+            onClick={() => handleClickMember(recomment.memberId)}
+          >
+            <ProfileImage
+              src={
+                recomment.profileImage ||
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+              }
+              name={recomment.nickName}
+              size="40px"
+            ></ProfileImage>
+          </button>
           <div>
-            <span className="recomment-username">{post.author}</span>
+            <button
+              className="recomment-username"
+              onClick={() => handleClickMember(recomment.memberId)}
+            >
+              {recomment.nickName}
+            </button>
             <div>
               <span className="recomment-createAt">2023.01.05 15:30</span>
               <span className="recomment-like">
                 <FaHeart />
-                <span className="recomment-like-total">{post.likes}</span>
+                <span className="recomment-like-total">{recomment.likes}</span>
               </span>
             </div>
           </div>
@@ -93,7 +117,7 @@ const Recomment = ({ post }) => {
           )}
         </div>
       </div>
-      <div className="recomment-content">{post.content}</div>
+      <div className="recomment-content">{recomment.content}</div>
     </RecommentBox>
   );
 };

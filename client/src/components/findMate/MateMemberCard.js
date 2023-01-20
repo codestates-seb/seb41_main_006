@@ -33,28 +33,32 @@ const UserCardBody = styled(ColCenterBox)`
   }
 `;
 
-const MateMemberCard = ({ user }) => {
+const MateMemberCard = ({ member }) => {
   return (
     <UserCard>
       <UserCardHeader>
-        <ProfileImage size="85px" src={user.petImage} name={user.user} />
+        <ProfileImage
+          size="85px"
+          src={member.ProfileImage}
+          name={member.user}
+        />
         <div className="user-card--userName">
-          <span>{user.user}</span>
+          <span>{member.nickName}</span>
           님의 강아지
         </div>
         <Title as="h4" size="small">
-          {user.petName}
+          {member.petName}
         </Title>
       </UserCardHeader>
       <UserCardBody>
-        <span>{user.address}</span>
+        <span>내용 수정 필요</span>
         <RowCenterBox>
-          <span>{user.petBreed}</span>
-          <span>{user.petAge}세</span>
-          <span>{user.petGender}</span>
-          {user.petNeutered ? <span>중성화 O</span> : <span>중성화 X</span>}
+          <span>{member.petBreed}</span>
+          <span>{member.petAge}세</span>
+          <span>{member.petGender}</span>
+          {member.petNeutered ? <span>중성화 O</span> : <span>중성화 X</span>}
         </RowCenterBox>
-        <p className="user-card--about">{user.aboutDog}</p>
+        <p className="user-card--about">{member.aboutDog}</p>
       </UserCardBody>
     </UserCard>
   );

@@ -28,12 +28,12 @@ const ModalContainer = styled.div`
 `;
 const Submitbtn = styled(PostSubmitBtn)`
   margin: 30px 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   border-radius: 10px;
 `;
 
-const EditMemberModal = ({ Modal, setModal }) => {
+const EditMemberModal = ({ Modal, setModal, MemberInfo }) => {
   const outside = useRef();
 
   const handleModalClose = (e) => {
@@ -49,7 +49,7 @@ const EditMemberModal = ({ Modal, setModal }) => {
       }}
     >
       <ModalContainer>
-        <EditMemberInfoCard />
+        <EditMemberInfoCard Modal={Modal} MemberInfo={MemberInfo} />
         <Submitbtn
           onClick={() => {
             setModal(!Modal);

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const SinfoContainer = styled.div`
   display: flex;
@@ -16,6 +16,9 @@ const SinfoContainer = styled.div`
       display: flex;
       margin-top: 2%;
       justify-content: space-around;
+      input {
+        display: none;
+      }
       button {
         color: var(--sec-color);
         border: 0;
@@ -101,6 +104,7 @@ const Scheckbox = styled.input`
   border: 1.5px solid gainsboro;
   border-radius: 0.35rem;
   margin-left: 5%;
+  appearance: none;
   &:checked {
     border-color: transparent;
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
@@ -113,6 +117,27 @@ const Scheckbox = styled.input`
 
 const EditPetCard = () => {
   const [genderSelect, setGenderSelect] = useState([false, false]);
+  const [profile, setProfile] = useState(null);
+  const fileRef = useRef();
+  const FileValue = 'image';
+  const handleImgUpload = () => {
+    fileRef.current.click();
+  };
+  //인풋에서 이미지 업로드 시 스테이트 변경
+  const handleImgChange = (e) => {
+    if (e.target.files === undefined) {
+      return;
+    }
+    if (!e.target.files[0].type.includes(FileValue)) {
+      alert('허용된 확장자가 아닙니다.');
+    } else if (e.target.files[0].size > 5 * 1024 * 1024) {
+      alert('최대 파일 용량은 5MB입니다.');
+    } else {
+      setProfile(e.target.files[0]);
+      console.log(e.target.files[0].type);
+    }
+  };
+  console.log(profile);
   return (
     <>
       <h2>강아지 정보 수정</h2>
@@ -123,7 +148,8 @@ const EditPetCard = () => {
             alt=""
           />
           <div className="img-button">
-            <button>이미지 업로드</button>
+            <button onClick={handleImgUpload}>이미지 업로드</button>
+            <input type="file" ref={fileRef} onChange={handleImgChange}></input>
             <button>이미지 삭제</button>
           </div>
         </div>

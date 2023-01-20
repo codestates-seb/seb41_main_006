@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { dummyRecomments } from '../../api/dummyData/dummyData';
 import Recomment from './Recomment';
 import AddComment from './AddComment';
 
@@ -13,23 +12,23 @@ const RecommList = styled.ul`
   margin-top: 10px;
   margin-left: 20px;
   border-radius: 10px;
-  padding: 12px 16px 0 16px;
+  padding: 12px 16px;
 `;
 
 const RecommentItem = styled.li`
   /* height: 13.75rem; */
   height: 100%;
-  margin-bottom: 28px;
+  margin-top: 28px;
   /* border-bottom: 1px solid #a79689; */
 `;
 
-const RecommentList = () => {
+const RecommentList = ({ recomments }) => {
   return (
     <RecommList>
       <AddComment />
-      {dummyRecomments.map((el) => (
+      {recomments.map((el) => (
         <RecommentItem key={el.id}>
-          <Recomment post={el} />
+          <Recomment recomment={el} />
         </RecommentItem>
       ))}
     </RecommList>
