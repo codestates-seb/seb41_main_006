@@ -1,14 +1,15 @@
+// import { useState, useEffect } from 'react';
+// import { useParams } from 'react-router-dom';
+// import { getBoardById } from '../api/board/board';
 import styled from 'styled-components';
-// import Map from '../components/matePost/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
-// import { useParams } from 'react-router-dom';
+import MapContainer from '../components/boardDetail/MapContainer';
 import dummyBoards from '../api/board/dummyBoards';
-import MapContainer from '../components/matePost/MapContainer';
-// import SelectDog from '../components/matePost/SelectDog';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
+  padding-bottom: 44px;
 
   textarea {
     width: 100%;
@@ -88,7 +89,14 @@ const BtnContainer = styled.div`
 `;
 
 const BoardEditPage = () => {
-  // const { mateId } = useParams();
+  // const { boardId } = useParams();
+  // const [board, setBoard] = useState({});
+
+  // useEffect(() => {
+  //   getBoardById(Number(boardId)).then((data) => {
+  //     setBoard(data);
+  //   });
+  // }, [boardId]);
 
   return (
     <ContainerBox>

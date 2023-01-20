@@ -1,16 +1,22 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { openModal } from '../../store/modules/modalSlice';
+import { useDispatch } from 'react-redux';
+
 import { flexRowCenter } from '../../style/styleVariable';
 import ProfileImage from '../common/ProfileImage';
 import Title from '../common/Title';
-import { openModal } from '../../store/modules/modalSlice';
-import { useDispatch } from 'react-redux';
+import {
+  convertAppointDate,
+  convertAppointTime,
+} from '../../utils/dateConvert';
+import { BoardCloseBox, BoardOpenBox } from '../BoardStatus';
 import { IoLocationSharp } from 'react-icons/io5';
 import { AiTwotoneCalendar } from 'react-icons/ai';
 import { FiClock } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 
-const PostCard = styled.div`
+const BoardCard = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -26,24 +32,26 @@ const PostCard = styled.div`
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
 
-  .post-card--top {
+  .board-card--top {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0.3rem;
     margin-bottom: 1rem;
-    h4 {
+
+    .board-card--title {
+      ${flexRowCenter}
+      gap: 0.5rem;
       margin-bottom: 0.5rem;
     }
 
-    div {
+    .board-card--meet {
       ${flexRowCenter}
       gap: 0.3rem;
-      font-weight: 500;
-      color: var(--sec-color);
+      color: #000000;
     }
   }
 
-  .post-card--bottom {
+  .board-card--bottom {
     ${flexRowCenter}
     color: var(--main-font-color);
     font-weight: 500;
@@ -65,7 +73,7 @@ const PostCard = styled.div`
   }
 `;
 
-const MateBoardCard = ({ post }) => {
+const MateBoardCard = ({ board }) => {
   const dispatch = useDispatch();
 
   const handleClickMember = (memberId) => {
@@ -73,41 +81,51 @@ const MateBoardCard = ({ post }) => {
   };
 
   return (
-    <PostCard>
-      <Link to={`/mate/boards/${post.id}`}>
-        <div className="post-card--top">
-          <Title as="h4" size="small">
-            {post.title}
-          </Title>
-          <div>
+    <BoardCard>
+      <Link to={`/mate/boards/${board.boardId}`}>
+        <div className="board-card--top">
+          <div className="board-card--title">
+            <Title as="h4" size="small">
+              {board.title}
+            </Title>
+            {board.boardStatus === 'BOARD_OPEN' ? (
+              <BoardOpenBox>모집중</BoardOpenBox>
+            ) : (
+              <BoardCloseBox>모집완료</BoardCloseBox>
+            )}
+          </div>
+          <div className="board-card--meet">
             <IoLocationSharp />
-            <span>{post.meetingPlace}</span>
+            <span>{board.meetingPlace}</span>
           </div>
-          <div>
+          <div className="board-card--meet">
             <AiTwotoneCalendar />
-            <span>{post.appointDate}</span>
+            <span>{convertAppointDate(board.appointTime)}</span>
           </div>
-          <div>
+          <div className="board-card--meet">
             <FiClock />
-            <span>{post.appointTime}</span>
+            <span>{convertAppointTime(board.appointTime)}</span>
           </div>
         </div>
       </Link>
-      <div className="post-card--bottom">
-        <button onClick={() => handleClickMember(post.authorId)}>
+      <div className="board-card--bottom">
+        <button onClick={() => handleClickMember(board?.member?.memberId)}>
           <ProfileImage
-            src={post.authorImg}
-            name={post.authorName}
+            src={
+              board?.member?.profileImage ||
+              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+            }
+            name={board?.member?.nickName}
             size="2rem"
           />
-          <span>{post.authorName}</span>
+          <span>{board?.member?.nickName}</span>
         </button>
         <div>
           <FaHeart />
-          {post.countLike}
+          {board.countLike}
         </div>
       </div>
-    </PostCard>
+    </BoardCard>
   );
 };
 

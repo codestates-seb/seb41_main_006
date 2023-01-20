@@ -6,9 +6,11 @@ import EditPetModal from './Modal/EditPetModal';
 import AddPetInfoModal from './Modal/AddPetInfoModal';
 
 const PetContainer = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
   width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-column-gap: 1rem;
+  grid-row-gap: 1.5rem;
   justify-content: center;
   li {
     margin: 0 10px 10px 10px;
