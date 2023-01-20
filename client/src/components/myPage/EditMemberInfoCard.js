@@ -36,6 +36,12 @@ const SInputInfoContainer = styled.div`
       .Img-upload {
         display: none;
       }
+      img {
+        background-color: white;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+      }
       div {
         background-color: white;
         width: 100px;
@@ -127,8 +133,8 @@ const SInputInfoContainer = styled.div`
   }
 `;
 
-const EditMemberInfoCard = () => {
-  const [genderSelect, setGenderSelect] = useState([false, false]);
+const EditMemberInfoCard = ({ Modal, MemberInfo }) => {
+  const [genderSelect, setGenderSelect] = useState('');
   const [profile, setProfile] = useState(null);
   const ImgRef = useRef();
   const FileValue = 'image';
@@ -151,12 +157,13 @@ const EditMemberInfoCard = () => {
     }
   };
   console.log(profile);
+
   return (
     <SInputInfoContainer>
       <div className="title">집사 정보 입력</div>
       <div className="input-container">
         <div className="image-container">
-          <div></div>
+          <div>{Modal ? <img src={MemberInfo.profileImage} alt="" /> : ''}</div>
           <button onClick={handleImgUpload}>이미지 업로드</button>
           <input
             type="file"
@@ -169,23 +176,26 @@ const EditMemberInfoCard = () => {
         <div>
           <div className="nickname-input">
             <div>닉네임</div>
-            <input placeholder="닉네임"></input>
+            <input
+              placeholder="닉네임"
+              value={Modal ? MemberInfo.nickName : ''}
+            ></input>
           </div>
           <div className="gender-select">
             <div>성별</div>
             <div className="gender-button">
               <button
-                className={genderSelect[0] ? 'selected' : ''}
+                className={genderSelect === 'M' ? 'selected' : ''}
                 onClick={() => {
-                  setGenderSelect([true, false]);
+                  setGenderSelect('M');
                 }}
               >
                 남
               </button>
               <button
-                className={genderSelect[1] ? 'selected' : ''}
+                className={genderSelect === 'W' ? 'selected' : ''}
                 onClick={() => {
-                  setGenderSelect([false, true]);
+                  setGenderSelect('W');
                 }}
               >
                 여
@@ -200,9 +210,15 @@ const EditMemberInfoCard = () => {
       </div>
       <div className="address-container">
         <div>주소</div>
-        <input placeholder="주소를 검색하세요"></input>
+        <input
+          placeholder="주소를 검색하세요"
+          value={Modal ? MemberInfo.address : ''}
+        ></input>
         <div>인사말</div>
-        <textarea placeholder="인사말을 입력하세요"></textarea>
+        <textarea
+          placeholder="인사말을 입력하세요"
+          value={Modal ? MemberInfo.aboutMe : ''}
+        ></textarea>
       </div>
     </SInputInfoContainer>
   );
