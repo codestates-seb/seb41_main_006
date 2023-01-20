@@ -1,14 +1,13 @@
 package com.mainproject.server.domain.chat.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
-import com.mainproject.server.domain.chat.entity.ChatRoom;
+import com.mainproject.server.domain.chat.dto.ChatDto;
 import com.mainproject.server.domain.chat.entity.JoinChat;
+import com.mainproject.server.domain.chat.entity.ChatRoom;
 import com.mainproject.server.domain.chat.redis.RedisSubscriber;
 import com.mainproject.server.domain.chat.repository.RoomRepository;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
-import com.mainproject.server.exception.BusinessLogicException;
-import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,35 @@ public class RoomService {
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final RedisSubscriber redisSubscriber;
 
+    public ChatDto.Response judgeFirstChat(long receiverId, MemberDetails memberDetails) {
+        // 첫채팅인지 아닌지 파악하려면 둘이 함께 들어가잇는 ChatRoom을 확인 해야 함.
+        Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
+        Member receiver = memberService.validateVerifyMember(receiverId);
+
+        // sender가 참여하고 있는 채팅방 목록을 가져오기
+        List<ChatRoom> senderChatRooms = findChatRooms(sender.getMemberId());
+        ChatRoom existChatRoom = null;
+
+        // sender의 채팅 목록 중에서 receiver가 있는지 확인하고 있으면 Chatroom 가져오기
+        for(ChatRoom chatRoom : senderChatRooms) {
+            Optional<JoinChat> receiverJoinChat = chatRoom.getJoinChats().stream()
+                    .filter(joinChat -> joinChat.getMember().equals(receiver))
+                    .findFirst();
+            if(receiverJoinChat.isPresent()) {
+                existChatRoom = chatRoom;
+            }
+        }
+
+//        if(existChatRoom != null) {
+//            ChatDto.Response response = ChatDto.Response.builder()
+//                    .chatRoomId(existChatRoom.getChatRoomId())
+//                    .
+//        }
+
+
+        return null;
+    }
+
     public long createRoom(long receiverId, MemberDetails memberDetails) {
 
         Member receiver = memberService.validateVerifyMember(receiverId);
@@ -37,8 +66,8 @@ public class RoomService {
 
         // joinChat 객체에 해당 채팅방과 멤버 정보 저장...
         List<JoinChat> joinChats = new ArrayList<>();
-        joinChats.add(JoinChat.builder().member(receiver).chatMessages(new ArrayList<>()).build());
-        joinChats.add(JoinChat.builder().member(sender).chatMessages(new ArrayList<>()).build());
+        joinChats.add(JoinChat.builder().member(receiver).build());
+        joinChats.add(JoinChat.builder().member(sender).build());
 
         // 새로운 채팅 방을 만들고 저장
         ChatRoom chatRoom = ChatRoom.builder()

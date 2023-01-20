@@ -64,8 +64,11 @@ public class BoardService {
        Optional.ofNullable(board.getAppointTime())
                .ifPresent(findBoard::setAppointTime);
 
-       Optional.ofNullable(board.getMeetingPlace())
-               .ifPresent(findBoard::setMeetingPlace);
+       Optional.ofNullable(board.getPlaceCode())
+               .ifPresent(findBoard::setPlaceCode);
+
+       Optional.ofNullable(board.getX()).ifPresent(findBoard::setX);
+       Optional.ofNullable(board.getY()).ifPresent(findBoard::setY);
 
        Optional.ofNullable(board.getBoardStatus())
                .ifPresent(findBoard::setBoardStatus);
@@ -97,7 +100,7 @@ public class BoardService {
     public Page<Board> searchBoard(int page, int size, String keyword) {
         Pageable pageable = PageRequest.of(page-1, size, Sort.by("boardId").descending());
 
-        return boardRepository.findByMeetingPlaceContaining(pageable, keyword);
+        return boardRepository.findByPlaceCodeContaining(pageable, keyword);
     }
 
     public void deleteBoard(Long boardId, MemberDetails memberDetails) {
