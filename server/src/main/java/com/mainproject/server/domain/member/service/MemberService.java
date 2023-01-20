@@ -53,12 +53,11 @@ public class MemberService {
         return memberRepository.findByAddress(address, pageRequest);
     }
 
-    /*마이페이지 회원 정보 조회*/
+    /*회원 정보 조회*/
     @Transactional(readOnly = true)
-    public Member getMypageInfo(long memberId) {
+    public Member findMember(long memberId) {
          return validateVerifyMember(memberId);
     }
-
 
     /*회원 탈퇴*/
     public void deleteMember(long memberId) {
