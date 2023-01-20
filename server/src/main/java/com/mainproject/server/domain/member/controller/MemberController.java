@@ -4,9 +4,13 @@ import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.mapper.MemberMapper;
 import com.mainproject.server.domain.member.service.MemberService;
+import com.mainproject.server.domain.pet.mapper.PetMapper;
+import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.dto.SingleResponseDto;
+import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,10 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
@@ -37,7 +43,7 @@ public class MemberController {
         Member savedMember = memberService.createMember(memberMapper.memberPostDtoToMember(requestBody));
 
         return new ResponseEntity(
-                new SingleResponseDto<>(memberMapper.memberToMemberResponseDto(savedMember)), HttpStatus.OK);
+                new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(savedMember)), HttpStatus.OK);
     }
 
     /*마이 페이지 회원 정보 수정*/
@@ -48,16 +54,45 @@ public class MemberController {
                 memberService.updateMypageInfo(memberId, memberMapper.memberPathDtoToMember(requestBody));
 
         return new ResponseEntity(
-                new SingleResponseDto<>(memberMapper.memberToMemberResponseDto(updateMypageInfo)), HttpStatus.OK);
+                new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(updateMypageInfo)), HttpStatus.OK);
+    }
+
+    /*특정 주소를 가지고 있는 회원 전체 조회*/
+    @GetMapping
+    public ResponseEntity getMembersWithAddress(@RequestParam("address") String address,
+                                                @Positive @RequestParam("page") int page,
+                                                @Positive @RequestParam("size") int size) {
+
+        Page<Member> membersWithAddress = memberService.findMembersWithAddress(address, page - 1, size);
+
+        List<Member> content = membersWithAddress.getContent();
+        PageInfo pageInfo = new PageInfo(membersWithAddress.getNumber() + 1,
+                membersWithAddress.getSize(),
+                (int) membersWithAddress.getTotalElements(),
+                membersWithAddress.getTotalPages());
+
+        return new ResponseEntity(
+                new MultiResponseDto<>(
+                        memberMapper.membersToMemberResponseWithPetsDto(content), pageInfo),
+                HttpStatus.OK);
+    }
+
+    /*특정 회원 정보 조회*/
+    @GetMapping("/{member-id}")
+    public ResponseEntity getMemberInfoWithPets(@Positive @PathVariable("member-id") long memberId) {
+        Member member = memberService.findMember(memberId);
+        return new ResponseEntity(
+                new SingleResponseDto<>(
+                        memberMapper.memberToMemberResponseWithPetsDto(member)), HttpStatus.OK);
     }
 
     /*마이 페이지 회원 정보 조회*/
     @GetMapping("/{member-id}/my-page")
     public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId) {
-        Member mypageInfo = memberService.getMypageInfo(memberId);
+        Member member = memberService.findMember(memberId);
 
         return new ResponseEntity(
-                new SingleResponseDto<>(memberMapper.memberToMemberResponseDto(mypageInfo)), HttpStatus.OK);
+                new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(member)), HttpStatus.OK);
     }
 
     /*회원 탈퇴*/

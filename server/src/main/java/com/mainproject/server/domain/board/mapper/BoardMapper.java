@@ -103,6 +103,7 @@ public interface BoardMapper {
     PetDto.ResponseWithoutMember petToPetResponseWithoutMemberDto(Pet pet);
 
     @Mappings({@Mapping(source = "member.memberId", target = "memberId"),
+        @Mapping(source = "member.nickName", target = "nickName"),
         @Mapping(source = "board.boardId", target = "boardId"),
         @Mapping(source = "parentComments.commentsId", target = "parentId")})
     CommentsDto.Response commentsToCommentsResponseDto(Comments comments);

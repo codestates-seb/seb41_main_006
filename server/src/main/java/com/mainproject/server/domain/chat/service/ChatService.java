@@ -27,7 +27,7 @@ public class ChatService {
     private final RoomService roomService;
 
     // 첫채팅인지 아닌지 판단하기
-    public ChatDto.Response judgeFirstChat(long receiverId, MemberDetails memberDetails) {
+    public boolean judgeFirstChat(long receiverId, MemberDetails memberDetails) {
         // 채팅을 할 자(receiver)의 상태가 탈퇴상태가 아닌지 확인
         verifyQuitMember(receiverId);
         // -> roomRepository에서 Chatroom 가져오기! 없으면 true, 있으면 false
@@ -37,10 +37,10 @@ public class ChatService {
             // 새로운 채팅방을 생성해야 함
             long chatRoomId = roomService.createRoom(receiverId, memberDetails);
             List<ChatRoom> chatRooms = roomService.findChatRooms(memberDetails.getMemberId());
-            return null;
+            return true;
         } else {
             // 기존 채팅이 있다는 뜻 -> 기존 채팅방을 불러오고 기존 채팅 메세지를 불러와야 함
-            return null;
+            return false;
         }
     }
 
@@ -57,6 +57,7 @@ public class ChatService {
         Member member = memberService.validateVerifyMember(memberId);
 
         if(member.getMemberStatus().equals(Member.MemberStatus.MEMBER_QUIT)) {
+            // 이러면 채팅방에 접근이 불가능 -> 익셉션이 나면 안될 것 같음.
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
         return member;

@@ -29,11 +29,11 @@ public class BoardTasklet implements Tasklet {
 
         if(findBoards.isEmpty() || findBoards == null) {
             log.info("=====변경할 게시글이 없습니다.=====");
-            throw new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND);
-        }
-        for(Board board : findBoards) {
-            board.setBoardStatus(Board.BoardStatus.BOARD_CLOSE);
-            boardRepository.save(board);
+        } else {
+            for(Board board : findBoards) {
+                board.setBoardStatus(Board.BoardStatus.BOARD_CLOSE);
+                boardRepository.save(board);
+            }
         }
         log.info("=====End Change Board Status======");
         return RepeatStatus.FINISHED;

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class RoomService {
     private final MemberService memberService;
     private final RoomRepository roomRepository;
-    private final Map<String, ChannelTopic> topics;
+    private final Map<String, ChannelTopic> topics; // 채팅방의 메세지를 발행하기 위한 redis topic 정보
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final RedisSubscriber redisSubscriber;
 
@@ -65,6 +65,7 @@ public class RoomService {
         // return 해야 할 값 : 생성될 채팅방의 URI?
         return saveChatRoom.getChatRoomId();
     }
+
     // sender-receiver의 채팅방 가져오기
     public ChatRoom findChatRoom(long receiverId, long senderId) {
         List<ChatRoom> chatRooms = findChatRooms(senderId);

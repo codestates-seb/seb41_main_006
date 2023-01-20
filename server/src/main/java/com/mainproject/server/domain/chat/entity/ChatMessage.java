@@ -17,7 +17,6 @@ public class ChatMessage {
     private String content;
 
     @Column
-    @Setter
     private long senderId;
 
     @Column
@@ -31,6 +30,12 @@ public class ChatMessage {
         this.joinChat = joinChat;
         if(!joinChat.getChatMessages().contains(this)){
             joinChat.getChatMessages().add(this);
+        }
+    }
+
+    public void setSenderId(JoinChat joinChat) {
+        if(joinChat != null) {
+            senderId = joinChat.getMember().getMemberId();
         }
     }
 }

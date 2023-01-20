@@ -8,6 +8,8 @@ import com.mainproject.server.exception.ExceptionCode;
 import com.mainproject.server.utils.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ public class MemberService {
 
     /*회원 신규 가입*/
     public Member createMember(Member member) {
+        validateDuplicateMember(member);
         // 비밀번호 암호화
         String encodePassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encodePassword);
@@ -43,11 +46,18 @@ public class MemberService {
         return memberRepository.save(updatedMember);
     }
 
-    /*마이페이지 회원 정보 조회*/
-    public Member getMypageInfo(long memberId) {
-         return validateVerifyMember(memberId);
+    /*해당 주소를 가지고 있는 회원들 조회*/
+    @Transactional(readOnly = true)
+    public Page<Member> findMembersWithAddress(String address, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return memberRepository.findByAddress(address, pageRequest);
     }
 
+    /*회원 정보 조회*/
+    @Transactional(readOnly = true)
+    public Member findMember(long memberId) {
+         return validateVerifyMember(memberId);
+    }
 
     /*회원 탈퇴*/
     public void deleteMember(long memberId) {

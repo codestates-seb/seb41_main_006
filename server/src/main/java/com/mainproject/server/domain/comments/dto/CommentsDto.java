@@ -54,6 +54,7 @@ public class CommentsDto {
 		private Long commentsId;
 		private Long boardId;
 		private Long memberId;
+		private String nickName;
 		private String content;
 		private Long parentId;
 		private int depth;
