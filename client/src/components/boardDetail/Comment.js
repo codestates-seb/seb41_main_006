@@ -1,8 +1,11 @@
 import styled from 'styled-components';
-import { FaUserCircle, FaHeart, FaRegHeart, FaPlus } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaPlus, FaMinus } from 'react-icons/fa';
 import { useState } from 'react';
+import ProfileImage from '../common/ProfileImage';
 import RecommentList from './RecommentList';
 import { convertCreatedAt } from '../../utils/dateConvert';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../store/modules/modalSlice';
 
 const CommentBox = styled.div`
   height: 100%;
@@ -15,6 +18,7 @@ const CommentBox = styled.div`
 
   .comment-user-info {
     display: flex;
+    margin-bottom: 1rem;
     /* align-items: center; */
 
     .user-profile {
@@ -31,6 +35,7 @@ const CommentBox = styled.div`
     font-size: 14px;
     color: #000000;
     font-weight: bold;
+    width: fit-content;
   }
 
   .comment-sub-info,
@@ -71,7 +76,7 @@ const CommentBox = styled.div`
     background-color: transparent;
     color: #ca7c62;
 
-    .plus-icon {
+    .recomment-icon {
       font-size: 12px;
     }
 
@@ -89,28 +94,47 @@ const CommentBox = styled.div`
   }
 `;
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, recomments }) => {
+  const dispatch = useDispatch();
   const [like, setLike] = useState(false);
+  const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);
+
+  const handleClickMember = (memberId) => {
+    dispatch(openModal({ type: 'member', props: { memberId } }));
+  };
 
   const handleLikeClick = () => {
     setLike(!like);
   };
 
-  const [comments, setComments] = useState(false);
-
   const handleRecommentsClick = () => {
-    setComments(!comments);
+    setIsRecommentsOpen(!isRecommentsOpen);
   };
 
   return (
     <CommentBox>
       <div className="comment-left">
         <div className="comment-user-info">
-          <div className="user-profile">
-            <FaUserCircle />
-          </div>
+          <button
+            className="user-profile"
+            onClick={() => handleClickMember(comment.memberId)}
+          >
+            <ProfileImage
+              src={
+                comment.profileImage ||
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+              }
+              name={comment.nickName}
+              size="40px"
+            ></ProfileImage>
+          </button>
           <div className="comment-detail-info">
-            <span className="comment-username">{comment.author}</span>
+            <button
+              className="comment-username"
+              onClick={() => handleClickMember(comment.memberId)}
+            >
+              {comment.nickName}
+            </button>
             <div className="comment-sub-info">
               <span className="comment-createAt">
                 {convertCreatedAt(new Date())}
@@ -132,10 +156,18 @@ const Comment = ({ comment }) => {
       </div>
       <div className="comment-content">{comment.content}</div>
       <button className="recomment-btn" onClick={handleRecommentsClick}>
-        <FaPlus className="plus-icon" />
-        <span>답글 달기</span>
+        {isRecommentsOpen ? (
+          <FaMinus className="recomment-icon" />
+        ) : (
+          <FaPlus className="recomment-icon" />
+        )}
+        {recomments.length === 0 ? (
+          <span>답글 달기</span>
+        ) : (
+          <span>답글 {recomments.length}개</span>
+        )}
       </button>
-      {comments && <RecommentList comments={comments} />}
+      {isRecommentsOpen && <RecommentList recomments={recomments} />}
     </CommentBox>
   );
 };

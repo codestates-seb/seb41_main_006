@@ -4,7 +4,6 @@ import { CommentBtn } from '../Button';
 
 const CommentContainer = styled.div`
   width: 100%;
-  margin-bottom: 1.5rem;
   position: relative;
 
   h3 {
