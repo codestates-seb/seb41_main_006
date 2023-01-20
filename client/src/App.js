@@ -22,10 +22,7 @@ function App() {
           element={<BoardDetailPage />}
         ></Route>
         <Route path="/newmate" element={<BoardPage />}></Route>
-        <Route
-          path="/mate/boards/:mateId/edit"
-          element={<BoardEditPage />}
-        ></Route>
+        <Route path="/edit/:boardId" element={<BoardEditPage />}></Route>
         <Route path="/mate/*" element={<FindMatePage />}></Route>
         <Route path="/signup" element={<SignUpPage />}></Route>
         <Route path="/inputMember" element={<InputMemberInfoPage />}></Route>
