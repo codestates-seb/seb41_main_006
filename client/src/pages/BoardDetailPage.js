@@ -6,18 +6,18 @@ import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Container from '../components/Container';
-import AddComment from '../components/matePost/AddComment';
-import CommentList from '../components/matePost/CommentList';
 import DeleteModal from '../components/DeleteModal';
-import { OpenBtn, CloseBtn } from '../components/Button';
+import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
+// import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
-import BoardMeetInfo from '../components/matePost/BoardMeetInfo';
+import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
+import CommentContainer from '../components/boardDetail/CommentContainer';
 
 const ContainerBox = styled(Container)`
-  padding-top: 20px;
+  padding: 20px;
 
   .comment {
     background-color: yellow;
@@ -36,7 +36,7 @@ const HeaderContainer = styled.div`
     align-items: center;
 
     .title {
-      margin-right: 30px;
+      margin-right: 10px;
       font-size: 26px;
       font-weight: bold;
       color: #401809;
@@ -104,7 +104,7 @@ const MainContainer = styled.div`
 
   .right-box {
     width: 100%;
-    margin-left: 80px;
+    margin-left: 30px;
     padding: 2.5rem 1.5rem;
     border-radius: 20px;
     display: flex;
@@ -135,11 +135,13 @@ const MainContainer = styled.div`
 
 const BoardDetailPage = () => {
   const { boardId } = useParams();
-  const [board, setBoard] = useState({});
+  const [board, setBoard] = useState({
+    comments: [],
+  });
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
 
-  const handleClickUser = (memberId) => {
+  const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
 
@@ -152,8 +154,6 @@ const BoardDetailPage = () => {
     getBoardById(Number(boardId)).then((data) => {
       setBoard(data);
     });
-
-    console.log(board);
   }, [boardId]);
 
   return (
@@ -161,11 +161,16 @@ const BoardDetailPage = () => {
       <HeaderContainer>
         <div className="post-title">
           <div className="title">{board.title}</div>
-          <OpenBtn>모집중</OpenBtn>
-          <CloseBtn>모집마감</CloseBtn>
+          {board.boardStatus === 'BOARD_OPEN' ? (
+            <BoardOpenBox>모집중</BoardOpenBox>
+          ) : (
+            <BoardCloseBox>모집완료</BoardCloseBox>
+          )}
         </div>
         <div className="post-info">
-          <div className="post-createAt">{convertCreatedAt(new Date())}</div>
+          <div className="post-createAt">
+            {convertCreatedAt(board.createdAt)}
+          </div>
           <div className="post-like">
             <FaHeart />
             <span>{board.countLike}</span>
@@ -184,23 +189,24 @@ const BoardDetailPage = () => {
       <MainContainer>
         <div className="left-box">
           <div className="post-content">{board.content}</div>
-          <div className="comment-cnt">
-            <h3>댓글 {board.commentsLength}개</h3>
-          </div>
-          <AddComment />
-          <CommentList comments={board.comments} />
+          <CommentContainer comments={board.comments} />
           {modal ? <DeleteModal /> : null}
         </div>
         <div className="right-box">
           <MemberInfoCard memberInfo={board.member} />
           <button
             className="user-info-btn"
-            onClick={() => handleClickUser(board.member.memberId)}
+            onClick={() => handleClickMember(board.member.memberId)}
           >
             {'> 상세 정보'}
           </button>
           <div className="post-meet-info">
-            <BoardMeetInfo meetInfo={board.meetInfo} />
+            <BoardMeetInfo
+              meetInfo={{
+                appointTime: board.appointTime,
+                meetingPlace: board.meetingPlace,
+              }}
+            />
           </div>
         </div>
       </MainContainer>
