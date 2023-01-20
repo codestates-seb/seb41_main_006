@@ -17,6 +17,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,8 +35,17 @@ public class BoardDto {
         @NotNull(message = "약속 시간을 입력해주세요.")
         private LocalDateTime appointTime;
 
-        @NotBlank(message = "약속 장소를 입력해주세요.")
-        private String meetingPlace;
+        @Pattern(regexp = "^[0-9]{10}$")
+        @NotBlank
+        private String placeCode;
+
+        @Pattern(regexp = "^([0-9]{2,3}).?([0-9]*)$")
+        @NotBlank
+        private String x;
+
+        @Pattern(regexp = "^([0-9]{2,3}).?([0-9]*)$")
+        @NotBlank
+        private String y;
 
         @NotNull(message = "강아지를 선택해주세요.")
         private long petId;
@@ -57,7 +67,15 @@ public class BoardDto {
         private LocalDateTime appointTime;
 
         @NotBlank(message = "약속 장소를 입력해주세요.")
-        private String meetingPlace;
+        private String placeCode;
+
+        @Pattern(regexp = "^([0-9]{2,3}).?([0-9]*)$")
+        @NotBlank
+        private String x;
+
+        @Pattern(regexp = "^([0-9]{2,3}).?([0-9]*)$")
+        @NotBlank
+        private String y;
 
         @NotNull(message = "강아지를 선택해주세요.")
         private long petId;
@@ -70,7 +88,9 @@ public class BoardDto {
         private String content;
         private int countLike;
         private LocalDateTime appointTime;
-        private String meetingPlace;
+        private String placeCode;
+        private String x;
+        private String y;
         private PetDto.SimpleResponse pet;
         private Board.BoardStatus boardStatus;
 

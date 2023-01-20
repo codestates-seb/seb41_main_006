@@ -35,11 +35,11 @@ class MemberControllerTest {
     @Autowired
     private MemberMapper memberMapper;
 
-    @Test
-    void getMembersWithAddress() throws Exception {
-        MemberDto.Post post1 = MemberDto.Post.builder()
-                .nickName("테스트1").email("test1@gmail.com").password("!1a2s3d4f")
-                .age(10).address("1").gender("M").build();
-    }
+//    @Test
+//    void getMembersWithAddress() throws Exception {
+//        MemberDto.Post post1 = MemberDto.Post.builder()
+//                .nickName("테스트1").email("test1@gmail.com").password("!1a2s3d4f")
+//                .age(10).address("1").gender("M").build();
+//    }
 
 }

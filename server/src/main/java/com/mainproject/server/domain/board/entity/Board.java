@@ -38,7 +38,13 @@ public class Board extends Auditable {
     private LocalDateTime appointTime;
 
     @Column(nullable = false)
-    private String meetingPlace;
+    private String placeCode;
+
+    @Column(nullable = false)
+    private String X;
+
+    @Column(nullable = false)
+    private String y;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

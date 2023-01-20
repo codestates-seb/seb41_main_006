@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    Page<Board> findByMeetingPlaceContaining(Pageable pageable, String keyword);
+    Page<Board> findByPlaceCodeContaining(Pageable pageable, String keyword);
 
     List<Board> findByAppointTimeLessThanEqual(LocalDateTime time);
 }

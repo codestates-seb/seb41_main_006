@@ -33,7 +33,7 @@ public interface BoardMapper {
         board.setTitle( postPostDto.getTitle() );
         board.setContent( postPostDto.getContent() );
         board.setAppointTime( postPostDto.getAppointTime() );
-        board.setMeetingPlace( postPostDto.getMeetingPlace() );
+        board.setPlaceCode( postPostDto.getPlaceCode() );
         board.setPet(postToPet(postPostDto));
         board.setBoardStatus(Board.BoardStatus.BOARD_OPEN);
         board.setCountLike(0);
@@ -59,7 +59,7 @@ public interface BoardMapper {
         board.setTitle( postPatchDto.getTitle() );
         board.setContent( postPatchDto.getContent() );
         board.setAppointTime( postPatchDto.getAppointTime() );
-        board.setMeetingPlace( postPatchDto.getMeetingPlace() );
+        board.setPlaceCode( postPatchDto.getPlaceCode() );
         board.setPet(patchToPet(postPatchDto));
 
         return board;
@@ -85,8 +85,9 @@ public interface BoardMapper {
                 .member(memberToSimpleResponseDto(board.getMember()))
                 .title(board.getTitle())
                 .content(board.getContent())
+                .countLike(board.getCountLike())
                 .appointTime(board.getAppointTime())
-                .meetingPlace(board.getMeetingPlace())
+                .placeCode(board.getPlaceCode())
                 .pet(petToPetResponseWithoutMemberDto(pet))
                 .boardStatus(board.getBoardStatus())
                 .createdAt(board.getCreatedAt())

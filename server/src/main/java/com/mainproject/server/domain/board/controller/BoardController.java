@@ -80,7 +80,7 @@ public class BoardController {
     @GetMapping
     public ResponseEntity searchBoards(@Positive @RequestParam(defaultValue = "1") int page,
                                        @Positive @RequestParam(defaultValue = "10") int size,
-                                       @RequestParam(value = "search") String keyword) { // 위치로 검색
+                                       @RequestParam(value = "place-code") String keyword) { // 위치로 검색
         Page<Board> boardPage;
 
         if(keyword != null || !keyword.isEmpty()) {
