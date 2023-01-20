@@ -4,6 +4,7 @@ import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 // import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -85,6 +86,10 @@ const BoardPage = () => {
   // const { mateId } = useParams();
   const navigate = useNavigate();
 
+  // 위치 정보
+  const [locInfo, setLocInfo] = useState([]);
+  console.log(locInfo);
+
   return (
     <ContainerBox>
       <HeaderContainer>
@@ -105,7 +110,7 @@ const BoardPage = () => {
           ></textarea>
         </div>
         <div className="right-box">
-          <MapContainer />
+          <MapContainer setLocInfo={setLocInfo} />
         </div>
       </MainContainer>
       <BtnContainer>

@@ -60,7 +60,7 @@ const MapBox = styled.div`
   }
 `;
 
-const MapContainer = () => {
+const MapContainer = ({ setLocInfo }) => {
   const [inputPlace, setInputPlace] = useState('');
   const [place, setPlace] = useState('');
 
@@ -106,7 +106,7 @@ const MapContainer = () => {
             value={inputPlace}
           ></input>
           <div className="meet-map" id="map">
-            <Map searchPlace={place} />
+            <Map searchPlace={place} setLocInfo={setLocInfo} />
           </div>
         </div>
       </form>
