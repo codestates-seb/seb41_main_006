@@ -16,6 +16,7 @@ public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatRoomId;
+
     @JsonIgnore
     @OneToMany(mappedBy = "chatRoom")
     private List<JoinChat> joinChats = new ArrayList<>();

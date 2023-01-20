@@ -73,7 +73,7 @@ public class Board extends Auditable {
 
     public enum BoardStatus {
         BOARD_OPEN("모집 중"),
-        BOARD_CLOSE("모집 종료");
+        BOARD_CLOSE("모집 완료");
         private String status;
 
         BoardStatus(String status) {
