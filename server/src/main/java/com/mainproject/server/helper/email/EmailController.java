@@ -25,7 +25,7 @@ public class EmailController {
 
     }
 
-    @PostMapping
+    @PostMapping("/verification")
     public ResponseEntity verifyEmail(@RequestBody EmailDto.Code requestBody) {
         String email = requestBody.getEmail();
         String code = requestBody.getCode();
