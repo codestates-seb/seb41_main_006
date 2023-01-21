@@ -6,10 +6,12 @@ import { useRef, useState } from 'react';
 
 const SearchAddress = ({ setAddress, setBCode }) => {
   const searchResultRef = useRef();
+  const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
   // 검색 결과 창 밖 클릭하면 닫힘
   useOnClickOutside(searchResultRef, () => setIsAddressListOpen(false));
+
   // 주소 검색 함수
   const { kakao } = window;
 
@@ -37,11 +39,6 @@ const SearchAddress = ({ setAddress, setBCode }) => {
             return acc;
           }, [])
         );
-        // setAddressList(result);
-        // console.log('여기!', result);
-        // const bCode = result[0].address.b_code;
-        // console.log(result[0].address.address_name);
-        // console.log(bCode);
       }
     });
   };
@@ -82,8 +79,8 @@ const SearchAddress = ({ setAddress, setBCode }) => {
         return;
       }
 
-      setIsAddressListOpen(true);
       getAddressCode(e.target.value);
+      setIsAddressListOpen(true);
     }
   };
 
@@ -91,15 +88,28 @@ const SearchAddress = ({ setAddress, setBCode }) => {
     geoFind();
   };
 
-  const handleClick = () => {};
+  const handleClickSearchResult = (index) => {
+    // input value 초기화
+    setSearchAddress(addressList[index].addressName);
+    // 선택한 결과의 배열 index를 이용해 화면에 출력할 주소명과 서버에 보낼 법정 코드를 설정
+    // 주소명
+    setAddress(addressList[index].addressName);
+    // 법정 코드
+    setBCode(addressList[index].bCode);
+    // 검색창 닫고 초기화
+    setIsAddressListOpen(false);
+    setAddressList([]);
+  };
 
   return (
     <SearchAddressBox>
       <IoLocationSharp className="location-icon" />
       <AdderssInput
         type="text"
-        placeholder="시/도 또는 시/군/구 또는 읍/면/동 이름을 검색하세요"
+        placeholder="동 이름을 검색하세요"
         onKeyUp={handleSearchAddressKeyUp}
+        value={searchAddress}
+        onChange={(e) => setSearchAddress(e.target.value)}
       ></AdderssInput>
       <LocationButton onClick={handleLocClick}>
         <BiTargetLock />
@@ -112,7 +122,10 @@ const SearchAddress = ({ setAddress, setBCode }) => {
           ) : (
             <ul>
               {addressList.map((el, idx) => (
-                <SearchResultItem key={idx} onClick={handleClick}>
+                <SearchResultItem
+                  key={el.id}
+                  onClick={() => handleClickSearchResult(idx)}
+                >
                   <IoLocationSharp className="location-icon" />
                   {el.addressName}
                 </SearchResultItem>
