@@ -14,4 +14,20 @@ spring:
           auth: true
           starttls:
             enable: true
-
+  redis:
+    port: 6379
+    host: localhost
+  #    password: ${redis-password}
+  h2:
+    console:
+      path: /h2
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:test
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
