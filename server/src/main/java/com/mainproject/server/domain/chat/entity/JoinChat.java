@@ -1,8 +1,10 @@
 package com.mainproject.server.domain.chat.entity;
 
 import com.mainproject.server.domain.member.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class JoinChat {
     @Id
