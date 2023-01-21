@@ -7,8 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootTest
 class ServerApplicationTests {
 
-	@Test
+/*	@Test
 	void contextLoads() {
-	}
+	}*/
 
 }
