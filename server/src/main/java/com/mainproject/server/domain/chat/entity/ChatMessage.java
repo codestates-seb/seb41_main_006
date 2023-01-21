@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.chat.entity;
 
+import com.mainproject.server.domain.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,29 +15,26 @@ public class ChatMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
-    @Column
-    private long senderId;
-
-    @Column
+    @Column(nullable = false)
     private LocalDateTime sendTime = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "join_chat_id")
-    private JoinChat joinChat;
+    @JoinColumn(name = "sender_id")
+    private Member sender;
 
-    public void setJoinChat(JoinChat joinChat) {
-        this.joinChat = joinChat;
-        if(!joinChat.getChatMessages().contains(this)){
-            joinChat.getChatMessages().add(this);
-        }
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private ChatRoom chatRoom;
+
+    public void setMember(Member sender) {
+        this.sender = sender;
     }
 
-    public void setSenderId(JoinChat joinChat) {
-        if(joinChat != null) {
-            senderId = joinChat.getMember().getMemberId();
-        }
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
     }
+
 }

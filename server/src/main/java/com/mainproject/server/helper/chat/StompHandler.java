@@ -1,4 +1,4 @@
-package com.mainproject.server.domain.chat.handler;
+package com.mainproject.server.helper.chat;
 
 import com.mainproject.server.auth.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +10,8 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor {
     // websocket 연결 시 요청 header의 token 유효성 검증을 할 수 있는 인터셉터 클래스
@@ -24,9 +24,9 @@ public class StompHandler implements ChannelInterceptor {
         // wrap : 메세지의 payload와 header로 StompHeaderAccessor 객체를 생성
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
-        if(accessor.getCommand() == StompCommand.CONNECT) { // 웹소켓이 연결되었을 때
+        if (accessor.getCommand() == StompCommand.CONNECT) { // 웹소켓이 연결되었을 때
             String token = accessor.getFirstNativeHeader("Authorization");
-            log.info("CONNECT : {}",token);
+            log.info("CONNECT : {}", token);
             jwtTokenizer.validateToken(token);
         }
         return message;
