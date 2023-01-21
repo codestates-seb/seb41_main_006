@@ -9,6 +9,7 @@ const SearchAddress = ({ setAddress, setBCode }) => {
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
+  const [isLocLoading, setIsLocLoading] = useState(false);
   // 검색 결과 창 밖 클릭하면 닫힘
   useOnClickOutside(searchResultRef, () => setIsAddressListOpen(false));
 
@@ -60,6 +61,7 @@ const SearchAddress = ({ setAddress, setBCode }) => {
             if (status === kakao.maps.services.Status.OK) {
               setBCode(result[0].code);
               setAddress(result[0].address_name);
+              setIsLocLoading(false);
             }
           };
 
@@ -86,6 +88,7 @@ const SearchAddress = ({ setAddress, setBCode }) => {
 
   const handleLocClick = () => {
     geoFind();
+    setIsLocLoading(true);
   };
 
   const handleClickSearchResult = (index) => {
@@ -111,10 +114,20 @@ const SearchAddress = ({ setAddress, setBCode }) => {
         value={searchAddress}
         onChange={(e) => setSearchAddress(e.target.value)}
       ></AdderssInput>
-      <LocationButton onClick={handleLocClick}>
-        <BiTargetLock />
-        현재 위치
-      </LocationButton>
+      {isLocLoading ? (
+        <LocationBox>
+          <BiTargetLock />
+          <WaveSpan delay="1">현</WaveSpan>
+          <WaveSpan delay="2">재</WaveSpan>
+          <WaveSpan delay="3">위</WaveSpan>
+          <WaveSpan delay="4">치</WaveSpan>
+        </LocationBox>
+      ) : (
+        <LocationButton onClick={handleLocClick}>
+          <BiTargetLock />
+          현재위치
+        </LocationButton>
+      )}
       {isAddressListOpen && (
         <SearchResultBox ref={searchResultRef}>
           {addressList.length === 0 ? (
@@ -182,7 +195,38 @@ const LocationButton = styled.button`
   color: var(--main-font-color);
   font-size: 1rem;
   font-weight: 600;
-  gap: 8px;
+  > svg {
+    margin-right: 0.5rem;
+  }
+`;
+
+const LocationBox = styled.div`
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  color: var(--main-font-color);
+  font-size: 1rem;
+  font-weight: 600;
+  > svg {
+    margin-right: 0.5rem;
+  }
+`;
+
+const WaveSpan = styled.span`
+  display: inline-block;
+  animation: wave 1s infinite;
+  animation-delay: ${(props) => `calc(${props.delay} * 0.1s)` || '0.1s'};
+  @keyframes wave {
+    0%,
+    40%,
+    100% {
+      transform: translateY(0);
+    }
+    20% {
+      transform: translateY(-3px);
+    }
+  }
 `;
 
 const SearchResultBox = styled.div`
