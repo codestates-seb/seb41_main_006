@@ -1,32 +1,28 @@
 package com.mainproject.server.domain.chat.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mainproject.server.domain.chat.entity.JoinChat;
+import com.mainproject.server.domain.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
+@Slf4j
 @RequiredArgsConstructor
-public class RedisSubscriber implements MessageListener {
-    private final ObjectMapper mapper;
-    private final RedisTemplate redisTemplate;
+public class RedisSubscriber {
+    private final ObjectMapper objectMapper;
     private final SimpMessageSendingOperations messagingTemplate;
 
-    // redis에서 메세지가 발행(publish)되면 대기하고 있던 onMessage가 해당 메세지를 받아 처리
-    @Override
-    public void onMessage(Message message, byte[] pattern) {
+    // 레디스에서 메세지가 publish되면 대기하고 있던 redis subscriber가 메세지를 받아 처리
+    public void sendMessage(String publishMessage) {
         try{
-            String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            JoinChat joinChat = mapper.readValue(publishMessage, JoinChat.class);
-            messagingTemplate.convertAndSend("/sub/chat/room/" + joinChat.getChatRoom().getChatRoomId(), joinChat);
+            // 레디스를 통해 들어온 메세지를 chatMessage로 변환
+            ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
+            // 채팅방을 구독하고 있는 회원에게 해당 메세지를 뿌림
+            messagingTemplate.convertAndSend("/sub/chats/" + chatMessage.getChatRoom().getRoomId(), chatMessage);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("{} : Exception in redis Subscriber", e);
         }
     }
 }

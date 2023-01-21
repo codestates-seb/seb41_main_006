@@ -1,24 +1,23 @@
 package com.mainproject.server.domain.chat.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
-import com.mainproject.server.domain.chat.dto.ChatDto;
-import com.mainproject.server.domain.chat.entity.JoinChat;
 import com.mainproject.server.domain.chat.entity.ChatRoom;
-import com.mainproject.server.domain.chat.redis.RedisSubscriber;
 import com.mainproject.server.domain.chat.repository.RoomRepository;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
+import com.mainproject.server.exception.BusinessLogicException;
+import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -26,90 +25,63 @@ import java.util.stream.Collectors;
 public class RoomService {
     private final MemberService memberService;
     private final RoomRepository roomRepository;
-    private final Map<String, ChannelTopic> topics; // 채팅방의 메세지를 발행하기 위한 redis topic 정보
-    private final RedisMessageListenerContainer redisMessageListenerContainer;
-    private final RedisSubscriber redisSubscriber;
+    @Resource(name = "chatRedisTemplate")
+    private HashOperations<String, Long, ChatRoom> opsHashChatRoom;
+    private static final String CHAT_ROOMS = "CHAT_ROOM";
 
-    public ChatDto.Response judgeFirstChat(long receiverId, MemberDetails memberDetails) {
-        // 첫채팅인지 아닌지 파악하려면 둘이 함께 들어가잇는 ChatRoom을 확인 해야 함.
-        Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
+    public ChatRoom createRoom(long receiverId, MemberDetails memberDetails) {
         Member receiver = memberService.validateVerifyMember(receiverId);
+        Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
 
-        // sender가 참여하고 있는 채팅방 목록을 가져오기
-        List<ChatRoom> senderChatRooms = findChatRooms(sender.getMemberId());
-        ChatRoom existChatRoom = null;
+        // 둘의 채팅이 있는 지 확인
+        Optional<ChatRoom> optionalChatRoom = roomRepository.findBySenderAndReceiver(sender, receiver);
+        Optional<ChatRoom> optionalChatRoom2 = roomRepository.findBySenderAndReceiver(receiver, sender);
 
-        // sender의 채팅 목록 중에서 receiver가 있는지 확인하고 있으면 Chatroom 가져오기
-        for(ChatRoom chatRoom : senderChatRooms) {
-            Optional<JoinChat> receiverJoinChat = chatRoom.getJoinChats().stream()
-                    .filter(joinChat -> joinChat.getMember().equals(receiver))
-                    .findFirst();
-            if(receiverJoinChat.isPresent()) {
-                existChatRoom = chatRoom;
-            }
+        ChatRoom chatRoom = null;
+
+        if(optionalChatRoom.isPresent()) {
+            chatRoom = optionalChatRoom.get();
+            log.info("find chat room");
+        } else if (optionalChatRoom2.isPresent()) {
+            chatRoom = optionalChatRoom2.get();
+            log.info("find chat room");
+        } else {
+            chatRoom = ChatRoom.builder().sender(sender).receiver(receiver).messages(new ArrayList<>()).build();
+            log.info("create chat room");
         }
-
-//        if(existChatRoom != null) {
-//            ChatDto.Response response = ChatDto.Response.builder()
-//                    .chatRoomId(existChatRoom.getChatRoomId())
-//                    .
-//        }
-
-
-        return null;
-    }
-
-    public long createRoom(long receiverId, MemberDetails memberDetails) {
-
-        Member receiver = memberService.validateVerifyMember(receiverId);
-        Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
-
-        // joinChat 객체에 해당 채팅방과 멤버 정보 저장...
-        List<JoinChat> joinChats = new ArrayList<>();
-        joinChats.add(JoinChat.builder().member(receiver).build());
-        joinChats.add(JoinChat.builder().member(sender).build());
-
-        // 새로운 채팅 방을 만들고 저장
-        ChatRoom chatRoom = ChatRoom.builder()
-                .joinChats(joinChats)
-                .build();
 
         ChatRoom saveChatRoom = roomRepository.save(chatRoom);
-        // 레디스에 새로운 토픽(채팅방 아이디) 생성하기
-        String roomId = "room" + saveChatRoom.getChatRoomId();
 
-        log.info("토픽 확인 topics : {}", topics);
+        // 생성된 채팅방을 redis hash에 저장하여 서버에 공유한다.
+        opsHashChatRoom.put(CHAT_ROOMS, saveChatRoom.getRoomId(), saveChatRoom);
+        log.info("redis 서버에 채팅방 공유");
 
-        if(!topics.containsKey(roomId)) {
-            // 토픽 생성
-            ChannelTopic topic = new ChannelTopic(roomId);
-            log.info("토픽 생성 : {}", topic);
-
-            // 메세지 리스너 컨테이너에 메세지 리스너(redisSubscriber)와, 생성한 토픽 추가
-            redisMessageListenerContainer.addMessageListener(redisSubscriber, topic);
-            topics.put(roomId, topic);
-
-            log.info("토픽 저장 topics: {}", topics);
-        }
-        // return 해야 할 값 : 생성될 채팅방의 URI?
-        return saveChatRoom.getChatRoomId();
+        return saveChatRoom;
     }
 
-    // sender-receiver의 채팅방 가져오기
-    public ChatRoom findChatRoom(long receiverId, long senderId) {
-        List<ChatRoom> chatRooms = findChatRooms(senderId);
-        return null;
-    }
-    // sender의 채팅 목록 가져오기
-    public List<ChatRoom> findChatRooms(long senderId) {
-        Member sender = memberService.validateVerifyMember(senderId);
+    // 유저의 채팅 목록 가져오기
+    public List<ChatRoom> findRooms(MemberDetails memberDetails) {
+        Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
 
-        List<ChatRoom> chatRooms = roomRepository.findAllById(sender.getJoinChats()
-                .stream()
-                .map(joinChat -> joinChat.getChatRoom().getChatRoomId())
-                .collect(Collectors.toList()));
+        List<ChatRoom> chatRooms = roomRepository.findAllBySenderOrReceiver(sender, sender);
 
         return chatRooms;
     }
 
+    // 채팅방 하나 찾기
+    public ChatRoom findRoom(long roomId) {
+        ChatRoom chatRoom = findExistRoom(roomId);
+        return chatRoom;
+    }
+
+    // 채팅방 존재 검증
+    private ChatRoom findExistRoom(long roomId) {
+        Optional<ChatRoom> optionalChatRoom = roomRepository.findById(roomId);
+
+        ChatRoom findChatRoom = optionalChatRoom.orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.CHATROOM_NOT_FOUND)
+        );
+
+        return findChatRoom;
+    }
 }
