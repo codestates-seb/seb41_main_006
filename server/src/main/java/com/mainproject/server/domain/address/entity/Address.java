@@ -15,15 +15,6 @@ public class Address {
 	@Column(length = 40, nullable = false, unique = true)
 	private String beop_jeong_cd;
 
-	@Column(length = 40)
-	private String sido_nm;
-
-	@Column(length = 40)
-	private String sigun_nm;
-
-	@Column(length = 40)
-	private String eup_myun_dong_nm;
-
-	@Column(length = 40)
-	private String li_nm;
+	@Column(length = 170)
+	private String full_address;
 }
