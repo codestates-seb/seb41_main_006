@@ -14,6 +14,13 @@ spring:
     password : ${DB.PASSWORD}
     #url: jdbc:h2:mem:test
 
+  #S3 업로드
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -28,3 +35,17 @@ spring:
   batch:
     job:
       enabled: false # 시작과 동시에 실행되는 건 방지
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3.ACCESSKEY}
+      secret-key: ${S3.SECRETKEY}
+    s3:
+      bucket: ${S3.BUCKET}
+      member: ${S3.MEMBER}
+      pet: ${S3.PET}
+    region:
+      static: ${S3.REGION}
+    stack:
+      auto: false
