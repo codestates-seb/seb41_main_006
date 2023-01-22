@@ -1,6 +1,7 @@
 package com.mainproject.server.awsS3.service;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -8,10 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.awsS3.repository.S3UpFileRepository;
+import com.mainproject.server.exception.BusinessLogicException;
+import com.mainproject.server.exception.ExceptionCode;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,30 +52,60 @@ public class S3UpFileService {
 		s3UpFiles.setUpFileUrl(urlMemberImage + s3FileName);
 		s3UpFileRepository.save(s3UpFiles);
 
+		log.info("파일 업로드됨");
 		return s3UpFiles.getUpFileUrl();
 	}
 
 	//펫 사진 업로드
 	public String uploadPFile(MultipartFile multipartFile) throws IOException{
+		String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
-		return null;
+		ObjectMetadata objMeta = new ObjectMetadata();
+		objMeta.setContentLength(multipartFile.getInputStream().available());
+
+		amazonS3.putObject(bucket + "pet", s3FileName, multipartFile.getInputStream(), objMeta);
+
+		S3UpFile s3UpFiles = new S3UpFile();
+		s3UpFiles.setUpFileName(s3FileName);
+		s3UpFiles.setUpFileUrl(urlPetImage + s3FileName);
+		s3UpFileRepository.save(s3UpFiles);
+
+		log.info("파일 업로드됨");
+		return s3UpFiles.getUpFileUrl();
 	}
 
 	//멤버 사진 url 삭제
-	public String deleteMFile(String upFileName) throws IOException{
-
+	public String deleteMFile(String upFileUrl) throws IOException{
+		S3UpFile s3UpFile = findVerifiedUpFileUrl(upFileUrl);
+		String fileName = s3UpFile.getUpFileName();
+		try{
+			s3UpFileRepository.delete(s3UpFile);
+			amazonS3.deleteObject(new DeleteObjectRequest(bucket + "member", fileName));
+		} catch (AmazonServiceException e){
+			System.err.println(e.getErrorMessage());
+		}
 		return "파일 삭제됨";
 	}
 
 	//펫 사진 url 삭제
-	public String deletePFile(String upFileName) throws IOException{
-
+	public String deletePFile(String upFileUrl) throws IOException{
+		S3UpFile s3UpFile = findVerifiedUpFileUrl(upFileUrl);
+		String fileName = s3UpFile.getUpFileName();
+		try{
+			s3UpFileRepository.delete(s3UpFile);
+			amazonS3.deleteObject(new DeleteObjectRequest(bucket + "pet", fileName));
+		} catch (AmazonServiceException e){
+			System.err.println(e.getErrorMessage());
+		}
 		return "파일 삭제됨";
 	}
 
 	//존재하는 url인지 검증
 	public S3UpFile findVerifiedUpFileUrl (String upFileUrl){
+		Optional<S3UpFile> optionalS3UpFile = s3UpFileRepository.findByUpFileUrl(upFileUrl);
+		S3UpFile findS3UpFile =
+			optionalS3UpFile.orElseThrow(() -> new BusinessLogicException(ExceptionCode.S3_FILE_NOT_FOUND));
 
-		return null;
+		return findS3UpFile;
 	}
 }
