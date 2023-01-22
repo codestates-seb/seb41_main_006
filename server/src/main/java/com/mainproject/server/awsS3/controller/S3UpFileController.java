@@ -2,6 +2,7 @@ package com.mainproject.server.awsS3.controller;
 
 import java.io.IOException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,22 +32,24 @@ public class S3UpFileController {
 
 	//펫 file upload
 	@PostMapping("/pet")
-	public String uploadPFile(@RequestParam("images")MultipartFile multipartFile){
+	public String uploadPFile(@RequestParam("images")MultipartFile multipartFile) throws IOException{
 
-		return null;
+		return s3UpFileService.uploadPFile(multipartFile);
 	}
 
 	//멤버 file delete
 	@DeleteMapping("/member")
 	public ResponseEntity deleteMFile(@RequestParam("upFileUrl") String upFileUrl) throws IOException{
 
-		return null;
+		s3UpFileService.deleteMFile(upFileUrl);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
 	//펫 file delete
 	@DeleteMapping("/pet")
 	public ResponseEntity deletePFile(@RequestParam("upFileUrl") String upFileUrl) throws IOException{
 
-		return null;
+		s3UpFileService.deletePFile(upFileUrl);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 }
