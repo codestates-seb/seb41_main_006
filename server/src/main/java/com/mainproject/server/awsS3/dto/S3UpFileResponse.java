@@ -13,4 +13,7 @@ public class S3UpFileResponse {
 	private Long upFileId;
 	private String upFileName;
 	private String upFileUrl;
+
+	private Long memberId;
+	private Long petId;
 }

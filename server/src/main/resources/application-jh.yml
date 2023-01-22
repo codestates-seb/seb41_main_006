@@ -8,10 +8,10 @@ spring:
       path: /h2
       enabled: true
   datasource:
-    url: ${DB.URL}
+    url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username : ${DB.USERNAME}
-    password : ${DB.PASSWORD}
+    username : ${DB_USERNAME}
+    password : ${DB_PASSWORD}
     #url: jdbc:h2:mem:test
 
   #S3 업로드
@@ -39,13 +39,12 @@ spring:
 cloud:
   aws:
     credentials:
-      access-key: ${S3.ACCESSKEY}
-      secret-key: ${S3.SECRETKEY}
+      access-key: ${S3_ACCESSKEY}
+      secret-key: ${S3_SECRETKEY}
     s3:
-      bucket: ${S3.BUCKET}
-      member: ${S3.MEMBER}
-      pet: ${S3.PET}
+      bucket: ${S3_BUCKET}
+      endpoint: ${S3_ENDPOINT}
     region:
-      static: ${S3.REGION}
+      static: ${S3_REGION}
     stack:
       auto: false
