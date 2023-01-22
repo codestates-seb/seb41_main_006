@@ -47,6 +47,11 @@ jobs:
         DB_URL: ${{secrets.DB_URL}}
         DB_USERNAME: ${{secrets.DB_USERNAME}}
         DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+        S3_ACCESSKEY: ${{secrets.S3_ACCESSKEY}}
+        S3_SECRETKEY: ${{secrets.S3_SECRETKEY}}
+        S3_BUCKET: ${{secrets.S3_BUCKET}}
+        S3_REGION: ${{secrets.S3_REGION}}
+        S3_ENDPOINT: ${{secrets.S3_ENDPOINT}}
       run: |
         echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> src/main/resources/env.yml
         echo "JWT_ACCESS_TOKEN_EXPIRATION_MINUTES=$JWT_ACCESS_TOKEN_EXPIRATION_MINUTES" >> src/main/resources/env.yml
@@ -56,6 +61,12 @@ jobs:
         echo "DB_URL=$DB_URL" >> src/main/resources/env.yml
         echo "DB_USERNAME=$DB_USERNAME" >> src/main/resources/env.yml
         echo "DB_PASSWORD=$DB_PASSWORD" >> src/main/resources/env.yml
+        echo "S3_ACCESSKEY=$S3_ACCESSKEY" >> src/main/resources/env.yml
+        echo "S3_SECRETKEY=$S3_SECRETKEY" >> src/main/resources/env.yml
+        echo "S3_BUCKET=$S3_BUCKET" >> src/main/resources/env.yml
+        echo "S3_REGION=$S3_REGION" >> src/main/resources/env.yml
+        echo "S3_ENDPOINT=$S3_ENDPOINT" >> src/main/resources/env.yml
+
     - name: Build with Gradle
       run: ./gradlew build
       

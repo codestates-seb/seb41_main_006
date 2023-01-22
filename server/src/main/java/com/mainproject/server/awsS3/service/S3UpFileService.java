@@ -13,8 +13,15 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.mainproject.server.auth.userdetails.MemberDetails;
+import com.mainproject.server.awsS3.dto.S3UpFileResponse;
 import com.mainproject.server.awsS3.entity.S3UpFile;
+import com.mainproject.server.awsS3.mapper.S3UpFileMapper;
 import com.mainproject.server.awsS3.repository.S3UpFileRepository;
+import com.mainproject.server.domain.member.entity.Member;
+import com.mainproject.server.domain.member.service.MemberService;
+import com.mainproject.server.domain.pet.entity.Pet;
+import com.mainproject.server.domain.pet.service.PetService;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
 
@@ -29,18 +36,19 @@ public class S3UpFileService {
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 
-	@Value("${cloud.aws.s3.member}")
-	private String urlMemberImage;
-
-	@Value("${cloud.aws.s3.pet}")
-	private String urlPetImage;
+	@Value("${cloud.aws.s3.endpoint}")
+	private String s3EndPoint;
 
 	private final AmazonS3 amazonS3;
 	private final S3UpFileRepository s3UpFileRepository;
+	private final MemberService memberService;
+	private final PetService petService;
 
 	//멤버 사진 업로드
-	public String uploadMFile(MultipartFile multipartFile) throws IOException{
+	public S3UpFile uploadMFile(MultipartFile multipartFile, MemberDetails memberDetails) throws IOException{
 		String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
+
+		Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
 
 		ObjectMetadata objMeta = new ObjectMetadata();
 		objMeta.setContentLength(multipartFile.getInputStream().available());
@@ -49,16 +57,20 @@ public class S3UpFileService {
 
 		S3UpFile s3UpFiles = new S3UpFile();
 		s3UpFiles.setUpFileName(s3FileName);
-		s3UpFiles.setUpFileUrl(urlMemberImage + s3FileName);
+		s3UpFiles.setUpFileUrl(s3EndPoint + "/member/" + s3FileName);
 		s3UpFileRepository.save(s3UpFiles);
 
+		s3UpFiles.setMember(member);
+
 		log.info("파일 업로드됨");
-		return s3UpFiles.getUpFileUrl();
+		return s3UpFileRepository.save(s3UpFiles);
 	}
 
 	//펫 사진 업로드
-	public String uploadPFile(MultipartFile multipartFile) throws IOException{
+	public S3UpFile uploadPFile(MultipartFile multipartFile, Long petId) throws IOException{
 		String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
+
+		Pet findPet = petService.findVerifiedPet(petId);
 
 		ObjectMetadata objMeta = new ObjectMetadata();
 		objMeta.setContentLength(multipartFile.getInputStream().available());
@@ -67,11 +79,13 @@ public class S3UpFileService {
 
 		S3UpFile s3UpFiles = new S3UpFile();
 		s3UpFiles.setUpFileName(s3FileName);
-		s3UpFiles.setUpFileUrl(urlPetImage + s3FileName);
+		s3UpFiles.setUpFileUrl(s3EndPoint + "/pet/" + s3FileName);
 		s3UpFileRepository.save(s3UpFiles);
 
+		s3UpFiles.setPet(findPet);
+
 		log.info("파일 업로드됨");
-		return s3UpFiles.getUpFileUrl();
+		return s3UpFileRepository.save(s3UpFiles);
 	}
 
 	//멤버 사진 url 삭제
