@@ -52,7 +52,7 @@ public class Pet extends Auditable {
 
     @OneToOne
     @JoinColumn(name = "up_file_id")
-    S3UpFile s3UpFile;
+    private S3UpFile s3UpFile;
 
     public void setMember(Member member) {
         this.member = member;

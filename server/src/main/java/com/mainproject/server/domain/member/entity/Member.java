@@ -64,7 +64,7 @@ public class Member extends Auditable implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "up_file_id")
-    S3UpFile s3UpFile;
+    private S3UpFile s3UpFile;
 
     public void addPets(Pet pet) {
         this.pets.add(pet);
