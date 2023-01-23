@@ -26,7 +26,6 @@ public class PetDto {
         @Gender
         private String gender;
 
-        @NotBlank(message = "이미지를 추가해주세요.")
         private String profileImage;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
@@ -55,7 +54,6 @@ public class PetDto {
         @Gender
         private String gender;
 
-        @NotBlank(message = "이미지를 추가해주세요.")
         private String profileImage;
 
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")

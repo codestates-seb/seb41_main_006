@@ -31,11 +31,11 @@ public class JwtTokenizer {
     @Value("${jwt-secret-key}")
     private String secretKey;
 
-    @Value("${access-token-expiration-minutes}")
-    private int accessTokenExpirationMinutes;
+//    @Value("${access-token-expiration-minutes}")
+    private int accessTokenExpirationMinutes = 10;
 
-    @Value("${refresh-token-expiration-minutes}")
-    private int refreshTokenExpirationMinutes;
+//    @Value("${refresh-token-expiration-minutes}")
+    private int refreshTokenExpirationMinutes=360;
 
     /* secret key의 byte array를 base64 인코딩, Key가 항상 바이너리이기 때문에
     jjwt에서 plain text를 키로 사용하는 것은 권장하지 않음*/

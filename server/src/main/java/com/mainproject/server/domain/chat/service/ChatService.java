@@ -7,11 +7,13 @@ import com.mainproject.server.domain.chat.repository.MessageRepository;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ChatService {
     private final MemberService memberService;
@@ -31,7 +33,13 @@ public class ChatService {
                 .build();
 
         chatRoom.addMessage(chatMessage);
+        log.info("채팅방에 메세지 추가");
 
-        return messageRepository.save(chatMessage);
+        return chatMessage;
+    }
+
+    public void saveMessage(ChatMessage chatMessage) {
+        messageRepository.save(chatMessage);
+        log.info("메세지 저장 완료");
     }
 }

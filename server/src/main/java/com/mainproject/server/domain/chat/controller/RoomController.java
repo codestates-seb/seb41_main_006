@@ -90,6 +90,7 @@ public class RoomController {
             log.info("인증되지 않은 회원의 접근");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
+
         List<ChatRoom> rooms = roomService.findRooms(memberDetails);
         List<ChatDto.OnlyRoomResponse> responses = mapper.chatRoomsToOnlyRoomResponseDtos(rooms);
 

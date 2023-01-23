@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.7'
+	id 'war'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -49,11 +50,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	// 채팅
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-	//쿼리 dsl
-	implementation 'com.querydsl:querydsl-jpa'
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
-	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 test {
