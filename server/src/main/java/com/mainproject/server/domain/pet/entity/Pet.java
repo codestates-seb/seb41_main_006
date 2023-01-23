@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.pet.entity;
 
 import com.mainproject.server.audit.Auditable;
+import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +49,10 @@ public class Pet extends Auditable {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToOne
+    @JoinColumn(name = "up_file_id")
+    private S3UpFile s3UpFile;
 
     public void setMember(Member member) {
         this.member = member;

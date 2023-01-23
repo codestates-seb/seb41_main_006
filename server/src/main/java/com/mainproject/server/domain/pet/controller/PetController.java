@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,13 +37,12 @@ public class PetController {
     @PostMapping
     public ResponseEntity postPet(@Valid @RequestBody PetDto.Post petPostDto,
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
-
-
+        Long upFileId = petPostDto.getUpFileId();
         if (memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
-        Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), memberDetails);
+        Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), memberDetails, Optional.ofNullable(upFileId));
 
         PetDto.Response response = mapper.petToPetResponseDto(pet);
 

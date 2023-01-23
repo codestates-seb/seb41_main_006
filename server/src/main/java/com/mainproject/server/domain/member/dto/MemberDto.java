@@ -17,6 +17,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Optional;
 
 public class MemberDto {
 
@@ -52,6 +53,9 @@ public class MemberDto {
         private String address;
 
         private String aboutMe;
+
+        @Positive
+        private Long upFileId;
     }
 
     @Getter
@@ -96,6 +100,7 @@ public class MemberDto {
         private Member.MemberStatus memberStatus;
         private String profileImage;
         private String aboutMe;
+        private Optional<Long> upFileId;
     }
 
     @Getter

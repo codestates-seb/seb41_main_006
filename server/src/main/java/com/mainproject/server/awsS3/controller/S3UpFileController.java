@@ -33,7 +33,7 @@ public class S3UpFileController {
 	private final S3UpFileService s3UpFileService;
 	private final S3UpFileMapper s3UpFileMapper;
 
-	//멤버 file upload
+/*	//멤버 file upload
 	@PostMapping("/member")
 	public ResponseEntity uploadMFile(@RequestParam("images")MultipartFile multipartFile,
 									  @AuthenticationPrincipal MemberDetails memberDetails) throws IOException{
@@ -46,17 +46,26 @@ public class S3UpFileController {
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
+	*/
+
+	//멤버 file upload
+	@PostMapping("/member")
+	public ResponseEntity uploadMFile(@RequestParam("images")MultipartFile multipartFile) throws IOException{
+
+		S3UpFile uploadMfile = s3UpFileService.uploadMFile(multipartFile);
+		S3UpFileResponse response = s3UpFileMapper.s3UpFileToS3UpFileResponse(uploadMfile);
+
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+
 
 	//펫 file upload
-	@PostMapping("/pet/{pet-id}")
-	public ResponseEntity uploadPFile(@RequestParam("images")MultipartFile multipartFile,
-		                      @Positive @PathVariable("pet-id") Long petId) throws IOException{
+	@PostMapping("/pet")
+	public ResponseEntity uploadPFile(@RequestParam("images")MultipartFile multipartFile) throws IOException{
 
-		if(petId == null){
-			return new ResponseEntity(ExceptionCode.PET_NOT_FOUND, HttpStatus.NOT_FOUND);
-		}
-		S3UpFile uploadPfile = s3UpFileService.uploadPFile(multipartFile, petId);
-		S3UpFileResponse response = s3UpFileMapper.s3UpPFileToS3UpPFileResponse(uploadPfile);
+
+		S3UpFile uploadPfile = s3UpFileService.uploadPFile(multipartFile);
+		S3UpFileResponse response = s3UpFileMapper.s3UpFileToS3UpFileResponse(uploadPfile);
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}

@@ -21,3 +21,16 @@ logging:
   level:
     org.hibernate.sql: debug
 #    org.hibernate.type: trace
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESSKEY}
+      secret-key: ${S3_SECRETKEY}
+    s3:
+      bucket: ${S3_BUCKET}
+      endpoint: ${S3_ENDPOINT}
+    region:
+      static: ${S3_REGION}
+    stack:
+      auto: false

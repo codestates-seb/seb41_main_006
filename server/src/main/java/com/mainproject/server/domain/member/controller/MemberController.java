@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/members")
@@ -40,10 +41,13 @@ public class MemberController {
     /*회원 가입*/
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
-        Member savedMember = memberService.createMember(memberMapper.memberPostDtoToMember(requestBody));
+        Member member = memberMapper.memberPostDtoToMember(requestBody);
+        Long upFileId = requestBody.getUpFileId();
+
+        Member savedMember = memberService.createMember(member, Optional.ofNullable(upFileId));
 
         return new ResponseEntity(
-                new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(savedMember)), HttpStatus.OK);
+            new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(savedMember)), HttpStatus.OK);
     }
 
     /*마이 페이지 회원 정보 수정*/

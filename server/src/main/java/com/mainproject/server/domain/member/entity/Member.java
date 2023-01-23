@@ -2,6 +2,7 @@ package com.mainproject.server.domain.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mainproject.server.audit.Auditable;
+import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.domain.pet.entity.Pet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,6 +61,10 @@ public class Member extends Auditable implements Serializable {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 100)
     private List<Pet> pets = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "up_file_id")
+    private S3UpFile s3UpFile;
 
     public void addPets(Pet pet) {
         this.pets.add(pet);

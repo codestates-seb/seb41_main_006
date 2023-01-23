@@ -32,12 +32,4 @@ public class S3UpFile {
 
 	@Column
 	private String upFileUrl;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
-	Member member;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pet_id")
-	Pet pet;
 }
