@@ -1,6 +1,9 @@
 package com.mainproject.server.domain.member.service;
 
 import com.mainproject.server.auth.utils.CustomAuthorityUtils;
+import com.mainproject.server.awsS3.entity.S3UpFile;
+import com.mainproject.server.awsS3.mapper.S3UpFileMapper;
+import com.mainproject.server.awsS3.service.S3UpFileService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.repository.MemberRepository;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.OptionalLong;
 
 @Service
 @Transactional
@@ -25,15 +29,21 @@ public class MemberService {
     private final CustomBeanUtils<Member> customBeanUtils;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils customAuthorityUtils;
+    private final S3UpFileService s3UpFileService;
 
     /*회원 신규 가입*/
-    public Member createMember(Member member) {
+    public Member createMember(Member member, Optional<Long> upFileId) {
         validateDuplicateMember(member);
         // 비밀번호 암호화
         String encodePassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encodePassword);
         // 권한 정보 세팅
         member.setRoles(customAuthorityUtils.createRole());
+
+        if (upFileId.isPresent()) {
+            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(upFileId.get());
+            member.setS3UpFile(s3UpFile);
+        }
 
         return memberRepository.save(member);
     }

@@ -1,12 +1,15 @@
 package com.mainproject.server.domain.member.mapper;
 
+import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.dto.PetDto;
 import com.mainproject.server.domain.pet.entity.Pet;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -15,7 +18,23 @@ public interface MemberMapper {
 
     Member memberPathDtoToMember(MemberDto.Patch requestBody);
 
-    MemberDto.SimpleResponse memberToMemberSimpleResponseDto(Member member);
+    @Mapping(source = "s3UpFile.upFileId", target = "upFileId")
+    default MemberDto.SimpleResponse memberToMemberSimpleResponseDto(Member member){
+        Optional<Long> upFileId = Optional.ofNullable(member.getS3UpFile()).map(S3UpFile::getUpFileId);
+
+        return MemberDto.SimpleResponse.builder()
+            .memberId(member.getMemberId())
+            .nickName(member.getNickName())
+            .email(member.getEmail())
+            .memberAge(member.getMemberAge())
+            .gender(member.getGender())
+            .address(member.getAddress())
+            .memberStatus(member.getMemberStatus())
+            .profileImage(member.getProfileImage())
+            .aboutMe(member.getAboutMe())
+            .upFileId(upFileId)
+            .build();
+    }
 
     List<MemberDto.SimpleResponse> membersToMemberSimpleResponseDtos(List<Member> members);
 
