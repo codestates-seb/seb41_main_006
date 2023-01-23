@@ -8,6 +8,7 @@ import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +51,6 @@ public class ChatService {
         Pageable pageable = PageRequest.of(0, 10, Sort.by("messageId").descending());
         Page<ChatMessage> messages = messageRepository.findByChatRoom(pageable, chatRoom);
 
-        return messages;
+        return chatMessage;
     }
 }
