@@ -8,6 +8,11 @@ import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,14 +37,20 @@ public class ChatService {
                 .sendTime(LocalDateTime.now())
                 .build();
 
-        chatRoom.addMessage(chatMessage);
-        log.info("채팅방에 메세지 추가");
-
         return chatMessage;
     }
 
     public void saveMessage(ChatMessage chatMessage) {
         messageRepository.save(chatMessage);
         log.info("메세지 저장 완료");
+    }
+
+    public Page<ChatMessage> findMessages(long roomId) {
+        ChatRoom chatRoom = roomService.findRoom(roomId);
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("messageId").descending());
+        Page<ChatMessage> messages = messageRepository.findByChatRoom(pageable, chatRoom);
+
+        return chatMessage;
     }
 }

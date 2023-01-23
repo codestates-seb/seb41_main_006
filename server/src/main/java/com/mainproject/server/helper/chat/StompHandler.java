@@ -23,10 +23,12 @@ public class StompHandler implements ChannelInterceptor {
         // StompHeaderAccessor : 단순한 메세지를 stomp 헤더로 작업하기 위한 클래스
         // wrap : 메세지의 payload와 header로 StompHeaderAccessor 객체를 생성
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        log.info("websocket connection");
 
         if (accessor.getCommand() == StompCommand.CONNECT) { // 웹소켓이 연결되었을 때
             String token = accessor.getFirstNativeHeader("Authorization");
             log.info("CONNECT : {}", token);
+
             jwtTokenizer.validateToken(token);
         }
         return message;

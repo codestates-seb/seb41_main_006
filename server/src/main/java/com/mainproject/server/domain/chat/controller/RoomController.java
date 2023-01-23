@@ -2,22 +2,29 @@ package com.mainproject.server.domain.chat.controller;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.chat.dto.ChatDto;
+import com.mainproject.server.domain.chat.entity.ChatMessage;
 import com.mainproject.server.domain.chat.entity.ChatRoom;
 import com.mainproject.server.domain.chat.mapper.ChatMapper;
+import com.mainproject.server.domain.chat.service.ChatService;
 import com.mainproject.server.domain.chat.service.RoomService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
+import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.exception.ExceptionCode;
+import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,9 +36,10 @@ public class RoomController {
 
     private final MemberService memberService;
     private final RoomService roomService;
+    private final ChatService chatService;
     private final ChatMapper mapper;
 
-    // 유저 정보 페이지에서 접근할 경우 -> 유저가 참여하고 있는 채팅목록, 요청을 보낸 유저와의 채팅방과 메세지
+    // 채팅방 주소 가져오기
     @PostMapping
     public ResponseEntity getOrCreateRoom(@Valid @RequestBody ChatDto.Post postDto,
                                           @AuthenticationPrincipal MemberDetails memberDetails) {
@@ -48,22 +56,18 @@ public class RoomController {
             return new ResponseEntity<>("탈퇴한 회원", HttpStatus.NO_CONTENT);
         }
 
-        ChatRoom chatRoom = roomService.createRoom(receiver.getMemberId(), memberDetails);
+        long roomId = roomService.createRoom(receiver.getMemberId(), memberDetails);
 
-        ChatDto.RoomResponse response = mapper.chatRoomToRoomResponseDto(chatRoom);
+        URI location = UriComponentsBuilder.newInstance()
+                .path("/chats/{room-id}")
+                .buildAndExpand(roomId)
+                .toUri();
 
-        // sender의 채팅 목록 가져오기
-        List<ChatRoom> chatRooms = roomService.findRooms(memberDetails);
-        // 가져온 채팅 목록 Dto로 변경 후, response에 넣기
-        List<ChatDto.OnlyRoomResponse> roomResponse = mapper.chatRoomsToOnlyRoomResponseDtos(chatRooms);
-
-        response.setRooms(roomResponse);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.created(location).build();
 
     }
 
-    //  채팅방 조회 -> 메세지 가져오기
+    //  채팅방 열기
     @GetMapping("/{room-id}")
     public ResponseEntity getChatRoom(@Positive @PathVariable("room-id") long roomId,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
@@ -73,11 +77,6 @@ public class RoomController {
         }
         ChatRoom chatRoom = roomService.findRoom(roomId);
         ChatDto.RoomResponse response = mapper.chatRoomToRoomResponseDto(chatRoom);
-
-        List<ChatRoom> rooms = roomService.findRooms(memberDetails);
-        List<ChatDto.OnlyRoomResponse> roomResponses = mapper.chatRoomsToOnlyRoomResponseDtos(rooms);
-
-        response.setRooms(roomResponses);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -91,9 +90,12 @@ public class RoomController {
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
-        List<ChatRoom> rooms = roomService.findRooms(memberDetails);
-        List<ChatDto.OnlyRoomResponse> responses = mapper.chatRoomsToOnlyRoomResponseDtos(rooms);
+        Page<ChatRoom> roomPage = roomService.findRooms(memberDetails);
+        PageInfo pageInfo = new PageInfo(1, 10, (int)roomPage.getTotalElements(), roomPage.getTotalPages());
 
-        return new ResponseEntity<>(responses, HttpStatus.OK);
+        List<ChatRoom> rooms = roomPage.getContent();
+        List<ChatDto.RoomResponse> responses = mapper.chatRoomListToRoomResponseDtos(rooms);
+
+        return new ResponseEntity<>(new MultiResponseDto<>(responses, pageInfo), HttpStatus.OK);
     }
 }
