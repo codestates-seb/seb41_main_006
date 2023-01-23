@@ -16,14 +16,11 @@ public interface ChatMapper {
     MemberDto.ResponseOnlyMemberName memberToMembernameResponseDto(Member member);
 
     ChatDto.RoomResponse chatRoomToRoomResponseDto(ChatRoom chatRoom);
+    List<ChatDto.RoomResponse> chatRoomListToRoomResponseDtos(List<ChatRoom> chatRooms);
 
     ChatDto.MessageResponse messageToMessageResponseDto(ChatMessage message);
 
     List<ChatDto.MessageResponse> messagesToMessageResponseDtos(List<ChatMessage> messages);
-
-    ChatDto.OnlyRoomResponse chatRoomToOnlyRoomResponseDto(ChatRoom chatRoom);
-
-    List<ChatDto.OnlyRoomResponse> chatRoomsToOnlyRoomResponseDtos(List<ChatRoom> chatRooms);
 
     ChatMessage PostDtoToChatMessage (MessageDto messageDto);
 }

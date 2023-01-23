@@ -18,14 +18,10 @@ public class ChatDto {
     }
     @Getter
     @Builder
-    public static class RoomResponse { // 채팅방 하나와 그에 속해 있는 메세지들 + 채팅방 목록
+    public static class RoomResponse {
         private long roomId;
         private MemberDto.ResponseOnlyMemberName sender;
         private MemberDto.ResponseOnlyMemberName receiver;
-        private List<MessageResponse> messages;
-        @Setter
-        private List<OnlyRoomResponse> rooms; // 별도로 주입 필요
-
     }
     @Getter
     @Builder
@@ -34,13 +30,5 @@ public class ChatDto {
         private MemberDto.ResponseOnlyMemberName sender;
         private String content;
         private LocalDateTime sendTime;
-    }
-
-    @Getter
-    @Builder
-    public static class OnlyRoomResponse { // 채팅방 하나의 정보
-        private long roomId;
-        private MemberDto.ResponseOnlyMemberName sender;
-        private MemberDto.ResponseOnlyMemberName receiver;
     }
 }
