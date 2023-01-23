@@ -70,9 +70,6 @@ public class BoardService {
        Optional.ofNullable(board.getX()).ifPresent(findBoard::setX);
        Optional.ofNullable(board.getY()).ifPresent(findBoard::setY);
 
-       Optional.ofNullable(board.getBoardStatus())
-               .ifPresent(findBoard::setBoardStatus);
-
        if(board.getPet().getPetId() != null) {
            Pet pet = petService.findPet(board.getPet().getPetId());
            findBoard.setPet(pet);

@@ -47,9 +47,12 @@ public class MessageController {
         }
 
         ChatMessage chatMessage = chatService.createMessage(messageDto, roomId);
-
+        log.info("메세지 생성 완료");
         // 채팅방에 메세지 전송
         redisTemplate.convertAndSend(topic.getTopic(), chatMessage);
+        log.info("레디스 서버에 메세지 전송 완료");
+        // 전송 후 레포지토리에 저장할 것인지, 저장을 하지 않고 레디스 큐에 쌓인 데이터를 따로 일정 기간 주기마다 저장을 할 것인지
+        chatService.saveMessage(chatMessage);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
