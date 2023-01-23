@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.pet.dto;
 
+import com.mainproject.server.awsS3.dto.S3UpFileResponse;
 import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.entity.Pet;
@@ -10,6 +11,8 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
+
 import java.time.LocalDateTime;
 
 public class PetDto {
@@ -40,6 +43,9 @@ public class PetDto {
 
         @NotBlank(message = "강아지의 종을 입력해주세요.")
         private String breed;
+
+        @Positive
+        private Long upFileId;
     }
 
     @Getter
@@ -84,6 +90,7 @@ public class PetDto {
         private String aboutDog;
         private String breed;
         private MemberDto.ResponseOnlyMemberName member; // 멤버 아이디, 닉네임만 반환
+        private S3UpFileResponse s3UpFileResponse; //업로드한 파일 전체 반환
     }
 
     /*회원 정보 포함 안하고 강아지 정보만 DTO로 매핑*/

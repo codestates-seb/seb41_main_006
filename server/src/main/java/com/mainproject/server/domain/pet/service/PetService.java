@@ -1,6 +1,8 @@
 package com.mainproject.server.domain.pet.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
+import com.mainproject.server.awsS3.entity.S3UpFile;
+import com.mainproject.server.awsS3.service.S3UpFileService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.domain.pet.entity.Pet;
@@ -25,14 +27,20 @@ import java.util.stream.Collectors;
 public class PetService {
     private final PetRepository petRepository;
     private final MemberService memberService;
+    private final S3UpFileService s3UpFileService;
 
-    public Pet createPet(Pet pet, MemberDetails memberDetails) {
+    public Pet createPet(Pet pet, MemberDetails memberDetails, Optional<Long> upFileId) {
 
         verifyOverlapByPetName(pet.getName(), memberDetails.getMemberId());
 
         Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
 
         pet.setMember(member);
+
+        if (upFileId.isPresent()) {
+            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(upFileId.get());
+            pet.setS3UpFile(s3UpFile);
+        }
 
         return petRepository.save(pet);
     }

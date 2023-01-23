@@ -41,14 +41,10 @@ public class S3UpFileService {
 
 	private final AmazonS3 amazonS3;
 	private final S3UpFileRepository s3UpFileRepository;
-	private final MemberService memberService;
-	private final PetService petService;
 
 	//멤버 사진 업로드
-	public S3UpFile uploadMFile(MultipartFile multipartFile, MemberDetails memberDetails) throws IOException{
+	public S3UpFile uploadMFile(MultipartFile multipartFile) throws IOException{
 		String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
-
-		Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
 
 		ObjectMetadata objMeta = new ObjectMetadata();
 		objMeta.setContentLength(multipartFile.getInputStream().available());
@@ -60,17 +56,13 @@ public class S3UpFileService {
 		s3UpFiles.setUpFileUrl(s3EndPoint + "/member/" + s3FileName);
 		s3UpFileRepository.save(s3UpFiles);
 
-		s3UpFiles.setMember(member);
-
 		log.info("파일 업로드됨");
 		return s3UpFileRepository.save(s3UpFiles);
 	}
 
 	//펫 사진 업로드
-	public S3UpFile uploadPFile(MultipartFile multipartFile, Long petId) throws IOException{
+	public S3UpFile uploadPFile(MultipartFile multipartFile) throws IOException {
 		String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
-
-		Pet findPet = petService.findVerifiedPet(petId);
 
 		ObjectMetadata objMeta = new ObjectMetadata();
 		objMeta.setContentLength(multipartFile.getInputStream().available());
@@ -81,8 +73,6 @@ public class S3UpFileService {
 		s3UpFiles.setUpFileName(s3FileName);
 		s3UpFiles.setUpFileUrl(s3EndPoint + "/pet/" + s3FileName);
 		s3UpFileRepository.save(s3UpFiles);
-
-		s3UpFiles.setPet(findPet);
 
 		log.info("파일 업로드됨");
 		return s3UpFileRepository.save(s3UpFiles);
@@ -119,6 +109,15 @@ public class S3UpFileService {
 		Optional<S3UpFile> optionalS3UpFile = s3UpFileRepository.findByUpFileUrl(upFileUrl);
 		S3UpFile findS3UpFile =
 			optionalS3UpFile.orElseThrow(() -> new BusinessLogicException(ExceptionCode.S3_FILE_NOT_FOUND));
+
+		return findS3UpFile;
+	}
+
+	//존재하는 id 인지 검증
+	public S3UpFile validateVerifyFile(Long upFileId){
+		Optional<S3UpFile> optionalS3UpFile = s3UpFileRepository.findByUpFileId(upFileId);
+		S3UpFile findS3UpFile = optionalS3UpFile.orElseThrow(
+			() -> new BusinessLogicException(ExceptionCode.S3_FILE_NOT_FOUND));
 
 		return findS3UpFile;
 	}
