@@ -61,8 +61,6 @@ public class BoardDto {
         @NotBlank(message = "내용을 입력해주세요.")
         private String content;
 
-        private Board.BoardStatus boardStatus;
-
         @NotNull(message = "약속 시간을 입력해주세요.")
         private LocalDateTime appointTime;
 
