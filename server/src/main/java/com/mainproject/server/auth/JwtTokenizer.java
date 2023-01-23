@@ -9,7 +9,6 @@ import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -19,23 +18,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-@PropertySource("classpath:env.yml") //env.getProperty @Autowired
-@Component
+//@PropertySource("classpath:env.yml") //env.getProperty @Autowired
 @Getter
+@Component
 public class JwtTokenizer {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String ACCESS_TOKEN_HEADER = "Authorization";
 
     public static final String REFRESH_TOKEN_HEADER = "Refresh";
 
-    @Value("${jwt-secret-key}")
+    @Value("${JWT_SECRET_KEY}")
     private String secretKey;
 
-//    @Value("${access-token-expiration-minutes}")
-    private int accessTokenExpirationMinutes = 10;
+    @Value("${JWT_ACCESS_TOKEN_EXPIRATION_MINUTES}")
+    private int accessTokenExpirationMinutes;
 
-//    @Value("${refresh-token-expiration-minutes}")
-    private int refreshTokenExpirationMinutes=360;
+    @Value("${JWT_REFRESH_TOKEN_EXPIRATION_MINUTES}")
+    private int refreshTokenExpirationMinutes;
 
     /* secret key의 byte array를 base64 인코딩, Key가 항상 바이너리이기 때문에
     jjwt에서 plain text를 키로 사용하는 것은 권장하지 않음*/

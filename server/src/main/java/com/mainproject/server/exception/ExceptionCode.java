@@ -14,7 +14,9 @@ public enum ExceptionCode {
     COMMENTS_NOT_FOUND(404, "Comment Not Found"),
     CHATROOM_NOT_FOUND(NOT_FOUND.value(), "ChatRoom Not Found"),
     NOT_AUTHORIZED(UNAUTHORIZED.value(), "Not_Authorized"),
-    EMAIL_VERIFICATION_FAILED(BAD_REQUEST.value(), "Code Has Not Matched");
+    EMAIL_VERIFICATION_FAILED(BAD_REQUEST.value(), "Code Has Not Matched"),
+
+    S3_FILE_NOT_FOUND(NOT_FOUND.value(), "There are no images stored in S3.");
 
     @Getter
     private int status;

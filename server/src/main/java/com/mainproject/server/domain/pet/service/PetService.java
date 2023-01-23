@@ -115,7 +115,7 @@ public class PetService {
 
     }
 
-    private Pet findVerifiedPet(long petId) {
+    public Pet findVerifiedPet(long petId) {
         Optional<Pet> optionalPet = petRepository.findById(petId);
         Pet findPet = optionalPet.orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.PET_NOT_FOUND));

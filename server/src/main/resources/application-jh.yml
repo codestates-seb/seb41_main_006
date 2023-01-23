@@ -8,11 +8,18 @@ spring:
       path: /h2
       enabled: true
   datasource:
-    url: ${DB.URL}
+    url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username : ${DB.USERNAME}
-    password : ${DB.PASSWORD}
+    username : ${DB_USERNAME}
+    password : ${DB_PASSWORD}
     #url: jdbc:h2:mem:test
+
+  #S3 업로드
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
 
   jpa:
     hibernate:
@@ -28,3 +35,16 @@ spring:
   batch:
     job:
       enabled: false # 시작과 동시에 실행되는 건 방지
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESSKEY}
+      secret-key: ${S3_SECRETKEY}
+    s3:
+      bucket: ${S3_BUCKET}
+      endpoint: ${S3_ENDPOINT}
+    region:
+      static: ${S3_REGION}
+    stack:
+      auto: false
