@@ -11,6 +11,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Getter
 @Setter
@@ -40,9 +43,6 @@ public class Pet extends Auditable {
     @Column
     private String aboutDog;
 
-    @Column
-    private String profileImage;
-
     @Column(nullable = false)
     private String breed;
 
@@ -60,6 +60,10 @@ public class Pet extends Auditable {
             member.getPets().add(this);
         }
     }
+
+//    public void setPet(Pet pet){
+//        this.petId = petId;
+//    }
 
     public enum PetSize {
         DOG_S("소형견"),

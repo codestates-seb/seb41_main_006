@@ -81,8 +81,10 @@ public class S3UpFileService {
 	//멤버 사진 url 삭제
 	public String deleteMFile(String upFileUrl) throws IOException{
 		S3UpFile s3UpFile = findVerifiedUpFileUrl(upFileUrl);
+		Member member = s3UpFile.getMember();
 		String fileName = s3UpFile.getUpFileName();
 		try{
+			member.setS3UpFile(null);
 			s3UpFileRepository.delete(s3UpFile);
 			amazonS3.deleteObject(new DeleteObjectRequest(bucket + "member", fileName));
 		} catch (AmazonServiceException e){
@@ -94,6 +96,7 @@ public class S3UpFileService {
 	//펫 사진 url 삭제
 	public String deletePFile(String upFileUrl) throws IOException{
 		S3UpFile s3UpFile = findVerifiedUpFileUrl(upFileUrl);
+		s3UpFile.getPet().setS3UpFile(null);
 		String fileName = s3UpFile.getUpFileName();
 		try{
 			s3UpFileRepository.delete(s3UpFile);

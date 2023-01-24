@@ -37,12 +37,12 @@ public class PetController {
     @PostMapping
     public ResponseEntity postPet(@Valid @RequestBody PetDto.Post petPostDto,
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
-        Long upFileId = petPostDto.getUpFileId();
+        Long profileImageId = petPostDto.getProfileImageId();
         if (memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
-        Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), memberDetails, Optional.ofNullable(upFileId));
+        Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), memberDetails, Optional.ofNullable(profileImageId));
 
         PetDto.Response response = mapper.petToPetResponseDto(pet);
 
@@ -53,15 +53,14 @@ public class PetController {
     public ResponseEntity patchPet(@PathVariable("pet-id") @Positive long petId,
                                    @Valid @RequestBody PetDto.Patch petPatchDto,
                                    @AuthenticationPrincipal MemberDetails memberDetails) {
+        Long profileImageId = petPatchDto.getProfileImageId();
 
         if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
-        Pet pet = mapper.petPatchDtoToPet(petPatchDto);
-        pet.setPetId(petId);
+        Pet updatePet = petService.updatePet(petPatchDto, petId, memberDetails, Optional.ofNullable(profileImageId));
 
-        Pet updatePet = petService.updatePet(pet, memberDetails);
         PetDto.Response response = mapper.petToPetResponseDto(updatePet);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
