@@ -34,6 +34,8 @@ public interface BoardMapper {
         board.setContent( postPostDto.getContent() );
         board.setAppointTime( postPostDto.getAppointTime() );
         board.setPlaceCode( postPostDto.getPlaceCode() );
+        board.setX(postPostDto.getX());
+        board.setY(postPostDto.getY());
         board.setPet(postToPet(postPostDto));
         board.setBoardStatus(Board.BoardStatus.BOARD_OPEN);
         board.setCountLike(0);
@@ -88,6 +90,8 @@ public interface BoardMapper {
                 .countLike(board.getCountLike())
                 .appointTime(board.getAppointTime())
                 .placeCode(board.getPlaceCode())
+                .x(board.getX())
+                .y(board.getY())
                 .pet(petToPetResponseWithoutMemberDto(pet))
                 .boardStatus(board.getBoardStatus())
                 .createdAt(board.getCreatedAt())
