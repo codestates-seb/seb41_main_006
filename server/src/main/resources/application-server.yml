@@ -17,6 +17,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  redis:
+    port: 6379
+    host: ${ELASTICACHE_REDIS_ENDPOINT}
 
   jpa:
     open-in-view: true
