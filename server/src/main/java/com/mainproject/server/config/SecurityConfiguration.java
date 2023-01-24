@@ -58,21 +58,15 @@ public class SecurityConfiguration {
                 .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
                 .accessDeniedHandler(new MemberAccessDeniedHandler());
         // todo api 권한 이렇게 해도 될까...
-
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
-
-//        http.authorizeHttpRequests()
-//                .antMatchers("/h2/**").permitAll()
-//                .antMatchers(HttpMethod.POST, "/members", "/auth/login", "/reissue", "/auth/email","/chats").permitAll()
-//                .antMatchers(HttpMethod.GET, "/members/{member-id:[\\d]+}",
-//                        "/members*", "/pets/*", "boards/*", "/comments*", "/chats/*", "/ws/*").permitAll()
-//                .anyRequest().authenticated();
-
-
-//                .antMatchers("/members/**/my-page", "/members/**/posts").authenticated()
-//                .antMatchers(HttpMethod.DELETE, "/members/{member-id:[\\d]+}").hasRole("ROLE_USER")
-//                .antMatchers("/logout").authenticated()
-//                .anyRequest().authenticated();
+        http.authorizeHttpRequests()
+                .antMatchers("/h2/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/s3/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/members", "/auth/login", "/reissue", "/auth/email").permitAll()
+                .antMatchers(HttpMethod.GET, "/members/{member-id:[\\d]+}",
+                        "/members*", "/pets/*", "boards/*", "/comments*").permitAll()
+                .antMatchers(HttpMethod.GET, "/chats/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/chats/**").permitAll()
+                .anyRequest().authenticated();
 
         return http.build();
     }

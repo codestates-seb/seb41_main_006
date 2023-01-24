@@ -32,4 +32,7 @@ public class S3UpFile {
 
 	@Column
 	private String upFileUrl;
+
+	@OneToOne(mappedBy = "s3UpFile")
+	private Member member;
 }

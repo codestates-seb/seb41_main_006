@@ -41,10 +41,10 @@ public class MemberController {
     /*회원 가입*/
     @PostMapping
     public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
+        Long profileImageId = requestBody.getProfileImageId();
         Member member = memberMapper.memberPostDtoToMember(requestBody);
-        Long upFileId = requestBody.getUpFileId();
 
-        Member savedMember = memberService.createMember(member, Optional.ofNullable(upFileId));
+        Member savedMember = memberService.createMember(member, Optional.ofNullable(profileImageId));
 
         return new ResponseEntity(
             new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(savedMember)), HttpStatus.OK);
@@ -54,8 +54,10 @@ public class MemberController {
     @PatchMapping("/{member-id}/my-page")
     public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch requestBody,
                                       @Positive @PathVariable("member-id") long memberId) {
+        Long profileImageId = requestBody.getProfileImageId();
+
         Member updateMypageInfo =
-                memberService.updateMypageInfo(memberId, memberMapper.memberPathDtoToMember(requestBody));
+                memberService.updateMypageInfo(memberId, Optional.ofNullable(profileImageId), requestBody);
 
         return new ResponseEntity(
                 new SingleResponseDto<>(memberMapper.memberToMemberSimpleResponseDto(updateMypageInfo)), HttpStatus.OK);

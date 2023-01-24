@@ -96,7 +96,6 @@ public class PetDto {
     @Builder
     public static class SimpleResponse {
         private Long petId;
-        private String profileImage;
         private String name;
         private String age;
         private String gender;
@@ -104,5 +103,6 @@ public class PetDto {
         private boolean neutered;
         private String aboutDog;
         private String breed;
+        private S3UpFileResponse profileImage;
     }
 }

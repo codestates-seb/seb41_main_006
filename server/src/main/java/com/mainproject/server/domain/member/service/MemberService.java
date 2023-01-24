@@ -4,6 +4,7 @@ import com.mainproject.server.auth.utils.CustomAuthorityUtils;
 import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.awsS3.mapper.S3UpFileMapper;
 import com.mainproject.server.awsS3.service.S3UpFileService;
+import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.repository.MemberRepository;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -26,13 +27,13 @@ import java.util.OptionalLong;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final CustomBeanUtils<Member> customBeanUtils;
+    private final CustomBeanUtils<MemberDto.Patch, Member> customBeanUtils;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final S3UpFileService s3UpFileService;
 
     /*회원 신규 가입*/
-    public Member createMember(Member member, Optional<Long> upFileId) {
+    public Member createMember(Member member, Optional<Long> profileImageId) {
         validateDuplicateMember(member);
         // 비밀번호 암호화
         String encodePassword = passwordEncoder.encode(member.getPassword());
@@ -40,8 +41,8 @@ public class MemberService {
         // 권한 정보 세팅
         member.setRoles(customAuthorityUtils.createRole());
 
-        if (upFileId.isPresent()) {
-            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(upFileId.get());
+        if (profileImageId.isPresent()) {
+            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(profileImageId.get());
             member.setS3UpFile(s3UpFile);
         }
 
@@ -49,9 +50,16 @@ public class MemberService {
     }
 
     /*마이페이지 정보 수정*/
-    public Member updateMypageInfo(long memberId, Member member) {
+    public Member updateMypageInfo(long memberId, Optional<Long> profileImageId, MemberDto.Patch requestBody) {
         Member findMember = validateVerifyMember(memberId);
-        Member updatedMember = customBeanUtils.copyNonNullProperties(member, findMember);
+        Member updatedMember = customBeanUtils.copyNonNullProperties(requestBody, findMember);
+
+        if (profileImageId.isPresent()) {
+            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(profileImageId.get());
+            updatedMember.setS3UpFile(s3UpFile);
+        } else {
+            updatedMember.setS3UpFile(null);
+        }
 
         return memberRepository.save(updatedMember);
     }
