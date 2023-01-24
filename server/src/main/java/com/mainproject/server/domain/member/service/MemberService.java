@@ -34,7 +34,7 @@ public class MemberService {
 
     /*회원 신규 가입*/
     public Member createMember(Member member, Optional<Long> profileImageId) {
-        validateDuplicateMember(member);
+        validateDuplicateMember(member.getEmail());
         // 비밀번호 암호화
         String encodePassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encodePassword);
@@ -93,8 +93,8 @@ public class MemberService {
     }
 
     /*중복 회원인지 확인*/
-    public void validateDuplicateMember(Member member) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(member.getEmail());
+    public void validateDuplicateMember(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_ALREADY_EXISTS);
         }
