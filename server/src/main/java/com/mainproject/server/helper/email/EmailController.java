@@ -1,5 +1,6 @@
 package com.mainproject.server.helper.email;
 
+import com.mainproject.server.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,11 @@ import javax.mail.MessagingException;
 public class EmailController {
 
     private final EmailService emailService;
+    private final MemberService memberService;
     @PostMapping
     public ResponseEntity sendEmailVerifyCode(@RequestBody EmailDto.Send requestBody) throws MessagingException{
 
+        memberService.validateDuplicateMember(requestBody.getEmail());
         emailService.sendEmail(requestBody.getEmail());
 
         return new ResponseEntity(HttpStatus.OK);
