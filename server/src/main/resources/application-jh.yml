@@ -8,11 +8,11 @@ spring:
       path: /h2
       enabled: true
   datasource:
-    url: ${DB_URL}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username : ${DB_USERNAME}
-    password : ${DB_PASSWORD}
-    #url: jdbc:h2:mem:test
+    #url: ${DB_URL}
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #username : ${DB_USERNAME}
+    #password : ${DB_PASSWORD}
+    url: jdbc:h2:mem:test
 
   #S3 업로드
   servlet:
@@ -23,7 +23,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true

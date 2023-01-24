@@ -1,0 +1,59 @@
+spring:
+  datasource: #DB
+    url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username : ${DB_USERNAME}
+    password : ${DB_PASSWORD}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${email-username}
+    password: ${email-password}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  jpa:
+    open-in-view: true
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+    database: mysql
+    properties:
+      hibernate:
+        format_sql: true
+
+  batch:
+    job:
+      enabled: false # 시작과 동시에 실행되는 건 방지
+
+  sql:
+    init:
+      schema-locations: classpath:/org/springframework/batch/core/schema-h2.sql #배치파일
+
+  servlet: #S3 - 파일 크기 제한
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+cloud: #S3 업로드
+  aws:
+    credentials:
+      access-key: ${S3_ACCESSKEY}
+      secret-key: ${S3_SECRETKEY}
+    s3:
+      bucket: ${S3_BUCKET}
+      endpoint: ${S3_ENDPOINT}
+    region:
+      static: ${S3_REGION}
+    stack:
+      auto: false
+
+logging:
+  level:
+    org.hibernate.sql: debug
