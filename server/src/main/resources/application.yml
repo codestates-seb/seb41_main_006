@@ -5,6 +5,9 @@ logging:
         amazonaws :
           util :
             EC2MetadataUtils : error
+  file:
+    name: local_log
+    path: /logs/local
 spring:
   mail:
     host: smtp.gmail.com

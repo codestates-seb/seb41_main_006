@@ -6,17 +6,17 @@
     <springProfile name="local">
         <property resource="logback-local.properties"/>
     </springProfile>
-    <springProfile name="dev">
-        <property resource="logback-dev.properties"/>
+    <springProfile name="server">
+        <property resource="logback-server.properties"/>
     </springProfile>
     <!--Environment 내의 프로퍼티들을 개별적으로 설정할 수도 있다.-->
     <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
     <!-- 로그 패턴 -->
     <property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
     <!-- log file path -->
-    <property name="LOG_PATH" value="${log.config.path}"/>
+    <property name="LOG_PATH" value="${logging.file.path}"/>
     <!-- log file name -->
-    <property name="LOG_FILE_NAME" value="${log.config.filename}"/>
+    <property name="LOG_FILE_NAME" value="${logging.file.name}"/>
     <!-- err log file name -->
     <property name="ERR_LOG_FILE_NAME" value="err_log"/>
 
