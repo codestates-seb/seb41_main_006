@@ -25,7 +25,7 @@ spring:
     open-in-view: true
     show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: mysql
     properties:
       hibernate:
@@ -60,3 +60,6 @@ cloud: #S3 업로드
 logging:
   level:
     org.hibernate.sql: debug
+  file:
+    name: server_log
+    path: /logs/server
