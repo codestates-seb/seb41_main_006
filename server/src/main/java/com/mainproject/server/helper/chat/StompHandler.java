@@ -1,6 +1,8 @@
 package com.mainproject.server.helper.chat;
 
 import com.mainproject.server.auth.JwtTokenizer;
+import com.mainproject.server.exception.BusinessLogicException;
+import com.mainproject.server.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -26,10 +28,9 @@ public class StompHandler implements ChannelInterceptor {
         log.info("websocket connection");
 
         if (accessor.getCommand() == StompCommand.CONNECT) { // 웹소켓이 연결되었을 때
-            String token = accessor.getFirstNativeHeader("Authorization");
-            log.info("CONNECT : {}", token);
-
-            jwtTokenizer.validateToken(token);
+            if(!jwtTokenizer.validateToken(accessor.getFirstNativeHeader("Authorization"))) {
+                throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+            }
         }
         return message;
     }
