@@ -4,8 +4,9 @@ import styled from 'styled-components';
 const DogFootLoadingBox = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
-  width: max-content;
+  width: 100%;
   height: max-content;
   color: var(--main-font-color);
   font-size: ${({ size }) => size || '1rem'};
