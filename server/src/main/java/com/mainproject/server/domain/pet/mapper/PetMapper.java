@@ -11,15 +11,21 @@ import java.util.List;
 public interface PetMapper {
     Pet petPostDtoToPet (PetDto.Post petPostDto);
     Pet petPatchDtoToPet (PetDto.Patch petPatchDto);
-    @Mapping(source = "s3UpFile.upFileId", target = "s3UpFileResponse.upFileId")
-    @Mapping(source = "s3UpFile.upFileName", target = "s3UpFileResponse.upFileName")
-    @Mapping(source = "s3UpFile.upFileUrl", target = "s3UpFileResponse.upFileUrl")
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     PetDto.Response petToPetResponseDto(Pet pet);
 
     List<PetDto.Response> petListToPetResponseDtos(List<Pet> pets);
     Pet.PetSize StringGetPetSize(String keyword);
 
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     PetDto.SimpleResponse petToSimpleResponseDto(Pet pet);
 
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     List<PetDto.SimpleResponse> petListToSimpleResponseDtos(List<Pet> pets);
 }

@@ -29,8 +29,6 @@ public class PetDto {
         @Gender
         private String gender;
 
-        private String profileImage;
-
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
 
@@ -60,8 +58,6 @@ public class PetDto {
         @Gender
         private String gender;
 
-        private String profileImage;
-
         @NotNull(message = "강아지의 사이즈를 선택해주세요.")
         private Pet.PetSize petSize;
 
@@ -73,13 +69,15 @@ public class PetDto {
 
         @NotBlank(message = "강아지의 종을 입력해주세요.")
         private String breed;
+
+        @Positive
+        private Long upFileId;
     }
 
     @Getter
     @Builder
     public static class Response {
         private Long petId;
-        private String profileImage;
         private String name;
         private String age;
         private String gender;
@@ -88,7 +86,7 @@ public class PetDto {
         private String aboutDog;
         private String breed;
         private MemberDto.ResponseOnlyMemberName member; // 멤버 아이디, 닉네임만 반환
-        private S3UpFileResponse s3UpFileResponse; //업로드한 파일 전체 반환
+        private S3UpFileResponse profileImage; //업로드한 파일 전체 반환
     }
 
     /*회원 정보 포함 안하고 강아지 정보만 DTO로 매핑*/
