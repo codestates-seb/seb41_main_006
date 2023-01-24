@@ -35,4 +35,7 @@ public class S3UpFile {
 
 	@OneToOne(mappedBy = "s3UpFile")
 	private Member member;
+
+	@OneToOne(mappedBy = "petId")
+	private Pet pet;
 }

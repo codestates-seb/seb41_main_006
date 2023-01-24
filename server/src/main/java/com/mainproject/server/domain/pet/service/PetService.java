@@ -2,6 +2,7 @@ package com.mainproject.server.domain.pet.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.awsS3.entity.S3UpFile;
+import com.mainproject.server.awsS3.repository.S3UpFileRepository;
 import com.mainproject.server.awsS3.service.S3UpFileService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
@@ -28,6 +29,7 @@ public class PetService {
     private final PetRepository petRepository;
     private final MemberService memberService;
     private final S3UpFileService s3UpFileService;
+    private final S3UpFileRepository s3UpFileRepository;
 
     public Pet createPet(Pet pet, MemberDetails memberDetails, Optional<Long> upFileId) {
 
@@ -40,11 +42,12 @@ public class PetService {
         if (upFileId.isPresent()) {
             S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(upFileId.get());
             pet.setS3UpFile(s3UpFile);
+            s3UpFile.setPet(pet);
         }
 
         return petRepository.save(pet);
     }
-    public Pet updatePet(Pet pet, MemberDetails memberDetails) {
+    public Pet updatePet(Pet pet, MemberDetails memberDetails, Optional<Long> upFileId) {
 
         Pet findPet = findVerifiedPet(pet.getPetId());
 

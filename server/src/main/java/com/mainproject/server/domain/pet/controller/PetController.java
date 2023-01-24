@@ -53,6 +53,7 @@ public class PetController {
     public ResponseEntity patchPet(@PathVariable("pet-id") @Positive long petId,
                                    @Valid @RequestBody PetDto.Patch petPatchDto,
                                    @AuthenticationPrincipal MemberDetails memberDetails) {
+        Long upFileId = petPatchDto.getUpFileId();
 
         if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
@@ -61,7 +62,8 @@ public class PetController {
         Pet pet = mapper.petPatchDtoToPet(petPatchDto);
         pet.setPetId(petId);
 
-        Pet updatePet = petService.updatePet(pet, memberDetails);
+        Pet updatePet = petService.updatePet(pet, memberDetails, Optional.ofNullable(upFileId));
+
         PetDto.Response response = mapper.petToPetResponseDto(updatePet);
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);

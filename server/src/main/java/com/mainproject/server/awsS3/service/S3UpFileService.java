@@ -96,6 +96,7 @@ public class S3UpFileService {
 	//펫 사진 url 삭제
 	public String deletePFile(String upFileUrl) throws IOException{
 		S3UpFile s3UpFile = findVerifiedUpFileUrl(upFileUrl);
+		s3UpFile.getPet().setS3UpFile(null);
 		String fileName = s3UpFile.getUpFileName();
 		try{
 			s3UpFileRepository.delete(s3UpFile);
