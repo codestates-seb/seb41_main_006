@@ -43,7 +43,6 @@ const AddComment = () => {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
-    console.log(form.comment_text.value);
 
     await commentCreate(boardId, {
       content: form.comment_text.value,
