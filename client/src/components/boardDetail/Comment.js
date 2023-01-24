@@ -112,6 +112,11 @@ const CommentBox = styled.div`
       outline: none;
     }
   }
+
+  .edit-finish {
+    color: #ca7c62;
+    font-weight: 600;
+  }
 `;
 
 const Comment = ({ comment, recomments }) => {
@@ -184,7 +189,10 @@ const Comment = ({ comment, recomments }) => {
           )}
           <div>
             {isEditOpen ? (
-              <button className="edit-btn" onClick={handleEditClick}>
+              <button
+                className="edit-btn edit-finish"
+                onClick={handleEditClick}
+              >
                 수정완료
               </button>
             ) : (
