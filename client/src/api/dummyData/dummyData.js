@@ -127,17 +127,14 @@ export const dummyRecomments = [
 
 export const dummyChatList = [
   {
-    id: 1,
-    body: '안녕하세요! 네 참여가능합니다!',
-    chatRoomName: '둥일',
-    profile_img:
-      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
-  },
-  {
-    id: 2,
-    body: '지금은 모집이 마감되었습니다ㅜㅜ',
-    chatRoomName: '둥이',
-    profile_img:
-      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+    roomId: 1,
+    sender: {
+      memberId: 1,
+      nickName: '테스트1',
+    },
+    receiver: {
+      memberId: 2,
+      nickName: '테스트2',
+    },
   },
 ];

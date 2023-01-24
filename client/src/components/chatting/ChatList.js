@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
-import { dummyChatList } from '../../api/dummyData/dummyData';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const ChatItem = styled.li`
   display: flex;
@@ -27,20 +28,41 @@ const ChatItem = styled.li`
 
 const ChatList = () => {
   const navigate = useNavigate();
-
-  const handleChatClick = (chatId) => {
-    navigate(`/chat/${chatId}`);
+  const [chattingList, setChattingList] = useState([]);
+  useEffect(() => {
+    const AccessToken = localStorage.getItem('AccessToken');
+    const GetChatList = async () => {
+      await axios('http://a799-125-133-209-20.jp.ngrok.io/chats', {
+        headers: {
+          Authorization: AccessToken,
+          'ngrok-skip-browser-warning': 'skip',
+        },
+      })
+        .then((res) => {
+          setChattingList(res.data.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+    GetChatList();
+  }, []);
+  const handleChatClick = (roomId) => {
+    navigate(`/chat/${roomId}`);
   };
   return (
     <ul>
-      {dummyChatList.map((chat) => (
-        <ChatItem key={chat.id} onClick={() => handleChatClick(chat.id)}>
+      {chattingList.map((chat) => (
+        <ChatItem
+          key={chat.roomId}
+          onClick={() => handleChatClick(chat.roomId)}
+        >
           <ProfileImage size="45px" />
           <div className="chatItem-content">
             <Title as="h2" size="xsmall">
-              {chat.chatRoomName}
+              {chat.receiver.nickName}
             </Title>
-            <span>{chat.body}</span>
+            <span>채팅 내용</span>
           </div>
         </ChatItem>
       ))}

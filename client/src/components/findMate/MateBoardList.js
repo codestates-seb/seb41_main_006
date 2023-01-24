@@ -19,7 +19,7 @@ const MateBoardList = ({ boardList }) => {
   return (
     <BoardList>
       {boardList.map((el) => (
-        <BoardItem key={el.id}>
+        <BoardItem key={el.boardId}>
           <MateBoardCard board={el} />
         </BoardItem>
       ))}

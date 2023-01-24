@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getBoardList } from '../../api/board/board';
 import styled from 'styled-components';
 import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
@@ -22,13 +20,8 @@ const PostsContentRow = styled.div`
   }
 `;
 
-const MateBoardConent = () => {
+const MateBoardConent = ({ boardList }) => {
   const navigate = useNavigate();
-  const [boardList, setBoardList] = useState([]);
-
-  useEffect(() => {
-    getBoardList().then((data) => setBoardList(data));
-  }, []);
 
   return (
     <PostsContentLayOut>
