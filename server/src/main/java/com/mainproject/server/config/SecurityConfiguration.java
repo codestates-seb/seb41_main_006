@@ -68,11 +68,6 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, "/chats/**").permitAll()
                 .anyRequest().authenticated();
 
-//                .antMatchers("/members/**/my-page", "/members/**/posts").authenticated()
-//                .antMatchers(HttpMethod.DELETE, "/members/{member-id:[\\d]+}").hasRole("ROLE_USER")
-//                .antMatchers("/logout").authenticated()
-//                .anyRequest().authenticated();
-
         return http.build();
     }
 
