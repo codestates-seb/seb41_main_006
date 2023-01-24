@@ -85,10 +85,7 @@ const Recomment = ({ recomment }) => {
             onClick={() => handleClickMember(recomment.memberId)}
           >
             <ProfileImage
-              src={
-                recomment.profileImage ||
-                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-              }
+              src={recomment.profileImage}
               name={recomment.nickName}
               size="40px"
             ></ProfileImage>

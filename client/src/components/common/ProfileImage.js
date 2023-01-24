@@ -25,7 +25,13 @@ const ProfileBox = styled(CenterBox)`
 const ProfileImage = ({ size, src, name, shadow }) => {
   return (
     <ProfileBox size={size} shadow={shadow}>
-      <img src={src} alt={`${name}'s profile`}></img>
+      <img
+        src={
+          src ||
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+        }
+        alt={`${name}'s profile`}
+      ></img>
     </ProfileBox>
   );
 };
