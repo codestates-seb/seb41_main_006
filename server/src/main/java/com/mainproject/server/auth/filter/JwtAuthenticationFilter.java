@@ -68,7 +68,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.addHeader(JwtTokenizer.ACCESS_TOKEN_HEADER, JwtTokenizer.TOKEN_PREFIX + accessToken);
         response.addHeader(JwtTokenizer.REFRESH_TOKEN_HEADER, refreshToken);
-        //todo memberId 메세지 바디에 추가
 
         /*현재 refresh token을 키로 하는 데이터가 없으면 refresh token 레디스에 저장*/
         if (redisService.getRefreshToken(refreshToken) == null) {
