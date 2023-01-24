@@ -133,6 +133,8 @@ const MainContainer = styled.div`
 const BoardDetailPage = () => {
   const navigate = useNavigate();
 
+  const [like, setLike] = useState(false);
+
   const { boardId } = useParams();
   const [board, setBoard] = useState({
     comments: [],
@@ -147,6 +149,31 @@ const BoardDetailPage = () => {
   const handelDelClick = () => {
     dispatch(openModal({ type: 'delete' }));
   };
+
+  // 좋아요 누르기
+  const handleLikeClick = () => {
+    setLike(!like);
+
+    if (like === false) {
+      board.countLike = board.countLike + 1;
+      localStorage.setItem('isLike', true);
+    } else {
+      board.countLike = board.countLike - 1;
+      localStorage.removeItem('isLike');
+    }
+  };
+  console.log(board.countLike);
+
+  // 좋아요 상태 유지
+  useEffect(() => {
+    const savedLike = localStorage.getItem('isLike');
+
+    if (savedLike !== null) {
+      setLike(true);
+    } else {
+      setLike(false);
+    }
+  });
 
   useEffect(() => {
     getBoardById(Number(boardId)).then((data) => {
@@ -184,7 +211,11 @@ const BoardDetailPage = () => {
               삭제
             </button>
             <button className="post-like-btn">
-              <FaRegHeart />
+              {like ? (
+                <FaHeart onClick={handleLikeClick} />
+              ) : (
+                <FaRegHeart onClick={handleLikeClick} />
+              )}
             </button>
           </div>
         </div>

@@ -1,4 +1,4 @@
-// import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // import { getBoardById } from '../api/board/board';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 import MapContainer from '../components/boardDetail/MapContainer';
 import dummyBoards from '../api/board/dummyBoards';
+import { boardPatch } from '../api/board/findMate';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -99,25 +100,70 @@ const BoardEditPage = () => {
   //   });
   // }, [boardId]);
 
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [editDate, setEditDate] = useState();
+  const [editPlace, setEditPlace] = useState([]);
+
+  console.log(editTitle, editContent, editDate, editPlace);
+
+  const userKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
+  };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const form = e.target;
+  //   console.log(form);
+  //   console.log(form.title_text.value);
+  //   console.log(form.body_text.value);
+
+  //   boardPatch(boardId, {
+  //     title: form.title_text.value,
+  //     content: form.content_text.value,
+  //   });
+  // };
+
+  const handleEdit = () => {
+    boardPatch(boardId, {
+      title: editTitle,
+      content: editContent,
+      appointTime: editDate,
+      placeCode: editPlace[0],
+      x: editPlace[1],
+      y: editPlace[2],
+    });
+  };
+
   return (
-    <ContainerBox>
+    <ContainerBox onKeyDown={userKeyDown} /*onSubmit={handleSubmit}*/>
       <HeaderContainer>
         <div className="post-title">
           <div>
-            <textarea className="title">{dummyBoards.data[0].title}</textarea>
+            <textarea
+              className="title"
+              name="title_text"
+              defaultValue={dummyBoards.data[0].title}
+              onChange={(e) => setEditTitle(e.target.value)}
+            ></textarea>
           </div>
         </div>
       </HeaderContainer>
       <MainContainer>
         <div className="left-box">
-          <textarea className="post-content">
-            {dummyBoards.data[0].content}
-          </textarea>
+          <textarea
+            className="post-content"
+            name="body_text"
+            defaultValue={dummyBoards.data[0].content}
+            onChange={(e) => setEditContent(e.target.value)}
+          ></textarea>
         </div>
-        <MapContainer />
+        <MapContainer setEditDate={setEditDate} setEditPlace={setEditPlace} />
       </MainContainer>
       <BtnContainer>
-        <PostSubmitBtn>수정</PostSubmitBtn>
+        <PostSubmitBtn onClick={handleEdit}>수정</PostSubmitBtn>
         <CancelButton onClick={() => navigate(`/mate/boards/${boardId}`)}>
           취소
         </CancelButton>

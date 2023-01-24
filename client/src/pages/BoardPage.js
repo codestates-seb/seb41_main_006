@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import MapContainer from '../components/boardDetail/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
-// import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { boardCreate } from '../api/board/findMate';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -83,12 +83,30 @@ const BtnContainer = styled.div`
 `;
 
 const BoardPage = () => {
-  // const { mateId } = useParams();
   const navigate = useNavigate();
 
-  // 위치 정보
+  // 제목, 내용 정보
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  // 날짜, 위치 정보
+  const [dateInfo, setDateInfo] = useState();
   const [locInfo, setLocInfo] = useState([]);
-  console.log(locInfo);
+
+  const handleSubmit = () => {
+    console.log(title, content, dateInfo);
+    console.log(locInfo);
+
+    boardCreate({
+      title: title,
+      content: content,
+      appointTime: dateInfo,
+      placeCode: locInfo[0],
+      x: locInfo[1],
+      y: locInfo[2],
+    });
+  };
+  console.log(dateInfo, locInfo);
 
   return (
     <ContainerBox>
@@ -98,6 +116,8 @@ const BoardPage = () => {
             <textarea
               className="title"
               placeholder="제목을 입력하세요"
+              defaultValue={title}
+              onChange={(e) => setTitle(e.target.value)}
             ></textarea>
           </div>
         </div>
@@ -107,14 +127,20 @@ const BoardPage = () => {
           <textarea
             className="post-content"
             placeholder="내용을 입력하세요"
+            defaultValue={content}
+            onChange={(e) => setContent(e.target.value)}
           ></textarea>
         </div>
         <div className="right-box">
-          <MapContainer setLocInfo={setLocInfo} />
+          <MapContainer
+            locInfo={locInfo}
+            setDateInfo={setDateInfo}
+            setLocInfo={setLocInfo}
+          />
         </div>
       </MainContainer>
       <BtnContainer>
-        <PostSubmitBtn>등록</PostSubmitBtn>
+        <PostSubmitBtn onClick={handleSubmit}>등록</PostSubmitBtn>
         <CancelButton onClick={() => navigate('/mate/boards')}>
           취소
         </CancelButton>

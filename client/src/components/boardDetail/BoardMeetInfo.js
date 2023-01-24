@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import {
   convertAppointDate,
-  convertAppointTime,
+  //convertAppointTime,
 } from '../../utils/dateConvert';
-import { FaRegCalendar } from 'react-icons/fa';
-import { BiTimeFive } from 'react-icons/bi';
+import { TbCalendarTime } from 'react-icons/tb';
 import { MdPlace } from 'react-icons/md';
+
 import Map from './Map';
 
 const MeetInfoContainer = styled.div`
@@ -13,17 +13,7 @@ const MeetInfoContainer = styled.div`
   padding: 0 1rem;
 
   > .meet-info {
-    display: flex;
-    align-items: center;
     margin-bottom: 1rem;
-
-    > .meet-date {
-      width: 60%;
-    }
-
-    > .meet-time {
-      width: 40%;
-    }
   }
 
   .meet-info--content {
@@ -56,20 +46,11 @@ const BoardMeetInfo = ({ meetInfo }) => {
       <div className="meet-info">
         <div className="meet-date">
           <InfoLabelBox>
-            <FaRegCalendar />
-            <span>날짜</span>
+            <TbCalendarTime />
+            <span>만나는 시간</span>
           </InfoLabelBox>
           <span className="meet-info--content">
             {convertAppointDate(meetInfo?.appointTime)}
-          </span>
-        </div>
-        <div className="meet-time">
-          <InfoLabelBox>
-            <BiTimeFive />
-            <span>시간</span>
-          </InfoLabelBox>
-          <span className="meet-info--content">
-            {convertAppointTime(meetInfo?.appointTime)}
           </span>
         </div>
       </div>
