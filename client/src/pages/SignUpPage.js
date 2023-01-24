@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import SignUp from '../components/signup/SignUp';
@@ -13,8 +13,10 @@ import { postNewMember } from '../api/member/member';
 
 const SignUpContainer = styled(Container)`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  width: 20rem;
   height: 100%;
 `;
 
@@ -38,7 +40,6 @@ const SignUpPage = () => {
         email: email.value,
         password: password.value,
       });
-      console.log(memberInfoForm.values);
     },
     validate: memberInfoValidate,
   });

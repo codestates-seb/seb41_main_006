@@ -12,14 +12,15 @@ import Title from '../common/Title';
 import Button from '../common/Button';
 import EmailAuthModal from './EmailAuthModal';
 import { useNavigate } from 'react-router-dom';
+import { authEmail } from '../../api/auth/signup';
 
 const SignUpInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 5rem;
+  padding-top: 3rem;
   width: 20rem;
-  height: 50rem;
+  height: 35rem;
 
   .text-container {
     display: flex;
@@ -62,6 +63,12 @@ const SignUpBox = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
+
+    > .email-verified-msg {
+      font-size: 0.75rem;
+      color: var(--main-color);
+      padding-left: 0.675rem;
+    }
   }
 `;
 
@@ -108,14 +115,19 @@ const SignUp = ({ email, password, confirmPassword }) => {
     }
   };
 
-  const handleEmailAuthOpenClick = () => {
+  const handleEmailAuthOpenClick = async () => {
     const emailError = emailValidate(email.value);
     if (emailError) {
       email.setError(emailError);
     } else {
-      email.setError('');
-      alert('해당 메일로 인증 메일을 전송했습니다.');
-      setIsEmailAuthModalOpen(true);
+      try {
+        await authEmail(email.value);
+        email.setError('');
+        setIsEmailAuthModalOpen(true);
+        alert('해당 메일로 인증 메일을 전송했습니다.');
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -166,7 +178,9 @@ const SignUp = ({ email, password, confirmPassword }) => {
             auth={true}
             onClick={handleEmailAuthOpenClick}
           ></AuthInput>
-          {isEmailVerified ? <p>인증 완료!</p> : null}
+          {isEmailVerified ? (
+            <p className="email-verified-msg">인증 완료!</p>
+          ) : null}
         </div>
         <AuthInput
           label="비밀번호"

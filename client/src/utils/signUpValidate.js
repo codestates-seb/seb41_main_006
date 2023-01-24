@@ -15,7 +15,7 @@ export const passwordValidate = (password) => {
   if (!password) {
     error = '비밀번호가 입력되지 않았습니다.';
   } else if (!isPasswordValid(password)) {
-    error = '8~20자 영문 대소문자, 숫자, 특수문자를 사용하세요.';
+    error = '8~16자 영문 대소문자, 숫자, 특수문자를 사용하세요.';
   }
 
   return error;

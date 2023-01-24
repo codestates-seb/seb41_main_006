@@ -3,6 +3,7 @@ import ModalBackDrop from '../ModalBackDrop';
 import Title from '../common/Title';
 import Button from '../common/Button';
 import useInput from '../../hooks/useInput';
+import { authEmailVerification } from '../../api/auth/signup';
 
 const EmailAuthModalView = styled.div`
   width: 30rem;
@@ -64,17 +65,25 @@ const EmailAuthModal = ({
 }) => {
   const emailAuthNumber = useInput('');
 
-  const handleEmailAuthSubmit = () => {
+  const handleEmailAuthSubmit = async () => {
+    // 인증번호가 없을 경우
     if (!emailAuthNumber.value) {
       emailAuthNumber.setError('인증번호를 입력해주세요');
       return;
     }
-    // 인증 번호가 맞지 않을 때의 경우 추가되어야 함!
 
-    // 인증 완료
-    setIsEmailVerified(true);
-    alert('인증이 완료되었습니다.');
-    setIsEmailAuthModalOpen(false);
+    try {
+      await authEmailVerification({ code: emailAuthNumber.value, email });
+      // 인증 완료
+      setIsEmailVerified(true);
+      alert('인증이 완료되었습니다.');
+      setIsEmailAuthModalOpen(false);
+    } catch (err) {
+      if (err.response.data.message === 'Code Has Not Matched') {
+        emailAuthNumber.setError('인증번호가 맞지 않습니다.');
+      }
+    }
+    // 인증 번호가 맞지 않을 때의 경우 추가되어야 함!
   };
 
   return (
