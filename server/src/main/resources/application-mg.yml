@@ -1,0 +1,36 @@
+spring:
+  redis:
+    port: 6379
+    host: localhost
+#    password: ${redis-password}
+  h2:
+    console:
+      path: /h2
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:test
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+logging:
+  level:
+    org.hibernate.sql: debug
+#    org.hibernate.type: trace
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESSKEY}
+      secret-key: ${S3_SECRETKEY}
+    s3:
+      bucket: ${S3_BUCKET}
+      endpoint: ${S3_ENDPOINT}
+    region:
+      static: ${S3_REGION}
+    stack:
+      auto: false

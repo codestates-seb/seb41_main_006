@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+env.yml
+log.config.path_IS_UNDEFINED

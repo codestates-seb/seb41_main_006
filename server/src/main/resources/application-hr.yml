@@ -1,0 +1,37 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  redis :
+    host: localhost
+    port: 6379
+  h2:
+    console:
+      path: /h2
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:test
+    schema: classpath:/org/springframework/batch/core/schema-h2.sql # 스키마 위치
+  jpa:
+    hibernate:
+      ddl-auto: create # 스키마 자동 생성
+    properties:
+      hibernate:
+        format_sql: true
+#        show_sql: true # SQL 쿼리 출력
+  batch:
+    job:
+      enabled: false # 시작과 동시에 실행되는 건 방지
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${S3_ACCESSKEY}
+      secret-key: ${S3_SECRETKEY}
+    s3:
+      bucket: ${S3_BUCKET}
+      endpoint: ${S3_ENDPOINT}
+    region:
+      static: ${S3_REGION}
+    stack:
+      auto: false
