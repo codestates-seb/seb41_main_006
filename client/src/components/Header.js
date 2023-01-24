@@ -5,7 +5,7 @@ import HeaderNav from './header/HeaderNav';
 
 const SHeader = styled.header`
   ${flexColCenter}
-  z-index: 10;
+  z-index: 20;
   background-color: #fbf7f2;
   height: var(--header-height);
   color: var(--main-font-color);

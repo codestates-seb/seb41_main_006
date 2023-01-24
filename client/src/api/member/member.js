@@ -2,7 +2,7 @@ import dummyMembers from './dummyMembers';
 import wait from '../../utils/wait';
 import dummyBoards from '../board/dummyBoards';
 
-// member/{memberId}
+// GET /members/{memberId}
 export const getMemberInfo = async (memberId) => {
   try {
     await wait(500);
@@ -12,7 +12,7 @@ export const getMemberInfo = async (memberId) => {
   }
 };
 
-// member/{memberId}/posts
+// GET /members/{memberId}/posts
 export const getMemberBoardList = async (memberId) => {
   try {
     await wait(500);
@@ -20,4 +20,10 @@ export const getMemberBoardList = async (memberId) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+// POST /members
+export const postNewMember = async (values) => {
+  console.log('포스트 보내는 중', values);
+  await wait(500);
 };

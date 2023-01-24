@@ -42,10 +42,7 @@ const MemberInfoCard = ({ memberInfo }) => {
   return (
     <CardContainer>
       <ProfileImage
-        src={
-          memberInfo.profileImage ||
-          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-        }
+        src={memberInfo.profileImage}
         name={memberInfo.nickName}
         size="100px"
       />

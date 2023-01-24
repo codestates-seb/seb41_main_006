@@ -7,7 +7,6 @@ const DogFootLoadingBox = styled.div`
   gap: 0.25rem;
   width: max-content;
   height: max-content;
-  background-color: white;
   color: var(--main-font-color);
   font-size: ${({ size }) => size || '1rem'};
 

@@ -111,10 +111,7 @@ const MateBoardCard = ({ board }) => {
       <div className="board-card--bottom">
         <button onClick={() => handleClickMember(board?.member?.memberId)}>
           <ProfileImage
-            src={
-              board?.member?.profileImage ||
-              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
-            }
+            src={board?.member?.profileImage}
             name={board?.member?.nickName}
             size="2rem"
           />
