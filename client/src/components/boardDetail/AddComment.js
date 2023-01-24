@@ -1,8 +1,9 @@
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-// import { dummyComments } from '../../static/dummyData';
+import { commentCreate } from '../../api/board/comment';
 import { CommentBtn } from '../Button';
 
-const CommentContainer = styled.div`
+const CommentContainer = styled.form`
   width: 100%;
   position: relative;
 
@@ -30,27 +31,34 @@ const CommentContainer = styled.div`
   }
 
   button {
-    /* width: 66px; */
-    /* height: 33px; */
-    /* border-radius: 10px; */
     position: absolute;
     right: 17px;
     bottom: 24px;
-    /* background-color: #a79689; */
-    /* border: none; */
-    /* color: #ffffff; */
-    /* font-size: 16px; */
   }
 `;
 
 const AddComment = () => {
+  const { boardId } = useParams();
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    console.log(form.comment_text.value);
+
+    await commentCreate(boardId, {
+      content: form.comment_text.value,
+    });
+
+    form.comment_text.value = '';
+  };
+
   return (
-    <CommentContainer>
-      {/* <div className="comment-cnt">
-        <h3>댓글 {dummyComments.length}개</h3>
-      </div> */}
-      <textarea placeholder="댓글을 작성하세요"></textarea>
-      {/* <button>작성</button> */}
+    <CommentContainer onSubmit={handleCommentSubmit}>
+      <textarea
+        placeholder="댓글을 작성하세요"
+        name="comment_text"
+        required
+      ></textarea>
       <CommentBtn>작성</CommentBtn>
     </CommentContainer>
   );
