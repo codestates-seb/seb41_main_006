@@ -4,6 +4,10 @@ import { getMemberInfo } from '../api/member/member';
 import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
 import Button from './common/Button';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../store/modules/modalSlice';
+import axios from 'axios';
 
 const SContainer = styled.div`
   display: flex;
@@ -39,6 +43,25 @@ const MemberInfoModal = ({ memberId }) => {
   const [member, setMember] = useState({
     pets: [],
   });
+  const AccessToken = localStorage.getItem('AccessToken');
+  const dispatch = useDispatch();
+
+  const handleModal = () => {
+    dispatch(closeModal());
+  };
+  const AddChatList = async (memberId) => {
+    await axios
+      .post(
+        'http://a799-125-133-209-20.jp.ngrok.io/chats',
+        {
+          memberId: memberId,
+        },
+        {
+          headers: { Authorization: AccessToken },
+        }
+      )
+      .then((data) => console.log(data));
+  };
 
   useEffect(() => {
     getMemberInfo(memberId).then((data) => {
@@ -51,7 +74,16 @@ const MemberInfoModal = ({ memberId }) => {
     <SContainer>
       <div className="memberInfo-container">
         <MemberInfoCard memberInfo={member} />
-        <Button>채팅하기</Button>
+        <Link to="/chat">
+          <Button
+            onClick={() => {
+              handleModal();
+              AddChatList(member.memberId);
+            }}
+          >
+            채팅하기
+          </Button>
+        </Link>
       </div>
       <div className="petInfo-container">
         <h2>강아지 소개</h2>
