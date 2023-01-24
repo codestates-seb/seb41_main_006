@@ -27,11 +27,15 @@ public class StompHandler implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         log.info("websocket connection");
 
+        String token = accessor.getFirstNativeHeader("Authorization").replace("Bearer " , "");
+
         if (accessor.getCommand() == StompCommand.CONNECT) { // 웹소켓이 연결되었을 때
-            if(!jwtTokenizer.validateToken(accessor.getFirstNativeHeader("Authorization"))) {
+            if(!jwtTokenizer.validateToken(token)) {
+                log.error("WebSocket connection failed : not authorized");
                 throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
             }
         }
+        log.info("WebSocket : sendMessage");
         return message;
     }
 }

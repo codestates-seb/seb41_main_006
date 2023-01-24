@@ -22,7 +22,7 @@ public class RedisSubscriber {
             // 채팅방을 구독하고 있는 회원에게 해당 메세지를 뿌림
             messagingTemplate.convertAndSend("/sub/chats/" + chatMessage.getChatRoom().getRoomId(), chatMessage);
         } catch (Exception e) {
-            log.error("{} : Exception in redis Subscriber", e);
+            log.error("Exception in redis Subscriber:{}", e);
         }
     }
 }
