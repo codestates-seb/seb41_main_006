@@ -49,9 +49,6 @@ public class Member extends Auditable implements Serializable {
     @Column(nullable = false)
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
-
-    private String profileImage;
-
     private String aboutMe;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -71,6 +68,10 @@ public class Member extends Auditable implements Serializable {
         if (pet.getMember() != this) {
             pet.setMember(this);
         }
+    }
+
+    public void setS3UpFile(S3UpFile s3UpFile) {
+        this.s3UpFile = s3UpFile;
     }
 
     public enum MemberStatus {

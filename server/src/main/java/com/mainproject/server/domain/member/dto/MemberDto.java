@@ -1,12 +1,12 @@
 package com.mainproject.server.domain.member.dto;
 
+import com.mainproject.server.awsS3.dto.S3UpFileResponse;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.dto.PetDto;
 import com.mainproject.server.validator.Gender;
 import com.mainproject.server.validator.MemberAge;
 import com.mainproject.server.validator.MemberStatus;
 import com.mainproject.server.validator.NotSpace;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,7 +17,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Optional;
 
 public class MemberDto {
 
@@ -48,14 +47,13 @@ public class MemberDto {
         @Gender
         private String gender;
 
-        //todo 얘는 검증 어떻게 하지?
         @NotBlank
         private String address;
 
         private String aboutMe;
 
         @Positive
-        private Long upFileId;
+        private Long profileImageId;
     }
 
     @Getter
@@ -65,11 +63,13 @@ public class MemberDto {
         @NotSpace
         private String nickName;
 
-        @Pattern(regexp ="^(?=.*\\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\\da-zA-Z~!@#$%^&*]+$",
-                message = "영문자와 숫자로 구성되며 최소 하나 이상의 특수문자(~!@#$%^&*)가 포함되어야합니다. "+
-                        "공백은 포함될 수 없습니다")
-        @Size(min = 8, max = 16)
-        private String password;
+        //todo 비밀번호 변경 따로 만들기
+
+//        @Pattern(regexp ="^(?=.*\\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\\da-zA-Z~!@#$%^&*]+$",
+//                message = "영문자와 숫자로 구성되며 최소 하나 이상의 특수문자(~!@#$%^&*)가 포함되어야합니다. "+
+//                        "공백은 포함될 수 없습니다")
+//        @Size(min = 8, max = 16)
+//        private String password;
 
         @MemberAge
         private Member.MemberAge memberAge;
@@ -80,11 +80,13 @@ public class MemberDto {
         @NotSpace
         private String address;
 
-        @NotSpace
         private String aboutMe;
 
         @MemberStatus
         private Member.MemberStatus memberStatus;
+
+        @Positive
+        private Long profileImageId;
 
     }
 
@@ -98,9 +100,8 @@ public class MemberDto {
         private String gender;
         private String address;
         private Member.MemberStatus memberStatus;
-        private String profileImage;
         private String aboutMe;
-        private Optional<Long> upFileId;
+        private S3UpFileResponse profileImage;
     }
 
     @Getter
@@ -113,7 +114,7 @@ public class MemberDto {
         private String gender;
         private String address;
         private Member.MemberStatus memberStatus;
-        private String profileImage;
+        private S3UpFileResponse profileImage;
         private String aboutMe;
         private List<PetDto.SimpleResponse> petsInfo;
 

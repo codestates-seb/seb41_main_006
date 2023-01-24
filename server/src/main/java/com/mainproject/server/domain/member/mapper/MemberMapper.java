@@ -18,23 +18,27 @@ public interface MemberMapper {
 
     Member memberPathDtoToMember(MemberDto.Patch requestBody);
 
-    @Mapping(source = "s3UpFile.upFileId", target = "upFileId")
-    default MemberDto.SimpleResponse memberToMemberSimpleResponseDto(Member member){
-        Optional<Long> upFileId = Optional.ofNullable(member.getS3UpFile()).map(S3UpFile::getUpFileId);
+//    @Mapping(source = "s3UpFile.upFileId", target = "upFileId")
+//    default MemberDto.SimpleResponse memberToMemberSimpleResponseDto(Member member){
+//        Optional<Long> upFileId = Optional.ofNullable(member.getS3UpFile()).map(S3UpFile::getUpFileId);
+//
+//        return MemberDto.SimpleResponse.builder()
+//            .memberId(member.getMemberId())
+//            .nickName(member.getNickName())
+//            .email(member.getEmail())
+//            .memberAge(member.getMemberAge())
+//            .gender(member.getGender())
+//            .address(member.getAddress())
+//            .memberStatus(member.getMemberStatus())
+//            .aboutMe(member.getAboutMe())
+//            .upFileId(upFileId)
+//            .build();
+//    }
 
-        return MemberDto.SimpleResponse.builder()
-            .memberId(member.getMemberId())
-            .nickName(member.getNickName())
-            .email(member.getEmail())
-            .memberAge(member.getMemberAge())
-            .gender(member.getGender())
-            .address(member.getAddress())
-            .memberStatus(member.getMemberStatus())
-            .profileImage(member.getProfileImage())
-            .aboutMe(member.getAboutMe())
-            .upFileId(upFileId)
-            .build();
-    }
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
+    MemberDto.SimpleResponse memberToMemberSimpleResponseDto(Member member);
 
     List<MemberDto.SimpleResponse> membersToMemberSimpleResponseDtos(List<Member> members);
 
@@ -47,13 +51,12 @@ public interface MemberMapper {
                 .gender(member.getGender())
                 .address(member.getAddress())
                 .memberStatus(member.getMemberStatus())
-                .profileImage(member.getProfileImage())
+//                .profileImage(member.getProfileImage())
                 .aboutMe(member.getAboutMe())
                 .petsInfo(member.getPets()
                         .stream()
                         .map(pet -> PetDto.SimpleResponse.builder()
                                 .petId(pet.getPetId())
-                                .profileImage(pet.getProfileImage())
                                 .name(pet.getName())
                                 .age(pet.getAge())
                                 .gender(pet.getGender())
