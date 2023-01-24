@@ -61,9 +61,9 @@ public class Pet extends Auditable {
         }
     }
 
-    public void setPet(Pet pet){
-        this.petId = petId;
-    }
+//    public void setPet(Pet pet){
+//        this.petId = petId;
+//    }
 
     public enum PetSize {
         DOG_S("소형견"),

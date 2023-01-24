@@ -42,7 +42,7 @@ public class PetDto {
         private String breed;
 
         @Positive
-        private Long upFileId;
+        private Long profileImageId;
     }
 
     @Getter
@@ -71,7 +71,7 @@ public class PetDto {
         private String breed;
 
         @Positive
-        private Long upFileId;
+        private Long profileImageId;
     }
 
     @Getter

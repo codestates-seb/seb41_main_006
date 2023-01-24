@@ -6,10 +6,12 @@ import com.mainproject.server.awsS3.repository.S3UpFileRepository;
 import com.mainproject.server.awsS3.service.S3UpFileService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
+import com.mainproject.server.domain.pet.dto.PetDto;
 import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.domain.pet.repository.PetRepository;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
+import com.mainproject.server.utils.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,46 +32,39 @@ public class PetService {
     private final MemberService memberService;
     private final S3UpFileService s3UpFileService;
     private final S3UpFileRepository s3UpFileRepository;
+    private final CustomBeanUtils<PetDto.Patch, Pet> customBeanUtils;
 
-    public Pet createPet(Pet pet, MemberDetails memberDetails, Optional<Long> upFileId) {
+    public Pet createPet(Pet pet, MemberDetails memberDetails, Optional<Long> profileImageId) {
 
         verifyOverlapByPetName(pet.getName(), memberDetails.getMemberId());
 
         Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
 
         pet.setMember(member);
-
-        if (upFileId.isPresent()) {
-            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(upFileId.get());
+        // pet profileImageId 들어오면 Image도 저장
+        if (profileImageId.isPresent()) {
+            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(profileImageId.get());
             pet.setS3UpFile(s3UpFile);
             s3UpFile.setPet(pet);
         }
 
         return petRepository.save(pet);
     }
-    public Pet updatePet(Pet pet, MemberDetails memberDetails, Optional<Long> upFileId) {
+    public Pet updatePet(PetDto.Patch petPatchDto, long petId, MemberDetails memberDetails, Optional<Long> profileImageId) {
 
-        Pet findPet = findVerifiedPet(pet.getPetId());
+        Pet findPet = findVerifiedPet(petId);
 
         verifyPetOwner(findPet, memberDetails.getMemberId());
 
-        Optional.ofNullable(pet.getName())
-                .ifPresent(findPet::setName);
+        Pet updatedPet = customBeanUtils.copyNonNullProperties(petPatchDto, findPet);
 
-        Optional.ofNullable(pet.getAge())
-                .ifPresent(findPet::setAge);
-
-        Optional.ofNullable(pet.getPetSize())
-                .ifPresent(findPet::setPetSize);
-
-        Optional.ofNullable(pet.isNeutered())
-                .ifPresent(findPet::setNeutered);
-
-        Optional.ofNullable(pet.getAboutDog())
-                .ifPresent(findPet::setAboutDog);
-
-        Optional.ofNullable(pet.getBreed())
-                .ifPresent(findPet::setBreed);
+        // pet profileImageId 들어오면 Image도 저장
+        if (profileImageId.isPresent()) {
+            S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(profileImageId.get());
+            updatedPet.setS3UpFile(s3UpFile);
+        } else {
+            updatedPet.setS3UpFile(null);
+        }
 
         return petRepository.save(findPet);
         // findPet에는 Member 정보가 있는데 response에는 member가 null로 뜸...
