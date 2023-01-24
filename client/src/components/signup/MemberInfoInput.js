@@ -189,14 +189,20 @@ const AboutMeWrapper = styled.div`
 
 const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   // 여러 개의 input의 value, error, change 이벤트 핸들러
-  const { values, setValues, errors, handleChange, handleSubmit } =
-    memberInfoForm;
+  const {
+    values,
+    setValueByName,
+    errors,
+    setErrorByName,
+    handleChange,
+    handleSubmit,
+  } = memberInfoForm;
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
+  const [previewImgUrl, setPreviewImgUrl] = useState('');
 
   const imgRef = useRef();
-  const FILE_VALUE = 'image';
 
   useEffect(() => {
     if (isEditMode) {
@@ -216,14 +222,16 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     if (e.target.files === undefined) {
       return;
     }
-    //파일 확장자 , 크기 걸러줌
-    if (!e.target.files[0].type.includes(FILE_VALUE)) {
-      alert('허용된 확장자가 아닙니다.');
-    } else if (e.target.files[0].size > 5 * 1024 * 1024) {
-      alert('최대 파일 용량은 5MB입니다.');
+    //파일 크기 걸러줌
+    if (e.target.files[0].size > 5 * 1024 * 1024) {
+      setErrorByName('profileImageFile', '최대 파일 용량은 5MB입니다.');
     } else {
-      // 이미지 파일 서버에 업로드 후 어떻게??????? -> 이미지 프리뷰할 수 있는 방법이 있음
-      // setProfile(e.target.files[0]);
+      setErrorByName('profileImageFile', '');
+      setValueByName('profileImageFile', e.target.files[0]);
+
+      // 미리보기 blob url
+      const blobUrl = URL.createObjectURL(e.target.files[0]);
+      setPreviewImgUrl(blobUrl);
     }
   };
 
@@ -244,32 +252,39 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     }
   };
 
+  // 주소 클릭하면 선택됨
   const handleClickAddress = (index) => {
     // input value
     setSearchAddress(addressList[index].addressName);
     // 선택한 결과의 배열 index를 이용해 서버에 보낼 법정 코드를 설정
-    setValues({ ...values, address: addressList[index].bCode });
+    setValueByName('address', addressList[index].bCode);
     // 검색창 닫고 초기화
     setIsAddressListOpen(false);
     setAddressList([]);
   };
 
+  const handleClickDeleteImage = () => {
+    // URL Object 객체 메모리에서 삭제
+    if (previewImgUrl) {
+      URL.revokeObjectURL(previewImgUrl);
+      setPreviewImgUrl('');
+    }
+    // 실제 S3 에서 삭제해아함
+  };
+
   return (
     <MemberInfoContainer>
       <Title as="h1" size="large">
-        견주 정보 입력
+        {isEditMode ? '견주 정보 수정' : '견주 정보 입력'}
       </Title>
       <ImageWrapper>
         <div className="label">프로필 이미지</div>
         <div className="img-wrapper">
-          {isEditMode ? (
-            <ProfileImage src={memberInfo.profileImage} alt="" size="100px" />
-          ) : (
-            <ProfileImage src="" alt="no-one" size="100px" />
-          )}
+          <ProfileImage src={previewImgUrl} alt="no-one" size="100px" />
           <input
             type="file"
             className="img-upload"
+            accept="image/*"
             ref={imgRef}
             onChange={handleImgChange}
           ></input>
@@ -277,9 +292,12 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
             <button className="img-upload-btn" onClick={handleImgUpload}>
               이미지 업로드
             </button>
-            <button className="img-delete-btn">이미지 삭제</button>
+            <button className="img-delete-btn" onClick={handleClickDeleteImage}>
+              이미지 삭제
+            </button>
           </div>
         </div>
+        <p className="error">{errors.profileImageFile}</p>
       </ImageWrapper>
       <NickNameWrapper>
         <div className="label">닉네임</div>
