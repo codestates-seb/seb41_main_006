@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState, useRef } from 'react';
-import SelectAge from '../Select';
+import Title from '../common/Title';
+import SelectAge from '../SelectAge';
 
 const SInputInfoContainer = styled.div`
   display: flex;
@@ -160,7 +161,7 @@ const EditMemberInfoCard = ({ Modal, MemberInfo }) => {
 
   return (
     <SInputInfoContainer>
-      <div className="title">집사 정보 입력</div>
+      <Title size="large">집사 정보 입력</Title>
       <div className="input-container">
         <div className="image-container">
           <div>{Modal ? <img src={MemberInfo.profileImage} alt="" /> : ''}</div>

@@ -163,7 +163,7 @@ const SearchResultBox = styled.div`
   }
 `;
 
-const SearchResultItem = styled.div`
+const SearchResultItem = styled.li`
   cursor: pointer;
   display: flex;
   align-items: center;
