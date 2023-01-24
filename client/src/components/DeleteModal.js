@@ -3,6 +3,8 @@ import { PostSubmitBtn } from './Button';
 import { RiAlertFill } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
+import { boardDelete } from '../api/board/findMate';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ModalInner = styled.div`
   position: fixed;
@@ -57,10 +59,21 @@ const ModalInner = styled.div`
 `;
 
 const DeleteModal = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  const handleDelClick = () => {
+  const splitPath = location.pathname.split('/');
+  const boardId = splitPath[splitPath.length - 1];
+
+  const handleCancelClick = () => {
     dispatch(closeModal({ type: 'delete' }));
+  };
+
+  const handelDelClick = () => {
+    dispatch(closeModal({ type: 'delete' }));
+    boardDelete(boardId);
+    navigate(-1);
   };
 
   return (
@@ -70,14 +83,19 @@ const DeleteModal = () => {
         <span>정말 삭제하시겠습니까?</span>
       </div>
       <div className="modal-btn">
-        <PostSubmitBtn height="38" type="button" className="btn">
+        <PostSubmitBtn
+          height="38"
+          type="button"
+          className="btn"
+          onClick={handelDelClick}
+        >
           예
         </PostSubmitBtn>
         <PostSubmitBtn
           height="38"
           type="button"
           className="btn"
-          onClick={handleDelClick}
+          onClick={handleCancelClick}
         >
           아니오
         </PostSubmitBtn>

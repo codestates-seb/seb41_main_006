@@ -21,7 +21,14 @@ export const convertAppointDate = (appointTime) => {
   const month = String(utcDate.getMonth() + 1).padStart(2, '0');
   const date = String(utcDate.getDate()).padStart(2, '0');
   const day = weekday[utcDate.getDay()];
-  return `${year}.${month}.${date} (${day})`;
+  const hours = utcDate.getHours();
+  const minutes = utcDate.getMinutes();
+
+  const time = `${hours <= 12 ? `오전 ${hours}시` : `오후 ${hours - 12}시`} ${
+    minutes === 0 ? '' : `${minutes}분`
+  }`;
+
+  return `${year}.${month}.${date} (${day}) ${time}`;
 };
 
 export const convertAppointTime = (appointTime) => {

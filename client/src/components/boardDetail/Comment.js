@@ -6,6 +6,8 @@ import RecommentList from './RecommentList';
 import { convertCreatedAt } from '../../utils/dateConvert';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
+import { useParams } from 'react-router-dom';
+import { commentPatch } from '../../api/board/comment';
 
 const CommentBox = styled.div`
   height: 100%;
@@ -60,9 +62,14 @@ const CommentBox = styled.div`
   .comment-right {
     padding-right: 20px;
     color: #ca7c62;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
 
     button {
-      font-size: 22px;
+      margin-left: 10px;
+      font-size: 14px;
       border: none;
     }
   }
@@ -92,12 +99,29 @@ const CommentBox = styled.div`
     flex-direction: column;
     width: 100%;
   }
+
+  textarea {
+    resize: none;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #b7a69e;
+    font-size: 16px;
+
+    :focus {
+      outline: none;
+    }
+  }
 `;
 
 const Comment = ({ comment, recomments }) => {
   const dispatch = useDispatch();
+  const { boardId } = useParams();
+
   const [like, setLike] = useState(false);
   const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [commentContent, setCommentContent] = useState('');
 
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
@@ -109,6 +133,15 @@ const Comment = ({ comment, recomments }) => {
 
   const handleRecommentsClick = () => {
     setIsRecommentsOpen(!isRecommentsOpen);
+  };
+
+  // 댓글 수정
+  const handleEditClick = () => {
+    setIsEditOpen(!isEditOpen);
+
+    commentPatch(boardId, {
+      content: commentContent,
+    });
   };
 
   return (
@@ -140,7 +173,7 @@ const Comment = ({ comment, recomments }) => {
                 {convertCreatedAt(new Date())}
               </span>
               <span className="comment-like">
-                <FaHeart />
+                <FaHeart /> <span>{comment.commentLike}</span>
               </span>
               <span className="comment-like-total">{comment.likes}</span>
             </div>
@@ -152,9 +185,32 @@ const Comment = ({ comment, recomments }) => {
           ) : (
             <FaRegHeart onClick={handleLikeClick} />
           )}
+          <div>
+            {isEditOpen ? (
+              <button className="edit-btn" onClick={handleEditClick}>
+                수정완료
+              </button>
+            ) : (
+              <button
+                className="edit-btn"
+                onClick={() => setIsEditOpen(!isEditOpen)}
+              >
+                수정
+              </button>
+            )}
+            <button className="edit-del">삭제</button>
+          </div>
         </div>
       </div>
-      <div className="comment-content">{comment.content}</div>
+      {isEditOpen ? (
+        <textarea
+          className="comment-content"
+          defaultValue={comment.content}
+          onChange={(e) => setCommentContent(e.target.value)}
+        ></textarea>
+      ) : (
+        <div className="comment-content">{comment.content}</div>
+      )}
       <button className="recomment-btn" onClick={handleRecommentsClick}>
         {isRecommentsOpen ? (
           <FaMinus className="recomment-icon" />
