@@ -4,6 +4,7 @@ const instance = axios.create({
   baseURL: 'http://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080',
   timeout: 1000,
 });
+
 instance.interceptors.response.use(
   function (response) {
     /*

@@ -3,6 +3,7 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { IoLocationSharp } from 'react-icons/io5';
 import ProfileImage from '../common/ProfileImage';
 import { RowCenterBox } from '../FlexBoxs';
+import selectAgeList from '../../static/selectAgeList';
 
 const CardContainer = styled.div`
   width: 100%;
@@ -39,6 +40,10 @@ const UsefInfoWrapper = styled.div`
 `;
 
 const MemberInfoCard = ({ memberInfo }) => {
+  const ageTitle = selectAgeList.find(
+    (el) => el.value === memberInfo.memberAge
+  )?.title;
+
   return (
     <CardContainer>
       <ProfileImage
@@ -53,7 +58,7 @@ const MemberInfoCard = ({ memberInfo }) => {
             <BsFillPersonFill />
             정보
           </RowCenterBox>
-          <span>{memberInfo.age}살</span>
+          <span>{ageTitle}</span>
           <span>/</span>
           <span>{memberInfo.gender === 'M' ? '남' : '여'}</span>
         </div>
@@ -75,7 +80,7 @@ MemberInfoCard.defaultProps = {
     profileImage:
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
     nickName: '',
-    age: 0,
+    memberAge: 'TEENS',
     gender: 'M',
     address: '',
     aboutMe: '',

@@ -74,14 +74,8 @@ const MyPage = () => {
           <TabLink>알림</TabLink>
         </div>
         <Routes>
-          <Route
-            path="/"
-            element={<MemberInfo member={dummyMembers.data[1]} />}
-          ></Route>
-          <Route
-            path="memberInfo"
-            element={<MemberInfo member={dummyMembers.data[1]} />}
-          ></Route>
+          <Route path="/" element={<MemberInfo />}></Route>
+          <Route path="memberInfo" element={<MemberInfo />}></Route>
           <Route
             path="petInfo"
             element={<PetInfo petList={dummyMembers.data[1].pets} />}

@@ -4,7 +4,6 @@ import ProfileImage from '../common/ProfileImage';
 import SelectAge from '../SelectAge';
 import { useEffect, useRef, useState } from 'react';
 import getAddressList from '../../api/kakaoMap/getAddressList';
-import { getaddressByCode } from '../../api/kakaoMap/getAddressByCode';
 import Button from '../common/Button';
 import { IoLocationSharp } from 'react-icons/io5';
 import { HiXMark } from 'react-icons/hi2';
@@ -228,15 +227,12 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
         ...values,
         nickName: memberInfo.nickName,
         memberAge: memberInfo.memberAge,
-        address: memberInfo.address,
         gender: memberInfo.gender,
         aboutMe: memberInfo.aboutMe,
       });
 
       setPreviewImgUrl(memberInfo.profileImage);
-      // 받아온 법정 코드를 api 이용하여 주소명으로 바꿔준다.
-      const address = await getaddressByCode(memberInfo.address);
-      setSearchAddress(address);
+      setSearchAddress(memberInfo.address);
     };
 
     if (isEditMode) {
