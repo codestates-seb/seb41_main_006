@@ -1,10 +1,12 @@
+import { useEffect, useRef, useState } from 'react';
+// import { updateMyInfo } from '../../api/member/member';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
 import SelectAge from '../SelectAge';
-import { useEffect, useRef, useState } from 'react';
 import getAddressList from '../../api/kakaoMap/getAddressList';
 import Button from '../common/Button';
+import { authNickName } from '../../api/member/signup';
 import { IoLocationSharp } from 'react-icons/io5';
 import { HiXMark } from 'react-icons/hi2';
 
@@ -15,6 +17,7 @@ const MemberInfoContainer = styled.div`
   width: 20rem;
   gap: 1rem;
 
+  text-align: left;
   .label {
     color: var(--main-font-color);
     font-weight: 600;
@@ -93,6 +96,33 @@ const NickNameWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  .nickname-input--wrapper {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 0.5rem;
+    > button {
+      line-height: 1.5rem;
+      width: 7rem;
+      color: var(--main-color);
+      border: 1px solid var(--main-color);
+      font-size: 0.875rem;
+      border-radius: 5px;
+      padding: 0.5rem;
+
+      &:disabled {
+        visibility: hidden;
+      }
+    }
+  }
+
+  > .email-verified--msg {
+    color: var(--success-color);
+    margin-top: 0.25rem;
+    padding-left: 0.5rem;
+    font-size: 0.875rem;
+  }
 `;
 
 const GenderSelectWrapper = styled.div`
@@ -217,34 +247,44 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
+  const [isNicknameVerified, setIsNicknameVerified] = useState(false);
   const [previewImgUrl, setPreviewImgUrl] = useState('');
 
   const imgRef = useRef();
 
   useEffect(() => {
     const setMemberInfo = async () => {
+      // values를 기존의 정보로 초기화
       setValues({
         ...values,
         nickName: memberInfo.nickName,
         memberAge: memberInfo.memberAge,
+        address: memberInfo.address,
         gender: memberInfo.gender,
         aboutMe: memberInfo.aboutMe,
+        profileImageId: memberInfo.profileImage?.upFileId,
       });
 
-      setPreviewImgUrl(memberInfo.profileImage);
-      setSearchAddress(memberInfo.address);
+      setPreviewImgUrl(memberInfo.profileImage?.upFileUrl);
+      setSearchAddress(memberInfo.fullAddress);
     };
 
+    // 만약 수정하는 경우 기존의 정보를 가져온다.
     if (isEditMode) {
       setMemberInfo();
     }
   }, [memberInfo]);
 
+  useEffect(() => {
+    // 닉네임 값에 변화가 생기면 이 전에 중복 확인이 완료 되었어도 새로운 값에 대한 중복 확인이 필요함
+    setIsNicknameVerified(false);
+  }, [values.nickName]);
+
   const handleImgUpload = () => {
     imgRef.current.click();
   };
 
-  //인풋에서 이미지 업로드 시 스테이트 변경
+  // 이미지 업로드 핸들러
   const handleImgChange = (e) => {
     if (e.target.files === undefined) {
       return;
@@ -300,9 +340,46 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     // 실제 S3 에서 삭제해아함
   };
 
+  const handleNickNameVerify = async () => {
+    if (!values.nickName) {
+      // 닉네임을 입력하지 않았다면
+      setErrorByName('nickName', '닉네임을 입력해주세요');
+      return;
+    }
+
+    try {
+      await authNickName(values.nickName);
+      // 중복 확인 완료
+      setErrorByName('nickName', '');
+      setIsNicknameVerified(true);
+    } catch (err) {
+      if (err.status === 409) {
+        setErrorByName('nickName', '이미 사용 중인 닉네임 입니다.');
+      }
+      setIsNicknameVerified(false);
+      console.log(err);
+    }
+  };
+
   const handleClickDeleteAddress = () => {
+    setValueByName('address', '');
     setSearchAddress('');
     setValueByName('address', '');
+  };
+
+  const handleSubmitCheck = async (event) => {
+    // 만약 수정 화면인데 이전 값에서 변화가 없다면
+    if (isEditMode && memberInfo?.nickName === values.nickName) {
+      await handleSubmit(event);
+      return;
+    }
+
+    // 만약 이
+    if (!isNicknameVerified) {
+      await setErrorByName('nickName', '중복 확인이 필요합니다');
+    } else {
+      await handleSubmit(event);
+    }
   };
 
   return (
@@ -334,14 +411,25 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
       </ImageWrapper>
       <NickNameWrapper>
         <div className="label">닉네임</div>
-        <input
-          type="text"
-          placeholder="닉네임"
-          name="nickName"
-          value={values.nickName}
-          onChange={handleChange}
-        ></input>
+        <div className="nickname-input--wrapper">
+          <input
+            type="text"
+            placeholder="닉네임"
+            name="nickName"
+            value={values.nickName}
+            onChange={handleChange}
+          ></input>
+          <button
+            onClick={handleNickNameVerify}
+            disabled={isEditMode && memberInfo.nickName === values.nickName}
+          >
+            중복 확인
+          </button>
+        </div>
         <p className="error">{errors.nickName}</p>
+        {isNicknameVerified && (
+          <p className="email-verified--msg">중복 확인 완료!</p>
+        )}
       </NickNameWrapper>
       <div className="select-container">
         <GenderSelectWrapper className="gender-select">
@@ -415,7 +503,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
           onChange={handleChange}
         ></textarea>
       </AboutMeWrapper>
-      <Button size="large" fullWidth onClick={handleSubmit}>
+      <Button size="large" fullWidth onClick={handleSubmitCheck}>
         완료
       </Button>
     </MemberInfoContainer>

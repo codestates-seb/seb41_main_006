@@ -67,7 +67,7 @@ const MemberInfoCard = ({ memberInfo }) => {
             <IoLocationSharp />
             <span>지역</span>
           </RowCenterBox>
-          <span>{memberInfo.address}</span>
+          <span>{memberInfo.fullAddress}</span>
         </div>
       </UsefInfoWrapper>
       <div className="user-introduce">{memberInfo.aboutMe}</div>
