@@ -4,7 +4,7 @@ import Title from '../common/Title';
 import Button from '../common/Button';
 import DogFootLoading from '../DogFootLoading';
 import useInput from '../../hooks/useInput';
-import { authEmailVerification, authEmail } from '../../api/auth/signup';
+import { authEmailVerification, authEmail } from '../../api/member/signup';
 
 const EmailAuthModalView = styled.div`
   width: 30rem;
@@ -82,8 +82,10 @@ const EmailAuthModal = ({
       alert('인증이 완료되었습니다.');
       setIsEmailAuthModalOpen(false);
     } catch (err) {
-      if (err.response.data.message === 'Code Has Not Matched') {
+      if (err.message === 'Code Has Not Matched') {
         emailAuthNumber.setError('인증번호가 맞지 않습니다.');
+      } else {
+        console.log(err);
       }
     }
     // 인증 번호가 맞지 않을 때의 경우 추가되어야 함!
