@@ -4,13 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mainproject.server.domain.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class RedisSubscriber {
+public class RedisSubscriber{
     private final ObjectMapper objectMapper;
     private final SimpMessageSendingOperations messagingTemplate;
 
@@ -25,4 +28,5 @@ public class RedisSubscriber {
             log.error("Exception in redis Subscriber:{}", e);
         }
     }
+
 }
