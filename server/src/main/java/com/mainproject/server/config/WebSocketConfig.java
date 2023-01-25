@@ -1,6 +1,5 @@
 package com.mainproject.server.config;
 
-import com.mainproject.server.helper.chat.StompHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +12,6 @@ import org.springframework.web.socket.config.annotation.*;
 @RequiredArgsConstructor
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-
-    private final StompHandler stompHandler;
 
     // sockJS Fallback을 이용해 노출할 endpoint 설정
     @Override
@@ -34,10 +31,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         // 클라이언트->서버로 발행하는 메세지에 대한 endpoint 설정 : 구독에 대한 메세지
         registry.setApplicationDestinationPrefixes("/pub");
-    }
-
-    @Override // 웹소켓으로 넘어가기 전에 token 검증
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(stompHandler);
     }
 }

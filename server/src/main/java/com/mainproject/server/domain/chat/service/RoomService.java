@@ -30,7 +30,7 @@ import java.util.Optional;
 public class RoomService {
     private final MemberService memberService;
     private final RoomRepository roomRepository;
-    @Resource(name = "chatRedisTemplate")
+    @Resource(name = "redisTemplate")
     private HashOperations<String, Long, ChatRoom> opsHashChatRoom;
     private static final String CHAT_ROOMS = "CHAT_ROOM";
 
