@@ -6,7 +6,7 @@
     https://logback.qos.ch/manual/layouts.html#coloring-->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
     <!--springProfile 태그를 사용하면 logback 설정파일에서 스프링 프로파일에 따라 복수개의 프로파일을 설정할 수 있다.-->
-    <springProfile name="local">
+    <springProfile name="local, mg, jh, hr">
         <property resource="logback-local.properties"/>
         <!-- log file path -->
         <property name="LOG_PATH" value="./logs"/>
@@ -52,7 +52,7 @@
             <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 파일당 최고 용량 kb, mb, gb -->
-                <maxFileSize>5MB</maxFileSize>
+                <maxFileSize>30MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!-- 일자별 로그파일 최대 보관주기(~일), 해당 설정일 이상된 파일은 자동으로 제거-->
             <maxHistory>7</maxHistory>
@@ -78,7 +78,7 @@
             <fileNamePattern>${LOG_PATH}/${ERR_LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 파일당 최고 용량 kb, mb, gb -->
-                <maxFileSize>5MB</maxFileSize>
+                <maxFileSize>30MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!-- 일자별 로그파일 최대 보관주기(~일), 해당 설정일 이상된 파일은 자동으로 제거-->
             <maxHistory>7</maxHistory>

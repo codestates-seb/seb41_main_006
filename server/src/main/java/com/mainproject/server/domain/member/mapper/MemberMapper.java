@@ -23,6 +23,8 @@ public interface MemberMapper {
 
     List<MemberDto.SimpleResponse> membersToMemberSimpleResponseDtos(List<Member> members);
 
+    MemberDto.ResponseWithFullAddress memberToResponseWithFullAddress(Member member, String fullAddress);
+
     default MemberDto.ResponseWithPets memberToMemberResponseWithPetsDto(Member member) {
         return MemberDto.ResponseWithPets.builder()
                 .memberId(member.getMemberId())

@@ -63,7 +63,7 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, "/s3/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/logout").authenticated()
                 .antMatchers(HttpMethod.POST, "/members", "/auth/**", "/reissue" ).permitAll()
-                .antMatchers(HttpMethod.GET, "/members/{member-id:[\\d]+}",
+                .antMatchers(HttpMethod.GET, "/members/{member-id:[\\d]+}", "/members/nickname/verify",
                         "/members*", "/pets/*", "boards/*", "/board*", "/comments*").permitAll()
                 .antMatchers(HttpMethod.GET, "/chats/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/chats/**").permitAll()

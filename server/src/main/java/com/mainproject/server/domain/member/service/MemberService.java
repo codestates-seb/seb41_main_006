@@ -34,7 +34,7 @@ public class MemberService {
 
     /*회원 신규 가입*/
     public Member createMember(Member member, Optional<Long> profileImageId) {
-        validateDuplicateMember(member.getEmail());
+        validateDuplicateEmail(member.getEmail());
         // 비밀번호 암호화
         String encodePassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encodePassword);
@@ -66,7 +66,7 @@ public class MemberService {
 
     /*해당 주소를 가지고 있는 회원들 조회*/
     @Transactional(readOnly = true)
-    public Page<Member> findMembersWithAddress(String address, int page, int size) {
+    public Page<Member> findMembersByAddress(String address, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         return memberRepository.findByAddress(address, pageRequest);
     }
@@ -75,7 +75,6 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findMember(long memberId) {
         Member member = validateVerifyMember(memberId);
-        member.setAddress(getFullAddressByBeopJeongCd(member.getAddress()));
         return member;
     }
 
@@ -95,10 +94,18 @@ public class MemberService {
     }
 
     /*중복 회원인지 확인*/
-    public void validateDuplicateMember(String email) {
+    public void validateDuplicateEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_ALREADY_EXISTS);
+        }
+    }
+
+    /*중복 닉네임인지 확인*/
+    public void validateDuplicateNickname(String nickname) {
+        Optional<Member> memberByNickName = memberRepository.findMemberByNickName(nickname);
+        if(memberByNickName.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_ALREADY_EXISTS);
         }
     }
 

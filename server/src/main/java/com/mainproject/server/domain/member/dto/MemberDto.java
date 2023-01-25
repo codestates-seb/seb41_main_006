@@ -106,6 +106,21 @@ public class MemberDto {
 
     @Getter
     @Builder
+    public static class ResponseWithFullAddress {
+        private long memberId;
+        private String nickName;
+        private String email;
+        private Member.MemberAge memberAge;
+        private String gender;
+        private String address;
+        private String fullAddress;
+        private Member.MemberStatus memberStatus;
+        private String aboutMe;
+        private S3UpFileResponse profileImage;
+    }
+
+    @Getter
+    @Builder
     public static class ResponseWithPets {
         private long memberId;
         private String nickName;
