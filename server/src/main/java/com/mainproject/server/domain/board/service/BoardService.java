@@ -14,6 +14,7 @@ import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.domain.pet.service.PetService;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
+import com.mainproject.server.utils.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +37,7 @@ public class BoardService {
     private final MemberService memberService;
     private final CommentsService commentsService;
     private final PetService petService;
+    private final CustomBeanUtils customBeanUtils;
 
 
     public Board createBoard(Board board, MemberDetails memberDetails) {
@@ -49,33 +51,15 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public Board updateBoard(Board board, MemberDetails memberDetails) {
+    public Board updateBoard(long boardId, BoardDto.Patch patch, MemberDetails memberDetails) {
 
-       Board findBoard = findVerifiedBoard(board.getBoardId());
+       Board findBoard = findVerifiedBoard(boardId);
 
        validateBoardWriter(findBoard, memberDetails.getMemberId());
 
-       Optional.ofNullable(board.getTitle())
-               .ifPresent(findBoard::setTitle);
+       Board updateBoard = (Board) customBeanUtils.copyNonNullProperties(patch, findBoard);
 
-       Optional.ofNullable(board.getContent())
-               .ifPresent(findBoard::setContent);
-
-       Optional.ofNullable(board.getAppointTime())
-               .ifPresent(findBoard::setAppointTime);
-
-       Optional.ofNullable(board.getPlaceCode())
-               .ifPresent(findBoard::setPlaceCode);
-
-       Optional.ofNullable(board.getX()).ifPresent(findBoard::setX);
-       Optional.ofNullable(board.getY()).ifPresent(findBoard::setY);
-
-       if(board.getPet().getPetId() != null) {
-           Pet pet = petService.findPet(board.getPet().getPetId());
-           findBoard.setPet(pet);
-       }
-
-       return boardRepository.save(findBoard);
+       return boardRepository.save(updateBoard);
     }
 
     // ----- 특정 게시글 조회 (댓글, 대댓글 함께)
