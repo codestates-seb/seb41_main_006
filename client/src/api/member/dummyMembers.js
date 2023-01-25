@@ -3,9 +3,9 @@ const dummyMembers = {
     {
       memberId: 1,
       nickName: '예린',
-      age: 26,
+      memberAge: 'TWENTIES',
       gender: 'F',
-      address: '서울시 송파구 잠실 7동',
+      address: '1111010100',
       memberStatus: 'MEMBER_ACTIVE',
       aboutMe: '안녕하세요~~~',
       profileImage:
@@ -40,9 +40,9 @@ const dummyMembers = {
     {
       memberId: 2,
       nickName: '규성',
-      age: 26,
+      memberAge: 'TWENTIES',
       gender: 'M',
-      address: '경기도 의정부시 신곡동',
+      address: '1111010100',
       memberStatus: 'MEMBER_ACTIVE',
       aboutMe: '안녕하세요! 둥일, 둥이 집사입니다.',
       profileImage:
@@ -89,9 +89,9 @@ const dummyMembers = {
     {
       memberId: 3,
       nickName: '선영',
-      age: 26,
+      memberAge: 'TWENTIES',
       gender: 'F',
-      address: '서울시 송파구 잠실 7동',
+      address: '1111010100',
       memberStatus: 'MEMBER_ACTIVE',
       aboutMe: '강아지를 키우진 않지만 강아지를 너무 좋아해요!',
       profileImage:

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import SignUp from '../components/signup/SignUp';
@@ -7,15 +7,19 @@ import MemberInfoInput from '../components/signup/MemberInfoInput';
 import useInput from '../hooks/useInput';
 import useForm from '../hooks/useForm';
 import memberInfoValidate from '../utils/memberInfoValidate';
-import { postNewMember } from '../api/member/member';
+import { signUp } from '../api/member/signup';
 
 // import EditMemberInfoCard from '../components/myPage/EditMemberInfoCard';
 
 const SignUpContainer = styled(Container)`
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  width: 20rem;
   height: 100%;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 `;
 
 const SignUpPage = () => {
@@ -31,20 +35,25 @@ const SignUpPage = () => {
       address: '',
       gender: '',
       aboutMe: '',
+      profileImageFile: null,
+      profileImageId: null,
     },
-    onSubmit: () => {
-      postNewMember({
-        ...memberInfoForm.values,
-        email: email.value,
-        password: password.value,
-      });
-      console.log(memberInfoForm.values);
+    onSubmit: async () => {
+      try {
+        await signUp({
+          ...memberInfoForm.values,
+          email: email.value,
+          password: password.value,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     },
     validate: memberInfoValidate,
   });
 
   useEffect(() => {
-    // 이메일과 패스워드 입력을 안한 상태라면 멤버 정보 입력 화면 진입 불가
+    // 이메일과 패스워드가 없는 상태라면 멤버 정보 입력 화면 진입 불가
     if (!email.value || !password.value) {
       navigate('/signup');
     }

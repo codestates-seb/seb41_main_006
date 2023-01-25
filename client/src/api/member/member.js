@@ -22,8 +22,4 @@ export const getMemberBoardList = async (memberId) => {
   }
 };
 
-// POST /members
-export const postNewMember = async (values) => {
-  console.log('포스트 보내는 중', values);
-  await wait(500);
-};
+// POST

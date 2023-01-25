@@ -48,7 +48,7 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
 
   const handleClickSearchResult = (index) => {
     // input value 초기화
-    setSearchAddress(addressList[index].addressName);
+    setSearchAddress('');
     // 선택한 결과의 배열 index를 이용해 화면에 출력할 주소명과 서버에 보낼 법정 코드를 설정
     // 주소명
     setAddress(addressList[index].addressName);

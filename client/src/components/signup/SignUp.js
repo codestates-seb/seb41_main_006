@@ -12,14 +12,14 @@ import Title from '../common/Title';
 import Button from '../common/Button';
 import EmailAuthModal from './EmailAuthModal';
 import { useNavigate } from 'react-router-dom';
+import { authEmail } from '../../api/member/signup';
 
 const SignUpInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 5rem;
   width: 20rem;
-  height: 50rem;
+  height: 30rem;
 
   .text-container {
     display: flex;
@@ -62,6 +62,12 @@ const SignUpBox = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
+
+    > .email-verified-msg {
+      font-size: 0.75rem;
+      color: var(--main-color);
+      padding-left: 0.675rem;
+    }
   }
 `;
 
@@ -74,6 +80,7 @@ const SignUp = ({ email, password, confirmPassword }) => {
   // 이메일 인증 부분 open
   const [isEmailAuthModalOpen, setIsEmailAuthModalOpen] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [isEmailLoading, setIsEmailLoading] = useState(false);
 
   const handleCheckEmail = (event) => {
     const { value } = event.target;
@@ -108,14 +115,23 @@ const SignUp = ({ email, password, confirmPassword }) => {
     }
   };
 
-  const handleEmailAuthOpenClick = () => {
+  const handleEmailAuthOpenClick = async () => {
+    // 인증 메일 발송 중이라면 다시 요청 못하게 막는다.
+    if (isEmailLoading) return;
+
     const emailError = emailValidate(email.value);
     if (emailError) {
       email.setError(emailError);
     } else {
-      email.setError('');
-      alert('해당 메일로 인증 메일을 전송했습니다.');
+      setIsEmailLoading(true);
       setIsEmailAuthModalOpen(true);
+      try {
+        await authEmail(email.value);
+        email.setError('');
+      } catch {
+        setIsEmailAuthModalOpen(false);
+      }
+      setIsEmailLoading(false);
     }
   };
 
@@ -166,7 +182,9 @@ const SignUp = ({ email, password, confirmPassword }) => {
             auth={true}
             onClick={handleEmailAuthOpenClick}
           ></AuthInput>
-          {isEmailVerified ? <p>인증 완료!</p> : null}
+          {isEmailVerified ? (
+            <p className="email-verified-msg">인증 완료!</p>
+          ) : null}
         </div>
         <AuthInput
           label="비밀번호"
@@ -198,6 +216,8 @@ const SignUp = ({ email, password, confirmPassword }) => {
             email={email.value}
             setIsEmailAuthModalOpen={setIsEmailAuthModalOpen}
             setIsEmailVerified={setIsEmailVerified}
+            isEmailLoading={isEmailLoading}
+            setIsEmailLoading={setIsEmailLoading}
           />
         ) : null}
       </SignUpBox>

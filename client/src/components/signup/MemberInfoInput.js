@@ -4,15 +4,15 @@ import ProfileImage from '../common/ProfileImage';
 import SelectAge from '../SelectAge';
 import { useEffect, useRef, useState } from 'react';
 import getAddressList from '../../api/kakaoMap/getAddressList';
+import { getaddressByCode } from '../../api/kakaoMap/getAddressByCode';
 import Button from '../common/Button';
 import { IoLocationSharp } from 'react-icons/io5';
+import { HiXMark } from 'react-icons/hi2';
 
 const MemberInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
   width: 20rem;
   gap: 1rem;
 
@@ -145,6 +145,7 @@ const AddressWrapper = styled.div`
   text-align: left;
   width: 100%;
   position: relative;
+
   > .address-list {
     position: absolute;
     z-index: 9;
@@ -160,6 +161,22 @@ const AddressWrapper = styled.div`
       width: 100%;
       color: var(--sec-color);
     }
+  }
+`;
+
+const AddressSearchBox = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  > input {
+    padding-right: 2rem;
+  }
+
+  > svg {
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
   }
 `;
 
@@ -189,23 +206,43 @@ const AboutMeWrapper = styled.div`
 
 const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   // 여러 개의 input의 value, error, change 이벤트 핸들러
-  const { values, setValues, errors, handleChange, handleSubmit } =
-    memberInfoForm;
+  const {
+    values,
+    setValueByName,
+    setValues,
+    errors,
+    setErrorByName,
+    handleChange,
+    handleSubmit,
+  } = memberInfoForm;
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
+  const [previewImgUrl, setPreviewImgUrl] = useState('');
 
   const imgRef = useRef();
-  const FILE_VALUE = 'image';
 
   useEffect(() => {
-    if (isEditMode) {
-      // 만약 수정하는 경우라면 기존의 멤버 정보로 초기 세팅
-      memberInfoForm.setValues(memberInfo);
+    const setMemberInfo = async () => {
+      setValues({
+        ...values,
+        nickName: memberInfo.nickName,
+        memberAge: memberInfo.memberAge,
+        address: memberInfo.address,
+        gender: memberInfo.gender,
+        aboutMe: memberInfo.aboutMe,
+      });
+
+      setPreviewImgUrl(memberInfo.profileImage);
       // 받아온 법정 코드를 api 이용하여 주소명으로 바꿔준다.
-      // setSearchAddress(memberInfo.address -> '주소명');
+      const address = await getaddressByCode(memberInfo.address);
+      setSearchAddress(address);
+    };
+
+    if (isEditMode) {
+      setMemberInfo();
     }
-  }, []);
+  }, [memberInfo]);
 
   const handleImgUpload = () => {
     imgRef.current.click();
@@ -216,14 +253,16 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     if (e.target.files === undefined) {
       return;
     }
-    //파일 확장자 , 크기 걸러줌
-    if (!e.target.files[0].type.includes(FILE_VALUE)) {
-      alert('허용된 확장자가 아닙니다.');
-    } else if (e.target.files[0].size > 5 * 1024 * 1024) {
-      alert('최대 파일 용량은 5MB입니다.');
+    //파일 크기 걸러줌
+    if (e.target.files[0].size > 5 * 1024 * 1024) {
+      setErrorByName('profileImageFile', '최대 파일 용량은 5MB입니다.');
     } else {
-      // 이미지 파일 서버에 업로드 후 어떻게??????? -> 이미지 프리뷰할 수 있는 방법이 있음
-      // setProfile(e.target.files[0]);
+      setErrorByName('profileImageFile', '');
+      setValueByName('profileImageFile', e.target.files[0]);
+
+      // 미리보기 blob url
+      const blobUrl = URL.createObjectURL(e.target.files[0]);
+      setPreviewImgUrl(blobUrl);
     }
   };
 
@@ -244,32 +283,45 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     }
   };
 
+  // 주소 클릭하면 선택됨
   const handleClickAddress = (index) => {
     // input value
     setSearchAddress(addressList[index].addressName);
     // 선택한 결과의 배열 index를 이용해 서버에 보낼 법정 코드를 설정
-    setValues({ ...values, address: addressList[index].bCode });
+    setValueByName('address', addressList[index].bCode);
     // 검색창 닫고 초기화
+    setErrorByName('address', '');
     setIsAddressListOpen(false);
     setAddressList([]);
+  };
+
+  const handleClickDeleteImage = () => {
+    if (previewImgUrl) {
+      // URL Object 객체 메모리에서 삭제
+      URL.revokeObjectURL(previewImgUrl);
+      setPreviewImgUrl('');
+    }
+    // 실제 S3 에서 삭제해아함
+  };
+
+  const handleClickDeleteAddress = () => {
+    setSearchAddress('');
+    setValueByName('address', '');
   };
 
   return (
     <MemberInfoContainer>
       <Title as="h1" size="large">
-        견주 정보 입력
+        {isEditMode ? '견주 정보 수정' : '견주 정보 입력'}
       </Title>
       <ImageWrapper>
         <div className="label">프로필 이미지</div>
         <div className="img-wrapper">
-          {isEditMode ? (
-            <ProfileImage src={memberInfo.profileImage} alt="" size="100px" />
-          ) : (
-            <ProfileImage src="" alt="no-one" size="100px" />
-          )}
+          <ProfileImage src={previewImgUrl} alt="no-one" size="100px" />
           <input
             type="file"
             className="img-upload"
+            accept="image/*"
             ref={imgRef}
             onChange={handleImgChange}
           ></input>
@@ -277,9 +329,12 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
             <button className="img-upload-btn" onClick={handleImgUpload}>
               이미지 업로드
             </button>
-            <button className="img-delete-btn">이미지 삭제</button>
+            <button className="img-delete-btn" onClick={handleClickDeleteImage}>
+              이미지 삭제
+            </button>
           </div>
         </div>
+        <p className="error">{errors.profileImageFile}</p>
       </ImageWrapper>
       <NickNameWrapper>
         <div className="label">닉네임</div>
@@ -323,13 +378,16 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
       </div>
       <AddressWrapper>
         <div className="label">주소</div>
-        <input
-          type="text"
-          placeholder="동 이름을 검색하세요"
-          onKeyUp={handleSearchAddressKeyUp}
-          value={searchAddress}
-          onChange={(e) => setSearchAddress(e.target.value)}
-        ></input>
+        <AddressSearchBox>
+          <input
+            type="text"
+            placeholder="동 이름을 검색하세요"
+            onKeyUp={handleSearchAddressKeyUp}
+            value={searchAddress}
+            onChange={(e) => setSearchAddress(e.target.value)}
+          ></input>
+          <HiXMark onClick={handleClickDeleteAddress} />
+        </AddressSearchBox>
         {isAddressListOpen && (
           <div className="address-list">
             {addressList.length === 0 ? (
