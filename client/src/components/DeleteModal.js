@@ -58,7 +58,9 @@ const ModalInner = styled.div`
   }
 `;
 
-const DeleteModal = () => {
+const DeleteModal = ({ commendId }) => {
+  console.log(commendId);
+
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
