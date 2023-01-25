@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
@@ -7,8 +7,6 @@ import FindMateTab from '../components/findMate/FindMateTab';
 import MateBoardConent from '../components/findMate/MateBoardContent';
 import MateMemberContent from '../components/findMate/MateMemberContent';
 import DogFootLoading from '../components/DogFootLoading';
-
-import { getBoardList } from '../api/board/board';
 
 const FindMateContainer = styled(Container)`
   display: flex;
@@ -43,14 +41,6 @@ const FindMatePage = () => {
   const [address, setAddress] = useState('');
   const [bCode, setBCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [boardList, setBoardList] = useState([]);
-
-  useEffect(() => {
-    // react query로 대체 필요
-    getBoardList({ page: 1, size: 10, bCode: bCode }).then((data) =>
-      setBoardList(data)
-    );
-  }, [bCode]);
 
   return (
     <FindMateContainer>
@@ -72,7 +62,7 @@ const FindMatePage = () => {
           ></Route>
           <Route
             path="boards"
-            element={<MateBoardConent boardList={boardList} />}
+            element={<MateBoardConent placeCode={bCode} />}
           ></Route>
           <Route path="*" element={<MateMemberContent />}></Route>
         </Routes>

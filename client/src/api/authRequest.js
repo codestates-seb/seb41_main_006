@@ -1,6 +1,6 @@
-import defalutRequest from './defalutRequest';
+import defaultRequest from './defaultRequest';
 
-const authRequest = defalutRequest.create({
+const authRequest = defaultRequest.create({
   // headers: {
   //   Authorization: `Bearer ${Token}`,
   // },
