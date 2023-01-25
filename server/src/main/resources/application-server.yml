@@ -34,6 +34,7 @@ spring:
   batch:
     job:
       enabled: false # 시작과 동시에 실행되는 건 방지
+    initialize-schema: always
 
   sql:
     init:
