@@ -7,6 +7,7 @@ import getAddressList from '../../api/kakaoMap/getAddressList';
 import { getaddressByCode } from '../../api/kakaoMap/getAddressByCode';
 import Button from '../common/Button';
 import { IoLocationSharp } from 'react-icons/io5';
+import { HiXMark } from 'react-icons/hi2';
 
 const MemberInfoContainer = styled.div`
   display: flex;
@@ -144,6 +145,7 @@ const AddressWrapper = styled.div`
   text-align: left;
   width: 100%;
   position: relative;
+
   > .address-list {
     position: absolute;
     z-index: 9;
@@ -159,6 +161,22 @@ const AddressWrapper = styled.div`
       width: 100%;
       color: var(--sec-color);
     }
+  }
+`;
+
+const AddressSearchBox = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  > input {
+    padding-right: 2rem;
+  }
+
+  > svg {
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
   }
 `;
 
@@ -272,6 +290,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     // 선택한 결과의 배열 index를 이용해 서버에 보낼 법정 코드를 설정
     setValueByName('address', addressList[index].bCode);
     // 검색창 닫고 초기화
+    setErrorByName('address', '');
     setIsAddressListOpen(false);
     setAddressList([]);
   };
@@ -283,6 +302,11 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
       setPreviewImgUrl('');
     }
     // 실제 S3 에서 삭제해아함
+  };
+
+  const handleClickDeleteAddress = () => {
+    setSearchAddress('');
+    setValueByName('address', '');
   };
 
   return (
@@ -354,13 +378,16 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
       </div>
       <AddressWrapper>
         <div className="label">주소</div>
-        <input
-          type="text"
-          placeholder="동 이름을 검색하세요"
-          onKeyUp={handleSearchAddressKeyUp}
-          value={searchAddress}
-          onChange={(e) => setSearchAddress(e.target.value)}
-        ></input>
+        <AddressSearchBox>
+          <input
+            type="text"
+            placeholder="동 이름을 검색하세요"
+            onKeyUp={handleSearchAddressKeyUp}
+            value={searchAddress}
+            onChange={(e) => setSearchAddress(e.target.value)}
+          ></input>
+          <HiXMark onClick={handleClickDeleteAddress} />
+        </AddressSearchBox>
         {isAddressListOpen && (
           <div className="address-list">
             {addressList.length === 0 ? (
