@@ -33,10 +33,12 @@ const SHeaderNav = styled.nav`
 
 const HeaderNav = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const AccessToken = localStorage.getItem('AccessToken');
   const dispatch = useDispatch();
-  const handleLoginClick = () => dispatch(openModal({ type: 'login' }));
+  const handleLoginClick = () =>
+    dispatch(openModal({ type: 'login', props: { setIsLogin } }));
 
-  if (isLogin)
+  if (isLogin || AccessToken)
     return (
       <SHeaderNav>
         <Link to={'/mate'}>메이트 찾기</Link>
