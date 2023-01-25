@@ -12,6 +12,8 @@ import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
+// import useFetch from '../hooks/useFetch';
+// import { FINDMATE_ENDPOINT } from '../api/board/findMate';
 
 const ContainerBox = styled(Container)`
   padding: 20px;
@@ -136,6 +138,14 @@ const BoardDetailPage = () => {
   const [like, setLike] = useState(false);
 
   const { boardId } = useParams();
+  // const data = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
+
+  // let boardList;
+
+  // if (data) {
+  //   boardList = data.response;
+  // }
+
   const [board, setBoard] = useState({
     comments: [],
   });
@@ -147,7 +157,7 @@ const BoardDetailPage = () => {
   };
 
   const handelDelClick = () => {
-    dispatch(openModal({ type: 'delete' }));
+    dispatch(openModal({ type: 'delete', props: { boardId } }));
   };
 
   // 좋아요 누르기
@@ -162,7 +172,6 @@ const BoardDetailPage = () => {
       localStorage.removeItem('isLike');
     }
   };
-  console.log(board.countLike);
 
   // 좋아요 상태 유지
   useEffect(() => {

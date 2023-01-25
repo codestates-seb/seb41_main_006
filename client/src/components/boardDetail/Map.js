@@ -79,7 +79,9 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
       }
     };
 
-    ps.keywordSearch(searchPlace, placesSearchCB);
+    if (searchPlace) {
+      ps.keywordSearch(searchPlace, placesSearchCB);
+    }
 
     const geocoder = new kakao.maps.services.Geocoder();
 
@@ -102,7 +104,6 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
 
     // 검색한 장소에 마커 표시
     const displayMarker = (place) => {
-      console.log(place);
       const marker = new kakao.maps.Marker({
         map: map,
         position: new kakao.maps.LatLng(place.y, place.x),
