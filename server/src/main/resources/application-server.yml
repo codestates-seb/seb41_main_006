@@ -2,6 +2,7 @@ spring:
   datasource: #DB
     url: ${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    schema: classpath:/org/springframework/batch/core/schema-mysql.sql
     username : ${DB_USERNAME}
     password : ${DB_PASSWORD}
 
@@ -34,11 +35,8 @@ spring:
   batch:
     job:
       enabled: false # 시작과 동시에 실행되는 건 방지
-    initialize-schema: always
-
-  sql:
-    init:
-      schema-locations: classpath:/org/springframework/batch/core/schema-mysql.sql #배치파일
+    jdbc:
+      initialize-schema: always
 
   servlet: #S3 - 파일 크기 제한
     multipart:

@@ -42,7 +42,7 @@ public class MessageController {
     private final RedisTemplate redisTemplate;
     private final ChatMapper mapper;
 
-    @MessageMapping("/{room-id}/messages")
+    @MessageMapping("/messages/{room-id}")
     public ResponseEntity message(@DestinationVariable long roomId,
                                   @Valid @RequestBody MessageDto messageDto,
                                   @AuthenticationPrincipal MemberDetails memberDetails,
@@ -64,7 +64,7 @@ public class MessageController {
     }
 
     // 채팅메세지 가져오기
-    @GetMapping("/{room-id}/messages")
+    @GetMapping("/messages/{room-id}")
     public ResponseEntity getMessages(@Positive @PathVariable("room-id") long roomId,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
         // 해당 채팅방의 메세지를 가져와야 함
