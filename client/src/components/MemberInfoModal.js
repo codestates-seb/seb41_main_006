@@ -7,7 +7,7 @@ import Button from './common/Button';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
-import axios from 'axios';
+import instance from '../api/axiosConfig';
 
 const SContainer = styled.div`
   display: flex;
@@ -50,9 +50,9 @@ const MemberInfoModal = ({ memberId }) => {
     dispatch(closeModal());
   };
   const AddChatList = async (memberId) => {
-    await axios
+    await instance
       .post(
-        'http://a799-125-133-209-20.jp.ngrok.io/chats',
+        '/chats',
         {
           memberId: memberId,
         },
