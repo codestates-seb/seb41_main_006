@@ -37,7 +37,7 @@ spring:
 
   sql:
     init:
-      schema-locations: classpath:/org/springframework/batch/core/schema-h2.sql #배치파일
+      schema-locations: classpath:/org/springframework/batch/core/schema-mysql.sql #배치파일
 
   servlet: #S3 - 파일 크기 제한
     multipart:
