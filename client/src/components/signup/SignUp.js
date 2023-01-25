@@ -65,7 +65,7 @@ const SignUpBox = styled.div`
 
     > .email-verified-msg {
       font-size: 0.75rem;
-      color: var(--main-color);
+      color: var(--success-color);
       padding-left: 0.675rem;
     }
   }

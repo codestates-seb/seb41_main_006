@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from 'react-query';
 import useForm from '../../../hooks/useForm';
 import styled from 'styled-components';
 // import Container from '../Container';
@@ -5,6 +6,7 @@ import MemberInfoInput from '../../signup/MemberInfoInput';
 // import EditMemberInfoCard from '../EditMemberInfoCard';
 import ModalBackDrop from '../../ModalBackDrop';
 import memberInfoValidate from '../../../utils/memberInfoValidate';
+import { updateMyInfo } from '../../../api/member/member';
 
 const ModalContainer = styled.div`
   background-color: var(--bg-color);
@@ -22,6 +24,15 @@ const ModalContainer = styled.div`
 
 const EditMemberModal = ({ setIsEditModalOpen, memberInfo }) => {
   const handleModalClose = () => setIsEditModalOpen(false);
+  const queryClient = useQueryClient();
+
+  const updateMyInfoMutation = useMutation(updateMyInfo, {
+    onSuccess: () => {
+      // invalidates cache and refetcn
+      handleModalClose();
+      queryClient.invalidateQueries('myInfo');
+    },
+  });
 
   const memberInfoForm = useForm({
     initialValues: {
@@ -35,7 +46,14 @@ const EditMemberModal = ({ setIsEditModalOpen, memberInfo }) => {
     },
     onSubmit: async () => {
       try {
-        console.log(memberInfoForm.values);
+        updateMyInfoMutation.mutate({
+          memberId: memberInfo.memberId,
+          data: {
+            ...memberInfoForm.values,
+            email: memberInfo.email,
+            memberStatus: memberInfo.memberStatus,
+          },
+        });
         console.log('hi');
       } catch (err) {
         console.log(err);

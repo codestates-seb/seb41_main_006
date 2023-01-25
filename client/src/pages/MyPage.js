@@ -10,7 +10,7 @@ const SContainer = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
+  padding-top: 4.5rem;
   color: var(--main-font-color);
 
   .tap-container {

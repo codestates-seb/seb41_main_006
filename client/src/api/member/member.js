@@ -1,7 +1,22 @@
 import dummyMembers from './dummyMembers';
 import wait from '../../utils/wait';
 import dummyBoards from '../board/dummyBoards';
+import defaultRequest from '../defaultRequest';
 import authRequest from '../authRequest';
+
+// GET /members
+export const getMemberList = async ({ page, size, placeCode }) => {
+  try {
+    // 법정 코드가 입력되었다면
+    const res = await defaultRequest.get('/members', {
+      params: { page, size, address: placeCode },
+    });
+    return res.data.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
 
 // GET /members/{memberId}
 export const getMemberInfo = async (memberId) => {
@@ -23,10 +38,11 @@ export const getMemberBoardList = async (memberId) => {
   }
 };
 
-// GET /members/${members}/my-page
+// GET /members/${memberId}/my-page
 export const getMyInfo = async (memberId) => {
   try {
     const res = await authRequest.get(`/members/${memberId}/my-page`);
+    console.log(res.data);
     return res.data.data;
   } catch (err) {
     console.log(err);
@@ -34,4 +50,24 @@ export const getMyInfo = async (memberId) => {
   }
 };
 
-// POST
+// PATCH /members/${memberId}/my-page
+export const updateMyInfo = async ({ memberId, data }) => {
+  console.log(memberId, data);
+  try {
+    await authRequest.patch(`/members/${memberId}/my-page`, data);
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+// DELETE /members/${memberId}
+export const deleteMember = async (memberId) => {
+  try {
+    console.log(memberId);
+    // await authRequest.delete(`/members/${memberId}`)
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
