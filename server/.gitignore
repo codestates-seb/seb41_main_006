@@ -37,4 +37,4 @@ out/
 .vscode/
 
 env.yml
-log.config.path_IS_UNDEFINED
+logs
