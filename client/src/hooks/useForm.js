@@ -15,6 +15,15 @@ function useForm({ initialValues, onSubmit, validate }) {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  /** 값 변경 함수 */
+  const setValueByName = (name, value) => {
+    setValues({ ...values, [name]: value });
+  };
+
+  const setErrorByName = (name, message) => {
+    setErrors({ ...errors, [name]: message });
+  };
+
   /** 입력 란에서 발생하는 변경 이벤트를 다루는 함수 */
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,7 +31,7 @@ function useForm({ initialValues, onSubmit, validate }) {
   };
 
   /** 제출 이벤트를 다루는 함수 */
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     setIsLoading(true);
     event.preventDefault();
     setErrors(validate(values));
@@ -43,9 +52,10 @@ function useForm({ initialValues, onSubmit, validate }) {
 
   return {
     values,
+    setValueByName,
     setValues,
     errors,
-    setErrors,
+    setErrorByName,
     isLoading,
     setIsLoading,
     handleChange,

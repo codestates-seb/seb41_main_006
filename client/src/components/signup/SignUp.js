@@ -12,15 +12,14 @@ import Title from '../common/Title';
 import Button from '../common/Button';
 import EmailAuthModal from './EmailAuthModal';
 import { useNavigate } from 'react-router-dom';
-import { authEmail } from '../../api/auth/signup';
+import { authEmail } from '../../api/member/signup';
 
 const SignUpInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 3rem;
   width: 20rem;
-  height: 35rem;
+  height: 30rem;
 
   .text-container {
     display: flex;
@@ -129,8 +128,8 @@ const SignUp = ({ email, password, confirmPassword }) => {
       try {
         await authEmail(email.value);
         email.setError('');
-      } catch (error) {
-        console.log(error);
+      } catch {
+        setIsEmailAuthModalOpen(false);
       }
       setIsEmailLoading(false);
     }

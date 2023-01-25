@@ -11,8 +11,6 @@ const MemberInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
   width: 20rem;
   gap: 1rem;
 
@@ -192,6 +190,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   const {
     values,
     setValueByName,
+    setValues,
     errors,
     setErrorByName,
     handleChange,
@@ -207,11 +206,20 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   useEffect(() => {
     if (isEditMode) {
       // 만약 수정하는 경우라면 기존의 멤버 정보로 초기 세팅
-      memberInfoForm.setValues(memberInfo);
+      setValues({
+        ...values,
+        nickName: memberInfo.nickName,
+        memberAge: memberInfo.memberAge,
+        address: memberInfo.address,
+        gender: memberInfo.gender,
+        aboutMe: memberInfo.aboutMe,
+      });
+      setPreviewImgUrl(memberInfo.profileImage);
+      // setValues({ ...memberInfo });
       // 받아온 법정 코드를 api 이용하여 주소명으로 바꿔준다.
       // setSearchAddress(memberInfo.address -> '주소명');
     }
-  }, []);
+  }, [memberInfo]);
 
   const handleImgUpload = () => {
     imgRef.current.click();
@@ -264,8 +272,8 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   };
 
   const handleClickDeleteImage = () => {
-    // URL Object 객체 메모리에서 삭제
     if (previewImgUrl) {
+      // URL Object 객체 메모리에서 삭제
       URL.revokeObjectURL(previewImgUrl);
       setPreviewImgUrl('');
     }
