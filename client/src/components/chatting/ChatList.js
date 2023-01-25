@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import instance from '../../api/axiosConfig';
 
 const ChatItem = styled.li`
   display: flex;
@@ -29,15 +29,17 @@ const ChatItem = styled.li`
 const ChatList = () => {
   const navigate = useNavigate();
   const [chattingList, setChattingList] = useState([]);
+
   useEffect(() => {
     const AccessToken = localStorage.getItem('AccessToken');
     const GetChatList = async () => {
-      await axios('http://a799-125-133-209-20.jp.ngrok.io/chats', {
-        headers: {
-          Authorization: AccessToken,
-          'ngrok-skip-browser-warning': 'skip',
-        },
-      })
+      await instance
+        .get('/chats', {
+          headers: {
+            Authorization: AccessToken,
+            'ngrok-skip-browser-warning': 'skip',
+          },
+        })
         .then((res) => {
           setChattingList(res.data.data);
         })

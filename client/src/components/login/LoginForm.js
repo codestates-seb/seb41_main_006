@@ -4,6 +4,9 @@ import useInput from '../../hooks/useInput';
 import loginValidate from '../../utils/loginValidate';
 import styled from 'styled-components';
 import Button from '../common/Button';
+import instance from '../../api/axiosConfig';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../../store/modules/modalSlice';
 
 const SLoginForm = styled.form`
   width: 100%;
@@ -12,10 +15,11 @@ const SLoginForm = styled.form`
   gap: 0.5rem;
 `;
 
-const LoginForm = () => {
+const LoginForm = ({ setIsLogin }) => {
   const email = useInput('');
   const password = useInput('');
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleCheckEmail = (event) => {
     const { value } = event.target;
@@ -37,11 +41,29 @@ const LoginForm = () => {
     email.setError(loginValidate.email(email.value));
     password.setError(loginValidate.password(password.value));
   };
+  const handleLogin = async () => {
+    await instance
+      .post('/auth/login', {
+        username: email.value,
+        password: password.value,
+      })
+      .then((data) => {
+        console.log(data);
+        localStorage.setItem('AccessToken', data.headers.authorization);
+        localStorage.setItem('refreshToken', data.headers.refresh);
+        localStorage.setItem('memberId', data.data.memberId);
+        setIsLogin(true);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   useEffect(() => {
     if (isLoading) {
       if (!email.error && !password.error) {
-        alert('로그인!');
+        alert('로그인 성공!');
+        dispatch(closeModal());
       } else {
         setIsLoading(false);
       }
@@ -72,7 +94,7 @@ const LoginForm = () => {
         onBlur={handleCheckPassword}
         placeholder="비밀번호를 입력하세요"
       ></AuthInput>
-      <Button size="large" fullWidth>
+      <Button size="large" fullWidth type="submit" onClick={handleLogin}>
         로그인
       </Button>
     </SLoginForm>
