@@ -3,8 +3,8 @@ import { PostSubmitBtn } from './Button';
 import { RiAlertFill } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
-import { boardDelete } from '../api/board/findMate';
-import { useLocation, useNavigate } from 'react-router-dom';
+// import { boardDelete } from '../api/board/findMate';
+// import { useLocation } from 'react-router-dom';
 
 const ModalInner = styled.div`
   position: fixed;
@@ -58,24 +58,27 @@ const ModalInner = styled.div`
   }
 `;
 
-const DeleteModal = ({ commendId }) => {
-  console.log(commendId);
+const DeleteModal = ({ idx, commentDelete }) => {
+  console.log(idx);
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
   const dispatch = useDispatch();
 
-  const splitPath = location.pathname.split('/');
-  const boardId = splitPath[splitPath.length - 1];
+  // const splitPath = location.pathname.split('/');
+  //const boardId = splitPath[splitPath.length - 1];
 
   const handleCancelClick = () => {
     dispatch(closeModal({ type: 'delete' }));
   };
 
   const handelDelClick = () => {
+    if (idx !== undefined) {
+      commentDelete(idx);
+    }
     dispatch(closeModal({ type: 'delete' }));
-    boardDelete(boardId);
-    navigate(-1);
+    //boardDelete(boardId);
+    // navigate(-1);
   };
 
   return (
