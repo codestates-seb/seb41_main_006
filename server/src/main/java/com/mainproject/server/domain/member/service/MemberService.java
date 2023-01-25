@@ -2,8 +2,8 @@ package com.mainproject.server.domain.member.service;
 
 import com.mainproject.server.auth.utils.CustomAuthorityUtils;
 import com.mainproject.server.awsS3.entity.S3UpFile;
-import com.mainproject.server.awsS3.mapper.S3UpFileMapper;
 import com.mainproject.server.awsS3.service.S3UpFileService;
+import com.mainproject.server.domain.address.repository.AddressRepository;
 import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.repository.MemberRepository;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.OptionalLong;
 
 @Service
 @Transactional
@@ -31,6 +30,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final S3UpFileService s3UpFileService;
+    private final AddressRepository addressRepository;
 
     /*회원 신규 가입*/
     public Member createMember(Member member, Optional<Long> profileImageId) {
@@ -74,7 +74,9 @@ public class MemberService {
     /*회원 정보 조회*/
     @Transactional(readOnly = true)
     public Member findMember(long memberId) {
-         return validateVerifyMember(memberId);
+        Member member = validateVerifyMember(memberId);
+        member.setAddress(getFullAddressByBeopJeongCd(member.getAddress()));
+        return member;
     }
 
     /*회원 탈퇴*/
@@ -100,5 +102,9 @@ public class MemberService {
         }
     }
 
+    /*법정 코드로 주소 가져오기*/
+    public String getFullAddressByBeopJeongCd(String beopJeongCd){
+        return addressRepository.findFullAddressByBeopJeongCd(beopJeongCd);
+    }
 }
 

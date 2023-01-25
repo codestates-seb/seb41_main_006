@@ -3,16 +3,31 @@ spring:
     port: 6379
     host: localhost
     password: ${redis-password}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${email-username}
+    password: ${email-password}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   h2:
     console:
       path: /h2
       enabled: true
   datasource:
     #url: ${DB_URL}
-    #driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/main_project?serverTimezone=Asia/Seoul
+    username: root
+    password: 70ga6650#
     #username : ${DB_USERNAME}
     #password : ${DB_PASSWORD}
-    url: jdbc:h2:mem:test
+    #url: jdbc:h2:mem:test
 
   #S3 업로드
   servlet:
@@ -23,18 +38,20 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
   sql:
     init:
-      schema-locations: classpath:/org/springframework/batch/core/schema-h2.sql
+      schema-locations: classpath:/org/springframework/batch/core/schema-mysql.sql
 #        show_sql: true
 
   batch:
     job:
       enabled: false # 시작과 동시에 실행되는 건 방지
+    jdbc:
+      schema: classpath:org/springframework/batch/core/schema-mysql.sql
 
 cloud:
   aws:
