@@ -59,9 +59,7 @@ public class BoardController {
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
-        Board board = mapper.boardPatchDtoToPost(boardPatchDto);
-        board.setBoardId(boardId);
-        Board updateBoard = boardService.updateBoard(board, memberDetails);
+        Board updateBoard = boardService.updateBoard(boardId, boardPatchDto, memberDetails);
 
         BoardDto.Response response = mapper.boardToBoardResponseDto(updateBoard);
 
