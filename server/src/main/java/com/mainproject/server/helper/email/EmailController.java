@@ -21,7 +21,7 @@ public class EmailController {
     @PostMapping
     public ResponseEntity sendEmailVerifyCode(@RequestBody EmailDto.Send requestBody) throws MessagingException{
 
-        memberService.validateDuplicateMember(requestBody.getEmail());
+        memberService.validateDuplicateEmail(requestBody.getEmail());
         emailService.sendEmail(requestBody.getEmail());
 
         return new ResponseEntity(HttpStatus.OK);
