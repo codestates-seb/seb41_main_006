@@ -1,26 +1,47 @@
+logging:
+  level:
+    root: info
+    com :
+      amazonaws :
+        util :
+          EC2MetadataUtils : error
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${email-username}
+    password: ${email-password}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   redis:
     port: 6379
     host: localhost
-#    password: ${redis-password}
+  #    password: ${redis-password}
   h2:
     console:
       path: /h2
       enabled: true
   datasource:
     url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-
-logging:
-  level:
-    org.hibernate.sql: debug
-#    org.hibernate.type: trace
+  sql:
+    init:
+      data-locations: classpath*:sql/init.sql
 
 cloud:
   aws:
