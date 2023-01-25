@@ -32,9 +32,6 @@ public class Member extends Auditable implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private int age;
-
     @Column(nullable = false, length = 1)
     private String gender;
 
