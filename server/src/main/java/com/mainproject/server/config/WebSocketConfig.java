@@ -24,7 +24,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
         log.error("WebSocket HandShake error!");
-        log.info("WebSocket Connect");
     }
 
     //메세지 브로커에 관한 설정
