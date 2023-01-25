@@ -41,14 +41,14 @@ const LoginContainer = styled.div`
   }
 `;
 
-const LoginModal = () => {
+const LoginModal = ({ setIsLogin }) => {
   return (
     <SLoginModal>
       <LoginContainer>
         <Title as="h1" size="large">
           로그인
         </Title>
-        <LoginForm />
+        <LoginForm setIsLogin={setIsLogin} />
         <Button size="medium" outline fullWidth>
           게스트로 이용하기
         </Button>

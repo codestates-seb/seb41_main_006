@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Button from '../common/Button';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { darken } from 'polished';
+import instance from '../../api/axiosConfig';
 
 const MyPageButton = styled.button`
   display: flex;
@@ -55,6 +56,22 @@ const HeaderMyPageBox = ({ setIsLogin }) => {
     navigate('/mypage');
     setIsOpen(false);
   };
+  const handleLogout = async () => {
+    const AccessToken = localStorage.getItem('AccessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    await instance
+      .post('/auth/logout', '', {
+        headers: {
+          Authorization: AccessToken,
+          Refresh: refreshToken,
+        },
+      })
+      .then((res) => {
+        alert(res.data);
+        localStorage.clear();
+        window.location.reload();
+      });
+  };
 
   return (
     <div ref={myPageRef}>
@@ -73,6 +90,7 @@ const HeaderMyPageBox = ({ setIsLogin }) => {
           onClick={() => {
             setIsLogin(false);
             setIsOpen(false);
+            handleLogout();
           }}
         >
           로그아웃

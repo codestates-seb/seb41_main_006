@@ -51,9 +51,12 @@ const ChatRoom = () => {
   const chatInputRef = useRef();
 
   const connect = () => {
+    const AccessToken = localStorage.getItem('AccessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     const client = new StompJs.Client({
-      brokerURL: 'ws://a799-125-133-209-20.jp.ngrok.io/ws',
-      connectHeaders: { 'ngrok-skip-browser-warning': 'skip' },
+      brokerURL:
+        'ws://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080/ws/websocket',
+      connectHeaders: { Authorization: AccessToken, Refresh: refreshToken },
       debug: function (str) {
         console.log(str);
       },
