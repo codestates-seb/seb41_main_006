@@ -16,7 +16,7 @@
     <springProfile name="server">
         <property resource="logback-server.properties"/>
         <!-- log file path -->
-        <property name="LOG_PATH" value="/home/ubuntu"/>
+        <property name="LOG_PATH" value="/home/ubuntu/logs"/>
         <!-- log file name -->
         <property name="LOG_FILE_NAME" value="server_log"/>
     </springProfile>
@@ -70,7 +70,7 @@
         </filter>
         <file>${LOG_PATH}/${ERR_LOG_FILE_NAME}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <!-- Rolling 정책 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
