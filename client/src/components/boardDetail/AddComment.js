@@ -6,6 +6,7 @@ import { CommentBtn } from '../Button';
 const CommentContainer = styled.form`
   width: 100%;
   position: relative;
+  margin-top: 10px;
 
   h3 {
     color: #401809;

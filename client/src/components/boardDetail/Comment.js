@@ -149,6 +149,11 @@ const Comment = ({ comment, recomments }) => {
     });
   };
 
+  // 댓글 삭제 모달 창 띄우기
+  const handelDelClick = (commentId) => {
+    dispatch(openModal({ type: 'delete', props: { commentId } }));
+  };
+
   return (
     <CommentBox>
       <div className="comment-left">
@@ -203,7 +208,9 @@ const Comment = ({ comment, recomments }) => {
                 수정
               </button>
             )}
-            <button className="edit-del">삭제</button>
+            <button className="del-btn" onClick={handelDelClick}>
+              삭제
+            </button>
           </div>
         </div>
       </div>

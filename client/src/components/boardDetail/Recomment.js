@@ -25,6 +25,26 @@ const RecommentBox = styled.div`
     }
   }
 
+  .recomment-detail-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 5px; //
+  }
+
+  .recomment-username {
+    font-size: 14px;
+    color: #000000;
+    font-weight: bold;
+    width: fit-content;
+  }
+
+  .recomment-sub-info {
+    color: #a79689; //
+    font-size: 12px;
+    padding-right: 3px;
+  }
+
   .recomment-username {
     font-size: 14px;
     color: #000000;
@@ -34,18 +54,17 @@ const RecommentBox = styled.div`
   .recomment-createAt,
   .recomment-like {
     font-size: 12px;
-    padding-right: 10px;
+    padding-right: 3px;
   }
 
   .recomment-createAt {
     color: #a79689;
+    padding-right: 6px;
   }
 
-  .recomment-like {
-    color: #ca7c62;
-  }
+  .recomment-like,
   .recomment-like-total {
-    padding-left: 3px;
+    color: #ca7c62;
   }
 
   .recomment-right {
@@ -90,19 +109,19 @@ const Recomment = ({ recomment }) => {
               size="40px"
             ></ProfileImage>
           </button>
-          <div>
+          <div className="recomment-detail-info">
             <button
               className="recomment-username"
               onClick={() => handleClickMember(recomment.memberId)}
             >
               {recomment.nickName}
             </button>
-            <div>
+            <div className="recomment-sub-info">
               <span className="recomment-createAt">2023.01.05 15:30</span>
               <span className="recomment-like">
-                <FaHeart />
-                <span className="recomment-like-total">{recomment.likes}</span>
+                <FaHeart /> <span>{recomment.commentLike}</span>
               </span>
+              <span className="recomment-like-total">{recomment.likes}</span>
             </div>
           </div>
         </div>
