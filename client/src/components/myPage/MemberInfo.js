@@ -48,6 +48,10 @@ const MemberInfo = () => {
     async () => await getMyInfo(memberId)
   );
 
+  const handleClickDeleteMember = () => {
+    setDeleteModal(!DeleteModal);
+  };
+
   if (isLoading) {
     return <div>loading...</div>;
   }
@@ -65,12 +69,7 @@ const MemberInfo = () => {
         >
           정보 수정
         </button>
-        <button
-          className="delete-account"
-          onClick={() => {
-            setDeleteModal(!DeleteModal);
-          }}
-        >
+        <button className="delete-account" onClick={handleClickDeleteMember}>
           회원 탈퇴
         </button>
       </UserInfoContainer>
