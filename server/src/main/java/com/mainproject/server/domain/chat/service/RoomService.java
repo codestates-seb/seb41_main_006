@@ -2,6 +2,7 @@ package com.mainproject.server.domain.chat.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.chat.entity.ChatRoom;
+import com.mainproject.server.domain.chat.redis.RedisSubscriber;
 import com.mainproject.server.domain.chat.repository.RoomRepository;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
@@ -16,12 +17,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,9 +34,9 @@ import java.util.Optional;
 public class RoomService {
     private final MemberService memberService;
     private final RoomRepository roomRepository;
-    @Resource(name = "chatRedisTemplate")
-    private HashOperations<String, Long, ChatRoom> opsHashChatRoom;
-    private static final String CHAT_ROOMS = "CHAT_ROOM";
+    private final Map<String, ChannelTopic> topics;
+    private final RedisMessageListenerContainer redisMessageListener;
+    private final RedisSubscriber redisSubscriber;
 
     public Long createRoom(long receiverId, MemberDetails memberDetails) {
         Member receiver = memberService.validateVerifyMember(receiverId);
@@ -58,11 +62,19 @@ public class RoomService {
         }
 
         ChatRoom saveChatRoom = roomRepository.save(chatRoom);
+        String roomId = "room" + saveChatRoom.getRoomId();
 
-        // 생성된 채팅방을 redis hash에 저장하여 서버에 공유한다.
-        opsHashChatRoom.put(CHAT_ROOMS, saveChatRoom.getRoomId(), saveChatRoom);
-        log.info("redis 서버에 채팅방 공유");
+        log.info("topics = {}", topics);
 
+        if(!topics.containsKey(roomId)) {
+            log.info("토픽 생성");
+
+            ChannelTopic topic = new ChannelTopic(roomId);
+            redisMessageListener.addMessageListener(redisSubscriber, topic);
+            topics.put(roomId, topic);
+
+            log.info("토픽 저장");
+        }
         return saveChatRoom.getRoomId();
     }
 

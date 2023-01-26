@@ -35,7 +35,6 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
-@RequestMapping("/chats")
 @RequiredArgsConstructor
 public class MessageController {
     private final JwtTokenizer jwtTokenizer;
@@ -44,7 +43,7 @@ public class MessageController {
     private final RedisPublisher redisPublisher;
     private final ChatMapper mapper;
 
-    @MessageMapping("/messages/{room-id}")
+    @MessageMapping("/chats/messages/{room-id}")
     public ResponseEntity message(@DestinationVariable long roomId, MessageDto messageDto,
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
 
@@ -65,7 +64,7 @@ public class MessageController {
     }
 
     // 채팅메세지 가져오기
-    @GetMapping("/messages/{room-id}")
+    @GetMapping("/chats/messages/{room-id}")
     public ResponseEntity getMessages(@Positive @PathVariable("room-id") long roomId,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
 
