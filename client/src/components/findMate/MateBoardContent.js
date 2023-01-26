@@ -26,7 +26,7 @@ const MateBoardConent = ({ placeCode }) => {
   const navigate = useNavigate();
 
   const { data, isLoading } = useQuery(
-    'boards',
+    ['boards', placeCode],
     async () => await getBoardList({ page: 1, size: 10, placeCode })
   );
 
@@ -37,8 +37,8 @@ const MateBoardConent = ({ placeCode }) => {
           <Title as="h3" size={'medium'}>
             산책 모임
           </Title>
-          <input type="date"></input>
-          <input type="time"></input>
+          {/* <input type="date"></input>
+          <input type="time"></input> */}
         </div>
         <Button color="main" onClick={() => navigate('/newmate')}>
           글 작성
