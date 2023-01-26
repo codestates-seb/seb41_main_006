@@ -29,7 +29,6 @@ const ChatItem = styled.li`
 const ChatList = () => {
   const navigate = useNavigate();
   const [chattingList, setChattingList] = useState([]);
-
   useEffect(() => {
     const AccessToken = localStorage.getItem('AccessToken');
     const GetChatList = async () => {
@@ -37,7 +36,6 @@ const ChatList = () => {
         .get('/chats', {
           headers: {
             Authorization: AccessToken,
-            'ngrok-skip-browser-warning': 'skip',
           },
         })
         .then((res) => {
