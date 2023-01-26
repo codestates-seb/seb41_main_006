@@ -44,7 +44,7 @@ public class RoomController {
     public ResponseEntity getOrCreateRoom(@Valid @RequestBody ChatDto.Post postDto,
                                           @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
-            log.info("인증되지 않은 회원의 접근");
+            log.info("인증되지 않은 회원으로 채팅방을 생성할 수 없음");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
@@ -72,7 +72,7 @@ public class RoomController {
     public ResponseEntity getChatRoom(@Positive @PathVariable("room-id") long roomId,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
-            log.info("인증되지 않은 회원의 접근");
+            log.info("인증되지 않은 회원으로 채팅방을 가져올 수 없음");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
         ChatRoom chatRoom = roomService.findRoom(roomId);
@@ -86,7 +86,7 @@ public class RoomController {
     public ResponseEntity getChatRooms(@AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            log.info("인증되지 않은 회원의 접근");
+            log.info("인증되지 않은 회원의 접근으로 채팅 목록을 가져올 수 없음");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 

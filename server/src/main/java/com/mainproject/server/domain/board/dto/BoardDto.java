@@ -98,4 +98,24 @@ public class BoardDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
+
+    @Getter
+    @Builder
+    public static class NoneMemberResponse{
+        private Long boardId;
+        private String title;
+        private String content;
+        private int countLike;
+        private LocalDateTime appointTime;
+        private String placeCode;
+        private String x;
+        private String y;
+        private PetDto.SimpleResponse pet;
+        private Board.BoardStatus boardStatus;
+
+        private List<CommentsDto.Response> comments;
+
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+    }
 }

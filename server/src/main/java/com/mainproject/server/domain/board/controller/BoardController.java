@@ -66,6 +66,23 @@ public class BoardController {
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
+    @GetMapping("/my-boards")
+    public ResponseEntity findMyBoard(@Positive @RequestParam(defaultValue = "1") int page,
+                                      @Positive @RequestParam(defaultValue = "10") int size,
+                                      @AuthenticationPrincipal MemberDetails memberDetails) {
+        if(memberDetails == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
+
+        Page<Board> boardPage = boardService.findMyBoards(page, size, memberDetails);
+        PageInfo pageInfo = new PageInfo(page, size, (int)boardPage.getTotalElements(), boardPage.getTotalPages());
+
+        List<Board> boardList = boardPage.getContent();
+        List<BoardDto.NoneMemberResponse> responses = mapper.boardsToNoneMemberResponseDtos(boardList);
+
+        return new ResponseEntity<>(new MultiResponseDto<>(responses, pageInfo), HttpStatus.OK);
+    }
+
     @GetMapping("/{board-id}")
     public ResponseEntity getBoard(@Positive @PathVariable("board-id") long boardId) {
 
