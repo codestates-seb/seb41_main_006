@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-// import { updateMyInfo } from '../../api/member/member';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
@@ -7,6 +6,8 @@ import SelectAge from '../SelectAge';
 import getAddressList from '../../api/kakaoMap/getAddressList';
 import Button from '../common/Button';
 import { authNickName } from '../../api/member/signup';
+// import { memberImageDelete } from '../../api/image';
+import memberInfoValidate from '../../utils/memberInfoValidate';
 import { IoLocationSharp } from 'react-icons/io5';
 import { HiXMark } from 'react-icons/hi2';
 
@@ -202,6 +203,10 @@ const AddressSearchBox = styled.div`
     padding-right: 2rem;
   }
 
+  > .selected {
+    border: 1.5px solid var(--main-font-color);
+  }
+
   > svg {
     cursor: pointer;
     position: absolute;
@@ -240,9 +245,10 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     setValueByName,
     setValues,
     errors,
+    setErrors,
     setErrorByName,
+    setIsLoading,
     handleChange,
-    handleSubmit,
   } = memberInfoForm;
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
@@ -299,7 +305,21 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
       // 미리보기 blob url
       const blobUrl = URL.createObjectURL(e.target.files[0]);
       setPreviewImgUrl(blobUrl);
+
+      // 이미지 이름 설정(이게 onChange 반응하게 해줌)
+      e.target.value = '';
     }
+  };
+
+  const handleClickDeleteImage = () => {
+    if (previewImgUrl) {
+      // URL Object 객체 메모리에서 삭제
+      URL.revokeObjectURL(previewImgUrl);
+      setPreviewImgUrl('');
+    }
+
+    // file 값도 null
+    setValueByName('profileImageFile', null);
   };
 
   // 검색어에 맞는 주소 결과(주소, 코드) 리스트 받아옴
@@ -331,15 +351,6 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     setAddressList([]);
   };
 
-  const handleClickDeleteImage = () => {
-    if (previewImgUrl) {
-      // URL Object 객체 메모리에서 삭제
-      URL.revokeObjectURL(previewImgUrl);
-      setPreviewImgUrl('');
-    }
-    // 실제 S3 에서 삭제해아함
-  };
-
   const handleNickNameVerify = async () => {
     if (!values.nickName) {
       // 닉네임을 입력하지 않았다면
@@ -368,18 +379,31 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   };
 
   const handleSubmitCheck = async (event) => {
-    // 만약 수정 화면인데 이전 값에서 변화가 없다면
-    if (isEditMode && memberInfo?.nickName === values.nickName) {
-      await handleSubmit(event);
-      return;
+    // 만약 닉네임 중복 확인이 완료되지 않았다면
+    if (!isNicknameVerified) {
+      // 지금이 수정 모드이면서 기존의 닉네임과 같다면 중복 확인 할 필요가 없다.
+      // 그 나머지 경우에만 중복 확인을 한다.
+      if (!(isEditMode && memberInfo?.nickName === values.nickName)) {
+        await setErrorByName('nickName', '중복 확인이 필요합니다');
+        return;
+      }
     }
 
-    // 만약 이
-    if (!isNicknameVerified) {
-      await setErrorByName('nickName', '중복 확인이 필요합니다');
-    } else {
-      await handleSubmit(event);
-    }
+    // 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
+    // if (
+    //   memberInfo?.profileImage &&
+    //   memberInfo?.profileImage?.upFileUrl !== previewImgUrl
+    // ) {
+    //   // 기존에 이미지가 존재하고
+    //   // 만약 기존의 이미지 URL과 화면에 띄워진 URL이 같지 않다면 (업로드할 파일이 변했다면)
+    //   // 수정모드일 때 기존에 파일에서 바꿨다면 previewUrl도 달라짐
+    //   // s3 이미지 지우기
+
+    // }
+
+    setIsLoading(true);
+    event.preventDefault();
+    setErrors(memberInfoValidate(values));
   };
 
   return (
@@ -469,6 +493,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
             onKeyUp={handleSearchAddressKeyUp}
             value={searchAddress}
             onChange={(e) => setSearchAddress(e.target.value)}
+            className={values.address && 'selected'}
           ></input>
           <HiXMark onClick={handleClickDeleteAddress} />
         </AddressSearchBox>
