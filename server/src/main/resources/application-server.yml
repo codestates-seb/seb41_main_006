@@ -59,3 +59,4 @@ cloud: #S3 업로드
 logging:
   level:
     org.hibernate.sql: debug
+    root: info
