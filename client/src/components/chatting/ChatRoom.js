@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ChattingArea from './ChattingArea';
@@ -47,10 +47,12 @@ const ChatInputBox = styled.div`
 `;
 
 const ChatRoom = () => {
+  const [message, setMessage] = useState('');
   const { chatId } = useParams();
   const chatInputRef = useRef();
   const client = useRef({});
   const AccessToken = localStorage.getItem('AccessToken');
+  const memberId = localStorage.getItem('memberId');
 
   const connect = () => {
     client.current = new StompJs.Client({
@@ -79,11 +81,36 @@ const ChatRoom = () => {
       (body) => {
         const json_body = JSON.parse(body.body);
         console.log(json_body);
+        console.log(body);
       },
       headers
     );
   };
+  const publish = (message) => {
+    const headers = { headers: AccessToken };
+    if (!client.current.connected) return; // 연결되지 않았으면 메시지를 보내지 않는다.
 
+    client.current.publish({
+      destination: `/pub/chats/messages/${chatId}`,
+      body: JSON.stringify({
+        roomId: chatId,
+        memberId: memberId,
+        content: message,
+      }),
+      headers, // 형식에 맞게 수정해서 보내야 함.
+    });
+    setMessage('');
+  };
+  const handleSubmit = (e, message) => {
+    // 보내기 버튼 눌렀을 때 publish
+    e.preventDefault();
+
+    publish(message);
+  };
+
+  const handleInput = (e) => {
+    setMessage(e.target.value);
+  };
   useEffect(() => {
     // 채팅방 입장 시 input에 바로 focus
     chatInputRef.current.focus();
@@ -93,7 +120,7 @@ const ChatRoom = () => {
     connect();
 
     return () => disconnect();
-  });
+  }, []);
 
   return (
     <ChatRoomBox>
@@ -106,8 +133,15 @@ const ChatRoom = () => {
           placeholder="hi"
           className="chat-input"
           type="text"
+          onChange={handleInput}
+          value={message}
         ></input>
-        <button className="chat-submit">전송</button>
+        <button
+          className="chat-submit"
+          onClick={(e) => handleSubmit(e, message)}
+        >
+          전송
+        </button>
       </ChatInputBox>
     </ChatRoomBox>
   );
