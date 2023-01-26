@@ -47,22 +47,27 @@ public class JwtLogoutFilter extends OncePerRequestFilter {
         // access token 유효성 검증은 앞의 verification filter에서 진행
         // 로그아웃 된 토큰 검사도 verification filter에서 진행
 
-        String accessToken = resolveAccessToken(request, response);
-        String refreshToken = resolveRefreshToken(request, response);
-        redisService.deleteRefreshToken(refreshToken);
-        // access token payload 뽑기
-        Jws<Claims> claims =
-                jwtTokenizer.getClaims(accessToken,
-                        jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey()));
-        long remainExpiration = calculateRemainExpiration(claims);
-        // access token 값을 키로 logout 문자열을 값으로 하는 데이터 레디스에 저장, 만료 시간 명시
-        redisService.setAccessTokenLogout(accessToken, remainExpiration);
+        try {
+            String accessToken = resolveAccessToken(request, response);
+            String refreshToken = resolveRefreshToken(request, response);
+            redisService.deleteRefreshToken(refreshToken);
+            // access token payload 뽑기
+            Jws<Claims> claims =
+                    jwtTokenizer.getClaims(accessToken,
+                            jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey()));
+            long remainExpiration = calculateRemainExpiration(claims);
+            // access token 값을 키로 logout 문자열을 값으로 하는 데이터 레디스에 저장, 만료 시간 명시
+            redisService.setAccessTokenLogout(accessToken, remainExpiration);
 
 
-        response.setStatus(HttpStatus.OK.value());
-        response.setCharacterEncoding("utf-8");
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write("로그아웃 성공");
+            response.setStatus(HttpStatus.OK.value());
+            response.setCharacterEncoding("utf-8");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.getWriter().write("로그아웃 성공");
+        } catch (Exception e) {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
     }
 
     // access token 뽑기
