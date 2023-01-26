@@ -47,7 +47,7 @@ const MemberInfoCard = ({ memberInfo }) => {
   return (
     <CardContainer>
       <ProfileImage
-        src={memberInfo.profileImage}
+        src={memberInfo?.profileImage?.upFileUrl}
         name={memberInfo.nickName}
         size="100px"
       />

@@ -1,5 +1,5 @@
 // import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import SignUp from '../components/signup/SignUp';
@@ -23,7 +23,7 @@ const SignUpContainer = styled(Container)`
 `;
 
 const SignUpPage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   // value 지정
   const email = useInput('');
   const password = useInput('');
@@ -55,6 +55,10 @@ const SignUpPage = () => {
           email: email.value,
           password: password.value,
         });
+
+        // 메인 페이지로!
+        navigate('/');
+        // 로그인 모달 같이 띄우면 좋을 것 같음
       } catch (err) {
         // 요청이 실패했는데 벌써 이미지가 업로드 된 상황이라면...
         if (imageInfo) {

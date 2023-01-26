@@ -44,7 +44,7 @@ const MemberInfo = () => {
 
   const { data: memberInfo, isLoading } = useQuery(
     // memberId가 변화할 때마다 fetch
-    ['myInfo', memberId],
+    ['myInfo'],
     async () => await getMyInfo(memberId)
   );
 

@@ -24,16 +24,19 @@ const ModalContainer = styled.div`
 `;
 
 const EditMemberModal = ({ setIsEditModalOpen, memberInfo }) => {
-  const handleModalClose = () => setIsEditModalOpen(false);
   const queryClient = useQueryClient();
 
   const updateMyInfoMutation = useMutation(updateMyInfo, {
     onSuccess: () => {
       // invalidates cache and refetcn
-      handleModalClose();
+      // 모달창 닫음
+      setIsEditModalOpen(false);
       queryClient.invalidateQueries('myInfo');
     },
   });
+  const handleModalClose = () => {
+    setIsEditModalOpen(false);
+  };
 
   const memberInfoForm = useForm({
     initialValues: {
