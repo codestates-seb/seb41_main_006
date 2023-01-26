@@ -8,12 +8,12 @@ import ProfileImage from '../common/ProfileImage';
 import Title from '../common/Title';
 import {
   convertAppointDate,
-  convertAppointTime,
+  // convertAppointTime,
 } from '../../utils/dateConvert';
 import { BoardCloseBox, BoardOpenBox } from '../BoardStatus';
 import { IoLocationSharp } from 'react-icons/io5';
-import { AiTwotoneCalendar } from 'react-icons/ai';
-import { FiClock } from 'react-icons/fi';
+import { TbCalendarTime } from 'react-icons/tb';
+// import { FiClock } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 
 const BoardCard = styled.div`
@@ -99,12 +99,8 @@ const MateBoardCard = ({ board }) => {
             <span>{board.meetingPlace}</span>
           </div>
           <div className="board-card--meet">
-            <AiTwotoneCalendar />
+            <TbCalendarTime />
             <span>{convertAppointDate(board.appointTime)}</span>
-          </div>
-          <div className="board-card--meet">
-            <FiClock />
-            <span>{convertAppointTime(board.appointTime)}</span>
           </div>
         </div>
       </Link>

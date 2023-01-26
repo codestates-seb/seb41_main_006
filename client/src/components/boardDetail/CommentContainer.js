@@ -6,6 +6,7 @@ const CommentContainer = ({ comments }) => {
   const getRecomments = (commentId) => {
     return comments.filter((el) => commentId === el.parentId);
   };
+
   return (
     <div>
       <h3>댓글 {rootComments.length}개</h3>

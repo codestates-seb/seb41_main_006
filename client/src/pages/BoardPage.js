@@ -148,10 +148,8 @@ const BoardPage = () => {
   const [dateInfo, setDateInfo] = useState();
   const [locInfo, setLocInfo] = useState([]);
 
+  // 글 등록하기
   const handleSubmit = () => {
-    console.log(title, content, dateInfo);
-    console.log(locInfo);
-
     boardCreate({
       title: title,
       content: content,
@@ -164,6 +162,7 @@ const BoardPage = () => {
   };
   console.log(dateInfo, locInfo);
   console.log(petId);
+
 
   return (
     <ContainerBox>
