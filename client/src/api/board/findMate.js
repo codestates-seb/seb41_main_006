@@ -32,7 +32,7 @@ const API_CONNECT_TIMEOUT = 2000;
 // 글 생성
 export const boardCreate = async (body) => {
   const { AccessToken } = getLoginInfo();
-  console.log(body);
+
   try {
     let result = await axios.post(FINDMATE_ENDPOINT, body, {
       headers: {
@@ -51,14 +51,14 @@ export const boardCreate = async (body) => {
 
 // 글 수정
 export const boardPatch = async (boardId, body) => {
-  // const { AccessToken } = getLoginInfo();
+  const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
 
   try {
     let result = await axios.patch(path, body, {
       headers: {
         'Content-Type': 'application/json',
-        //Authorization: AccessToken,
+        Authorization: AccessToken,
       },
       timeout: API_CONNECT_TIMEOUT,
     });
@@ -88,3 +88,24 @@ export const boardDelete = async (boardId) => {
     return { state: 'error ' };
   }
 };
+
+/*
+export const boardGet = async (boardId) => {
+  const { AccessToken } = getLoginInfo();
+  const path = `${FINDMATE_ENDPOINT}/${boardId}`;
+
+  try {
+    let result = await axios.get(path, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: AccessToken,
+      },
+      timeout: API_CONNECT_TIMEOUT,
+    });
+    return { state: 'OK', msg: result.data };
+  } catch (err) {
+    console.error('Error: ', err);
+    return { state: 'error ' };
+  }
+};
+*/

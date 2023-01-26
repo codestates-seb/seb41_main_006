@@ -72,14 +72,14 @@ export const commentDelete = async (commentId) => {
 
 // 대댓글 생성
 export const recommentCreate = async (boardId, body) => {
-  // const { token } = getLoginInfo();
+  const { AccessToken } = getLoginInfo();
   const path = `${COMMENT_ENDPOINT}/${boardId}`;
 
   try {
     let result = await axios.post(path, body, {
       headers: {
         'Content-Type': 'application/json',
-        //Authorization: token,
+        Authorization: AccessToken,
       },
       timeout: API_CONNECT_TIMEOUT,
     });

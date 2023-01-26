@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getBoardById } from '../api/board/board';
+// import { getBoardById } from '../api/board/board';
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -12,9 +12,8 @@ import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
-import { boardDelete } from '../api/board/findMate';
-// import useFetch from '../hooks/useFetch';
-// import { FINDMATE_ENDPOINT } from '../api/board/findMate';
+import { FINDMATE_ENDPOINT, boardDelete } from '../api/board/findMate';
+import useFetch from '../hooks/useFetch';
 
 const ContainerBox = styled(Container)`
   padding: 20px;
@@ -139,17 +138,17 @@ const BoardDetailPage = () => {
   const [like, setLike] = useState(false);
 
   const { boardId } = useParams();
-  // const data = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
+  const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
-  // let boardList;
+  let board;
+  if (data) {
+    board = data.data;
+    console.log(data.data);
+  }
 
-  // if (data) {
-  //   boardList = data.response;
-  // }
-
-  const [board, setBoard] = useState({
-    comments: [],
-  });
+  //const [board, setBoard] = useState({
+  //  comments: [],
+  //});
 
   const dispatch = useDispatch();
 
@@ -193,11 +192,15 @@ const BoardDetailPage = () => {
     }
   });
 
-  useEffect(() => {
-    getBoardById(Number(boardId)).then((data) => {
-      setBoard(data);
-    });
-  }, [boardId]);
+  //useEffect(() => {
+  //  getBoardById(Number(boardId)).then((data) => {
+  //    setBoard(data);
+  //  });
+  //}, [boardId]);
+
+  /*useEffect(() => {
+    boardGet(boardId);
+  });*/
 
   // const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
@@ -208,75 +211,75 @@ const BoardDetailPage = () => {
 
   return (
     <ContainerBox>
-      {/* {error && <div>글 조회 실패</div>}
+      {error && <div>글 조회 실패</div>}
       {isLoading ? (
         <div>로딩중</div>
       ) : (
-        <> */}
-      <HeaderContainer>
-        <div className="post-title">
-          <div className="title">{board.title}</div>
-          {board.boardStatus === 'BOARD_OPEN' ? (
-            <BoardOpenBox>모집중</BoardOpenBox>
-          ) : (
-            <BoardCloseBox>모집완료</BoardCloseBox>
-          )}
-        </div>
-        <div className="post-info">
-          <div className="post-createAt">
-            {convertCreatedAt(board.createdAt)}
-          </div>
-          <div className="post-like">
-            <FaHeart />
-            <span>{board.countLike}</span>
-          </div>
-          <div className="post-btn">
-            <button
-              className="post-edit"
-              onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
-            >
-              수정
-            </button>
-            <button className="post-del" onClick={handelConfirmClick}>
-              삭제
-            </button>
-            <button className="post-like-btn">
-              {like ? (
-                <FaHeart onClick={handleLikeClick} />
+        <>
+          <HeaderContainer>
+            <div className="post-title">
+              <div className="title">{board.title}</div>
+              {board.boardStatus === 'BOARD_OPEN' ? (
+                <BoardOpenBox>모집중</BoardOpenBox>
               ) : (
-                <FaRegHeart onClick={handleLikeClick} />
+                <BoardCloseBox>모집완료</BoardCloseBox>
               )}
-            </button>
-          </div>
-        </div>
-      </HeaderContainer>
-      <MainContainer>
-        <div className="left-box">
-          <div className="post-content">{board.content}</div>
-          <CommentContainer comments={board.comments} />
-        </div>
-        <div className="right-box">
-          <MemberInfoCard memberInfo={board.member} />
-          <button
-            className="user-info-btn"
-            onClick={() => handleClickMember(board.member.memberId)}
-          >
-            {'> 상세 정보'}
-          </button>
-          <div className="post-meet-info">
-            <BoardMeetInfo
-              meetInfo={{
-                appointTime: board.appointTime,
-                meetingPlace: board.meetingPlace,
-                x: board.x,
-                y: board.y,
-              }}
-            />
-          </div>
-        </div>
-      </MainContainer>
-      {/* </>
-      )} */}
+            </div>
+            <div className="post-info">
+              <div className="post-createAt">
+                {convertCreatedAt(board.createdAt)}
+              </div>
+              <div className="post-like">
+                <FaHeart />
+                <span>{board.countLike}</span>
+              </div>
+              <div className="post-btn">
+                <button
+                  className="post-edit"
+                  onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
+                >
+                  수정
+                </button>
+                <button className="post-del" onClick={handelConfirmClick}>
+                  삭제
+                </button>
+                <button className="post-like-btn">
+                  {like ? (
+                    <FaHeart onClick={handleLikeClick} />
+                  ) : (
+                    <FaRegHeart onClick={handleLikeClick} />
+                  )}
+                </button>
+              </div>
+            </div>
+          </HeaderContainer>
+          <MainContainer>
+            <div className="left-box">
+              <div className="post-content">{board.content}</div>
+              <CommentContainer comments={board.comments} />
+            </div>
+            <div className="right-box">
+              <MemberInfoCard memberInfo={board.member} />
+              <button
+                className="user-info-btn"
+                onClick={() => handleClickMember(board.member.memberId)}
+              >
+                {'> 상세 정보'}
+              </button>
+              <div className="post-meet-info">
+                <BoardMeetInfo
+                  meetInfo={{
+                    appointTime: board.appointTime,
+                    meetingPlace: board.meetingPlace,
+                    x: board.x,
+                    y: board.y,
+                  }}
+                />
+              </div>
+            </div>
+          </MainContainer>
+        </>
+      )}
     </ContainerBox>
   );
 };
