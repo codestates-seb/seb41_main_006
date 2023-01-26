@@ -6,7 +6,7 @@ import RecommentList from './RecommentList';
 import { convertCreatedAt } from '../../utils/dateConvert';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
-import { commentPatch } from '../../api/board/comment';
+import { commentPatch, commentDelete } from '../../api/board/comment';
 
 const CommentBox = styled.div`
   height: 100%;
@@ -142,7 +142,7 @@ const Comment = ({ comment, recomments }) => {
   const handleSubmitClick = async (idx) => {
     setIsEditOpen(!isEditOpen);
 
-    await commentPatch({
+    await commentPatch(idx, {
       commentsId: idx,
       content: commentContent,
     });
@@ -151,7 +151,9 @@ const Comment = ({ comment, recomments }) => {
   // 댓글 삭제 확인 모달 창 띄우기
   const handelConfirmClick = (idx) => {
     console.log('댓글 삭제 확인 버튼');
-    dispatch(openModal({ type: 'delete', props: { idx, commentDelete } }));
+    dispatch(
+      openModal({ type: 'delete', props: { idx, handleCommentDelete } })
+    );
   };
 
   // const handelDelClick = () => {
@@ -165,8 +167,9 @@ const Comment = ({ comment, recomments }) => {
   // };
 
   // 댓글 삭제
-  const commentDelete = (idx) => {
+  const handleCommentDelete = (idx) => {
     commentDelete(idx);
+    console.log('댓글 삭제 성공');
   };
 
   return (

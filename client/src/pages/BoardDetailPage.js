@@ -190,8 +190,20 @@ const BoardDetailPage = () => {
     });
   }, [boardId]);
 
+  // const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
+
+  // let board;
+  // if (data) {
+  //   board = data.response;
+  // }
+
   return (
     <ContainerBox>
+      {/* {error && <div>글 조회 실패</div>}
+      {isLoading ? (
+        <div>로딩중</div>
+      ) : (
+        <> */}
       <HeaderContainer>
         <div className="post-title">
           <div className="title">{board.title}</div>
@@ -252,6 +264,8 @@ const BoardDetailPage = () => {
           </div>
         </div>
       </MainContainer>
+      {/* </>
+      )} */}
     </ContainerBox>
   );
 };

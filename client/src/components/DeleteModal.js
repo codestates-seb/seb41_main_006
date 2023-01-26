@@ -58,7 +58,7 @@ const ModalInner = styled.div`
   }
 `;
 
-const DeleteModal = ({ idx, commentDelete }) => {
+const DeleteModal = ({ idx, handleCommentDelete }) => {
   console.log(idx);
 
   // const navigate = useNavigate();
@@ -74,7 +74,7 @@ const DeleteModal = ({ idx, commentDelete }) => {
 
   const handelDelClick = () => {
     if (idx !== undefined) {
-      commentDelete(idx);
+      handleCommentDelete(idx);
     }
     dispatch(closeModal({ type: 'delete' }));
     //boardDelete(boardId);
