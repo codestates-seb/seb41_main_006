@@ -69,6 +69,7 @@ const HeaderMyPageBox = ({ setIsLogin }) => {
       .then((res) => {
         alert(res.data);
         localStorage.clear();
+        navigate('/');
         window.location.reload();
       });
   };
