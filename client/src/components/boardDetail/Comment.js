@@ -156,16 +156,6 @@ const Comment = ({ comment, recomments }) => {
     );
   };
 
-  // const handelDelClick = () => {
-  //   //dispatch(openModal({ type: 'delete' }));
-  //   console.log('댓글 삭제');
-  // };
-
-  // const handleCancelClick = () => {
-  //   console.log('댓글 삭제 취소');
-  //   dispatch(closeModal({ type: 'delete' }));
-  // };
-
   // 댓글 삭제
   const handleCommentDelete = (idx) => {
     commentDelete(idx);

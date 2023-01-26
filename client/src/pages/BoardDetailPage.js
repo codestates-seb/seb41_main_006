@@ -12,6 +12,7 @@ import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
+import { boardDelete } from '../api/board/findMate';
 // import useFetch from '../hooks/useFetch';
 // import { FINDMATE_ENDPOINT } from '../api/board/findMate';
 
@@ -156,8 +157,16 @@ const BoardDetailPage = () => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
 
-  const handelDelClick = () => {
-    dispatch(openModal({ type: 'delete', props: { boardId } }));
+  // 글 삭제 확인 모달 창 띄우기
+  const handelConfirmClick = () => {
+    dispatch(
+      openModal({ type: 'delete', props: { boardId, handleBoardDelete } })
+    );
+  };
+
+  // 글 삭제
+  const handleBoardDelete = (boardId) => {
+    boardDelete(boardId);
   };
 
   // 좋아요 누르기
@@ -228,7 +237,7 @@ const BoardDetailPage = () => {
             >
               수정
             </button>
-            <button className="post-del" onClick={handelDelClick}>
+            <button className="post-del" onClick={handelConfirmClick}>
               삭제
             </button>
             <button className="post-like-btn">

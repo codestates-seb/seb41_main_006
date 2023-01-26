@@ -70,14 +70,14 @@ export const boardPatch = async (boardId, body) => {
 
 // 글 삭제
 export const boardDelete = async (boardId) => {
-  // const { AccessToken } = getLoginInfo();
+  const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
 
   try {
     let result = await axios.delete(path, {
       headers: {
         'Content-Type': 'application/json',
-        //Authorization: AccessToken,
+        Authorization: AccessToken,
       },
       timeout: API_CONNECT_TIMEOUT,
     });
