@@ -163,7 +163,7 @@ const MapContainer = ({
               locale={ko}
               selected={
                 location.pathname === '/newmate'
-                  ? new Date()
+                  ? meetingDate
                   : new Date(dummyBoards.data[0].appointTime)
               }
               onChange={(date) => setMeetingDate(date)}
