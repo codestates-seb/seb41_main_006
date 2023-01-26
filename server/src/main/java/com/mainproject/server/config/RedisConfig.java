@@ -59,15 +59,4 @@ public class RedisConfig {
         container.addMessageListener(listenerAdapter, channelTopic);
         return container;
     }
-
-    // 단일 topic 사용을 위해 bean 설정
-    @Bean
-    public ChannelTopic channelTopic() {
-        return new ChannelTopic("chatroom");
-    }
-    // 실제 메세지를 처리하는 subscriber 설정 추가
-    @Bean
-    public MessageListenerAdapter listenerAdapter(RedisSubscriber redisSubscriber) {
-        return new MessageListenerAdapter(redisSubscriber, "sendMessage");
-    }
 }
