@@ -56,6 +56,7 @@ public class MemberService {
 
         if (profileImageId.isPresent()) {
             S3UpFile s3UpFile = s3UpFileService.validateVerifyFile(profileImageId.get());
+            log.info("s3로부터 불러온 이미지 = {}", s3UpFile);
             updatedMember.setS3UpFile(s3UpFile);
         } else {
             updatedMember.setS3UpFile(null);

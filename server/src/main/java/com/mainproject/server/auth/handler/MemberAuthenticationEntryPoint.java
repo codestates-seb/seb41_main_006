@@ -23,6 +23,10 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         log.warn("Unauthorized error happend: {}", (exception != null ? exception.getMessage() : authException.getMessage()));
 
-        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        if(exception != null) {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, exception.getMessage());
+        } else {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, authException.getMessage());
+        }
     }
 }

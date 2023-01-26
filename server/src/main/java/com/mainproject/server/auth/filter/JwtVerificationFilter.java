@@ -64,7 +64,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         String jws = request.getHeader(JwtTokenizer.ACCESS_TOKEN_HEADER).replace(JwtTokenizer.TOKEN_PREFIX, "");
 
         if (StringUtils.hasText(redisService.getAccessToken(jws))) {
-            throw new UnsupportedJwtException("사용할 수 없는 토큰");
+            throw new UnsupportedJwtException("로그아웃 된 토큰");
         }
         // secret key로 지정한 문자열 base64로 인코딩
         String base64EncodedSecretKey = jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey());
