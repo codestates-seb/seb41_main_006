@@ -1,9 +1,11 @@
-import styled from 'styled-components';
+import { useQuery } from 'react-query';
 import { useState } from 'react';
+import styled from 'styled-components';
 import Title from '../common/Title';
 import EditMemberModal from './Modal/EditMemberModal';
 import MemberInfoCard from './MemberInfoCard';
 import WithdrawalModal from '../WithdrawalModal';
+import { getMyInfo } from '../../api/member/member';
 
 const UserInfoContainer = styled.div`
   display: flex;
@@ -35,15 +37,30 @@ const UserInfoContainer = styled.div`
   }
 `;
 
-const MemberInfo = ({ member }) => {
+const MemberInfo = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [DeleteModal, setDeleteModal] = useState(false);
+  const memberId = localStorage.getItem('memberId');
+
+  const { data: memberInfo, isLoading } = useQuery(
+    // memberId가 변화할 때마다 fetch
+    ['myInfo', memberId],
+    async () => await getMyInfo(memberId)
+  );
+
+  const handleClickDeleteMember = () => {
+    setDeleteModal(!DeleteModal);
+  };
+
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
 
   return (
     <>
       <UserInfoContainer>
         <Title as="h2">나의 정보</Title>
-        <MemberInfoCard memberInfo={member} />
+        <MemberInfoCard memberInfo={memberInfo} />
         <button
           className="edit-account"
           onClick={() => {
@@ -52,19 +69,14 @@ const MemberInfo = ({ member }) => {
         >
           정보 수정
         </button>
-        <button
-          className="delete-account"
-          onClick={() => {
-            setDeleteModal(!DeleteModal);
-          }}
-        >
+        <button className="delete-account" onClick={handleClickDeleteMember}>
           회원 탈퇴
         </button>
       </UserInfoContainer>
       {isEditModalOpen ? (
         <EditMemberModal
           setIsEditModalOpen={setIsEditModalOpen}
-          memberInfo={member}
+          memberInfo={memberInfo}
         />
       ) : (
         ''

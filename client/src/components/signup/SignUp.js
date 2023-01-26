@@ -65,7 +65,7 @@ const SignUpBox = styled.div`
 
     > .email-verified-msg {
       font-size: 0.75rem;
-      color: var(--main-color);
+      color: var(--success-color);
       padding-left: 0.675rem;
     }
   }
@@ -128,7 +128,10 @@ const SignUp = ({ email, password, confirmPassword }) => {
       try {
         await authEmail(email.value);
         email.setError('');
-      } catch {
+      } catch (err) {
+        if (err.status === 409) {
+          email.setError('이미 가입된 이메일 입니다.');
+        }
         setIsEmailAuthModalOpen(false);
       }
       setIsEmailLoading(false);
