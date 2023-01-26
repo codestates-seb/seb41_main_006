@@ -1,22 +1,29 @@
-import defalutRequest from './defaultRequest';
+import authRequest from './authRequest';
 
 // 멤버 이미지 업로드 /s3/member
 export const memberImageUpload = async (file) => {
   const formData = new FormData();
   formData.append('images', file);
-  let entries = formData.entries();
-  for (const pair of entries) {
-    console.log(pair[0] + ', ' + pair[1]);
+
+  try {
+    const res = await authRequest.post('/s3/member', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
-  return defalutRequest.post('/s3/member', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
 };
 
-export const memberImageDelete = (fileUrl) => {
-  return defalutRequest.delete('/s3/member', {
-    params: { upFileUrl: fileUrl },
-  });
+export const memberImageDelete = async (fileUrl) => {
+  try {
+    await authRequest.delete('/s3/member', {
+      params: { upFileUrl: fileUrl },
+    });
+  } catch (err) {
+    console.log(err?.response);
+  }
 };

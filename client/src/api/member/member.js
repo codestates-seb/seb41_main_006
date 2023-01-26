@@ -52,7 +52,7 @@ export const getMyInfo = async (memberId) => {
 
 // PATCH /members/${memberId}/my-page
 export const updateMyInfo = async ({ memberId, data }) => {
-  console.log(memberId, data);
+  console.log(`멤버 아이디 ${memberId} 회원 데이터 수정 body`, data);
   try {
     await authRequest.patch(`/members/${memberId}/my-page`, data);
   } catch (err) {
