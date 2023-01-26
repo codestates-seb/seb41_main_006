@@ -45,11 +45,10 @@ public class MessageController {
     @MessageMapping("/messages/{room-id}")
     public ResponseEntity message(@DestinationVariable("room-id") long roomId,
                                   MessageDto messageDto,
-                                  @AuthenticationPrincipal MemberDetails memberDetails,
-                                  @Header("Authorization") String token) {
+                                  @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        if(!jwtTokenizer.validateToken(token)|| memberDetails == null) {
-            log.error("토큰 유효기간 만료 or 인증되지 않은 회원의 접근");
+        if(memberDetails == null) {
+            log.error("인증되지 않은 회원의 접근으로 메세지를 전송할 수 없음");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
@@ -68,6 +67,12 @@ public class MessageController {
     @GetMapping("/messages/{room-id}")
     public ResponseEntity getMessages(@Positive @PathVariable("room-id") long roomId,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
+
+        if(memberDetails == null) {
+            log.error("인증되지 않은 회원의 접근으로 메세지를 가져올 수 없음");
+            return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
+
         // 해당 채팅방의 메세지를 가져와야 함
         Page<ChatMessage> messages = chatService.findMessages(roomId);
         PageInfo pageInfo = new PageInfo(1, 10, (int)messages.getTotalElements(), messages.getTotalPages());

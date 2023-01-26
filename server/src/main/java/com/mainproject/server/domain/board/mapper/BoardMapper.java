@@ -119,4 +119,8 @@ public interface BoardMapper {
 
     BoardLike boardLikeDtoToBoardLike(BoardLikeDto boardLikeDto);
 
+    BoardDto.NoneMemberResponse boardToNoneMemberResponseDto(Board board);
+
+    List<BoardDto.NoneMemberResponse> boardsToNoneMemberResponseDtos(List<Board> boards);
+
 }

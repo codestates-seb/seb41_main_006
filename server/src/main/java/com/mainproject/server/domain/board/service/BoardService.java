@@ -84,6 +84,15 @@ public class BoardService {
         return boardRepository.findByPlaceCodeContaining(pageable, keyword);
     }
 
+    public Page<Board> findMyBoards(int page, int size, MemberDetails memberDetails) {
+        Pageable pageable = PageRequest.of(page-1, size, Sort.by("boardId").descending());
+        Member member = memberService.validateVerifyMember(memberDetails.getMemberId());
+
+        Page<Board> boardPage = boardRepository.findByMember(pageable, member);
+
+        return boardPage;
+    }
+
     public void deleteBoard(Long boardId, MemberDetails memberDetails) {
         Board findBoard = findVerifiedBoard(boardId);
 

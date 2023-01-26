@@ -86,7 +86,7 @@ public class RoomController {
     public ResponseEntity getChatRooms(@AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            log.info("인증되지 않은 회원의 접근");
+            log.info("인증되지 않은 회원의 접근으로 채팅 목록을 가져올 수 없음");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
