@@ -1,7 +1,7 @@
 package com.mainproject.server.domain.chat.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mainproject.server.domain.chat.entity.RedisChat;
+import com.mainproject.server.domain.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -18,9 +18,9 @@ public class RedisSubscriber{
     public void sendMessage(String publishMessage) {
         try{
             // 레디스를 통해 들어온 메세지를 chatMessage로 변환
-            RedisChat chatMessage = objectMapper.readValue(publishMessage, RedisChat.class);
+            ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
             // 채팅방을 구독하고 있는 회원에게 해당 메세지를 뿌림
-            messagingTemplate.convertAndSend("/sub/chats/" + chatMessage.getRoomId(), chatMessage);
+            messagingTemplate.convertAndSend("/sub/chats/" + chatMessage.getChatRoom().getRoomId(), chatMessage);
             log.info("redis publish messages");
         } catch (Exception e) {
             log.error("Exception in redis Subscriber:{}", e);

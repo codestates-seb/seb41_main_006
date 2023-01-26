@@ -43,8 +43,7 @@ public class MessageController {
     private final ChatMapper mapper;
 
     @MessageMapping("/messages/{room-id}")
-    public ResponseEntity message(@DestinationVariable("room-id") long roomId,
-                                  MessageDto messageDto,
+    public ResponseEntity message(@DestinationVariable long roomId, MessageDto messageDto,
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
