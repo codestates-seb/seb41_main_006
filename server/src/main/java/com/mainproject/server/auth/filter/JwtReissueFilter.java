@@ -4,11 +4,13 @@ import com.mainproject.server.auth.JwtTokenizer;
 import com.mainproject.server.auth.service.RedisService;
 import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.auth.userdetails.MemberDetailsService;
+import com.mainproject.server.auth.utils.ErrorResponder;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -39,7 +41,7 @@ public class JwtReissueFilter extends OncePerRequestFilter {
 
         // reissue 경로가 아닌 경우 혹은 refresh 값이 빈 문자열이거나 null인 경우
         return !request.getMethod().equals("POST")
-                || !path.equals("/reissue")
+                || !path.equals("/auth/reissue")
                 || !StringUtils.hasText(refreshToken);
     }
 
@@ -49,7 +51,7 @@ public class JwtReissueFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String refreshToken = request.getHeader(JwtTokenizer.REFRESH_TOKEN_HEADER);
-
+        log.info("refreshToken={}", refreshToken);
         try {
             //refresh token 유효성 검증
             jwtTokenizer.getClaims(refreshToken,
@@ -65,13 +67,9 @@ public class JwtReissueFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write("재발급 성공");
 
-        }  catch (SignatureException | ExpiredJwtException jwtException) {
-            request.setAttribute("exception", jwtException);
-        } catch (Exception e) {
-            request.setAttribute("exception", e);
+        }  catch (Exception exception) {
+            ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, exception.getMessage());
         }
-
-//        filterChain.doFilter(request, response);
     }
 
     /*access 토큰 생성*/
