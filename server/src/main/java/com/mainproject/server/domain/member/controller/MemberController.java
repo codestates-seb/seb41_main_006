@@ -57,6 +57,7 @@ public class MemberController {
     @PatchMapping("/{member-id}/my-page")
     public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch requestBody,
                                       @Positive @PathVariable("member-id") long memberId) {
+        log.info("마이페이지 회원 정보 수정, requestBody = {}", requestBody);
         Long profileImageId = requestBody.getProfileImageId();
 
         Member updateMypageInfo =

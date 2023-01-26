@@ -7,6 +7,7 @@ import com.mainproject.server.domain.chat.dto.MessageDto;
 import com.mainproject.server.domain.chat.entity.ChatMessage;
 import com.mainproject.server.domain.chat.entity.ChatRoom;
 import com.mainproject.server.domain.chat.mapper.ChatMapper;
+import com.mainproject.server.domain.chat.redis.RedisPublisher;
 import com.mainproject.server.domain.chat.service.ChatService;
 import com.mainproject.server.domain.chat.service.RoomService;
 import com.mainproject.server.dto.MultiResponseDto;
@@ -26,6 +27,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -38,8 +40,8 @@ import java.util.List;
 public class MessageController {
     private final JwtTokenizer jwtTokenizer;
     private final ChatService chatService;
-    private final ChannelTopic topic;
-    private final RedisTemplate redisTemplate;
+
+    private final RedisPublisher redisPublisher;
     private final ChatMapper mapper;
 
     @MessageMapping("/messages/{room-id}")
@@ -54,7 +56,7 @@ public class MessageController {
         ChatMessage chatMessage = chatService.createMessage(messageDto, roomId);
         log.info("메세지 생성 완료");
         // 채팅방에 메세지 전송
-        redisTemplate.convertAndSend(topic.getTopic(), chatMessage);
+        redisPublisher.publish(ChannelTopic.of("room" + roomId), chatMessage);
         log.info("레디스 서버에 메세지 전송 완료");
         // 전송 후 레포지토리에 저장할 것인지, 저장을 하지 않고 레디스 큐에 쌓인 데이터를 따로 일정 기간 주기마다 저장을 할 것인지
         chatService.saveMessage(chatMessage);
