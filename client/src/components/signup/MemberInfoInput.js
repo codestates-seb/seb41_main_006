@@ -259,7 +259,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
   const imgRef = useRef();
 
   useEffect(() => {
-    const setMemberInfo = async () => {
+    const setMemberInfo = () => {
       // values를 기존의 정보로 초기화
       setValues({
         ...values,
@@ -390,14 +390,17 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     }
 
     // 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
-    // if (
-    //   memberInfo?.profileImage &&
-    //   memberInfo?.profileImage?.upFileUrl !== previewImgUrl
-    // ) {
-    //   // 기존에 이미지가 존재하고
-    //   // 만약 기존의 이미지 URL과 화면에 띄워진 URL이 같지 않다면 (업로드할 파일이 변했다면)
-    //   // 수정모드일 때 기존에 파일에서 바꿨다면 previewUrl도 달라짐
-    //   // s3 이미지 지우기
+    if (
+      memberInfo?.profileImage &&
+      memberInfo?.profileImage?.upFileUrl !== previewImgUrl
+    ) {
+      // console.log('hi');
+      // await memberImageDelete(upFileUrl);
+    }
+    // 기존에 이미지가 존재하고
+    // 만약 기존의 이미지 URL과 화면에 띄워진 URL이 같지 않다면 (업로드할 파일이 변했다면)
+    // 수정모드일 때 기존에 파일에서 바꿨다면 previewUrl도 달라짐
+    // s3 이미지 지우기
 
     // }
 

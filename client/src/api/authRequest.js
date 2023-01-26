@@ -2,7 +2,7 @@ import defaultRequest from './defaultRequest';
 
 const authRequest = defaultRequest.create({
   headers: {
-    Authorization: `Bearer ${localStorage.getItem('AccessToken')}`,
+    Authorization: `${localStorage.getItem('AccessToken')}`,
   },
 });
 
