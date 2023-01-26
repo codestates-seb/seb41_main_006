@@ -62,6 +62,7 @@ export const commentDelete = async (commentId) => {
       },
       timeout: API_CONNECT_TIMEOUT,
     });
+    console.log(result);
     return { state: 'OK', msg: result.data };
   } catch (err) {
     console.error('Error: ', err);

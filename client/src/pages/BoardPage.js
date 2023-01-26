@@ -163,7 +163,6 @@ const BoardPage = () => {
   console.log(dateInfo, locInfo);
   console.log(petId);
 
-
   return (
     <ContainerBox>
       <HeaderContainer>

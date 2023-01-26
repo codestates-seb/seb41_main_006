@@ -17,10 +17,7 @@ function App() {
       <GlobalStyle />
       <Header></Header>
       <Routes>
-        <Route
-          path="/mate/boards/:boardId"
-          element={<BoardDetailPage />}
-        ></Route>
+        <Route path="/boards/:boardId" element={<BoardDetailPage />}></Route>
         <Route path="/newmate" element={<BoardPage />}></Route>
         <Route
           path="/mate/boards/:boardId/edit"

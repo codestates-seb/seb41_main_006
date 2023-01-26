@@ -259,6 +259,8 @@ const BoardDetailPage = () => {
               meetInfo={{
                 appointTime: board.appointTime,
                 meetingPlace: board.meetingPlace,
+                x: board.x,
+                y: board.y,
               }}
             />
           </div>
