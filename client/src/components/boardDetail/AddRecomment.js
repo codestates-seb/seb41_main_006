@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { commentCreate } from '../../api/board/comment';
+import { recommentCreate } from '../../api/board/comment';
 import { CommentBtn } from '../Button';
 import { getLoginInfo } from '../../api/loginInfo';
 
@@ -39,29 +39,29 @@ const CommentContainer = styled.form`
   }
 `;
 
-const AddComment = () => {
+const AddRecomment = () => {
   const { boardId } = useParams();
 
   const loginMemberId = getLoginInfo().memberId;
 
-  const handleCommentSubmit = async (e) => {
+  const handleRecommentSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
-    await commentCreate({
+    await recommentCreate({
       memberId: loginMemberId,
       boardId: boardId,
-      content: form.comment_text.value,
+      content: form.recomment_text.value,
     });
 
-    form.comment_text.value = '';
+    form.recomment_text.value = '';
   };
 
   return (
-    <CommentContainer onSubmit={handleCommentSubmit}>
+    <CommentContainer onSubmit={handleRecommentSubmit}>
       <textarea
-        placeholder="댓글을 작성하세요"
-        name="comment_text"
+        placeholder="답글을 작성하세요"
+        name="recomment_text"
         required
       ></textarea>
       <CommentBtn>작성</CommentBtn>
@@ -69,4 +69,4 @@ const AddComment = () => {
   );
 };
 
-export default AddComment;
+export default AddRecomment;

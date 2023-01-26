@@ -29,14 +29,14 @@ const API_CONNECT_TIMEOUT = 2000;
 // };
 
 // 글 생성
-export const boardCreate = async (boardId, body) => {
+export const boardCreate = async (body) => {
   // const { token } = getLoginInfo();
 
   try {
     let result = await axios.post(FINDMATE_ENDPOINT, body, {
       headers: {
         'Content-Type': 'application/json',
-        //Authorization: token,
+        // Authorization: token,
       },
       timeout: API_CONNECT_TIMEOUT,
     });
