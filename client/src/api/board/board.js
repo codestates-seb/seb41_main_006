@@ -1,4 +1,5 @@
 import defalutRequest from '../defaultRequest';
+import authRequest from '../authRequest';
 import wait from '../../utils/wait';
 import dummyBoards from './dummyBoards';
 
@@ -15,7 +16,7 @@ export const getBoardList = async ({ page, size, placeCode }) => {
 
     // return data;
   } catch (err) {
-    console.log;
+    console.log(err);
   }
 
   // try {
@@ -34,6 +35,16 @@ export const getBoardById = async (boardId) => {
   try {
     await wait(500);
     return dummyBoards.data.find((el) => el.boardId === boardId);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// GET /boards/my-boards
+export const getMyBoardsList = async () => {
+  try {
+    const res = await authRequest.get('/boards/my-boards');
+    console.log(res);
   } catch (err) {
     console.log(err);
   }
