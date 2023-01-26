@@ -49,6 +49,7 @@ public class MessageController {
                                   @Header("Authorization") String token) {
 
         if(!jwtTokenizer.validateToken(token)|| memberDetails == null) {
+            log.error("토큰 유효기간 만료 or 인증되지 않은 회원의 접근");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
