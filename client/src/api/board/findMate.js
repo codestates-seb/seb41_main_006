@@ -3,7 +3,8 @@ import { getLoginInfo } from '../loginInfo';
 
 // api url
 export const FINDMATE_ENDPOINT =
-  process.env.REACT_APP_API + process.env.REACT_APP_API_FINDMATE_BOARD_ENDPOINT;
+  process.env.REACT_APP_SERVER_API +
+  process.env.REACT_APP_API_FINDMATE_BOARD_ENDPOINT;
 
 const API_CONNECT_TIMEOUT = 2000;
 
