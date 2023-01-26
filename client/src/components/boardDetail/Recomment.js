@@ -4,6 +4,8 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
+import { commentPatch } from '../../api/board/comment';
+import { convertCreatedAt } from '../../utils/dateConvert';
 
 const RecommentBox = styled.div`
   height: 100%;
@@ -25,36 +27,47 @@ const RecommentBox = styled.div`
     }
   }
 
+  .recomment-detail-info {
+    padding-top: 5px;
+  }
+
   .recomment-username {
     font-size: 14px;
     color: #000000;
     font-weight: bold;
+    width: fit-content;
   }
 
-  .recomment-createAt,
+  .recomment-sub-info,
   .recomment-like {
     font-size: 12px;
-    padding-right: 10px;
+    padding-right: 3px;
   }
 
-  .recomment-createAt {
+  .recomment-sub-info {
     color: #a79689;
   }
 
-  .recomment-like {
-    color: #ca7c62;
+  .recomment-createAt {
+    padding-right: 6px;
   }
+
+  .recomment-like,
   .recomment-like-total {
-    padding-left: 3px;
+    color: #ca7c62;
   }
 
   .recomment-right {
     padding-right: 20px;
     color: #ca7c62;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    align-items: flex-end;
 
     button {
-      /* background-color: transparent; */
-      font-size: 22px;
+      margin-left: 10px;
+      font-size: 14px;
       border: none;
     }
   }
@@ -62,11 +75,38 @@ const RecommentBox = styled.div`
   .recomment-content {
     padding-bottom: 12px;
   }
+
+  .recomment-detail-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  textarea {
+    resize: none;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #b7a69e;
+    font-size: 16px;
+
+    :focus {
+      outline: none;
+    }
+  }
+
+  .edit-finish {
+    color: #ca7c62;
+    font-weight: 600;
+  }
 `;
 
 const Recomment = ({ recomment }) => {
   const dispatch = useDispatch();
+
   const [like, setLike] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [recommentContent, setRecommentContent] = useState('');
 
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
@@ -74,6 +114,27 @@ const Recomment = ({ recomment }) => {
 
   const handleLikeClick = () => {
     setLike(!like);
+  };
+
+  // 댓글 수정
+  const handleSubmitClick = async (idx) => {
+    setIsEditOpen(!isEditOpen);
+
+    await commentPatch({
+      commentsId: idx,
+      content: recommentContent,
+    });
+  };
+
+  // 댓글 삭제 확인 모달 창 띄우기
+  const handelConfirmClick = (idx) => {
+    console.log('댓글 삭제 확인 버튼');
+    dispatch(openModal({ type: 'delete', props: { idx, commentDelete } }));
+  };
+
+  // 댓글 삭제
+  const commentDelete = (idx) => {
+    commentDelete(idx);
   };
 
   return (
@@ -90,19 +151,21 @@ const Recomment = ({ recomment }) => {
               size="40px"
             ></ProfileImage>
           </button>
-          <div>
+          <div className="recomment-detail-info">
             <button
               className="recomment-username"
               onClick={() => handleClickMember(recomment.memberId)}
             >
               {recomment.nickName}
             </button>
-            <div>
-              <span className="recomment-createAt">2023.01.05 15:30</span>
-              <span className="recomment-like">
-                <FaHeart />
-                <span className="recomment-like-total">{recomment.likes}</span>
+            <div className="recomment-sub-info">
+              <span className="recomment-createAt">
+                {convertCreatedAt(new Date())}
               </span>
+              <span className="recomment-like">
+                <FaHeart /> <span>{recomment.commentLike}</span>
+              </span>
+              <span className="recomment-like-total">{recomment.likes}</span>
             </div>
           </div>
         </div>
@@ -112,9 +175,53 @@ const Recomment = ({ recomment }) => {
           ) : (
             <FaRegHeart onClick={handleLikeClick} />
           )}
+          <div>
+            {isEditOpen ? (
+              <button
+                className="edit-btn edit-finish"
+                onClick={() => handleSubmitClick(recomment.commentsId)}
+              >
+                수정완료
+              </button>
+            ) : (
+              <button
+                className="edit-btn"
+                onClick={() => setIsEditOpen(!isEditOpen)}
+              >
+                수정
+              </button>
+            )}
+            <button
+              className="del-btn"
+              onClick={() => handelConfirmClick(recomment.commentsId)}
+            >
+              삭제
+            </button>
+          </div>
         </div>
       </div>
-      <div className="recomment-content">{recomment.content}</div>
+      {isEditOpen ? (
+        <textarea
+          className="recomment-content"
+          defaultValue={recomment.content}
+          onChange={(e) => setRecommentContent(e.target.value)}
+        ></textarea>
+      ) : (
+        <div className="recomment-content">{recomment.content}</div>
+      )}
+      {/* <button className="recomment-btn" onClick={handleRecommentsClick}>
+        {isRecommentsOpen ? (
+          <FaMinus className="recomment-icon" />
+        ) : (
+          <FaPlus className="recomment-icon" />
+        )}
+        {recomment.length === 0 ? (
+          <span>답글 달기</span>
+        ) : (
+          <span>답글 {recomment.length}개</span>
+        )}
+      </button>
+      {isRecommentsOpen && <RecommentList recomments={recomment} />} */}
     </RecommentBox>
   );
 };

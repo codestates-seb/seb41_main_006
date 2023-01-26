@@ -6,8 +6,7 @@ import RecommentList from './RecommentList';
 import { convertCreatedAt } from '../../utils/dateConvert';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
-import { useParams } from 'react-router-dom';
-import { commentPatch } from '../../api/board/comment';
+import { commentPatch, commentDelete } from '../../api/board/comment';
 
 const CommentBox = styled.div`
   height: 100%;
@@ -112,11 +111,15 @@ const CommentBox = styled.div`
       outline: none;
     }
   }
+
+  .edit-finish {
+    color: #ca7c62;
+    font-weight: 600;
+  }
 `;
 
 const Comment = ({ comment, recomments }) => {
   const dispatch = useDispatch();
-  const { boardId } = useParams();
 
   const [like, setLike] = useState(false);
   const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);
@@ -136,12 +139,37 @@ const Comment = ({ comment, recomments }) => {
   };
 
   // 댓글 수정
-  const handleEditClick = () => {
+  const handleSubmitClick = async (idx) => {
     setIsEditOpen(!isEditOpen);
 
-    commentPatch(boardId, {
+    await commentPatch(idx, {
+      commentsId: idx,
       content: commentContent,
     });
+  };
+
+  // 댓글 삭제 확인 모달 창 띄우기
+  const handelConfirmClick = (idx) => {
+    console.log('댓글 삭제 확인 버튼');
+    dispatch(
+      openModal({ type: 'delete', props: { idx, handleCommentDelete } })
+    );
+  };
+
+  // const handelDelClick = () => {
+  //   //dispatch(openModal({ type: 'delete' }));
+  //   console.log('댓글 삭제');
+  // };
+
+  // const handleCancelClick = () => {
+  //   console.log('댓글 삭제 취소');
+  //   dispatch(closeModal({ type: 'delete' }));
+  // };
+
+  // 댓글 삭제
+  const handleCommentDelete = (idx) => {
+    commentDelete(idx);
+    console.log('댓글 삭제 성공');
   };
 
   return (
@@ -184,7 +212,10 @@ const Comment = ({ comment, recomments }) => {
           )}
           <div>
             {isEditOpen ? (
-              <button className="edit-btn" onClick={handleEditClick}>
+              <button
+                className="edit-btn edit-finish"
+                onClick={() => handleSubmitClick(comment.commentsId)}
+              >
                 수정완료
               </button>
             ) : (
@@ -195,7 +226,12 @@ const Comment = ({ comment, recomments }) => {
                 수정
               </button>
             )}
-            <button className="edit-del">삭제</button>
+            <button
+              className="del-btn"
+              onClick={() => handelConfirmClick(comment.commentsId)}
+            >
+              삭제
+            </button>
           </div>
         </div>
       </div>

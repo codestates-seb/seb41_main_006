@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Recomment from './Recomment';
-import AddComment from './AddComment';
+import AddRecomment from './AddRecomment';
 
 const RecommList = styled.ul`
   width: 700px;
@@ -25,7 +25,7 @@ const RecommentItem = styled.li`
 const RecommentList = ({ recomments }) => {
   return (
     <RecommList>
-      <AddComment />
+      <AddRecomment />
       {recomments.map((el) => (
         <RecommentItem key={el.id}>
           <Recomment recomment={el} />

@@ -12,7 +12,7 @@ import {
 } from '../../utils/dateConvert';
 import { BoardCloseBox, BoardOpenBox } from '../BoardStatus';
 import { IoLocationSharp } from 'react-icons/io5';
-import { AiTwotoneCalendar } from 'react-icons/ai';
+import { TbCalendarTime } from 'react-icons/tb';
 // import { FiClock } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 
@@ -99,7 +99,7 @@ const MateBoardCard = ({ board }) => {
             <span>{board.meetingPlace}</span>
           </div>
           <div className="board-card--meet">
-            <AiTwotoneCalendar />
+            <TbCalendarTime />
             <span>{convertAppointDate(board.appointTime)}</span>
           </div>
         </div>

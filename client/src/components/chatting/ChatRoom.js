@@ -49,30 +49,39 @@ const ChatInputBox = styled.div`
 const ChatRoom = () => {
   const { chatId } = useParams();
   const chatInputRef = useRef();
+  const client = useRef({});
+  const AccessToken = localStorage.getItem('AccessToken');
 
   const connect = () => {
-    const AccessToken = localStorage.getItem('AccessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
-    const client = new StompJs.Client({
+    client.current = new StompJs.Client({
       brokerURL:
         'ws://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080/ws/websocket',
-      connectHeaders: { Authorization: AccessToken, Refresh: refreshToken },
+      connectHeaders: { Authorization: AccessToken },
+      onConnect: () => {
+        console.log('success');
+        subscribe();
+      },
       debug: function (str) {
         console.log(str);
       },
-      reconnectDelay: 5000, //자동 재 연결
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
     });
-    client.onConnect = function () {
-      console.log('연결성공');
-    };
+    client.current.activate();
+  };
+  const disconnect = () => {
+    // 연결이 끊겼을 때
+    client.current.deactivate();
+  };
 
-    client.onStompError = function (frame) {
-      console.log('Broker reported error: ' + frame.headers['message']);
-      console.log('Additional details: ' + frame.body);
-    };
-    client.activate();
+  const subscribe = () => {
+    const headers = { headers: AccessToken };
+    client.current.subscribe(
+      `/sub/chats/${chatId}`,
+      (body) => {
+        const json_body = JSON.parse(body.body);
+        console.log(json_body);
+      },
+      headers
+    );
   };
 
   useEffect(() => {
@@ -82,6 +91,8 @@ const ChatRoom = () => {
 
   useEffect(() => {
     connect();
+
+    return () => disconnect();
   });
 
   return (
