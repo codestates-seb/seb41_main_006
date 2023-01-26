@@ -26,6 +26,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -39,6 +40,7 @@ public class MessageController {
     private final JwtTokenizer jwtTokenizer;
     private final ChatService chatService;
     private final ChannelTopic topic;
+    @Resource(name = "chatRedisTemplate")
     private final RedisTemplate redisTemplate;
     private final ChatMapper mapper;
 
