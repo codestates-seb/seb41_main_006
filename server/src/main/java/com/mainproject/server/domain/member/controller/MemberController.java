@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.member.controller;
 
+import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.domain.address.repository.AddressRepository;
 import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
@@ -98,10 +99,11 @@ public class MemberController {
     @GetMapping("/{member-id}/my-page")
     public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId) {
         Member member = memberService.findMember(memberId);
+        S3UpFile s3UpFile = member.getS3UpFile();
         String fullAddress = addressRepository.findFullAddressByBeopJeongCd(member.getAddress());
 
         return new ResponseEntity(
-                new SingleResponseDto<>(memberMapper.memberToResponseWithFullAddress(member, fullAddress)), HttpStatus.OK);
+                new SingleResponseDto<>(memberMapper.memberToResponseWithFullAddress(member, fullAddress, s3UpFile)), HttpStatus.OK);
     }
 
     /*닉네임 조회*/
