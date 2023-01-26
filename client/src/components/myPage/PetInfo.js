@@ -1,11 +1,38 @@
+import { useState } from 'react';
+import { useQuery } from 'react-query';
+import { getMyPetList } from '../../api/pet/pet';
 import styled from 'styled-components';
 import EditPetInfoCard from './EditPetInfoCard';
 import { FaDog } from 'react-icons/fa';
-import { useState } from 'react';
 import EditPetModal from './Modal/EditPetModal';
 import AddPetInfoModal from './Modal/AddPetInfoModal';
+import DogFace from '../common/DogFace';
 
 const PetContainer = styled.ul`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > .no-pets--wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+
+    > .dog-face {
+      width: 10rem;
+    }
+
+    > .no-pets-msg {
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+  }
+`;
+
+const PetList = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -31,22 +58,42 @@ const Saddbutton = styled.button`
     background-color: var(--main-font-color);
   }
 `;
-const PetInfo = ({ petList }) => {
+const PetInfo = () => {
   const [EditModal, setEditModal] = useState(false);
   const [AddModal, setAddModal] = useState(false);
+
+  const { data: petList, isLoading } = useQuery({
+    queryKey: ['myPets'],
+    queryFn: async () => await getMyPetList({ page: 1, size: 10 }),
+    initialData: [],
+  });
+
   return (
     <>
       <h2>강아지 정보</h2>
       <PetContainer>
-        {petList.map((el) => (
-          <li key={el.petId}>
-            <EditPetInfoCard
-              pet={el}
-              setEditModal={setEditModal}
-              EditModal={EditModal}
-            />
-          </li>
-        ))}
+        {isLoading ? (
+          <div>loading...</div>
+        ) : petList.length === 0 ? (
+          <div className="no-pets--wrapper">
+            <div className="dog-face">
+              <DogFace></DogFace>
+            </div>
+            <div className="no-pets-msg">현재 등록된 강아지가 없어요!</div>
+          </div>
+        ) : (
+          <PetList>
+            {petList.map((el) => (
+              <li key={el.petId}>
+                <EditPetInfoCard
+                  pet={el}
+                  setEditModal={setEditModal}
+                  EditModal={EditModal}
+                />
+              </li>
+            ))}
+          </PetList>
+        )}
       </PetContainer>
       <Saddbutton
         className="Addbutton"
