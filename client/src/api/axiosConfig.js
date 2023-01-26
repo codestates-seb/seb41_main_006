@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const instance = axios.create({
   baseURL: 'http://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080',
@@ -15,6 +16,7 @@ instance.interceptors.response.use(
     return response;
   },
   function (error) {
+    const navigate = useNavigate();
     /*
       http status가 200이 아닌 경우
       응답 에러 처리를 작성합니다.
@@ -25,7 +27,7 @@ instance.interceptors.response.use(
       if (refreshToken) {
         instance
           .post(
-            '/reissue',
+            'auth/reissue',
             {},
             {
               headers: { Refresh: refreshToken },
@@ -34,9 +36,18 @@ instance.interceptors.response.use(
           .then((res) => {
             localStorage.setItem('AccessToken', res.headers.authorization);
             window.location.reload();
+          })
+          .catch((error) => {
+            if (error.response.status === 401) {
+              localStorage.removeItem('AccessToken');
+              localStorage.removeItem('refreshToken');
+              alert('다시 로그인 해 주세요');
+              window.location.reload();
+            }
           });
       } else {
-        return alert('로그인 후 이용해 주세요');
+        alert('로그인 후 이용해 주세요');
+        navigate('/');
       }
     }
     return console.log(error);
