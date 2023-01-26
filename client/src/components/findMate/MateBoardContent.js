@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { getBoardList } from '../../api/board/board';
 import styled from 'styled-components';
 import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
@@ -20,8 +22,13 @@ const PostsContentRow = styled.div`
   }
 `;
 
-const MateBoardConent = ({ boardList }) => {
+const MateBoardConent = ({ placeCode }) => {
   const navigate = useNavigate();
+
+  const { data, isLoading } = useQuery(
+    ['boards', placeCode],
+    async () => await getBoardList({ page: 1, size: 10, placeCode })
+  );
 
   return (
     <PostsContentLayOut>
@@ -30,14 +37,14 @@ const MateBoardConent = ({ boardList }) => {
           <Title as="h3" size={'medium'}>
             산책 모임
           </Title>
-          <input type="date"></input>
-          <input type="time"></input>
+          {/* <input type="date"></input>
+          <input type="time"></input> */}
         </div>
         <Button color="main" onClick={() => navigate('/newmate')}>
           글 작성
         </Button>
       </PostsContentRow>
-      <MateBoardList boardList={boardList} />
+      {isLoading ? <div>loading...</div> : <MateBoardList boardList={data} />}
     </PostsContentLayOut>
   );
 };

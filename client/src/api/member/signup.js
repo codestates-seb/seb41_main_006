@@ -20,3 +20,14 @@ export const authEmailVerification = async ({ code, email }) => {
 
 // POST /members
 export const signUp = (data) => defaultAxios.post('/members', data);
+
+export const authNickName = async (nickName) => {
+  try {
+    await defaultAxios.get('/members/nickname/verify', {
+      params: { nickname: nickName },
+    });
+  } catch (err) {
+    console.log(err?.response?.data);
+    throw err?.response?.data;
+  }
+};

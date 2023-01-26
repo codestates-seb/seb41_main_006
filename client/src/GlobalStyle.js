@@ -77,6 +77,7 @@ const GlobalStyle = createGlobalStyle`
     --sec-color: #A79689;
     --main-font-color: #401809;
     --error-color: #D64751;
+    --success-color: #4a934a;
   }         
 `;
 

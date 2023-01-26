@@ -27,4 +27,8 @@ const MateBoardList = ({ boardList }) => {
   );
 };
 
+MateBoardList.defaultProps = {
+  boardList: [],
+};
+
 export default MateBoardList;

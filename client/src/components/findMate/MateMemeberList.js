@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import MateMemberCard from './MateMemberCard';
-import dummyMembers from '../../api/member/dummyMembers';
 
 const UserList = styled.ul`
   width: 90%;
@@ -17,11 +16,14 @@ const UserItem = styled.li`
   height: 20rem;
 `;
 
-const MateMemberList = () => {
+const MateMemberList = ({ memberList }) => {
+  if (memberList.length === 0) {
+    return <div>지금은 회원 정보가 없습니다.</div>;
+  }
   return (
     <UserList>
       <button>이전</button>
-      {dummyMembers.data.map((el) => (
+      {memberList.map((el) => (
         <UserItem key={el.memberId}>
           <MateMemberCard member={el} />
         </UserItem>
