@@ -27,7 +27,7 @@ public class BoardTasklet implements Tasklet {
         List<Board> findBoards
                 = boardRepository.findByAppointTimeLessThanEqual(LocalDateTime.now());
 
-        if(findBoards.isEmpty() || findBoards == null) {
+        if(findBoards.isEmpty() || findBoards == null || findBoards.size() == 0) {
             log.info("=====변경할 게시글이 없습니다.=====");
         } else {
             for(Board board : findBoards) {

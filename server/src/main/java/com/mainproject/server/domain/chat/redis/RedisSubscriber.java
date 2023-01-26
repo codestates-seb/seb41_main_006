@@ -4,9 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mainproject.server.domain.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +21,7 @@ public class RedisSubscriber{
             ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
             // 채팅방을 구독하고 있는 회원에게 해당 메세지를 뿌림
             messagingTemplate.convertAndSend("/sub/chats/" + chatMessage.getChatRoom().getRoomId(), chatMessage);
+            log.info("redis publish messages");
         } catch (Exception e) {
             log.error("Exception in redis Subscriber:{}", e);
         }
