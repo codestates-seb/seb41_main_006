@@ -56,6 +56,7 @@ function useForm({ initialValues, onSubmit, validate }) {
     setValues,
     errors,
     setErrorByName,
+    setErrors,
     isLoading,
     setIsLoading,
     handleChange,

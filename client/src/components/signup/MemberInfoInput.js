@@ -306,7 +306,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
       const blobUrl = URL.createObjectURL(e.target.files[0]);
       setPreviewImgUrl(blobUrl);
 
-      // 이미지 이름 설정(이게 onChange 반응하게 해줌)
+      // 이미지 input value 초기화(다음 업로드 대기 상태로) - (이게 onChange 반응하게 해줌)
       e.target.value = '';
     }
   };
