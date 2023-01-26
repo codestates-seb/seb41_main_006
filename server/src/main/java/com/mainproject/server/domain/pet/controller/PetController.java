@@ -79,6 +79,10 @@ public class PetController {
                                   @Positive @RequestParam(defaultValue = "10") int size,
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
 
+        if(memberDetails == null) {
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+        }
+
         Page<Pet> petPage = petService.findMyPets(page, size, memberDetails);
 
         PageInfo pageInfo = new PageInfo(page, size, (int)petPage.getTotalElements(), petPage.getTotalPages());

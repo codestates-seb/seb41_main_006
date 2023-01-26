@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.member.mapper;
 
 import com.mainproject.server.awsS3.dto.S3UpFileResponse;
+import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.dto.PetDto;
@@ -23,7 +24,10 @@ public interface MemberMapper {
 
     List<MemberDto.SimpleResponse> membersToMemberSimpleResponseDtos(List<Member> members);
 
-    MemberDto.ResponseWithFullAddress memberToResponseWithFullAddress(Member member, String fullAddress);
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
+    MemberDto.ResponseWithFullAddress memberToResponseWithFullAddress(Member member, String fullAddress, S3UpFile s3UpFile);
 
     default MemberDto.ResponseWithPets memberToMemberResponseWithPetsDto(Member member) {
         return MemberDto.ResponseWithPets.builder()
