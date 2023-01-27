@@ -22,5 +22,4 @@ public interface ChatMapper {
 
     List<ChatDto.MessageResponse> messagesToMessageResponseDtos(List<ChatMessage> messages);
 
-    ChatMessage PostDtoToChatMessage (MessageDto messageDto);
 }
