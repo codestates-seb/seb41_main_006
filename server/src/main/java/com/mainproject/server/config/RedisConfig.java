@@ -63,9 +63,4 @@ public class RedisConfig {
         container.setConnectionFactory(connectionFactory);
         return container;
     }
-
-    @Bean
-    public ChannelTopic channelTopic() {
-        return new ChannelTopic("chatroom");
-    }
 }

@@ -34,9 +34,9 @@ import java.util.Optional;
 public class RoomService {
     private final MemberService memberService;
     private final RoomRepository roomRepository;
-
-    @Resource(name = "chatRedisTemplate")
-    private final HashOperations<String, Long, ChatRoom> hashOpsChatRoom;
+    private final Map<String, ChannelTopic> topics;
+    private final RedisMessageListenerContainer redisMessageListener;
+    private final RedisSubscriber redisSubscriber;
 
     public Long createRoom(long receiverId, MemberDetails memberDetails) {
         Member receiver = memberService.validateVerifyMember(receiverId);
@@ -62,10 +62,9 @@ public class RoomService {
         }
 
         ChatRoom saveChatRoom = roomRepository.save(chatRoom);
+        String roomId = "room" + saveChatRoom.getRoomId();
 
-        log.info("저장 전 hashOpsChatRoom : {}", hashOpsChatRoom.toString());
-        hashOpsChatRoom.put("CHAT_ROOM", chatRoom.getRoomId(), chatRoom);
-        log.info("저장 후 hashOpsChatRoom : {}", hashOpsChatRoom.toString());
+        createTopic(roomId);
 
         return saveChatRoom.getRoomId();
     }
@@ -73,7 +72,7 @@ public class RoomService {
     // 유저의 채팅 목록 가져오기
     public Page<ChatRoom> findRooms(MemberDetails memberDetails, int page, int size) {
         Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
-        Pageable pageable = PageRequest.of(page-1, size, Sort.by("roomId").descending());
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("roomId").descending());
         Page<ChatRoom> chatRooms = roomRepository.findAllBySenderOrReceiver(pageable, sender, sender);
 
         return chatRooms;
@@ -82,6 +81,11 @@ public class RoomService {
     // 채팅방 하나 찾기
     public ChatRoom findRoom(long roomId) {
         ChatRoom chatRoom = findExistRoom(roomId);
+
+        String topicRoomId = "room" + chatRoom.getRoomId();
+
+        createTopic(topicRoomId);
+
         return chatRoom;
     }
 
@@ -94,5 +98,22 @@ public class RoomService {
         );
 
         return findChatRoom;
+    }
+
+    private void createTopic(String topicRoomId) {
+
+        log.info("저장 전 topics = {}", topics);
+
+        if(!topics.containsKey(topicRoomId)) {
+            log.info("토픽 생성");
+
+            ChannelTopic topic = new ChannelTopic(topicRoomId);
+            redisMessageListener.addMessageListener(redisSubscriber, topic);
+            topics.put(topicRoomId, topic);
+
+            log.info("토픽 저장");
+        }
+
+        log.info("저장 후 topics = {}", topics);
     }
 }

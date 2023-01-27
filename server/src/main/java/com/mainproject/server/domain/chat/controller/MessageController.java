@@ -39,7 +39,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageController {
     private final ChatService chatService;
-    private final ChannelTopic topic;
 
     private final RedisPublisher redisPublisher;
     private final ChatMapper mapper;
@@ -51,9 +50,9 @@ public class MessageController {
 
         PublishMessage publishMessage =
                 new PublishMessage(messageDto.getRoomId(), messageDto.getSenderId(), messageDto.getContent(), LocalDateTime.now());
-        log.info("publishMessage: {}", String.valueOf(publishMessage));
+        log.info("publishMessage: {}", publishMessage.getContent());
         // 채팅방에 메세지 전송
-        redisPublisher.publish(topic, publishMessage);
+        redisPublisher.publish(ChannelTopic.of("room" + roomId), publishMessage);
         log.info("레디스 서버에 메세지 전송 완료");
 
         chatService.saveMessage(messageDto, roomId);
