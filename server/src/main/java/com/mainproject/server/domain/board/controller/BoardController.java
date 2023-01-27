@@ -4,6 +4,7 @@ import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.board.dto.BoardDto;
 import com.mainproject.server.domain.board.dto.BoardLikeDto;
 import com.mainproject.server.domain.board.entity.Board;
+import com.mainproject.server.domain.board.entity.BoardLike;
 import com.mainproject.server.domain.board.mapper.BoardMapper;
 import com.mainproject.server.domain.board.service.BoardLikeService;
 import com.mainproject.server.domain.board.service.BoardService;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -132,8 +134,10 @@ public class BoardController {
         if(memberDetails == null){
             return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
-        boardLikeService.likeBoard(boardId, boardLikeDto.getMemberId());
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        Optional<BoardLike> boardLike = boardLikeService.likeBoard(boardId, boardLikeDto.getMemberId());
+        BoardLikeDto.Response response = mapper.boardLikeToBoardLikeResponseDto(boardLike);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
