@@ -49,7 +49,7 @@ public class MessageController {
     public ResponseEntity message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
 
         PublishMessage publishMessage =
-                new PublishMessage(messageDto.getRoomId(), messageDto.getMemberId(), messageDto.getContent(), LocalDateTime.now());
+                new PublishMessage(messageDto.getRoomId(), messageDto.getSenderId(), messageDto.getContent(), LocalDateTime.now());
         // 채팅방에 메세지 전송
         redisPublisher.publish(ChannelTopic.of("room" + roomId), publishMessage);
         log.info("레디스 서버에 메세지 전송 완료");
