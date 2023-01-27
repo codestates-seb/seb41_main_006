@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from '../common/Title';
@@ -247,18 +247,18 @@ const MemberInfoInput = ({
   isEditMode,
   memberInfo,
   auth,
-  // handleModalClose,
+  handleModalClose,
 }) => {
   const navigate = useNavigate();
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const updateMyInfoMutation = useMutation(updateMyInfo, {
     onSuccess: () => {
       // invalidates cache and refetcn
       // 모달창 닫음
-      // handleModalClose();
+      handleModalClose();
       // 나의 정보 새로고침
-      // queryClient.invalidateQueries('myInfo');
+      queryClient.invalidateQueries('myInfo');
     },
   });
   // 여러 개의 input의 value, error, change 이벤트 핸들러
@@ -457,7 +457,6 @@ const MemberInfoInput = ({
         // 만약 기존의 이미지 URL과 화면에 띄워진 URL이 같지 않다면 (업로드할 파일이 변했다면)
         // 수정모드일 때 기존에 파일에서 바꿨다면 previewUrl도 달라짐
         // s3 이미지 지우기
-        console.log('hi');
         await memberImageDelete(memberInfo.profileImage.upFileUrl);
       }
 
