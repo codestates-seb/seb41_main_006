@@ -36,27 +36,26 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@Validated
 @RequiredArgsConstructor
 public class MessageController {
-    private final JwtTokenizer jwtTokenizer;
     private final ChatService chatService;
 
     private final RedisPublisher redisPublisher;
     private final ChatMapper mapper;
 
     @MessageMapping("/chats/messages/{room-id}")
-    public ResponseEntity message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
+    public void message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
+
+        log.info("messageDto : {}", messageDto);
 
         PublishMessage publishMessage =
                 new PublishMessage(messageDto.getRoomId(), messageDto.getSenderId(), messageDto.getContent(), LocalDateTime.now());
+        log.info("publichMessage: {}", publishMessage.toString());
         // 채팅방에 메세지 전송
         redisPublisher.publish(ChannelTopic.of("room" + roomId), publishMessage);
         log.info("레디스 서버에 메세지 전송 완료");
 
         chatService.saveMessage(messageDto, roomId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 채팅메세지 가져오기
