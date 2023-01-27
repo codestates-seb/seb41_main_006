@@ -199,26 +199,32 @@ const BoardDetailPage = () => {
                 <FaHeart onClick={handleLikeClick} />
                 <span>{board.countLike}</span>
               </div>
-              {boardMemberId === Number(loginMemberId) ? (
-                <div className="post-btn">
-                  <button
-                    className="post-edit"
-                    onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
-                  >
-                    수정
-                  </button>
-                  <button className="post-del" onClick={handelConfirmClick}>
-                    삭제
-                  </button>
 
+              <div className="post-btn">
+                {boardMemberId === Number(loginMemberId) ? (
+                  <>
+                    <button
+                      className="post-edit"
+                      onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
+                    >
+                      수정
+                    </button>
+                    <button className="post-del" onClick={handelConfirmClick}>
+                      삭제
+                    </button>
+                  </>
+                ) : (
+                  ''
+                )}
+                {boardMemberId !== Number(loginMemberId) ? (
                   <button className="post-like-btn">
                     <FaRegHeart onClick={handleLikeClick} />
                     <FaHeart onClick={handleLikeClick} />
                   </button>
-                </div>
-              ) : (
-                ''
-              )}
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
           </HeaderContainer>
           <MainContainer>
