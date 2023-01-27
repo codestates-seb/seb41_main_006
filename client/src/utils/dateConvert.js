@@ -19,10 +19,17 @@ export const convertAppointDate = (appointTime) => {
 
   const year = utcDate.getFullYear();
   const month = String(utcDate.getMonth() + 1).padStart(2, '0');
-  const date = String(utcDate.getDate()).padStart(2, '0');
+  let date = String(utcDate.getDate()).padStart(2, '0');
   const day = weekday[utcDate.getDay()];
-  const hours = utcDate.getHours() + 9;
+  let hours = utcDate.getHours() + 9;
   const minutes = utcDate.getMinutes();
+
+  if (hours >= 24) {
+    console.log('전 hours', hours);
+    date = Number(date) + 1;
+    hours = Number(hours) - 24;
+    console.log('hours', hours);
+  }
 
   const time = `${hours <= 12 ? `오전 ${hours}시` : `오후 ${hours - 12}시`} ${
     minutes === 0 ? '' : `${minutes}분`
