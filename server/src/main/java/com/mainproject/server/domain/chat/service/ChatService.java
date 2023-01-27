@@ -46,7 +46,7 @@ public class ChatService {
     public Page<ChatMessage> findMessages(long roomId, int page, int size) {
         ChatRoom chatRoom = roomService.findRoom(roomId);
 
-        Pageable pageable = PageRequest.of(page-1, size, Sort.by("messageId").ascending());
+        Pageable pageable = PageRequest.of(page-1, size, Sort.by("messageId").descending());
         Page<ChatMessage> messages = messageRepository.findByChatRoom(pageable, chatRoom);
 
         return messages;
