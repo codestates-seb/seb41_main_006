@@ -25,7 +25,7 @@ public class ChatService {
     private final RoomService roomService;
     private final MessageRepository messageRepository;
 
-    public void saveMessage(MessageDto dto, long roomId) {
+    public void saveMessage(MessageDto dto, Long roomId) {
         Member member = memberService.validateVerifyMember(dto.getMemberId());
         ChatRoom chatRoom = roomService.findRoom(roomId);
 
