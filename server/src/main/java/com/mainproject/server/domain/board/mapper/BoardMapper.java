@@ -6,7 +6,6 @@ import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.board.entity.BoardLike;
 import com.mainproject.server.domain.comments.dto.CommentsDto;
 import com.mainproject.server.domain.comments.entity.Comments;
-import com.mainproject.server.domain.comments.mapper.CommentsMapper;
 import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 
@@ -17,8 +16,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BoardMapper {
@@ -123,4 +122,18 @@ public interface BoardMapper {
 
     List<BoardDto.NoneMemberResponse> boardsToNoneMemberResponseDtos(List<Board> boards);
 
+    default BoardLikeDto.Response boardLikeToBoardLikeResponseDto(Optional<BoardLike> boardLike){
+        Member member = boardLike.get().getMember();
+        Board board = boardLike.get().getBoard();
+
+        BoardLikeDto.Response boardLikeResponseDto = BoardLikeDto.Response
+            .builder()
+            .boardLikeId(boardLike.get().getBoardLikeId())
+            .memberId(member.getMemberId())
+            .boardId(board.getBoardId())
+            .likeStatus(boardLike.get().likeStatus)
+            .build();
+
+        return boardLikeResponseDto;
+    }
 }

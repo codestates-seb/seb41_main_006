@@ -40,7 +40,7 @@ public class CommentsLike extends Auditable {
 	private Comments comments;
 
 	@Enumerated(EnumType.STRING)
-	private LikeStatus likeStatus = LikeStatus.LIKE;
+	public LikeStatus likeStatus = LikeStatus.LIKE;
 
 	public CommentsLike(Long commentsLikeId){
 		this.commentsLikeId = commentsLikeId;

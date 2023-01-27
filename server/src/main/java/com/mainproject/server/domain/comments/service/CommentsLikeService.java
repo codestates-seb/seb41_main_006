@@ -31,7 +31,7 @@ public class CommentsLikeService {
 
 	// ----- 댓글 좋아요
 	@Transactional
-	public void likeComments(Long commentsId, Long memberId) {
+	public Optional<CommentsLike> likeComments(Long commentsId, Long memberId) {
 		Member findMember = memberService.validateVerifyMember(memberId);
 		Comments findComments = commentsService.findVerifiedComments(commentsId);
 
@@ -50,5 +50,6 @@ public class CommentsLikeService {
 				commentsLike.setComments(findComments);
 				commentsLikeRepository.save(commentsLike);
 			});
+		return oCommentsLike;
 	}
 }
