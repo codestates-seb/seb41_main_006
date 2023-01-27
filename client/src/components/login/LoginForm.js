@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import AuthInput from '../common/AuthInput';
 import useInput from '../../hooks/useInput';
 import loginValidate from '../../utils/loginValidate';
@@ -18,7 +17,7 @@ const SLoginForm = styled.form`
 const LoginForm = ({ setIsLogin }) => {
   const email = useInput('');
   const password = useInput('');
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleCheckEmail = (event) => {
@@ -31,18 +30,8 @@ const LoginForm = ({ setIsLogin }) => {
     password.setError(loginValidate.password(value));
   };
 
-  const handleSubmit = async (event) => {
-    // 기본 동작 방지
-    event.preventDefault();
-
-    // loading 상태로
-    setIsLoading(true);
-    // 유효성 검증
-    email.setError(loginValidate.email(email.value));
-    password.setError(loginValidate.password(password.value));
-  };
-  const handleLogin = async () => {
-    await instance
+  const handleLogin = () =>
+    instance
       .post('/auth/login', {
         username: email.value,
         password: password.value,
@@ -53,23 +42,31 @@ const LoginForm = ({ setIsLogin }) => {
         localStorage.setItem('refreshToken', data.headers.refresh);
         localStorage.setItem('memberId', data.data.memberId);
         setIsLogin(true);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  useEffect(() => {
-    if (isLoading) {
-      if (!email.error && !password.error) {
-        alert('로그인 성공!');
+        alert('로그인 성공');
         dispatch(closeModal());
-      } else {
-        setIsLoading(false);
-      }
-    }
-  }, [isLoading]);
+      });
 
+  const handleSubmit = async (event) => {
+    // 기본 동작 방지
+    event.preventDefault();
+
+    const emailError = loginValidate.email(email.value);
+    const passwordError = loginValidate.password(password.value);
+
+    if (emailError || passwordError) {
+      if (emailError) {
+        email.setError(emailError);
+      }
+
+      if (passwordError) {
+        password.setError(passwordError);
+      }
+
+      return;
+    }
+
+    await handleLogin();
+  };
   return (
     <SLoginForm onSubmit={handleSubmit}>
       <AuthInput
@@ -94,7 +91,7 @@ const LoginForm = ({ setIsLogin }) => {
         onBlur={handleCheckPassword}
         placeholder="비밀번호를 입력하세요"
       ></AuthInput>
-      <Button size="large" fullWidth type="submit" onClick={handleLogin}>
+      <Button size="large" fullWidth type="submit">
         로그인
       </Button>
     </SLoginForm>
