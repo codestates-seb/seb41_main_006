@@ -26,15 +26,13 @@ public class RedisSubscriber implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
         log.info("redis subscriber : onMessage 실행");
-        log.error("onMessage 안됨");
         try {
             // 레디스를 통해 들어온 메세지를 chatMessage로 변환
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            log.info("redisTemplate :{}" ,redisTemplate.toString());
             log.info("publishMessage:{}", publishMessage );
 
             PublishMessage chatMessage = objectMapper.readValue(publishMessage, PublishMessage.class);
-            log.info("chatMessage: {}", chatMessage);
+            log.info("chatMessage: {}", chatMessage.getContent());
             // 채팅방을 구독하고 있는 회원에게 해당 메세지를 뿌림
             messagingTemplate.convertAndSend("/sub/chats/" + chatMessage.getRoomId(), chatMessage);
             log.info("redis publish messages");

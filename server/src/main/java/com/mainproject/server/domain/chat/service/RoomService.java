@@ -34,9 +34,9 @@ import java.util.Optional;
 public class RoomService {
     private final MemberService memberService;
     private final RoomRepository roomRepository;
-    private final Map<String, ChannelTopic> topics;
-    private final RedisMessageListenerContainer redisMessageListener;
-    private final RedisSubscriber redisSubscriber;
+
+    @Resource(name = "chatRedisTemplate")
+    private final HashOperations<String, Long, ChatRoom> hashOpsChatRoom;
 
     public Long createRoom(long receiverId, MemberDetails memberDetails) {
         Member receiver = memberService.validateVerifyMember(receiverId);
@@ -62,19 +62,11 @@ public class RoomService {
         }
 
         ChatRoom saveChatRoom = roomRepository.save(chatRoom);
-        String roomId = "room" + saveChatRoom.getRoomId();
 
-        log.info("topics = {}", topics);
+        log.info("저장 전 hashOpsChatRoom : {}", hashOpsChatRoom.toString());
+        hashOpsChatRoom.put("CHAT_ROOM", chatRoom.getRoomId(), chatRoom);
+        log.info("저장 후 hashOpsChatRoom : {}", hashOpsChatRoom.toString());
 
-        if(!topics.containsKey(roomId)) {
-            log.info("토픽 생성");
-
-            ChannelTopic topic = new ChannelTopic(roomId);
-            redisMessageListener.addMessageListener(redisSubscriber, topic);
-            topics.put(roomId, topic);
-
-            log.info("토픽 저장");
-        }
         return saveChatRoom.getRoomId();
     }
 
