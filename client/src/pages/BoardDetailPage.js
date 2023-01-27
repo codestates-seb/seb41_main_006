@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 // import { getBoardById } from '../api/board/board';
 import { openModal } from '../store/modules/modalSlice';
@@ -8,12 +7,19 @@ import Container from '../components/Container';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
 // import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { convertCreatedAt } from '../utils/dateConvert';
+// import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
-import { FINDMATE_ENDPOINT, boardDelete } from '../api/board/findMate';
+import {
+  FINDMATE_ENDPOINT,
+  boardDelete,
+  boardLike,
+} from '../api/board/findMate';
 import useFetch from '../hooks/useFetch';
+import { getLoginInfo } from '../api/loginInfo';
+import PageLoading from '../components/PageLoading';
+import { convertCreatedAt } from '../utils/dateConvert';
 
 const ContainerBox = styled(Container)`
   padding: 20px;
@@ -135,9 +141,9 @@ const MainContainer = styled.div`
 const BoardDetailPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { boardId } = useParams();
 
-  const [like, setLike] = useState(false);
+  const { boardId } = useParams();
+  const loginMemberId = getLoginInfo().memberId;
 
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
@@ -162,37 +168,19 @@ const BoardDetailPage = () => {
     boardDelete(boardId);
   };
 
-  // 좋아요 누르기
-  const handleLikeClick = () => {
-    setLike(!like);
+  // 좋아요 & 좋아요 취소
 
-    if (like === false) {
-      board.countLike = board.countLike + 1;
-      localStorage.setItem('isLike', true);
-    } else {
-      board.countLike = board.countLike - 1;
-      localStorage.removeItem('isLike');
-    }
+  const handleLikeClick = () => {
+    boardLike(boardId, { memberId: loginMemberId });
   };
 
-  // 좋아요 상태 유지
-  useEffect(() => {
-    const savedLike = localStorage.getItem('isLike');
-
-    if (savedLike !== null) {
-      setLike(true);
-    } else {
-      setLike(false);
-    }
-  });
-
   return (
-    <ContainerBox>
+    <>
       {error && <div>글 조회 실패</div>}
       {isLoading ? (
-        <div>로딩중</div>
+        <PageLoading />
       ) : (
-        <>
+        <ContainerBox>
           <HeaderContainer>
             <div className="post-title">
               <div className="title">{board.title}</div>
@@ -207,7 +195,7 @@ const BoardDetailPage = () => {
                 {convertCreatedAt(board.createdAt)}
               </div>
               <div className="post-like">
-                <FaHeart />
+                <FaHeart onClick={handleLikeClick} />
                 <span>{board.countLike}</span>
               </div>
               <div className="post-btn">
@@ -221,11 +209,8 @@ const BoardDetailPage = () => {
                   삭제
                 </button>
                 <button className="post-like-btn">
-                  {like ? (
-                    <FaHeart onClick={handleLikeClick} />
-                  ) : (
-                    <FaRegHeart onClick={handleLikeClick} />
-                  )}
+                  <FaRegHeart onClick={handleLikeClick} />
+                  <FaHeart onClick={handleLikeClick} />
                 </button>
               </div>
             </div>
@@ -255,9 +240,9 @@ const BoardDetailPage = () => {
               </div>
             </div>
           </MainContainer>
-        </>
+        </ContainerBox>
       )}
-    </ContainerBox>
+    </>
   );
 };
 
