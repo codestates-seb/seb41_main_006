@@ -47,4 +47,20 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+    @Bean
+    public RedisTemplate<String, Object> chatRedisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Object> chatRedisTemplate = new RedisTemplate<>();
+        chatRedisTemplate.setConnectionFactory(connectionFactory);
+        chatRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        chatRedisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+        return chatRedisTemplate;
+    }
+
+    // redis pub/sub 메세지를 처리하는 listener 설정
+    @Bean
+    public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        return container;
+    }
 }
