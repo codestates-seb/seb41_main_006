@@ -72,7 +72,7 @@ public class RoomService {
     // 유저의 채팅 목록 가져오기
     public Page<ChatRoom> findRooms(MemberDetails memberDetails, int page, int size) {
         Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("roomId").descending());
+        Pageable pageable = PageRequest.of(page-1 , size, Sort.by("roomId").descending());
         Page<ChatRoom> chatRooms = roomRepository.findAllBySenderOrReceiver(pageable, sender, sender);
 
         return chatRooms;
