@@ -51,7 +51,7 @@ export const commentPatch = async (commentId, body) => {
 // 댓글 삭제
 export const commentDelete = async (commentId) => {
   const { AccessToken } = getLoginInfo();
-  const path = `${COMMENT_ENDPOINT}/${commentId}`;
+  const path = `${COMMENT_ENDPOINT}/parent/${commentId}`;
   console.log(commentId);
 
   try {
@@ -77,6 +77,26 @@ export const recommentCreate = async (parentId, body) => {
 
   try {
     let result = await axios.post(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: AccessToken,
+      },
+      timeout: API_CONNECT_TIMEOUT,
+    });
+    return { state: 'OK', data: result.data.response };
+  } catch (err) {
+    console.error('Error: ', err);
+    return { state: 'error ' };
+  }
+};
+
+// 대댓글 삭제
+export const recommentDelete = async (commentId) => {
+  const { AccessToken } = getLoginInfo();
+  const path = `${COMMENT_ENDPOINT}/reply/${commentId}`;
+
+  try {
+    let result = await axios.delete(path, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: AccessToken,
