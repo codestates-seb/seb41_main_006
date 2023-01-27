@@ -46,15 +46,7 @@ public class MessageController {
     private final ChatMapper mapper;
 
     @MessageMapping("/chats/messages/{room-id}")
-    public ResponseEntity message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto,
-                                  @Header("Authorization") String token) {
-
-        String replaceToken = token.replace("Bearer " ,"");
-
-        if(!jwtTokenizer.validateToken(token)) {
-            log.error("인증되지 않은 회원의 접근으로 메세지를 전송할 수 없음");
-            return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
 
         PublishMessage publishMessage =
                 new PublishMessage(messageDto.getRoomId(), messageDto.getMemberId(), messageDto.getContent(), LocalDateTime.now());
