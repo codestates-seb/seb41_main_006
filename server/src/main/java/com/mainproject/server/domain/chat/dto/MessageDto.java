@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MessageDto {
     @NotNull
-    private long roomId;
+    private Long roomId;
     @NotNull
-    private long memberId;
+    private Long memberId;
     @NotBlank
     private String content;
 

@@ -6,6 +6,7 @@ import com.mainproject.server.domain.chat.dto.ChatDto;
 import com.mainproject.server.domain.chat.dto.MessageDto;
 import com.mainproject.server.domain.chat.entity.ChatMessage;
 import com.mainproject.server.domain.chat.entity.ChatRoom;
+import com.mainproject.server.domain.chat.entity.PublishMessage;
 import com.mainproject.server.domain.chat.mapper.ChatMapper;
 import com.mainproject.server.domain.chat.redis.RedisPublisher;
 import com.mainproject.server.domain.chat.service.ChatService;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -44,21 +46,15 @@ public class MessageController {
     private final ChatMapper mapper;
 
     @MessageMapping("/chats/messages/{room-id}")
-    public ResponseEntity message(@DestinationVariable long roomId, MessageDto messageDto,
-                                  @AuthenticationPrincipal MemberDetails memberDetails) {
+    public ResponseEntity message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
 
-        if(memberDetails == null) {
-            log.error("인증되지 않은 회원의 접근으로 메세지를 전송할 수 없음");
-            return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
-        }
-
-        ChatMessage chatMessage = chatService.createMessage(messageDto, roomId);
-        log.info("메세지 생성 완료");
+        PublishMessage publishMessage =
+                new PublishMessage(messageDto.getRoomId(), messageDto.getMemberId(), messageDto.getContent(), LocalDateTime.now());
         // 채팅방에 메세지 전송
-        redisPublisher.publish(ChannelTopic.of("room" + roomId), chatMessage);
+        redisPublisher.publish(ChannelTopic.of("room" + roomId), publishMessage);
         log.info("레디스 서버에 메세지 전송 완료");
-        // 전송 후 레포지토리에 저장할 것인지, 저장을 하지 않고 레디스 큐에 쌓인 데이터를 따로 일정 기간 주기마다 저장을 할 것인지
-        chatService.saveMessage(chatMessage);
+
+        chatService.saveMessage(messageDto, roomId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

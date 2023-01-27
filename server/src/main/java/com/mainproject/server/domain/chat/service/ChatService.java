@@ -25,7 +25,7 @@ public class ChatService {
     private final RoomService roomService;
     private final MessageRepository messageRepository;
 
-    public ChatMessage createMessage(MessageDto dto, long roomId) {
+    public void saveMessage(MessageDto dto, Long roomId) {
         Member member = memberService.validateVerifyMember(dto.getMemberId());
         ChatRoom chatRoom = roomService.findRoom(roomId);
 
@@ -37,10 +37,6 @@ public class ChatService {
                 .sendTime(LocalDateTime.now())
                 .build();
 
-        return chatMessage;
-    }
-
-    public void saveMessage(ChatMessage chatMessage) {
         messageRepository.save(chatMessage);
         log.info("메세지 저장 완료");
     }
