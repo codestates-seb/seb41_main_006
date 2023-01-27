@@ -40,7 +40,7 @@ public class BoardLike extends Auditable {
 	private Board board;
 
 	@Enumerated(EnumType.STRING)
-	private LikeStatus likeStatus = LikeStatus.LIKE;
+	public LikeStatus likeStatus = LikeStatus.LIKE;
 
 	public BoardLike(Long boardLikeId){
 		this.boardLikeId = boardLikeId;

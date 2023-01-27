@@ -71,10 +71,24 @@ public class CommentsService {
 	}
 
 	// ----- 댓글 삭제
-	public void deleteComments(Long commentId){
-		Comments findComments = findVerifiedComments(commentId);
+	public void deleteParentComments(Long commentsId){
+		Comments findComments = findVerifiedComments(commentsId);
 
 		commentsRepository.delete(findComments);
+	}
+
+	// ----- 대댓글 삭제
+	public void deleteReplyComments(Long commentsId) {
+		Comments findComments = findVerifiedComments(commentsId);
+
+		//대댓글인지 확인
+		if(findComments != null && findComments.getParentComments() != null){
+			Comments parentComments = findComments.getParentComments();
+			parentComments.getReplyComments().remove(findComments);
+
+			commentsRepository.deleteById(commentsId);
+			commentsRepository.saveAndFlush(parentComments);
+		}
 	}
 
 	// ----- 댓글 검증
@@ -86,7 +100,7 @@ public class CommentsService {
 		return findComments;
 	}
 
-	// 댓글, 대댓글 정렬
+	// ----- 댓글, 대댓글 정렬
 	public List<Comments> getSortedCommentsByBoard(Board board) {
 		List<Comments> comments = commentsRepository.findAllByBoardOrderByCreatedAtAscParentCommentsCommentsId(board);
 
