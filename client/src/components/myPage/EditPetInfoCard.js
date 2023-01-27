@@ -12,11 +12,6 @@ const CardContainer = styled.div`
   > * {
     margin: 1% 0;
   }
-  img {
-    width: 100%;
-    height: 20rem;
-    border-radius: 10px;
-  }
   .Info {
     display: flex;
     > div {

@@ -11,11 +11,6 @@ const CardContainer = styled.div`
   > * {
     margin: 1% 0;
   }
-  img {
-    width: 15rem;
-    height: 12rem;
-    border-radius: 10px;
-  }
   .Info {
     display: flex;
     > div {
@@ -36,7 +31,10 @@ const CardContainer = styled.div`
 const PetInfoCard = ({ pet }) => {
   return (
     <CardContainer>
-      <PetProfileImage src={pet?.profileImage} alt=""></PetProfileImage>
+      <PetProfileImage
+        src={pet?.profileImage?.upFileUrl}
+        alt=""
+      ></PetProfileImage>
       <Title as="h3" size="small">
         {pet?.name}
       </Title>

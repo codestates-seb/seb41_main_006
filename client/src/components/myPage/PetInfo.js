@@ -64,12 +64,22 @@ const Saddbutton = styled.button`
 const PetInfo = () => {
   const [EditModal, setEditModal] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const { data: petList, isLoading } = useQuery({
+  const {
+    data: petList,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['myPets'],
     queryFn: async () => await getMyPetList({ page: 1, size: 10 }),
     initialData: [],
   });
+
+  if (isError) {
+    console.log('err');
+    alert('펫 정보 불러오는데 오류남!');
+  }
 
   return (
     <>
@@ -77,7 +87,7 @@ const PetInfo = () => {
       <PetContainer>
         {isLoading ? (
           <div>loading...</div>
-        ) : petList.length === 0 ? (
+        ) : petList?.length === 0 ? (
           <div className="no-pets--wrapper">
             <div className="dog-face">
               <DogFace></DogFace>
@@ -107,8 +117,8 @@ const PetInfo = () => {
         <FaDog />
         <span>추가</span>
       </Saddbutton>
-      {EditModal ? (
-        <EditPetModal setEditModal={setEditModal} EditModal={EditModal} />
+      {isEditModalOpen ? (
+        <EditPetModal setIsEditModalOpen={setIsEditModalOpen} />
       ) : (
         ''
       )}

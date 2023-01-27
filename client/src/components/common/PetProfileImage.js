@@ -6,7 +6,6 @@ const PetProfileBox = styled(CenterBox)`
   background-color: white;
   width: 20rem;
   height: 22rem;
-  padding: 1rem;
 
   svg,
   img {

@@ -29,7 +29,7 @@ const AddPetInfoModal = ({ setIsAddModalOpen }) => {
   };
 
   return (
-    <ModalBackDrop onClick={handleModalClose}>
+    <ModalBackDrop>
       <SContainer onClick={(e) => e.stopPropagation()}>
         <PetInfoInput isEditMode={false} handleModalClose={handleModalClose} />
       </SContainer>
