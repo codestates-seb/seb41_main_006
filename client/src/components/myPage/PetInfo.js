@@ -66,7 +66,7 @@ const PetInfo = () => {
   const { data: petList, isLoading } = useQuery({
     queryKey: ['myPets'],
     queryFn: async () => await getMyPetList({ page: 1, size: 10 }),
-    initialData: [],
+    initialData: () => [],
   });
 
   return (
