@@ -7,7 +7,6 @@ import BoardPage from './pages/BoardPage';
 import BoardEditPage from './pages/BoardEditPage';
 import FindMatePage from './pages/FindMatePage';
 import SignUpPage from './pages/SignUpPage';
-import InputMemberInfoPage from './pages/InputMemberInfoPage';
 import MyPage from './pages/MyPage';
 import ChattingPage from './pages/ChattingPage';
 
@@ -25,7 +24,6 @@ function App() {
         ></Route>
         <Route path="/mate/*" element={<FindMatePage />}></Route>
         <Route path="/signup/*" element={<SignUpPage />}></Route>
-        <Route path="/inputMember" element={<InputMemberInfoPage />}></Route>
         <Route path="/mypage/*" element={<MyPage />}></Route>
         <Route path="/chat/*" element={<ChattingPage />}></Route>
         <Route path="/*" element={<MainPage />}></Route>

@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import PetInfoInput from '../PetInfoInput';
-import { PostSubmitBtn } from '../../Button';
 import ModalBackDrop from '../../ModalBackDrop';
 
 const SContainer = styled.div`
   background-color: var(--bg-color);
-  border-radius: 5%;
+  border-radius: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,31 +23,15 @@ const SContainer = styled.div`
   }
 `;
 
-const AddButton = styled(PostSubmitBtn)`
-  font-size: 1.2rem;
-  border-radius: 4px;
-  margin-top: 5%;
-  :hover {
-    background-color: var(--main-font-color);
-  }
-`;
-
 const AddPetInfoModal = ({ setIsAddModalOpen }) => {
   const handleModalClose = () => {
     setIsAddModalOpen(false);
   };
 
   return (
-    <ModalBackDrop onClick={handleModalClose}>
+    <ModalBackDrop>
       <SContainer onClick={(e) => e.stopPropagation()}>
-        <PetInfoInput isEditMode={false} />
-        <AddButton
-          onClick={() => {
-            setIsAddModalOpen(false);
-          }}
-        >
-          추가하기
-        </AddButton>
+        <PetInfoInput isEditMode={false} handleModalClose={handleModalClose} />
       </SContainer>
     </ModalBackDrop>
   );

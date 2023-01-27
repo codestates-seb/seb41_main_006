@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { MdModeEdit } from 'react-icons/md';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import PetInfoCard from './PetInfoCard';
+import EditPetModal from './Modal/EditPetModal';
 
 const CardContainer = styled.div`
   display: flex;
@@ -11,11 +13,6 @@ const CardContainer = styled.div`
   color: var(--main-font-color);
   > * {
     margin: 1% 0;
-  }
-  img {
-    width: 100%;
-    height: 20rem;
-    border-radius: 10px;
   }
   .Info {
     display: flex;
@@ -45,24 +42,32 @@ const CardContainer = styled.div`
   }
 `;
 
-const EditPetInfoCard = ({ pet, setEditModal, EditModal }) => {
+const EditPetInfoCard = ({ pet }) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   return (
-    <CardContainer>
-      <PetInfoCard pet={pet} />
-      <div className="Edit">
-        <button>
-          <MdModeEdit
-            size="20"
-            onClick={() => {
-              setEditModal(!EditModal);
-            }}
-          />
-        </button>
-        <button>
-          <RiDeleteBinFill size="20" />
-        </button>
-      </div>
-    </CardContainer>
+    <>
+      <CardContainer>
+        <PetInfoCard pet={pet} />
+        <div className="Edit">
+          <button>
+            <MdModeEdit
+              size="20"
+              onClick={() => {
+                setIsEditModalOpen(true);
+              }}
+            />
+          </button>
+          <button>
+            <RiDeleteBinFill size="20" />
+          </button>
+        </div>
+      </CardContainer>
+      {isEditModalOpen ? (
+        <EditPetModal pet={pet} setIsEditModalOpen={setIsEditModalOpen} />
+      ) : (
+        ''
+      )}
+    </>
   );
 };
 

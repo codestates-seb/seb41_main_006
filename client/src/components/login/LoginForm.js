@@ -42,8 +42,10 @@ const LoginForm = ({ setIsLogin }) => {
         localStorage.setItem('refreshToken', data.headers.refresh);
         localStorage.setItem('memberId', data.data.memberId);
         setIsLogin(true);
-        alert('로그인 성공');
         dispatch(closeModal());
+      })
+      .catch((e) => {
+        console.log(e);
       });
 
   const handleSubmit = async (event) => {
@@ -67,6 +69,7 @@ const LoginForm = ({ setIsLogin }) => {
 
     await handleLogin();
   };
+
   return (
     <SLoginForm onSubmit={handleSubmit}>
       <AuthInput

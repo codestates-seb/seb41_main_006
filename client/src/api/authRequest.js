@@ -33,7 +33,7 @@ authRequest.interceptors.response.use(
       응답 에러 처리를 작성합니다.
       .catch() 으로 이어집니다.    
   */
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
         defaultRequest
@@ -49,7 +49,7 @@ authRequest.interceptors.response.use(
             window.location.reload();
           })
           .catch((error) => {
-            if (error.response.status === 401) {
+            if (error?.response?.status === 401) {
               localStorage.removeItem('AccessToken');
               localStorage.removeItem('refreshToken');
               alert('다시 로그인 해 주세요');

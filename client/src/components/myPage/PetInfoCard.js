@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Title from '../common/Title';
+import PetProfileImage from '../common/PetProfileImage';
 
 const CardContainer = styled.div`
   display: flex;
@@ -9,11 +10,6 @@ const CardContainer = styled.div`
   color: var(--main-font-color);
   > * {
     margin: 1% 0;
-  }
-  img {
-    width: 15rem;
-    height: 12rem;
-    border-radius: 10px;
   }
   .Info {
     display: flex;
@@ -35,7 +31,10 @@ const CardContainer = styled.div`
 const PetInfoCard = ({ pet }) => {
   return (
     <CardContainer>
-      <img src={pet?.profileImage} alt=""></img>
+      <PetProfileImage
+        src={pet?.profileImage?.upFileUrl}
+        alt=""
+      ></PetProfileImage>
       <Title as="h3" size="small">
         {pet?.name}
       </Title>

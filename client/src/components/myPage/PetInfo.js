@@ -4,7 +4,6 @@ import { getMyPetList } from '../../api/pet/pet';
 import styled from 'styled-components';
 import EditPetInfoCard from './EditPetInfoCard';
 import { FaDog } from 'react-icons/fa';
-import EditPetModal from './Modal/EditPetModal';
 import AddPetInfoModal from './Modal/AddPetInfoModal';
 import DogFace from '../common/DogFace';
 
@@ -62,7 +61,6 @@ const Saddbutton = styled.button`
   }
 `;
 const PetInfo = () => {
-  const [EditModal, setEditModal] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const { data: petList, isLoading } = useQuery({
@@ -77,7 +75,7 @@ const PetInfo = () => {
       <PetContainer>
         {isLoading ? (
           <div>loading...</div>
-        ) : petList.length === 0 ? (
+        ) : petList?.length === 0 ? (
           <div className="no-pets--wrapper">
             <div className="dog-face">
               <DogFace></DogFace>
@@ -88,11 +86,7 @@ const PetInfo = () => {
           <PetList>
             {petList.map((el) => (
               <li key={el.petId}>
-                <EditPetInfoCard
-                  pet={el}
-                  setEditModal={setEditModal}
-                  EditModal={EditModal}
-                />
+                <EditPetInfoCard pet={el} />
               </li>
             ))}
           </PetList>
@@ -107,11 +101,6 @@ const PetInfo = () => {
         <FaDog />
         <span>추가</span>
       </Saddbutton>
-      {EditModal ? (
-        <EditPetModal setEditModal={setEditModal} EditModal={EditModal} />
-      ) : (
-        ''
-      )}
       {isAddModalOpen ? (
         <AddPetInfoModal setIsAddModalOpen={setIsAddModalOpen} />
       ) : (

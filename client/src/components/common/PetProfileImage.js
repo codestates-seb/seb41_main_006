@@ -4,17 +4,14 @@ import DogProfile from './DogProfile';
 
 const PetProfileBox = styled(CenterBox)`
   background-color: white;
-  width: max-content;
-  height: max-content;
-  padding: 1rem;
-  svg {
-    width: ${({ width }) => width || '100px'};
-    height: ${({ height }) => height || '150px'};
-  }
+  width: 100%;
+  height: 100%;
 
+  svg,
   img {
-    width: ${({ width }) => width || '100px'};
-    height: ${({ height }) => height || '150px'};
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   ${(props) =>
@@ -43,8 +40,7 @@ const PetProfileImage = ({ width, height, src, name, shadow }) => {
 };
 
 PetProfileImage.defaultProps = {
-  size: '20px',
-  name: 'user',
+  name: 'pet',
 };
 
 export default PetProfileImage;
