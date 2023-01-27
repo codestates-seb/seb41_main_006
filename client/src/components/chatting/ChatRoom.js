@@ -75,29 +75,22 @@ const ChatRoom = () => {
   };
 
   const subscribe = () => {
-    const headers = { headers: AccessToken };
-    client.current.subscribe(
-      `/sub/chats/${chatId}`,
-      (body) => {
-        const json_body = JSON.parse(body.body);
-        console.log(json_body);
-        console.log(body);
-      },
-      headers
-    );
+    client.current.subscribe(`/sub/chats/${chatId}`, (body) => {
+      const json_body = JSON.parse(body.body);
+      console.log(json_body);
+      console.log(body);
+    });
   };
   const publish = (message) => {
-    const headers = { headers: AccessToken };
     if (!client.current.connected) return; // 연결되지 않았으면 메시지를 보내지 않는다.
 
     client.current.publish({
       destination: `/pub/chats/messages/${chatId}`,
       body: JSON.stringify({
         roomId: chatId,
-        memberId: memberId,
+        senderId: memberId,
         content: message,
       }),
-      headers, // 형식에 맞게 수정해서 보내야 함.
     });
     setMessage('');
   };

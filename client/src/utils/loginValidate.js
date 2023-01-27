@@ -8,6 +8,7 @@ const loginValidate = {
     } else if (!isEmailValid(email)) {
       error = '올바른 이메일이 아닙니다.';
     }
+
     return error;
   },
 
