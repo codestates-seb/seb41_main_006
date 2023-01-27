@@ -1,4 +1,4 @@
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
@@ -71,12 +71,12 @@ const SignUpPage = () => {
     validate: memberInfoValidate,
   });
 
-  // useEffect(() => {
-  //   // 이메일과 패스워드가 없는 상태라면 멤버 정보 입력 화면 진입 불가
-  //   if (!email.value || !password.value) {
-  //     navigate('/signup');
-  //   }
-  // }, []);
+  useEffect(() => {
+    // 이메일과 패스워드가 없는 상태라면 멤버 정보 입력 화면 진입 불가
+    if (!email.value || !password.value) {
+      navigate('/signup');
+    }
+  }, []);
 
   return (
     <SignUpContainer>
