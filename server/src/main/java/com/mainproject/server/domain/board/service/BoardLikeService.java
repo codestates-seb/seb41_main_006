@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.board.entity.BoardLike;
+import com.mainproject.server.domain.board.mapper.BoardMapper;
 import com.mainproject.server.domain.board.repository.BoardLikeRepository;
 import com.mainproject.server.domain.board.repository.BoardRepository;
 import com.mainproject.server.domain.member.entity.Member;
@@ -20,17 +21,19 @@ public class BoardLikeService {
 	private final BoardService boardService;
 	private final BoardRepository boardRepository;
 	private final BoardLikeRepository boardLikeRepository;
+	private final BoardMapper boardMapper;
 
 	public BoardLikeService(MemberService memberService, BoardService boardService, BoardRepository boardRepository,
-		BoardLikeRepository boardLikeRepository) {
+		BoardLikeRepository boardLikeRepository, BoardMapper boardMapper) {
 		this.memberService = memberService;
 		this.boardService = boardService;
 		this.boardRepository = boardRepository;
 		this.boardLikeRepository = boardLikeRepository;
+		this.boardMapper = boardMapper;
 	}
 
 	@Transactional
-	public void likeBoard(Long boardId, Long memberId){
+	public Optional<BoardLike> likeBoard(Long boardId, Long memberId){
 		Member findMember = memberService.validateVerifyMember(memberId);
 		Board findBoard = boardService.findVerifiedBoard(boardId);
 
@@ -50,6 +53,6 @@ public class BoardLikeService {
 				boardLikeRepository.save(boardLike);
 			}
 		);
-
+		return oBoardLike;
 	}
 }

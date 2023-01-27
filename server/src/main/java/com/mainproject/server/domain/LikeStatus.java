@@ -7,7 +7,7 @@ public enum LikeStatus {
 	CANCEL("취소");
 
 	@Getter
-	private String likeStatus;
+	public String likeStatus;
 
 	LikeStatus(String likeStatus) {
 		this.likeStatus = likeStatus;

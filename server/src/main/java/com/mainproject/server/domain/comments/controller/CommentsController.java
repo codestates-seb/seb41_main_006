@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.comments.controller;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -128,9 +129,11 @@ public class CommentsController {
 		if(memberDetails == null){
 			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
-		commentsLikeService.likeComments(commentsId, commentsLikeDto.getMemberId());
 
-		return new ResponseEntity<>(HttpStatus.OK);
+		Optional<CommentsLike> commentsLike = commentsLikeService.likeComments(commentsId, commentsLikeDto.getMemberId());
+		CommentsLikeDto.Response response = mapper.commentsLikeToCommentsLikeResponseDto(commentsLike);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }
 

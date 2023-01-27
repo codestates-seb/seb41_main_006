@@ -1,5 +1,7 @@
 package com.mainproject.server.domain.comments.mapper;
 
+import java.util.Optional;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -28,4 +30,19 @@ public interface CommentsMapper {
 	CommentsDto.Response commentsToCommentsResponseDto(Comments comments);
 
 	CommentsLike commentsLikeDtoToCommentsLike(CommentsLikeDto commentsLikeDto);
+
+	default CommentsLikeDto.Response commentsLikeToCommentsLikeResponseDto(Optional<CommentsLike> commentsLike){
+		Member member = commentsLike.get().getMember();
+		Comments comments = commentsLike.get().getComments();
+
+		CommentsLikeDto.Response commentsLikeResponseDto = CommentsLikeDto.Response
+			.builder()
+			.commentsLikeId(commentsLike.get().getCommentsLikeId())
+			.memberId(member.getMemberId())
+			.commentsId(comments.getCommentsId())
+			.likeStatus(commentsLike.get().likeStatus)
+			.build();
+
+		return commentsLikeResponseDto;
+	}
 }
