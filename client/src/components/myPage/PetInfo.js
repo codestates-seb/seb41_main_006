@@ -45,8 +45,11 @@ const PetList = styled.ul`
 `;
 
 const Saddbutton = styled.button`
-  width: 30%;
+  width: 20rem;
   height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.2rem;
   font-weight: 500;
   background-color: var(--bg-color);
@@ -60,7 +63,7 @@ const Saddbutton = styled.button`
 `;
 const PetInfo = () => {
   const [EditModal, setEditModal] = useState(false);
-  const [AddModal, setAddModal] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const { data: petList, isLoading } = useQuery({
     queryKey: ['myPets'],
@@ -96,20 +99,21 @@ const PetInfo = () => {
         )}
       </PetContainer>
       <Saddbutton
-        className="Addbutton"
+        className="add-button"
         onClick={() => {
-          setAddModal(!AddModal);
+          setIsAddModalOpen(true);
         }}
       >
-        <FaDog /> 추가
+        <FaDog />
+        <span>추가</span>
       </Saddbutton>
       {EditModal ? (
         <EditPetModal setEditModal={setEditModal} EditModal={EditModal} />
       ) : (
         ''
       )}
-      {AddModal ? (
-        <AddPetInfoModal AddModal={AddModal} setAddModal={setAddModal} />
+      {isAddModalOpen ? (
+        <AddPetInfoModal setIsAddModalOpen={setIsAddModalOpen} />
       ) : (
         ''
       )}
