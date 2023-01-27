@@ -4,7 +4,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
-import { commentPatch, commentDelete } from '../../api/board/comment';
+import { commentPatch, recommentDelete } from '../../api/board/comment';
 import { convertCreatedAt } from '../../utils/dateConvert';
 
 const RecommentBox = styled.div`
@@ -138,7 +138,7 @@ const Recomment = ({ recomment }) => {
 
   // 대댓글 삭제
   const handleRecommentDelete = (recommentId) => {
-    commentDelete(recommentId);
+    recommentDelete(recommentId);
   };
 
   return (
@@ -213,19 +213,6 @@ const Recomment = ({ recomment }) => {
       ) : (
         <div className="recomment-content">{recomment.content}</div>
       )}
-      {/* <button className="recomment-btn" onClick={handleRecommentsClick}>
-        {isRecommentsOpen ? (
-          <FaMinus className="recomment-icon" />
-        ) : (
-          <FaPlus className="recomment-icon" />
-        )}
-        {recomment.length === 0 ? (
-          <span>답글 달기</span>
-        ) : (
-          <span>답글 {recomment.length}개</span>
-        )}
-      </button>
-      {isRecommentsOpen && <RecommentList recomments={recomment} />} */}
     </RecommentBox>
   );
 };
