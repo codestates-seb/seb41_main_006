@@ -40,8 +40,9 @@ const SContainer = styled.div`
 `;
 
 const MemberInfoModal = ({ memberId }) => {
+  console.log(memberId);
   const [member, setMember] = useState({
-    pets: [],
+    petsInfo: [],
   });
   const AccessToken = localStorage.getItem('AccessToken');
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const MemberInfoModal = ({ memberId }) => {
   const handleModal = () => {
     dispatch(closeModal());
   };
+
   const AddChatList = async (memberId) => {
     await instance
       .post(
@@ -64,10 +66,14 @@ const MemberInfoModal = ({ memberId }) => {
   };
 
   useEffect(() => {
-    getMemberInfo(memberId).then((data) => {
-      console.log(data);
-      setMember(data);
-    });
+    getMemberInfo(memberId)
+      .then((data) => {
+        console.log(data);
+        setMember(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [memberId]);
 
   return (
@@ -87,7 +93,7 @@ const MemberInfoModal = ({ memberId }) => {
       </div>
       <div className="petInfo-container">
         <h2>강아지 소개</h2>
-        <PetInfoCard pet={member.pets[0]} />
+        <PetInfoCard pet={member.petsInfo[0]} />
       </div>
     </SContainer>
   );
