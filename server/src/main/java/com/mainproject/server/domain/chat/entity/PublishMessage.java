@@ -24,7 +24,8 @@ public class PublishMessage implements Serializable {
     private Long senderId;
     @NotBlank
     private String content;
-
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
 
 }
