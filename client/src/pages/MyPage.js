@@ -76,10 +76,7 @@ const MyPage = () => {
         <Routes>
           <Route path="/" element={<MemberInfo />}></Route>
           <Route path="memberInfo" element={<MemberInfo />}></Route>
-          <Route
-            path="petInfo"
-            element={<PetInfo petList={dummyMembers.data[1].pets} />}
-          ></Route>
+          <Route path="petInfo" element={<PetInfo />}></Route>
           <Route
             path="myBoards"
             element={<BoardInfo memberId={dummyMembers.data[1].memberId} />}

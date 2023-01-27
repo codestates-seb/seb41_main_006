@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-
+// import { isNotNumber } from '../utils/validateFunctions';
 // 이후 유저 가입 폼으로 사용하면 좋을듯
 /**
  * @param {Object} form
@@ -26,8 +26,15 @@ function useForm({ initialValues, onSubmit, validate }) {
 
   /** 입력 란에서 발생하는 변경 이벤트를 다루는 함수 */
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
+    const { name, value, type } = event.target;
+    if (type === 'number') {
+      // 숫자만 입력 받게 하고 처음 숫자 0 지운다.
+      const number = value.replace(/[^0-9]/g, '').replace(/(^0+)/, '');
+      setValues({ ...values, [name]: number });
+      return null;
+    } else {
+      setValues({ ...values, [name]: value });
+    }
   };
 
   /** 제출 이벤트를 다루는 함수 */
