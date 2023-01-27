@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
 import AuthInput from '../common/AuthInput';
-import {
-  emailValidate,
-  passwordValidate,
-  confirmPasswordValidate,
-} from '../../utils/signUpValidate';
+import signUpValidate from '../../utils/signUpValidate';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import Button from '../common/Button';
@@ -76,7 +72,7 @@ const SignUp = ({ email, password, confirmPassword }) => {
   const dispatch = useDispatch();
   const handleLoginClick = () => dispatch(openModal({ type: 'login' }));
   // 제출 시 loading 상태
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   // 이메일 인증 부분 open
   const [isEmailAuthModalOpen, setIsEmailAuthModalOpen] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -84,47 +80,60 @@ const SignUp = ({ email, password, confirmPassword }) => {
 
   const handleCheckEmail = (event) => {
     const { value } = event.target;
-    email.setError(emailValidate(value));
+    email.setError(signUpValidate.email(value));
   };
 
   const handleCheckPassword = (event) => {
     const { value } = event.target;
-    password.setError(passwordValidate(value));
+    password.setError(signUpValidate.password(value));
   };
 
   const handleCheckConfirmPassword = (event) => {
     const { value } = event.target;
-    confirmPassword.setError(confirmPasswordValidate(value, password.value));
+    confirmPassword.setError(
+      signUpValidate.confirmPassword(value, password.value)
+    );
   };
 
   const handleSubmit = (event) => {
     // 기본 동작 방지
     event.preventDefault();
 
-    // loading 상태로
-    setIsLoading(true);
-    // 값들 다시 한번 점검
-    email.setError(emailValidate(email.value));
-    password.setError(passwordValidate(password.value));
-    confirmPassword.setError(
-      confirmPasswordValidate(confirmPassword.value, password.value)
-    );
-
+    // 이메일 입력했는데 인증이 안된 상태라면
     if (email.value && !isEmailVerified) {
       email.setError('이메일 인증이 완료되지 않았습니다');
+      return;
     }
+
+    // 값들 다시 한번 점검
+    const emailError = signUpValidate.email(email.value);
+    const passwordError = signUpValidate.password(password.value);
+    const confirmPasswordError = signUpValidate.confirmPassword(
+      confirmPassword.value,
+      password.value
+    );
+
+    if (emailError || passwordError || confirmPasswordError) {
+      if (emailError) email.setError(emailError);
+      if (passwordError) password.setError(passwordError);
+      if (confirmPasswordError) confirmPassword.setError(confirmPasswordError);
+
+      return;
+    }
+
+    // 모든 과정이 완료되었으면 정보 입력 화면으로 간다.
+    navigate('/signup/memberInfo');
   };
 
   const handleEmailAuthOpenClick = async () => {
     // 인증 메일 발송 중이라면 다시 요청 못하게 막는다.
     if (isEmailLoading) return;
 
-    const emailError = emailValidate(email.value);
+    const emailError = signUpValidate.email(email.value);
     if (emailError) {
       email.setError(emailError);
     } else {
       setIsEmailLoading(true);
-      setIsEmailAuthModalOpen(true);
       try {
         await authEmail(email.value);
         email.setError('');
@@ -150,19 +159,10 @@ const SignUp = ({ email, password, confirmPassword }) => {
   }, [password.value, confirmPassword.value]);
 
   useEffect(() => {
-    if (isLoading) {
-      if (
-        !email.error &&
-        !password.error &&
-        !confirmPassword.error &&
-        isEmailVerified
-      ) {
-        navigate('/signup/memberInfo');
-      } else {
-        setIsLoading(false);
-      }
+    if (isEmailLoading) {
+      setIsEmailAuthModalOpen(true);
     }
-  }, [isLoading]);
+  }, [isEmailLoading]);
 
   return (
     <SignUpInputContainer>
