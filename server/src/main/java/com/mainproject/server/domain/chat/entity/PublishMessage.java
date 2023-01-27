@@ -15,16 +15,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PublishMessage {
     @NotNull
-    private long roomId;
+    private Long roomId;
     @NotNull
-    private long senderId;
+    private Long senderId;
     @NotBlank
     private String content;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
 
-    public PublishMessage(long roomId, long senderId, String content, LocalDateTime createdAt) {
+    public PublishMessage(Long roomId, Long senderId, String content, LocalDateTime createdAt) {
         this.roomId = roomId;
         this.senderId = senderId;
         this.content = content;
