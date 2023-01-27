@@ -5,10 +5,15 @@ const PASSWORD_RULE =
   /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
 
 // 이메일 형식에 맞는지 검사
-export function isEmailValid(email) {
+export const isEmailValid = (email) => {
   return EMAIL_RULE.test(email);
-}
+};
 
-export function isPasswordValid(password) {
+export const isPasswordValid = (password) => {
   return PASSWORD_RULE.test(password);
-}
+};
+
+export const isNotNumber = (value) => {
+  const regExp = /[a-z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+  return regExp.test(value);
+};
