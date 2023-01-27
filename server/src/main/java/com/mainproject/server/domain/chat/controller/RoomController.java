@@ -83,15 +83,17 @@ public class RoomController {
 
     // 채팅 목록 조회 -> 로그인한 유저가 참여하고 있는 채팅 목록
     @GetMapping
-    public ResponseEntity getChatRooms(@AuthenticationPrincipal MemberDetails memberDetails) {
+    public ResponseEntity getChatRooms(@AuthenticationPrincipal MemberDetails memberDetails,
+                                       @Positive @RequestParam(defaultValue = "1") int page,
+                                       @Positive @RequestParam(defaultValue = "10") int size) {
 
         if(memberDetails == null) {
             log.info("인증되지 않은 회원의 접근으로 채팅 목록을 가져올 수 없음");
             return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
-        Page<ChatRoom> roomPage = roomService.findRooms(memberDetails);
-        PageInfo pageInfo = new PageInfo(1, 10, (int)roomPage.getTotalElements(), roomPage.getTotalPages());
+        Page<ChatRoom> roomPage = roomService.findRooms(memberDetails, page, size);
+        PageInfo pageInfo = new PageInfo(page, size, (int)roomPage.getTotalElements(), roomPage.getTotalPages());
 
         List<ChatRoom> rooms = roomPage.getContent();
         List<ChatDto.RoomResponse> responses = mapper.chatRoomListToRoomResponseDtos(rooms);
