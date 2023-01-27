@@ -1,13 +1,26 @@
 import styled from 'styled-components';
 import { useState, useRef } from 'react';
 import useForm from '../../hooks/useForm';
-import petInfoValidate from '../../utils/petInfoValidate';
 import PetProfileImage from '../common/PetProfileImage';
+import Button from '../common/Button';
+import Select from '../common/Select';
+import selectPetSizeList from '../../static/selectPetSizeList';
+import { isNotNumber } from '../../utils/validateFunctions';
+import petInfoValidate from '../../utils/petInfoValidats';
+// import { petImageUpload } from '../../api/image';
+import { createMyPet } from '../../api/pet/pet';
 
-const SinfoContainer = styled.div`
+const PetInfoInputContainer = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
-  margin-top: 4%;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const PetInfoInputForm = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
   .img-container {
     display: flex;
@@ -120,7 +133,7 @@ const Scheckbox = styled.input`
   }
 `;
 
-const PetInfoInput = ({ isEditMode }) => {
+const PetInfoInput = ({ isEditMode, handleModalClose }) => {
   const onSubmit = async (values) => {
     let imageInfo = null;
     try {
@@ -131,6 +144,7 @@ const PetInfoInput = ({ isEditMode }) => {
         // );
       }
       console.log('업로드 된 이미지 정보', imageInfo);
+      handleModalClose();
       // 받아온 이미지 아이디 정보 넘겨줘야 함
       // update 나 post
     } catch (err) {
@@ -143,22 +157,23 @@ const PetInfoInput = ({ isEditMode }) => {
     }
   };
 
-  const { values, setValueByName, setErrorByName, handleChange } = useForm({
-    initialValues: {
-      name: '',
-      age: 0,
-      gender: '',
-      aboutDog: '',
-      breed: '',
-      neutered: false,
-      petSize: '',
-      profileImage: '',
-      profileImageId: null,
-      profileImageFile: null,
-    },
-    onSubmit,
-    validate: petInfoValidate,
-  });
+  const { values, setValueByName, setErrors, setErrorByName, handleChange } =
+    useForm({
+      initialValues: {
+        name: '',
+        age: 0,
+        gender: '',
+        breed: '',
+        neutered: false,
+        petSize: '',
+        aboutDog: '',
+        profileImage: '',
+        profileImageId: null,
+        profileImageFile: null,
+      },
+      onSubmit,
+      validate: petInfoValidate,
+    });
   const [previewImgUrl, setPreviewImgUrl] = useState('');
 
   const imgRef = useRef();
@@ -198,12 +213,57 @@ const PetInfoInput = ({ isEditMode }) => {
     setValueByName('profileImageFile', null);
   };
 
-  console.log(values.neutered);
+  const handleChangeAge = (e) => {
+    // 숫자가 아닌 경우는 입력하지 않는다.
+    if (e.nativeEvent.data && isNotNumber(e.nativeEvent.data)) {
+      e.preventDefault();
+      return null;
+    }
+    // 길이를 2로 제한한다.
+    if (e.target.value.length > e.target.maxLength)
+      e.target.value = e.target.value.slice(0, e.target.maxLength);
+
+    setValueByName('age', e.target.value.replace(/(^0+)/, ''));
+  };
+
+  const handleSubmit = async () => {
+    const petErrors = petInfoValidate(values);
+    // 오류가 하나라도 존재한다면
+    if (Object.keys(petErrors).length !== 0) {
+      // 오류 메시지 설정 후
+      setErrors(petErrors);
+      // 제출 취소
+      return;
+    }
+
+    let imageInfo = null;
+    try {
+      // // 이미지 파일이 존재하면
+      // if (values.profileImageFile) {
+      //   imageInfo = await petImageUpload(values.profileImageFile);
+      // }
+
+      if (isEditMode) {
+        console.log('수정!');
+      } else {
+        const res = await createMyPet({
+          ...values,
+          // 업로드 된 이미지 아이디 정보
+          profileImageId: imageInfo?.upFileId,
+          profileImage: imageInfo?.upFileUrl,
+        });
+
+        console.log(res);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    <>
+    <PetInfoInputContainer>
       <h2>{isEditMode ? '강아지 정보 수정' : '나의 강아지 추가'}</h2>
-      <SinfoContainer>
+      <PetInfoInputForm>
         <div className="img-container">
           <PetProfileImage
             width="19rem"
@@ -235,17 +295,11 @@ const PetInfoInput = ({ isEditMode }) => {
             ></input>
             <div>나이</div>
             <input
-              type="number"
-              min="0"
-              max="50"
+              type="text"
               maxLength={2}
               name="age"
               value={values.age}
-              onChange={handleChange}
-              onInput={(e) => {
-                if (e.target.value.length > e.target.maxLength)
-                  e.target.value = e.target.value.slice(0, e.target.maxLength);
-              }}
+              onChange={handleChangeAge}
               className="age-input"
             ></input>
           </div>
@@ -267,20 +321,43 @@ const PetInfoInput = ({ isEditMode }) => {
             >
               암컷
             </button>
-            <Scheckbox type="checkbox" value={values.neutered} />
+            <Scheckbox
+              type="checkbox"
+              value={values.neutered}
+              onChange={(e) => {
+                if (e.target.checked) setValueByName('neutered', true);
+                else setValueByName('neutered', false);
+              }}
+            />
             <span>중성화 여부</span>
           </div>
           <div className="breed-input">
             <div>견종</div>
-            <input></input>
+            <input
+              type="text"
+              name="breed"
+              value={values.breed}
+              onChange={handleChange}
+            ></input>
+            <div>크기</div>
+            <Select
+              curValue={values.petSize}
+              handleSelect={handleChange}
+              selectList={selectPetSizeList}
+            />
           </div>
           <div className="etc-input">
             <div>특이사항</div>
-            <textarea></textarea>
+            <textarea
+              name="aboutDog"
+              value={values.aboutDog}
+              onChange={handleChange}
+            ></textarea>
           </div>
         </div>
-      </SinfoContainer>
-    </>
+      </PetInfoInputForm>
+      <Button onClick={handleSubmit}>완료</Button>
+    </PetInfoInputContainer>
   );
 };
 
