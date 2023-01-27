@@ -22,6 +22,7 @@ public class RedisSubscriber implements MessageListener {
     private final RedisTemplate redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
 
+
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
