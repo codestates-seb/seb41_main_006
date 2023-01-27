@@ -159,9 +159,8 @@ const BoardPage = () => {
       y: locInfo[2],
       petId: petId,
     });
+    navigate('/mate/boards');
   };
-  console.log(dateInfo, locInfo);
-  console.log(petId);
 
   return (
     <ContainerBox>
