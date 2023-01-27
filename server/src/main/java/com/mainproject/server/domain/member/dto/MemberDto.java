@@ -140,5 +140,6 @@ public class MemberDto {
     public static class ResponseOnlyMemberName {
         private long memberId;
         private String nickName;
+        private S3UpFileResponse profileImage;
     }
 }
