@@ -38,7 +38,7 @@ public class ChatService {
                 .chatRoom(chatRoom)
                 .sendTime(LocalDateTime.now())
                 .build();
-
+        log.info("chatMessage : {}", chatMessage.toString());
         messageRepository.save(chatMessage);
         log.info("메세지 저장 완료");
     }
