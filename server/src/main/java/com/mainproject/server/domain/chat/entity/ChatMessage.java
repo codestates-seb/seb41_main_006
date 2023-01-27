@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatMessage implements Serializable {
-    private static final long serialVersionUID = 2082503192322391880L;
+public class ChatMessage  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
