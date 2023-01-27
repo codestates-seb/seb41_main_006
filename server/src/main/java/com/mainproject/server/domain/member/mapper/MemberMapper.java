@@ -72,5 +72,8 @@ public interface MemberMapper {
 
     List<MemberDto.ResponseWithPets> membersToMemberResponseWithPetsDto(List<Member> member);
 
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     MemberDto.ResponseOnlyMemberName memberToMemberResponseOnlyMemberName(Member member);
 }
