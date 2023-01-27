@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PublishMessage {
     @NotNull
     private Long roomId;
@@ -24,10 +26,4 @@ public class PublishMessage {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
 
-    public PublishMessage(Long roomId, Long senderId, String content, LocalDateTime createdAt) {
-        this.roomId = roomId;
-        this.senderId = senderId;
-        this.content = content;
-        this.createdAt = createdAt;
-    }
 }
