@@ -13,21 +13,9 @@ export const getBoardList = async ({ page, size, placeCode }) => {
 
     console.log(res.data.data);
     return res?.data?.data;
-
-    // return data;
   } catch (err) {
     console.log(err);
   }
-
-  // try {
-  //   console.log(
-  //     `보드리스트를 불러옵니다. 페이지 ${page} 사이즈 ${size} 법정 코드${placeCode}`
-  //   );
-  //   await wait(500);
-  //   return dummyBoards.data;
-  // } catch (err) {
-  //   throw new Error(err);
-  // }
 };
 
 // /boards/:id
@@ -44,7 +32,7 @@ export const getBoardById = async (boardId) => {
 export const getMyBoardsList = async () => {
   try {
     const res = await authRequest.get('/boards/my-boards');
-    console.log(res);
+    return res?.data?.data;
   } catch (err) {
     console.log(err);
   }

@@ -1,5 +1,3 @@
-import dummyMembers from './dummyMembers';
-import wait from '../../utils/wait';
 import defaultRequest from '../defaultRequest';
 import authRequest from '../authRequest';
 
@@ -20,10 +18,11 @@ export const getMemberList = async ({ page, size, placeCode }) => {
 // GET /members/{memberId}
 export const getMemberInfo = async (memberId) => {
   try {
-    await wait(500);
-    return dummyMembers.data.find((el) => el.memberId === memberId);
+    const res = await authRequest.get(`/members/${memberId}`);
+    return res?.data?.data;
   } catch (err) {
     console.log(err);
+    throw err;
   }
 };
 
@@ -31,7 +30,6 @@ export const getMemberInfo = async (memberId) => {
 export const getMyInfo = async (memberId) => {
   try {
     const res = await authRequest.get(`/members/${memberId}/my-page`);
-    console.log(res.data);
     return res.data.data;
   } catch (err) {
     console.log(err);
@@ -42,12 +40,7 @@ export const getMyInfo = async (memberId) => {
 // PATCH /members/${memberId}/my-page
 export const updateMyInfo = async ({ memberId, data }) => {
   console.log(`멤버 아이디 ${memberId} 회원 데이터 수정 body`, data);
-  try {
-    await authRequest.patch(`/members/${memberId}/my-page`, data);
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+  return await authRequest.patch(`/members/${memberId}/my-page`, data);
 };
 
 // DELETE /members/${memberId}
