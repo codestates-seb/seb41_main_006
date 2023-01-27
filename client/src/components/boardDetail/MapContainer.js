@@ -84,8 +84,6 @@ const MapContainer = ({
   setEditDate,
   setEditPlace,
   meetingPlace,
-  originalX,
-  originalY,
 }) => {
   const location = useLocation();
 
@@ -200,8 +198,6 @@ const MapContainer = ({
               searchPlace={place}
               setLocInfo={setLocInfo}
               setEditPlace={setEditPlace}
-              originalX={originalX}
-              originalY={originalY}
             />
           </div>
         </div>

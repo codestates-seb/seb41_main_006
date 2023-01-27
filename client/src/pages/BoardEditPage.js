@@ -98,7 +98,6 @@ const BoardEditPage = () => {
 
   let board;
   if (data) {
-    console.log(data.data.appointTime);
     board = data.data;
   }
 
@@ -114,8 +113,6 @@ const BoardEditPage = () => {
   const [editContent, setEditContent] = useState('');
   const [editDate, setEditDate] = useState();
   const [editPlace, setEditPlace] = useState([]);
-
-  console.log(editTitle, editContent, editDate, editPlace);
 
   const userKeyDown = (e) => {
     if (e.keyCode === 13) {
@@ -137,15 +134,6 @@ const BoardEditPage = () => {
   // };
 
   const handleEdit = () => {
-    console.log(
-      editTitle,
-      editContent,
-      editDate,
-      editPlace[0],
-      editPlace[1],
-      editPlace[2]
-    );
-
     boardPatch(boardId, {
       title: editTitle,
       content: editContent,
@@ -190,8 +178,6 @@ const BoardEditPage = () => {
             <MapContainer
               setEditDate={setEditDate}
               setEditPlace={setEditPlace}
-              originalX={board.x}
-              originalY={board.y}
             />
           </MainContainer>
           <BtnContainer>

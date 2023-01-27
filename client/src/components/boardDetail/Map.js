@@ -19,21 +19,12 @@ const MapContent = styled.div`
 
 const { kakao } = window;
 
-const Map = ({
-  searchPlace,
-  setLocInfo,
-  setEditPlace,
-  originalX,
-  originalY,
-}) => {
-  console.log(originalX, originalY);
+const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
   const { boardId } = useParams();
 
   const location = useLocation();
 
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
-
-  console.log(isLoading, error);
 
   //if (data) {
   //  const meetLat = data[0].data.y;

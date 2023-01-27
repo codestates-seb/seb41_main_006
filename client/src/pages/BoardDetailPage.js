@@ -147,9 +147,10 @@ const BoardDetailPage = () => {
 
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
-  let board;
+  let board, boardMemberId;
   if (data) {
     board = data.data;
+    boardMemberId = data.data.member.memberId;
   }
 
   const handleClickMember = (memberId) => {
@@ -198,21 +199,26 @@ const BoardDetailPage = () => {
                 <FaHeart onClick={handleLikeClick} />
                 <span>{board.countLike}</span>
               </div>
-              <div className="post-btn">
-                <button
-                  className="post-edit"
-                  onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
-                >
-                  수정
-                </button>
-                <button className="post-del" onClick={handelConfirmClick}>
-                  삭제
-                </button>
-                <button className="post-like-btn">
-                  <FaRegHeart onClick={handleLikeClick} />
-                  <FaHeart onClick={handleLikeClick} />
-                </button>
-              </div>
+              {boardMemberId === Number(loginMemberId) ? (
+                <div className="post-btn">
+                  <button
+                    className="post-edit"
+                    onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
+                  >
+                    수정
+                  </button>
+                  <button className="post-del" onClick={handelConfirmClick}>
+                    삭제
+                  </button>
+
+                  <button className="post-like-btn">
+                    <FaRegHeart onClick={handleLikeClick} />
+                    <FaHeart onClick={handleLikeClick} />
+                  </button>
+                </div>
+              ) : (
+                ''
+              )}
             </div>
           </HeaderContainer>
           <MainContainer>

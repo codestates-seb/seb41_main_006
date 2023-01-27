@@ -25,10 +25,8 @@ export const convertAppointDate = (appointTime) => {
   const minutes = utcDate.getMinutes();
 
   if (hours >= 24) {
-    console.log('전 hours', hours);
     date = Number(date) + 1;
     hours = Number(hours) - 24;
-    console.log('hours', hours);
   }
 
   const time = `${hours <= 12 ? `오전 ${hours}시` : `오후 ${hours - 12}시`} ${
