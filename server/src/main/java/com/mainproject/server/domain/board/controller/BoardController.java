@@ -126,8 +126,12 @@ public class BoardController {
 
     @PutMapping("/{board-id}/like")
     public ResponseEntity likeBoard(@Positive @PathVariable("board-id") Long boardId,
-                                    @Valid @RequestBody BoardLikeDto boardLikeDto){
+                                    @Valid @RequestBody BoardLikeDto boardLikeDto,
+                                    @AuthenticationPrincipal MemberDetails memberDetails){
 
+        if(memberDetails == null){
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+        }
         boardLikeService.likeBoard(boardId, boardLikeDto.getMemberId());
 
         return new ResponseEntity<>(HttpStatus.OK);
