@@ -61,12 +61,12 @@ public class Comments extends Auditable {
 	private List<CommentsLike> commentsLikes = new ArrayList<>();
 
 	// 자기 참조 관계 : 댓글 ~ 대댓글 (1 : N)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "parent_id")
 	private Comments parentComments;
 
 	// 자기 참조 관계 : 대댓글 ~ 댓글 (N : 1)
-	@OneToMany(mappedBy = "parentComments", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "parentComments", orphanRemoval = true)
 	@JsonBackReference
 	private List<Comments> replyComments = new ArrayList<>();
 }
