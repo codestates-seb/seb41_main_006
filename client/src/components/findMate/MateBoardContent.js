@@ -6,7 +6,6 @@ import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
-
 const PostsContentLayOut = styled.div`
   ${flexColCenter}
   padding: 2rem;

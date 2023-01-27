@@ -11,7 +11,7 @@ export const convertCreatedAt = (createAt) => {
   return `${year}.${month}.${date} ${hour}:${min}`;
 };
 
-// 모임 찾기 페이지 날짜 형식 (YYYY.MM.DD (DAY))
+// 모임 찾기 페이지 날짜 형식 (YYYY.MM.DD (DAY) 오전/오후 H시 MM분)
 export const convertAppointDate = (appointTime) => {
   const utcDate = new Date(appointTime);
 

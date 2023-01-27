@@ -82,7 +82,7 @@ const MateBoardCard = ({ board }) => {
 
   return (
     <BoardCard>
-      <Link to={`/mate/boards/${board.boardId}`}>
+      <Link to={`/boards/${board.boardId}`}>
         <div className="board-card--top">
           <div className="board-card--title">
             <Title as="h4" size="small">

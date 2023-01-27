@@ -9,6 +9,7 @@ import { TbCalendarTime } from 'react-icons/tb';
 import { useLocation } from 'react-router-dom';
 import dummyBoards from '../../api/board/dummyBoards';
 // import { convertAppointDate } from '../../utils/dateConvert';
+
 const MapBox = styled.div`
   color: black;
   width: 100%;
@@ -123,11 +124,11 @@ const MapContainer = ({
   //  setDateInfo(meetingDate);
   // };
 
-  const [isFocus, setIsFocus] = useState(false);
+  // const [isFocus, setIsFocus] = useState(false);
 
-  const handleFocus = () => {
-    setIsFocus(true);
-  };
+  // const handleFocus = () => {
+  //   setIsFocus(true);
+  // };
 
   const location = useLocation();
 
@@ -161,7 +162,7 @@ const MapContainer = ({
               }
               locale={ko}
               selected={
-                isFocus
+                location.pathname === '/newmate'
                   ? meetingDate
                   : new Date(dummyBoards.data[0].appointTime)
               }
@@ -177,7 +178,7 @@ const MapContainer = ({
               onMonthChange={handleMonthChange}
               // onSelect={handleDateSelect}
               name="date_input"
-              onFocus={handleFocus}
+              // onFocus={handleFocus}
               onCalendarClose={handleClose}
               value={meetingDate}
             />
@@ -194,7 +195,11 @@ const MapContainer = ({
               onChange={handleInput}
               //value={inputPlace}
               onKeyDown={handleEnter}
-              defaultValue={dummyBoards.data[0].meetingPlace}
+              defaultValue={
+                location.pathname !== '/newmate'
+                  ? dummyBoards.data[0].meetingPlace
+                  : ''
+              }
             ></input>
           </div>
           <div className="meet-map" id="map">

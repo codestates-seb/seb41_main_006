@@ -61,7 +61,8 @@ const BoardMeetInfo = ({ meetInfo }) => {
         </InfoLabelBox>
         <span className="meet-info--content">{meetInfo?.meetingPlace}</span>
         <div className="meet-map" id="map">
-          <Map searchPlace={meetInfo?.meetingPlace} />
+          <Map meetLat={meetInfo?.y} meetLng={meetInfo?.x} />
+          {/* searchPlace={meetInfo?.meetingPlace} */}
         </div>
       </div>
     </MeetInfoContainer>

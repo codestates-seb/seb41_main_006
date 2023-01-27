@@ -22,12 +22,12 @@ const RecommentItem = styled.li`
   /* border-bottom: 1px solid #a79689; */
 `;
 
-const RecommentList = ({ recomments }) => {
+const RecommentList = ({ recomments, parentId }) => {
   return (
     <RecommList>
-      <AddRecomment />
+      <AddRecomment parentId={parentId} />
       {recomments.map((el) => (
-        <RecommentItem key={el.id}>
+        <RecommentItem key={el.commentsId}>
           <Recomment recomment={el} />
         </RecommentItem>
       ))}

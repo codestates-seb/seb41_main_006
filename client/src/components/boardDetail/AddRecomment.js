@@ -39,7 +39,7 @@ const CommentContainer = styled.form`
   }
 `;
 
-const AddRecomment = () => {
+const AddRecomment = ({ parentId }) => {
   const { boardId } = useParams();
 
   const loginMemberId = getLoginInfo().memberId;
@@ -48,7 +48,7 @@ const AddRecomment = () => {
     e.preventDefault();
     const form = e.target;
 
-    await recommentCreate({
+    await recommentCreate(parentId, {
       memberId: loginMemberId,
       boardId: boardId,
       content: form.recomment_text.value,

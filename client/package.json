@@ -57,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-query": "^1.2.9",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",

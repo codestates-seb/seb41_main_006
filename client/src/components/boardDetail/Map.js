@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-// import { FINDMATE_ENDPOINT } from '../../api/findMate';
-// import useFetch from '../../hooks/useFetch';
+import { FINDMATE_ENDPOINT } from '../../api/board/findMate';
+import useFetch from '../../hooks/useFetch';
 import dummyBoards from '../../api/board/dummyBoards';
 
 const MapBox = styled.div`
@@ -31,15 +31,39 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
   //   boardList = data.response;
   //   console.log(boardList);
   // }
+  const data = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
+
+  if (data) {
+    const meetLat = data.y;
+    const meetLng = data.x;
+    console.log(meetLat, meetLng);
+  }
 
   useEffect(() => {
+    console.log(data);
     const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
     const container = document.getElementById('map');
-    const options = {
-      center: new kakao.maps.LatLng(
+
+    // 작성 페이지 지도 center, 마커 위치
+    let center, markerPosition;
+
+    if (location.pathname === `/newmate`) {
+      center = new kakao.maps.LatLng(37.5666805, 126.9784147);
+      markerPosition = new kakao.maps.LatLng(37.5666805, 126.9784147);
+    }
+    // 상세, 수정 페이지 지도 center, 마커 위치
+    else {
+      center = new kakao.maps.LatLng(
         Number(dummyBoards.data[0].y),
         Number(dummyBoards.data[0].x)
-      ), // boardList.y, boardList.x
+      );
+      markerPosition = new kakao.maps.LatLng(
+        dummyBoards.data[0].y,
+        dummyBoards.data[0].x
+      );
+    }
+    const options = {
+      center: center, // boardList.y, boardList.x
       level: 3,
     };
     const map = new kakao.maps.Map(container, options);
@@ -50,11 +74,11 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
         'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb9mhL8%2FbtrWBcjqH22%2FEERoT6xVXkSTCAwvT5X7Z0%2Fimg.png',
       imgSize = new kakao.maps.Size(45, 50);
 
-    const markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize),
-      markerPosition = new kakao.maps.LatLng(
-        dummyBoards.data[0].y,
-        dummyBoards.data[0].x
-      );
+    const markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+    //markerPosition = new kakao.maps.LatLng(
+    //  dummyBoards.data[0].y,
+    //  dummyBoards.data[0].x
+    //);
 
     const marker = new kakao.maps.Marker({
       position: markerPosition,
@@ -62,7 +86,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
     });
 
     // 글 수정 페이지에서는 기존 위치 좌표를 기준으로 마커 표시함
-    if (location.pathname === `/mate/boards/${boardId}/edit`) {
+    if (location.pathname !== '/newmate') {
       marker.setMap(map);
     }
 
@@ -135,28 +159,34 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
     };
 
     // 2. 지도 클릭으로 장소 지정
-    kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
-      searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          const content =
-            '<div style="padding: 5px; font-size: 12px;">' +
-            result[0].address.address_name +
-            '</div>';
+    // 작성, 수정 페이지에서만 클릭 가능
+    if (location.pathname !== `/boards/${boardId}`) {
+      kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+        searchDetailAddrFromCoords(
+          mouseEvent.latLng,
+          function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              const content =
+                '<div style="padding: 5px; font-size: 12px;">' +
+                result[0].address.address_name +
+                '</div>';
 
-          marker.setPosition(mouseEvent.latLng);
-          marker.setMap(map);
+              marker.setPosition(mouseEvent.latLng);
+              marker.setMap(map);
 
-          infowindow.setContent(content);
-          infowindow.open(map, marker);
-        }
-        // 지도 클릭 시 지번 주소를 이용해서 법정 코드 값을 가져옴
-        geocoder.addressSearch(result[0].address.address_name, callback);
+              infowindow.setContent(content);
+              infowindow.open(map, marker);
+            }
+            // 지도 클릭 시 지번 주소를 이용해서 법정 코드 값을 가져옴
+            geocoder.addressSearch(result[0].address.address_name, callback);
+          }
+        );
       });
-    });
 
-    const searchDetailAddrFromCoords = (coords, callback) => {
-      geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-    };
+      const searchDetailAddrFromCoords = (coords, callback) => {
+        geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+      };
+    }
   }, [searchPlace]);
 
   return (
