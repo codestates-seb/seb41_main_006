@@ -46,11 +46,11 @@ public class MessageController {
     @MessageMapping("/chats/messages/{room-id}")
     public void message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
 
-        log.info("messageDto : {}", messageDto);
+        log.info("messageDto : {}", messageDto.toString());
 
         PublishMessage publishMessage =
                 new PublishMessage(messageDto.getRoomId(), messageDto.getSenderId(), messageDto.getContent(), LocalDateTime.now());
-        log.info("publichMessage: {}", publishMessage.toString());
+        log.info("publishMessage: {}", String.valueOf(publishMessage));
         // 채팅방에 메세지 전송
         redisPublisher.publish(ChannelTopic.of("room" + roomId), publishMessage);
         log.info("레디스 서버에 메세지 전송 완료");
@@ -61,6 +61,8 @@ public class MessageController {
     // 채팅메세지 가져오기
     @GetMapping("/chats/messages/{room-id}")
     public ResponseEntity getMessages(@Positive @PathVariable("room-id") long roomId,
+                                      @Positive @RequestParam(defaultValue = "1") int page,
+                                      @Positive @RequestParam(defaultValue = "10") int size,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
@@ -69,8 +71,8 @@ public class MessageController {
         }
 
         // 해당 채팅방의 메세지를 가져와야 함
-        Page<ChatMessage> messages = chatService.findMessages(roomId);
-        PageInfo pageInfo = new PageInfo(1, 10, (int)messages.getTotalElements(), messages.getTotalPages());
+        Page<ChatMessage> messages = chatService.findMessages(roomId, page, size);
+        PageInfo pageInfo = new PageInfo(page, size, (int)messages.getTotalElements(), messages.getTotalPages());
 
         List<ChatMessage> messageList = messages.getContent();
         List<ChatDto.MessageResponse> messageResponses = mapper.messagesToMessageResponseDtos(messageList);
