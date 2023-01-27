@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
-import SelectAge from '../SelectAge';
+// import SelectAge from '../SelectAge';
+import Select from '../common/Select';
 import getAddressList from '../../api/kakaoMap/getAddressList';
 import Button from '../common/Button';
 import { authNickName } from '../../api/member/signup';
+import selectAgeLists from '../../static/selectAgeList';
 // import { memberImageDelete } from '../../api/image';
 import memberInfoValidate from '../../utils/memberInfoValidate';
 import { IoLocationSharp } from 'react-icons/io5';
@@ -483,7 +485,11 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
         </GenderSelectWrapper>
         <AgeSelectWrapper>
           <div className="label">나이</div>
-          <SelectAge curValue={values.memberAge} handleSelect={handleChange} />
+          <Select
+            curValue={values.memberAge}
+            handleSelect={handleChange}
+            selectList={selectAgeLists}
+          />
           <p className="error">{errors.memberAge}</p>
         </AgeSelectWrapper>
       </div>
