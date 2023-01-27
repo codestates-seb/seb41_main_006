@@ -46,3 +46,14 @@ export const petImageUpload = async (file) => {
     throw err;
   }
 };
+
+export const petImageDelete = async (fileUrl) => {
+  try {
+    await authRequest.delete('/s3/pet', {
+      params: { upFileUrl: fileUrl },
+    });
+  } catch (err) {
+    console.log(err?.response);
+    throw err;
+  }
+};

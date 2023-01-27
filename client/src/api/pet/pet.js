@@ -15,7 +15,6 @@ export const createMyPet = async ({
   name,
   age,
   gender,
-  profileImage,
   petSize,
   neutered,
   aboutDog,
@@ -26,7 +25,21 @@ export const createMyPet = async ({
     name,
     age,
     gender,
-    profileImage,
+    petSize,
+    neutered,
+    aboutDog,
+    breed,
+    profileImageId,
+  });
+
+export const updateMyPet = async (
+  petId,
+  { name, age, gender, petSize, neutered, aboutDog, breed, profileImageId }
+) =>
+  await authRequest.patch(`/pets/${petId}`, {
+    name,
+    age,
+    gender,
     petSize,
     neutered,
     aboutDog,

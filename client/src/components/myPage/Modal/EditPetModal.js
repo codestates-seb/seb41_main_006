@@ -1,29 +1,17 @@
 import styled from 'styled-components';
-import EditPetCard from '../EditPetCard';
-import { CancelButton, PostSubmitBtn } from '../../Button';
-import { useRef } from 'react';
-
-const SBackground = styled.div`
-  background-color: rgba(217, 217, 217, 0.8);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  display: flex;
-  justify-content: center;
-`;
+import PetInfoInput from '../PetInfoInput';
+import ModalBackDrop from '../../ModalBackDrop';
 
 const SContainer = styled.div`
   background-color: var(--bg-color);
-  border-radius: 5%;
+  border-radius: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   margin-top: 2%;
-  height: 90%;
+  width: 60rem;
+  height: 85%;
   padding: 3%;
   .button-container {
     button {
@@ -35,35 +23,21 @@ const SContainer = styled.div`
   }
 `;
 
-const EditPetModal = ({ setEditModal, EditModal }) => {
-  const outside = useRef();
-
-  const handleModalClose = (e) => {
-    if (EditModal && outside.current === e.target) {
-      setEditModal(false);
-    }
+const EditPetModal = ({ pet, setIsEditModalOpen }) => {
+  const handleEditModalClose = () => {
+    setIsEditModalOpen(false);
   };
   return (
-    <SBackground
-      ref={outside}
-      onClick={(e) => {
-        handleModalClose(e);
-      }}
-    >
+    <ModalBackDrop>
       <SContainer>
-        <EditPetCard />
-        <div className="button-container">
-          <PostSubmitBtn>수정</PostSubmitBtn>
-          <CancelButton
-            onClick={() => {
-              setEditModal(!EditModal);
-            }}
-          >
-            취소
-          </CancelButton>
-        </div>
+        <PetInfoInput
+          isEditMode={true}
+          handleModalClose={handleEditModalClose}
+          petInfo={pet}
+        />
+        <div className="button-container"></div>
       </SContainer>
-    </SBackground>
+    </ModalBackDrop>
   );
 };
 

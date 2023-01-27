@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import useForm from '../../hooks/useForm';
 import PetProfileImage from '../common/PetProfileImage';
 import Button from '../common/Button';
@@ -7,8 +7,8 @@ import Select from '../common/Select';
 import selectPetSizeList from '../../static/selectPetSizeList';
 import { isNotNumber } from '../../utils/validateFunctions';
 import petInfoValidate from '../../utils/petInfoValidats';
-// import { petImageUpload } from '../../api/image';
-import { createMyPet } from '../../api/pet/pet';
+import { petImageUpload, petImageDelete } from '../../api/image';
+import { createMyPet, updateMyPet } from '../../api/pet/pet';
 
 const PetInfoInputContainer = styled.div`
   width: 100%;
@@ -22,13 +22,16 @@ const PetInfoInputForm = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  .img-container {
+  > .container {
     display: flex;
     flex-direction: column;
     margin: 2% 5%;
-    img {
+
+    > .img-container {
+      width: 18rem;
       height: 20rem;
     }
+
     .img-button {
       display: flex;
       margin-top: 2%;
@@ -133,50 +136,52 @@ const Scheckbox = styled.input`
   }
 `;
 
-const PetInfoInput = ({ isEditMode, handleModalClose }) => {
-  const onSubmit = async (values) => {
-    let imageInfo = null;
-    try {
-      // 이미지 파일이 존재하면
-      if (values.profileImageFile) {
-        // imageInfo = await memberImageUpload(
-        //   memberInfoForm.values.profileImageFile
-        // );
-      }
-      console.log('업로드 된 이미지 정보', imageInfo);
-      handleModalClose();
-      // 받아온 이미지 아이디 정보 넘겨줘야 함
-      // update 나 post
-    } catch (err) {
-      // 요청이 실패했는데 벌써 이미지가 업로드 된 상황이라면...
-      if (imageInfo) {
-        console.log('멤버 수정 모달: 요청 실패하여 이미지 삭제함');
-        // await memberImageDelete(imageInfo.upFileUrl);
-      }
-      console.log(err);
-    }
-  };
-
-  const { values, setValueByName, setErrors, setErrorByName, handleChange } =
-    useForm({
-      initialValues: {
-        name: '',
-        age: 0,
-        gender: '',
-        breed: '',
-        neutered: false,
-        petSize: '',
-        aboutDog: '',
-        profileImage: '',
-        profileImageId: null,
-        profileImageFile: null,
-      },
-      onSubmit,
-      validate: petInfoValidate,
-    });
+const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
+  const {
+    values,
+    setValues,
+    setValueByName,
+    setErrors,
+    setErrorByName,
+    handleChange,
+  } = useForm({
+    initialValues: {
+      name: '',
+      age: '',
+      gender: '',
+      breed: '',
+      neutered: false,
+      petSize: '',
+      aboutDog: '',
+      profileImage: '',
+      profileImageId: null,
+      profileImageFile: null,
+    },
+    onSubmit: () => {},
+    validate: petInfoValidate,
+  });
   const [previewImgUrl, setPreviewImgUrl] = useState('');
 
   const imgRef = useRef();
+
+  useEffect(() => {
+    const setPetInfo = () => {
+      setValues({
+        ...values,
+        name: petInfo.name,
+        age: petInfo.age,
+        gender: petInfo.gender,
+        breed: petInfo.breed,
+        neutered: petInfo.neutered,
+        petSize: petInfo.petSize,
+        aboutDog: petInfo.aboutDog,
+        profileImageId: petInfo.profileImage?.upFileId,
+      });
+      setPreviewImgUrl(petInfo.profileImage?.upFileUrl);
+    };
+
+    setPetInfo();
+  }, []);
   const handleImgUpload = () => {
     imgRef.current.click();
   };
@@ -236,25 +241,39 @@ const PetInfoInput = ({ isEditMode, handleModalClose }) => {
       return;
     }
 
+    console.log(values);
+
     let imageInfo = null;
     try {
-      // // 이미지 파일이 존재하면
-      // if (values.profileImageFile) {
-      //   imageInfo = await petImageUpload(values.profileImageFile);
-      // }
+      // 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
+      // 만약 기존에 이미지가 있었는데 이후에 업로드를 통해 바뀌었다면!
+      if (
+        petInfo?.profileImage &&
+        petInfo?.profileImage?.upFileUrl !== previewImgUrl
+      ) {
+        // 기존의 이미지는 지운다.
+        await petImageDelete(petInfo.profileImage.upFileUrl);
+      }
+
+      if (values.profileImageFile) {
+        // 이미지 파일이 존재하면(새로 올라온 이미지가 있다면)
+        // 업로드 후 해당 이미지의 정보를 가져옴
+        imageInfo = await petImageUpload(values.profileImageFile);
+      }
 
       if (isEditMode) {
-        console.log('수정!');
+        await updateMyPet(petInfo.petId, {
+          ...values,
+          profileImageId: imageInfo?.upFileId,
+        });
       } else {
-        const res = await createMyPet({
+        await createMyPet({
           ...values,
           // 업로드 된 이미지 아이디 정보
           profileImageId: imageInfo?.upFileId,
-          profileImage: imageInfo?.upFileUrl,
         });
-
-        console.log(res);
       }
+      handleModalClose();
     } catch (err) {
       console.log(err);
     }
@@ -264,13 +283,10 @@ const PetInfoInput = ({ isEditMode, handleModalClose }) => {
     <PetInfoInputContainer>
       <h2>{isEditMode ? '강아지 정보 수정' : '나의 강아지 추가'}</h2>
       <PetInfoInputForm>
-        <div className="img-container">
-          <PetProfileImage
-            width="19rem"
-            height="22rem"
-            src={previewImgUrl}
-            alt=""
-          />
+        <div className="container">
+          <div className="img-container">
+            <PetProfileImage src={previewImgUrl} alt="" />
+          </div>
           <div className="img-button">
             <button onClick={handleImgUpload}>이미지 업로드</button>
             <input
@@ -290,7 +306,7 @@ const PetInfoInput = ({ isEditMode, handleModalClose }) => {
               type="text"
               placeholder="이름"
               name="name"
-              value={values.nickName}
+              value={values.name}
               onChange={handleChange}
             ></input>
             <div>나이</div>
@@ -302,6 +318,7 @@ const PetInfoInput = ({ isEditMode, handleModalClose }) => {
               onChange={handleChangeAge}
               className="age-input"
             ></input>
+            <span>살</span>
           </div>
           <div className="gender-button">
             <div>성별</div>
@@ -324,6 +341,7 @@ const PetInfoInput = ({ isEditMode, handleModalClose }) => {
             <Scheckbox
               type="checkbox"
               value={values.neutered}
+              checked={values.neutered}
               onChange={(e) => {
                 if (e.target.checked) setValueByName('neutered', true);
                 else setValueByName('neutered', false);
@@ -356,7 +374,14 @@ const PetInfoInput = ({ isEditMode, handleModalClose }) => {
           </div>
         </div>
       </PetInfoInputForm>
-      <Button onClick={handleSubmit}>완료</Button>
+      <div>
+        <Button onClick={handleModalClose} size="large" letter>
+          취소
+        </Button>
+        <Button onClick={handleSubmit} size="large">
+          완료
+        </Button>
+      </div>
     </PetInfoInputContainer>
   );
 };

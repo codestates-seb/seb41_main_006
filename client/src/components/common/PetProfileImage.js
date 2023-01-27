@@ -4,8 +4,8 @@ import DogProfile from './DogProfile';
 
 const PetProfileBox = styled(CenterBox)`
   background-color: white;
-  width: 20rem;
-  height: 22rem;
+  width: 100%;
+  height: 100%;
 
   svg,
   img {
