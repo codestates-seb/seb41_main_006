@@ -17,7 +17,7 @@ public class MessageDto {
     @NotNull
     private Long roomId;
     @NotNull
-    private Long memberId;
+    private Long senderId;
     @NotBlank
     private String content;
 
