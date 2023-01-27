@@ -10,12 +10,14 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PublishMessage {
+public class PublishMessage implements Serializable {
+    private static final long serialVersionUID = 2082503192322391880L;
     @NotNull
     private Long roomId;
     @NotNull

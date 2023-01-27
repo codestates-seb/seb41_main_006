@@ -19,11 +19,13 @@ import javax.annotation.Resource;
 public class RedisSubscriber implements MessageListener {
     private final ObjectMapper objectMapper;
     @Resource(name = "chatRedisTemplate")
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
+
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
+        log.info("redis subscriber : onMessage 실행");
         try {
             // 레디스를 통해 들어온 메세지를 chatMessage로 변환
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());

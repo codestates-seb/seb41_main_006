@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,7 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ChatMessage {
+public class ChatMessage  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
@@ -23,7 +25,7 @@ public class ChatMessage {
     private String content;
 
     @Column(nullable = false)
-    private LocalDateTime sendTime = LocalDateTime.now();
+    private LocalDateTime sendTime;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
