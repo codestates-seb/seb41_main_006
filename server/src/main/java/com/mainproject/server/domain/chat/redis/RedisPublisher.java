@@ -19,7 +19,10 @@ public class RedisPublisher {
     private final RedisTemplate<String, Object> redisTemplate;
 
     public void publish(ChannelTopic topic, PublishMessage message) {
+        log.info("topic : {}", topic.getTopic().toString());
+        log.info("message: {}", message.toString());
         redisTemplate.convertAndSend(topic.getTopic(), message);
+        log.error("publish 실패");
         log.info("레디스로 메세지 게시");
     }
 }
