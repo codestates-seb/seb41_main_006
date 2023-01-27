@@ -4,7 +4,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
-import { commentPatch } from '../../api/board/comment';
+import { commentPatch, commentDelete } from '../../api/board/comment';
 import { convertCreatedAt } from '../../utils/dateConvert';
 
 const RecommentBox = styled.div`
@@ -116,25 +116,29 @@ const Recomment = ({ recomment }) => {
     setLike(!like);
   };
 
-  // 댓글 수정
-  const handleSubmitClick = async (idx) => {
+  // 대댓글 수정
+  const handleSubmitClick = async (recommentId) => {
     setIsEditOpen(!isEditOpen);
 
-    await commentPatch({
-      commentsId: idx,
+    await commentPatch(recommentId, {
+      commentsId: recommentId,
       content: recommentContent,
     });
   };
 
-  // 댓글 삭제 확인 모달 창 띄우기
-  const handelConfirmClick = (idx) => {
-    console.log('댓글 삭제 확인 버튼');
-    dispatch(openModal({ type: 'delete', props: { idx, commentDelete } }));
+  // 대댓글 삭제 확인 모달 창 띄우기
+  const handelConfirmClick = (recommentId) => {
+    dispatch(
+      openModal({
+        type: 'delete',
+        props: { recommentId, handleRecommentDelete },
+      })
+    );
   };
 
-  // 댓글 삭제
-  const commentDelete = (idx) => {
-    commentDelete(idx);
+  // 대댓글 삭제
+  const handleRecommentDelete = (recommentId) => {
+    commentDelete(recommentId);
   };
 
   return (

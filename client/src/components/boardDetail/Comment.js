@@ -125,6 +125,7 @@ const Comment = ({ comment, recomments }) => {
   const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [commentContent, setCommentContent] = useState('');
+  const [parentId, setParentId] = useState();
 
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
@@ -134,8 +135,9 @@ const Comment = ({ comment, recomments }) => {
     setLike(!like);
   };
 
-  const handleRecommentsClick = () => {
+  const handleRecommentsClick = (idx) => {
     setIsRecommentsOpen(!isRecommentsOpen);
+    setParentId(idx);
   };
 
   // 댓글 수정
@@ -149,17 +151,18 @@ const Comment = ({ comment, recomments }) => {
   };
 
   // 댓글 삭제 확인 모달 창 띄우기
-  const handelConfirmClick = (idx) => {
-    console.log('댓글 삭제 확인 버튼');
+  const handelConfirmClick = (commentId) => {
     dispatch(
-      openModal({ type: 'delete', props: { idx, handleCommentDelete } })
+      openModal({
+        type: 'delete',
+        props: { commentId, handleCommentDelete },
+      })
     );
   };
 
   // 댓글 삭제
-  const handleCommentDelete = (idx) => {
-    commentDelete(idx);
-    console.log('댓글 삭제 성공');
+  const handleCommentDelete = (commentId) => {
+    commentDelete(commentId);
   };
 
   return (
@@ -234,7 +237,10 @@ const Comment = ({ comment, recomments }) => {
       ) : (
         <div className="comment-content">{comment.content}</div>
       )}
-      <button className="recomment-btn" onClick={handleRecommentsClick}>
+      <button
+        className="recomment-btn"
+        onClick={() => handleRecommentsClick(comment.commentsId)}
+      >
         {isRecommentsOpen ? (
           <FaMinus className="recomment-icon" />
         ) : (
@@ -246,7 +252,9 @@ const Comment = ({ comment, recomments }) => {
           <span>답글 {recomments.length}개</span>
         )}
       </button>
-      {isRecommentsOpen && <RecommentList recomments={recomments} />}
+      {isRecommentsOpen && (
+        <RecommentList recomments={recomments} parentId={parentId} />
+      )}
     </CommentBox>
   );
 };

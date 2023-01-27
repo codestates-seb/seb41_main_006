@@ -58,10 +58,12 @@ const ModalInner = styled.div`
 `;
 
 const DeleteModal = ({
-  idx,
+  commentId,
   handleCommentDelete,
   boardId,
   handleBoardDelete,
+  recommentId,
+  handleRecommentDelete,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -71,12 +73,15 @@ const DeleteModal = ({
   };
 
   const handelDelClick = () => {
-    if (idx !== undefined) {
-      handleCommentDelete(idx);
+    if (commentId !== undefined) {
+      handleCommentDelete(commentId);
     }
     if (boardId !== undefined) {
       handleBoardDelete(boardId);
-      navigate(-1);
+      navigate('/mate/boards');
+    }
+    if (recommentId !== undefined) {
+      handleRecommentDelete(recommentId);
     }
     dispatch(closeModal({ type: 'delete' }));
   };

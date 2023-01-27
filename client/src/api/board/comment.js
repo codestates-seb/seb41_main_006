@@ -3,7 +3,7 @@ import { getLoginInfo } from '../loginInfo';
 
 // api url
 export const COMMENT_ENDPOINT =
-  process.env.REACT_APP_API + process.env.REACT_APP_API_COMMENT_ENDPOINT;
+  process.env.REACT_APP_SERVER_API + process.env.REACT_APP_API_COMMENT_ENDPOINT;
 
 const API_CONNECT_TIMEOUT = 2000;
 
@@ -71,9 +71,9 @@ export const commentDelete = async (commentId) => {
 };
 
 // 대댓글 생성
-export const recommentCreate = async (boardId, body) => {
+export const recommentCreate = async (parentId, body) => {
   const { AccessToken } = getLoginInfo();
-  const path = `${COMMENT_ENDPOINT}/${boardId}`;
+  const path = `${COMMENT_ENDPOINT}/${parentId}`;
 
   try {
     let result = await axios.post(path, body, {

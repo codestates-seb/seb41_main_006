@@ -134,23 +134,17 @@ const MainContainer = styled.div`
 
 const BoardDetailPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { boardId } = useParams();
 
   const [like, setLike] = useState(false);
 
-  const { boardId } = useParams();
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
   let board;
   if (data) {
     board = data.data;
-    console.log(data.data);
   }
-
-  //const [board, setBoard] = useState({
-  //  comments: [],
-  //});
-
-  const dispatch = useDispatch();
 
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
@@ -191,23 +185,6 @@ const BoardDetailPage = () => {
       setLike(false);
     }
   });
-
-  //useEffect(() => {
-  //  getBoardById(Number(boardId)).then((data) => {
-  //    setBoard(data);
-  //  });
-  //}, [boardId]);
-
-  /*useEffect(() => {
-    boardGet(boardId);
-  });*/
-
-  // const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
-
-  // let board;
-  // if (data) {
-  //   board = data.response;
-  // }
 
   return (
     <ContainerBox>
