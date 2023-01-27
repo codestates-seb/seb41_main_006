@@ -46,7 +46,7 @@ public class MessageController {
     private final ChatMapper mapper;
 
     @MessageMapping("/chats/messages/{room-id}")
-    public ResponseEntity message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
+    public void message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
 
         PublishMessage publishMessage =
                 new PublishMessage(messageDto.getRoomId(), messageDto.getSenderId(), messageDto.getContent(), LocalDateTime.now());
@@ -55,8 +55,6 @@ public class MessageController {
         log.info("레디스 서버에 메세지 전송 완료");
 
         chatService.saveMessage(messageDto, roomId);
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 채팅메세지 가져오기
