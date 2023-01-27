@@ -22,7 +22,6 @@ public class RedisPublisher {
         log.info("topic : {}", topic.getTopic().toString());
         log.info("message: {}", message.toString());
         redisTemplate.convertAndSend(topic.getTopic(), message);
-        log.error("publish 실패");
         log.info("레디스로 메세지 게시");
     }
 }
