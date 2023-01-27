@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
-// import SelectAge from '../SelectAge';
 import Select from '../common/Select';
-import getAddressList from '../../api/kakaoMap/getAddressList';
 import Button from '../common/Button';
-import { authNickName } from '../../api/member/signup';
 import selectAgeLists from '../../static/selectAgeList';
-// import { memberImageDelete } from '../../api/image';
 import memberInfoValidate from '../../utils/memberInfoValidate';
 import { IoLocationSharp } from 'react-icons/io5';
 import { HiXMark } from 'react-icons/hi2';
+import useForm from '../../hooks/useForm';
+import { authNickName, signUp } from '../../api/member/signup';
+import { memberImageUpload, memberImageDelete } from '../../api/image';
+import { updateMyInfo } from '../../api/member/member';
+import getAddressList from '../../api/kakaoMap/getAddressList';
 
 const MemberInfoContainer = styled.div`
   display: flex;
@@ -240,7 +243,24 @@ const AboutMeWrapper = styled.div`
   }
 `;
 
-const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
+const MemberInfoInput = ({
+  isEditMode,
+  memberInfo,
+  auth,
+  // handleModalClose,
+}) => {
+  const navigate = useNavigate();
+  // const queryClient = useQueryClient();
+
+  const updateMyInfoMutation = useMutation(updateMyInfo, {
+    onSuccess: () => {
+      // invalidates cache and refetcn
+      // 모달창 닫음
+      // handleModalClose();
+      // 나의 정보 새로고침
+      // queryClient.invalidateQueries('myInfo');
+    },
+  });
   // 여러 개의 input의 value, error, change 이벤트 핸들러
   const {
     values,
@@ -249,17 +269,35 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     errors,
     setErrors,
     setErrorByName,
-    setIsLoading,
     handleChange,
-  } = memberInfoForm;
+  } = useForm({
+    initialValues: {
+      nickName: '',
+      memberAge: '',
+      address: '',
+      gender: '',
+      aboutMe: '',
+      profileImageId: null,
+    },
+    onSubmit: async () => {},
+    validate: memberInfoValidate,
+  });
+  // 검색 결과로 화면에 표시될 주소
   const [searchAddress, setSearchAddress] = useState('');
+  // 동 검색 결과 리스트
   const [addressList, setAddressList] = useState([]);
+  // 결과 리스트 열림/닫힘
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
+  // 닉네임 중복 확인 여부
   const [isNicknameVerified, setIsNicknameVerified] = useState(false);
+  // 업로드 시 바뀌는 이미지 파일
+  const [profileImageFile, setProfileImageFile] = useState(null);
+  // 사진 미리보기
   const [previewImgUrl, setPreviewImgUrl] = useState('');
 
   const imgRef = useRef();
 
+  // 수정하는 경우에는 기존의 정보를 가지고 시작한다.
   useEffect(() => {
     const setMemberInfo = () => {
       // values를 기존의 정보로 초기화
@@ -272,7 +310,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
         aboutMe: memberInfo.aboutMe,
         profileImageId: memberInfo.profileImage?.upFileId,
       });
-
+      // 미리보기 이미지도 기존 이미지로 설정
       setPreviewImgUrl(memberInfo.profileImage?.upFileUrl);
       setSearchAddress(memberInfo.fullAddress);
     };
@@ -283,26 +321,30 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     }
   }, [memberInfo]);
 
+  // 닉네임 값에 변화가 생기면 이 전에 중복 확인이 완료 되었어도 새로운 값에 대한 중복 확인이 필요함
   useEffect(() => {
-    // 닉네임 값에 변화가 생기면 이 전에 중복 확인이 완료 되었어도 새로운 값에 대한 중복 확인이 필요함
     setIsNicknameVerified(false);
   }, [values.nickName]);
 
+  /* 이미지 */
+  // 이미지 업로드 버튼 클릭 -> 업로드 화면 오픈
   const handleImgUpload = () => {
     imgRef.current.click();
   };
 
-  // 이미지 업로드 핸들러
+  // 이미지 업로드 파일 변화 이벤트 핸들러
   const handleImgChange = (e) => {
     if (e.target.files === undefined) {
       return;
     }
     //파일 크기 걸러줌
     if (e.target.files[0].size > 5 * 1024 * 1024) {
-      setErrorByName('profileImageFile', '최대 파일 용량은 5MB입니다.');
+      setErrorByName('profileImageId', '최대 파일 용량은 5MB입니다.');
     } else {
-      setErrorByName('profileImageFile', '');
-      setValueByName('profileImageFile', e.target.files[0]);
+      // 오류 메시지를 초기화
+      setErrorByName('profileImageId', '');
+      // 업로드할 이미지 파일 설정
+      setProfileImageFile(e.target.files[0]);
 
       // 미리보기 blob url
       const blobUrl = URL.createObjectURL(e.target.files[0]);
@@ -313,6 +355,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     }
   };
 
+  // 이미지 삭제 버튼 클릭
   const handleClickDeleteImage = () => {
     if (previewImgUrl) {
       // URL Object 객체 메모리에서 삭제
@@ -321,9 +364,10 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
     }
 
     // file 값도 null
-    setValueByName('profileImageFile', null);
+    setProfileImageFile(null);
   };
 
+  /* 주소 검색 */
   // 검색어에 맞는 주소 결과(주소, 코드) 리스트 받아옴
   const handleSearchAddressKeyUp = async (e) => {
     if (e.key === 'Enter') {
@@ -333,7 +377,9 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
 
       try {
         const result = await getAddressList(e.target.value);
+        // 검색 결과 리스트 설정
         setAddressList(result);
+        // 결과창 오픈
         setIsAddressListOpen(true);
       } catch (err) {
         console.log(err);
@@ -370,45 +416,93 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
         setErrorByName('nickName', '이미 사용 중인 닉네임 입니다.');
       }
       setIsNicknameVerified(false);
-      console.log(err);
     }
   };
 
+  // 검색 결과 초기화
   const handleClickDeleteAddress = () => {
     setValueByName('address', '');
     setSearchAddress('');
-    setValueByName('address', '');
   };
 
-  const handleSubmitCheck = async (event) => {
+  /* 결과 제출 */
+  const handleSubmit = async () => {
     // 만약 닉네임 중복 확인이 완료되지 않았다면
     if (!isNicknameVerified) {
       // 지금이 수정 모드이면서 기존의 닉네임과 같다면 중복 확인 할 필요가 없다.
       // 그 나머지 경우에만 중복 확인을 한다.
       if (!(isEditMode && memberInfo?.nickName === values.nickName)) {
-        await setErrorByName('nickName', '중복 확인이 필요합니다');
+        setErrorByName('nickName', '중복 확인이 필요합니다');
         return;
       }
     }
 
-    // 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
-    if (
-      memberInfo?.profileImage &&
-      memberInfo?.profileImage?.upFileUrl !== previewImgUrl
-    ) {
-      // console.log('hi');
-      // await memberImageDelete(upFileUrl);
+    // input 에러 없는지 확인
+    const memberInfoError = memberInfoValidate(values);
+
+    if (Object.keys(memberInfoError).length !== 0) {
+      console.log('오류가 있음');
+      setErrors(memberInfoError);
+      return;
     }
-    // 기존에 이미지가 존재하고
-    // 만약 기존의 이미지 URL과 화면에 띄워진 URL이 같지 않다면 (업로드할 파일이 변했다면)
-    // 수정모드일 때 기존에 파일에서 바꿨다면 previewUrl도 달라짐
-    // s3 이미지 지우기
 
-    // }
+    let imageInfo = null;
+    try {
+      // 정보 수정 시에 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
+      if (
+        memberInfo?.profileImage &&
+        memberInfo?.profileImage?.upFileUrl !== previewImgUrl
+      ) {
+        // 기존에 이미지가 존재하고
+        // 만약 기존의 이미지 URL과 화면에 띄워진 URL이 같지 않다면 (업로드할 파일이 변했다면)
+        // 수정모드일 때 기존에 파일에서 바꿨다면 previewUrl도 달라짐
+        // s3 이미지 지우기
+        console.log('hi');
+        await memberImageDelete(memberInfo.profileImage.upFileUrl);
+      }
 
-    setIsLoading(true);
-    event.preventDefault();
-    setErrors(memberInfoValidate(values));
+      // 이미지 파일이 존재하면(업로드한 파일이 있음)
+      if (profileImageFile) {
+        // S3에 이미지 업로드
+        imageInfo = await memberImageUpload(profileImageFile);
+      }
+
+      if (isEditMode) {
+        updateMyInfoMutation.mutate({
+          memberId: memberInfo.memberId,
+          data: {
+            ...values,
+            // 업로드 된 이미지 아이디 정보
+            profileImageId: imageInfo?.upFileId,
+            // response body에 필요한 정보들
+            email: memberInfo.email,
+            memberStatus: memberInfo.memberStatus,
+          },
+        });
+      } else {
+        // 회원가입: 이메일 정보 포함 모든 정보를 submit 한다.
+        await signUp({
+          // input value
+          ...values,
+          // 업로드 된 이미지 아이디 정보
+          profileImageId: imageInfo?.upFileId,
+          // 이전 화면에서 입력된 이메일과 패스워드
+          email: auth.email,
+          password: auth.password,
+        });
+        // 메인 페이지로!
+        navigate('/');
+        // 로그인 모달 같이 띄우면 좋을 것 같음
+      }
+    } catch (err) {
+      // 요청이 실패했는데 벌써 이미지가 업로드 된 상황이라면...
+      if (imageInfo) {
+        console.log('멤버 수정 모달: 요청 실패하여 이미지 삭제함');
+        // 지금 업로드 된 파일을 다시 지운다.
+        await memberImageDelete(imageInfo.upFileUrl);
+      }
+      console.log(err);
+    }
   };
 
   return (
@@ -436,7 +530,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
             </button>
           </div>
         </div>
-        <p className="error">{errors.profileImageFile}</p>
+        <p className="error">{errors.profileImageId}</p>
       </ImageWrapper>
       <NickNameWrapper>
         <div className="label">닉네임</div>
@@ -525,7 +619,6 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
             )}
           </div>
         )}
-
         <p className="error">{errors.address}</p>
       </AddressWrapper>
       <AboutMeWrapper>
@@ -537,7 +630,7 @@ const MemberInfoInput = ({ isEditMode, memberInfo, memberInfoForm }) => {
           onChange={handleChange}
         ></textarea>
       </AboutMeWrapper>
-      <Button size="large" fullWidth onClick={handleSubmitCheck}>
+      <Button size="large" fullWidth onClick={handleSubmit}>
         완료
       </Button>
     </MemberInfoContainer>
