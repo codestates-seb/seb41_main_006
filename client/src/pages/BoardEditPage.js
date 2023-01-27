@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 import MapContainer from '../components/boardDetail/MapContainer';
-import dummyBoards from '../api/board/dummyBoards';
-import { boardPatch } from '../api/board/findMate';
+import { boardPatch, FINDMATE_ENDPOINT } from '../api/board/findMate';
+import useFetch from '../hooks/useFetch';
+import PageLoading from '../components/PageLoading';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -92,6 +93,15 @@ const BtnContainer = styled.div`
 const BoardEditPage = () => {
   const { boardId } = useParams();
   const navigate = useNavigate();
+
+  const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
+
+  let board;
+  if (data) {
+    console.log(data.data.appointTime);
+    board = data.data;
+  }
+
   // const [board, setBoard] = useState({});
 
   // useEffect(() => {
@@ -127,6 +137,15 @@ const BoardEditPage = () => {
   // };
 
   const handleEdit = () => {
+    console.log(
+      editTitle,
+      editContent,
+      editDate,
+      editPlace[0],
+      editPlace[1],
+      editPlace[2]
+    );
+
     boardPatch(boardId, {
       title: editTitle,
       content: editContent,
@@ -135,40 +154,55 @@ const BoardEditPage = () => {
       x: editPlace[1],
       y: editPlace[2],
     });
+
+    //navigate(`/boards/${boardId}`);
+    //window.location.reload();
   };
 
   return (
-    <ContainerBox onKeyDown={userKeyDown} /*onSubmit={handleSubmit}*/>
-      <HeaderContainer>
-        <div className="post-title">
-          <div>
-            <textarea
-              className="title"
-              name="title_text"
-              defaultValue={dummyBoards.data[0].title}
-              onChange={(e) => setEditTitle(e.target.value)}
-            ></textarea>
-          </div>
-        </div>
-      </HeaderContainer>
-      <MainContainer>
-        <div className="left-box">
-          <textarea
-            className="post-content"
-            name="body_text"
-            defaultValue={dummyBoards.data[0].content}
-            onChange={(e) => setEditContent(e.target.value)}
-          ></textarea>
-        </div>
-        <MapContainer setEditDate={setEditDate} setEditPlace={setEditPlace} />
-      </MainContainer>
-      <BtnContainer>
-        <PostSubmitBtn onClick={handleEdit}>수정</PostSubmitBtn>
-        <CancelButton onClick={() => navigate(`/mate/boards/${boardId}`)}>
-          취소
-        </CancelButton>
-      </BtnContainer>
-    </ContainerBox>
+    <>
+      {error && <div>글 조회 실패</div>}
+      {isLoading ? (
+        <PageLoading />
+      ) : (
+        <ContainerBox onKeyDown={userKeyDown} /*onSubmit={handleSubmit}*/>
+          <HeaderContainer>
+            <div className="post-title">
+              <div>
+                <textarea
+                  className="title"
+                  name="title_text"
+                  defaultValue={board.title}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                ></textarea>
+              </div>
+            </div>
+          </HeaderContainer>
+          <MainContainer>
+            <div className="left-box">
+              <textarea
+                className="post-content"
+                name="body_text"
+                defaultValue={board.content}
+                onChange={(e) => setEditContent(e.target.value)}
+              ></textarea>
+            </div>
+            <MapContainer
+              setEditDate={setEditDate}
+              setEditPlace={setEditPlace}
+              originalX={board.x}
+              originalY={board.y}
+            />
+          </MainContainer>
+          <BtnContainer>
+            <PostSubmitBtn onClick={handleEdit}>수정</PostSubmitBtn>
+            <CancelButton onClick={() => navigate(`/boards/${boardId}`)}>
+              취소
+            </CancelButton>
+          </BtnContainer>
+        </ContainerBox>
+      )}
+    </>
   );
 };
 
