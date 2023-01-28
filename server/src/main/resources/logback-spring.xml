@@ -24,9 +24,9 @@
     <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
     <!-- 로그 패턴 -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
+              value="[%d{yyyy-MM-dd HH:mm:ss, ${logback.timezone:-Asia/Seoul}}:%-3relative]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
     <property name="FILE_LOG_PATTERN"
-              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n"/>
+              value="[%d{yyyy-MM-dd HH:mm:ss, ${logback.timezone:-Asia/Seoul}}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n"/>
 
     <!-- err log file name -->
     <property name="ERR_LOG_FILE_NAME" value="err_log"/>
@@ -49,7 +49,7 @@
         <!-- Rolling 정책 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
-            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd, ${logback.timezone:-Asia/Seoul}}_%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 파일당 최고 용량 kb, mb, gb -->
                 <maxFileSize>30MB</maxFileSize>
