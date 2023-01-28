@@ -121,7 +121,7 @@ public class CommentsController {
 	}
 
 	// ----- 댓글 좋아요
-	@PutMapping("/{comments-id}/like")
+	@PostMapping("/{comments-id}/like")
 	public ResponseEntity likeComments(@Positive @PathVariable("comments-id") Long commentsId,
 										@Valid @RequestBody CommentsLikeDto commentsLikeDto,
 										@AuthenticationPrincipal MemberDetails memberDetails)
