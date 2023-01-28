@@ -1,13 +1,16 @@
+import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setAddress, resetAddress } from '../../store/modules/addressSlice';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 import styled from 'styled-components';
 import { IoLocationSharp } from 'react-icons/io5';
 import { BiTargetLock } from 'react-icons/bi';
-import { useRef, useState } from 'react';
 import getAddressList from '../../api/kakaoMap/getAddressList';
 import getAddressByGeo from '../../api/kakaoMap/getAddressByGeo';
 
-const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
+const SearchAddress = ({ setIsLoading }) => {
   const searchResultRef = useRef();
+  const dispatch = useDispatch();
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
@@ -28,6 +31,7 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
       } catch (err) {
         setAddressList([]);
         setIsAddressListOpen(true);
+        dispatch(resetAddress);
         console.log(err);
       }
     }
@@ -40,11 +44,15 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
 
     try {
       const result = await getAddressByGeo();
-      setBCode(result.code);
-      setAddress(result.address_name);
+      dispatch(setAddress({ code: result.code, address: result.address_name }));
       setIsLoading(false);
     } catch (err) {
       console.log(err);
+      // if (err.message === 'User denied Geolocation') {
+
+      // }
+      dispatch(resetAddress());
+      setIsLoading(false);
     }
   };
 
@@ -52,14 +60,23 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
     // input value 초기화
     setSearchAddress('');
     // 선택한 결과의 배열 index를 이용해 화면에 출력할 주소명과 서버에 보낼 법정 코드를 설정
-    // 주소명
-    setAddress(addressList[index].name);
-    // 법정 코드
-    setBCode(addressList[index].code);
+    // 주소명 addressList[index].name
+    // 법정 코드 addressList[index].code
+    dispatch(
+      setAddress({
+        code: addressList[index].code,
+        address: addressList[index].name,
+      })
+    );
     // 검색창 닫고 초기화
     setIsAddressListOpen(false);
     setAddressList([]);
   };
+
+  useEffect(() => {
+    // 초기 설정 - 현재 위치로 설정
+    handleLocClick();
+  }, []);
 
   return (
     <SearchAddressBox>
