@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState, useRef, useEffect } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 import useForm from '../../hooks/useForm';
 import PetProfileImage from '../common/PetProfileImage';
 import Button from '../common/Button';
@@ -153,14 +154,38 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
       neutered: false,
       petSize: '',
       aboutDog: '',
-      profileImage: '',
       profileImageId: null,
-      profileImageFile: null,
     },
     onSubmit: () => {},
     validate: petInfoValidate,
   });
+  // 업로드 시 바뀌는 이미지 파일
+  const [profileImageFile, setProfileImageFile] = useState(null);
   const [previewImgUrl, setPreviewImgUrl] = useState('');
+  const queryClient = useQueryClient();
+
+  const updateMyPetsMutation = useMutation(updateMyPet, {
+    onSuccess: () => {
+      // invalidates cache and refetcn
+      // 모달창 닫음
+      handleModalClose();
+      // 나의 정보 새로고침
+      queryClient.invalidateQueries(['myPets']);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const createMyPetMutation = useMutation(createMyPet, {
+    onSuccess: () => {
+      handleModalClose();
+      queryClient.invalidateQueries(['myPets']);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const imgRef = useRef();
 
@@ -180,7 +205,9 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
       setPreviewImgUrl(petInfo.profileImage?.upFileUrl);
     };
 
-    setPetInfo();
+    if (isEditMode && petInfo) {
+      setPetInfo();
+    }
   }, []);
   const handleImgUpload = () => {
     imgRef.current.click();
@@ -193,10 +220,10 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
     }
     //파일 크기 걸러줌
     if (e.target.files[0].size > 5 * 1024 * 1024) {
-      setErrorByName('profileImageFile', '최대 파일 용량은 5MB입니다.');
+      setErrorByName('profileImageId', '최대 파일 용량은 5MB입니다.');
     } else {
-      setErrorByName('profileImageFile', '');
-      setValueByName('profileImageFile', e.target.files[0]);
+      setErrorByName('profileImageId', '');
+      setProfileImageFile(e.target.files[0]);
 
       // 미리보기 blob url
       const blobUrl = URL.createObjectURL(e.target.files[0]);
@@ -215,7 +242,7 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
     }
 
     // file 값도 null
-    setValueByName('profileImageFile', null);
+    setProfileImageFile(null);
   };
 
   const handleChangeAge = (e) => {
@@ -241,8 +268,6 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
       return;
     }
 
-    console.log(values);
-
     let imageInfo = null;
     try {
       // 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
@@ -255,19 +280,22 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
         await petImageDelete(petInfo.profileImage.upFileUrl);
       }
 
-      if (values.profileImageFile) {
+      if (profileImageFile) {
         // 이미지 파일이 존재하면(새로 올라온 이미지가 있다면)
         // 업로드 후 해당 이미지의 정보를 가져옴
-        imageInfo = await petImageUpload(values.profileImageFile);
+        imageInfo = await petImageUpload(profileImageFile);
       }
 
       if (isEditMode) {
-        await updateMyPet(petInfo.petId, {
-          ...values,
-          profileImageId: imageInfo?.upFileId,
+        updateMyPetsMutation.mutate({
+          petId: petInfo.petId,
+          data: {
+            ...values,
+            profileImageId: imageInfo?.upFileId,
+          },
         });
       } else {
-        await createMyPet({
+        createMyPetMutation.mutate({
           ...values,
           // 업로드 된 이미지 아이디 정보
           profileImageId: imageInfo?.upFileId,
