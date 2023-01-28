@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { getMyPetList } from '../../api/pet/pet';
 import styled from 'styled-components';
 import EditPetInfoCard from './EditPetInfoCard';
-import DogFace from '../common/DogFace';
+import DogFace from '../../static/images/dogFace.svg';
 
 const SPetList = styled.ul`
   width: 100%;

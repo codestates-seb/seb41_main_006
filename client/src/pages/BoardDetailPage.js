@@ -20,6 +20,7 @@ import useFetch from '../hooks/useFetch';
 import { getLoginInfo } from '../api/loginInfo';
 import PageLoading from '../components/PageLoading';
 import { convertCreatedAt } from '../utils/dateConvert';
+import ChoosedPetInfo from '../components/boardDetail/ChoosedPetInfo';
 
 const ContainerBox = styled(Container)`
   padding: 20px;
@@ -95,7 +96,13 @@ const HeaderContainer = styled.div`
 const MainContainer = styled.div`
   display: flex;
   margin: 20px 10px 0 10px;
-
+  .left-box {
+    display: flex;
+    flex-direction: column;
+    .choosed-pet {
+      border-bottom: 1px solid #a79689;
+    }
+  }
   .post-content {
     /* width: 720px; */
     width: 100%;
@@ -231,6 +238,8 @@ const BoardDetailPage = () => {
           <MainContainer>
             <div className="left-box">
               <div className="post-content">{board.content}</div>
+              <h3 className="choosed-pet">같이 가는 친구</h3>
+              <ChoosedPetInfo pets={board.pet} />
               <CommentContainer comments={board.comments} />
             </div>
             <div className="right-box">

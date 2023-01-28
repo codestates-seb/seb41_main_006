@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { CenterBox } from '../FlexBoxs';
-import DogProfile from './DogProfile';
+import DogProfile from '../../static/images/dogProfile.svg';
 
 const PetProfileBox = styled(CenterBox)`
   background-color: white;
