@@ -8,19 +8,22 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.mainproject.server.domain.LikeStatus;
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.comments.entity.Comments;
+import com.mainproject.server.domain.comments.repository.CommentsLikeRepository;
 import com.mainproject.server.domain.comments.repository.CommentsRepository;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CommentsService {
 	private final CommentsRepository commentsRepository;
+	private final CommentsLikeRepository commentsLikeRepository;
 
-	public CommentsService(CommentsRepository commentsRepository) {
-		this.commentsRepository = commentsRepository;
-	}
 	// ----- 댓글 등록
 	public Comments createComments(Comments comments){
 
@@ -122,5 +125,10 @@ public class CommentsService {
 			result.addAll(getCommentsInOrder(reply));
 		}
 		return result;
+	}
+
+	// ----- 댓글 좋아요한 멤버 가져오기
+	public List<Long> findCommentsLikedMembers(Long commentsId, LikeStatus likeStatus){
+		return commentsLikeRepository.findMemberIdsByCommentsIdAndLikeStatus(commentsId, likeStatus);
 	}
 }
