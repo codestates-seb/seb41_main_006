@@ -37,4 +37,5 @@ out/
 .vscode/
 
 env.yml
+init.sql
 logs
