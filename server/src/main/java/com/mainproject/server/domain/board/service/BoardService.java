@@ -75,6 +75,11 @@ public class BoardService {
 
         List<Long> likedMembers = boardLikeRepository.findMemberIdsByBoardIdAndLikeStatus(boardId, LikeStatus.LIKE);
 
+        for(Comments comments : findBoard.getCommentList()){
+            List<Long> likedCommentMembers = commentsService.findCommentsLikedMembers(comments.getCommentsId(), LikeStatus.LIKE);
+            comments.setlikedMembers(likedCommentMembers);
+        }
+
         BoardDto.Response response = boardMapper.boardToBoardResponseDtoWithLikedMembers(findBoard, likedMembers);
         response.setLikedMembers(likedMembers);
 

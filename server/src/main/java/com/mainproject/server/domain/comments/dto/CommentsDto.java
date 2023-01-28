@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.comments.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class CommentsDto {
+
 	@AllArgsConstructor
 	@Getter
 	@Setter
@@ -60,7 +62,11 @@ public class CommentsDto {
 		private Long parentId;
 		private int depth;
 		private int countLike;
+		private List<Long> likedMembers;
 		private LocalDateTime createdAt;
 		private LocalDateTime modifiedAt;
+	public void setLikedMembers(List<Long> likedMembers){
+		this.likedMembers = likedMembers;
+		}
 	}
 }

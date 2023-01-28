@@ -38,21 +38,18 @@ public class BoardLikeService {
 		Board findBoard = boardService.findVerifiedBoard(boardId);
 
 		Optional<BoardLike> oBoardLike = boardLikeRepository.findByMemberAndBoard(findMember, findBoard);
-		oBoardLike.ifPresentOrElse(
-			like -> {
-				if(like.getLikeStatus().equals(LikeStatus.LIKE)){
-					like.setLikeStatus(LikeStatus.CANCEL);
-				}else{
-					like.setLikeStatus(LikeStatus.LIKE);
-				}
-			},
-			() -> {
-				BoardLike boardLike = new BoardLike();
-				boardLike.setMember(findMember);
-				boardLike.setBoard(findBoard);
-				boardLikeRepository.save(boardLike);
+		return Optional.of(oBoardLike.map(like -> {
+			if (like.getLikeStatus().equals(LikeStatus.LIKE)) {
+				like.setLikeStatus(LikeStatus.CANCEL);
+			} else {
+				like.setLikeStatus(LikeStatus.LIKE);
 			}
-		);
-		return oBoardLike;
+			return like;
+		}).orElseGet(() -> {
+			BoardLike boardLike = new BoardLike();
+			boardLike.setMember(findMember);
+			boardLike.setBoard(findBoard);
+			return boardLikeRepository.save(boardLike);
+		}));
 	}
 }
