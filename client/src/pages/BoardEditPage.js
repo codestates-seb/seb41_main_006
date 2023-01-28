@@ -140,7 +140,14 @@ const BoardEditPage = () => {
       setEditPlace(board.placeCode, board.x, board.y);
     }
 
-    navigate(`/boards/${boardId}`);
+    boardPatch(boardId, {
+      title: editTitle,
+      content: editContent,
+      appointTime: editDate,
+      placeCode: editPlace[0],
+      x: editPlace[1],
+      y: editPlace[2],
+    });
   };
 
   // 글 수정
@@ -179,6 +186,8 @@ const BoardEditPage = () => {
       y: editPlace[2],
       pedId: petNum,
     });
+
+    navigate(`/boards/${boardId}`);
   };
 
   return (
@@ -228,6 +237,7 @@ const BoardEditPage = () => {
               </div>
               <MapContainer
                 setEditDate={setEditDate}
+                editPlace={editPlace}
                 setEditPlace={setEditPlace}
               />
             </MainContainer>

@@ -94,15 +94,7 @@ const MapContainer = ({
     setInputPlace(e.target.value);
   };
 
-  //const handleSubmit = (e) => {
-  //  e.preventDefault();
-  //  const form = e.target;
-  //  console.log(form.date_input.value);
-  //  setDateInfo(meetingDate);
-  //};
-
   const [meetingDate, setMeetingDate] = useState(new Date());
-  // const [appointTime, setAppointTime] = useState(new Date());
 
   const [month, setMonth] = useState(new Date().getMonth());
 
@@ -125,10 +117,6 @@ const MapContainer = ({
       setInputPlace('');
     }
   };
-
-  //const handleSubmit = () => {
-  //  setDateInfo(meetingDate);
-  // };
 
   // 등록 페이지에서만 작동하는 함수
   const handleClose = () => {

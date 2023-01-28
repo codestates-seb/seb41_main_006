@@ -31,6 +31,7 @@ export const boardCreate = async (body) => {
 
 // 글 수정
 export const boardPatch = async (boardId, body) => {
+  console.log(body);
   const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
 
