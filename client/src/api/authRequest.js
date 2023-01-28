@@ -38,7 +38,7 @@ authRequest.interceptors.response.use(
       if (refreshToken) {
         defaultRequest
           .post(
-            '/auth/reissue',
+            `${process.env.REACT_APP_SERVER_API}auth/reissue`,
             {},
             {
               headers: { Refresh: refreshToken },
@@ -52,15 +52,18 @@ authRequest.interceptors.response.use(
             if (error?.response?.status === 401) {
               localStorage.removeItem('AccessToken');
               localStorage.removeItem('refreshToken');
+              localStorage.removeItem('memberId');
               alert('다시 로그인 해 주세요');
               window.location.reload();
             }
           });
+      } else if (error.code === 'ERR_BAD_REQUEST') {
+        alert('이메일과 비밀 번호를 정확히 입력해 주세요');
       } else {
-        return alert('로그인 후 이용해 주세요');
+        alert('로그인 후 이용해 주세요');
       }
     }
-    return console.log(error);
+    return Promise.reject(error);
   }
 );
 

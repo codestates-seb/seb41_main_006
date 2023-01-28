@@ -18,7 +18,7 @@ const ChatBox = styled.div`
   padding-bottom: 1rem;
 `;
 
-const ChatInputBox = styled.div`
+const ChatInputBox = styled.form`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -48,6 +48,7 @@ const ChatInputBox = styled.div`
 
 const ChatRoom = () => {
   const [message, setMessage] = useState('');
+  const [messageList, setMessageList] = useState([]);
   const { chatId } = useParams();
   const chatInputRef = useRef();
   const client = useRef({});
@@ -56,8 +57,7 @@ const ChatRoom = () => {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL:
-        'ws://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080/ws/websocket',
+      brokerURL: process.env.REACT_APP_CHAT_API,
       connectHeaders: { Authorization: AccessToken },
       onConnect: () => {
         console.log('success');
@@ -77,8 +77,7 @@ const ChatRoom = () => {
   const subscribe = () => {
     client.current.subscribe(`/sub/chats/${chatId}`, (body) => {
       const json_body = JSON.parse(body.body);
-      console.log(json_body);
-      console.log(body);
+      setMessageList((chatlist) => [...chatlist, json_body]);
     });
   };
   const publish = (message) => {
@@ -113,14 +112,17 @@ const ChatRoom = () => {
     connect();
 
     return () => disconnect();
-  }, []);
+  }, [chatId]);
 
   return (
     <ChatRoomBox>
       <ChatBox>
-        <ChattingArea />
+        <ChattingArea
+          messageList={messageList}
+          setMessageList={setMessageList}
+        />
       </ChatBox>
-      <ChatInputBox>
+      <ChatInputBox onSubmit={(e) => handleSubmit(e, message)}>
         <input
           ref={chatInputRef}
           placeholder="hi"
@@ -129,10 +131,7 @@ const ChatRoom = () => {
           onChange={handleInput}
           value={message}
         ></input>
-        <button
-          className="chat-submit"
-          onClick={(e) => handleSubmit(e, message)}
-        >
+        <button className="chat-submit" type="submit">
           전송
         </button>
       </ChatInputBox>
