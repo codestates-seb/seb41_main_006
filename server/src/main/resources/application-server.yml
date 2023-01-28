@@ -1,6 +1,6 @@
 spring:
   datasource: #DB
-    url: ${DB_URL}
+    url: ${DB_URL}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     schema: classpath:/org/springframework/batch/core/schema-mysql.sql
     username : ${DB_USERNAME}
