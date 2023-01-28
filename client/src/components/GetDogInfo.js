@@ -42,7 +42,7 @@ const settings = {
 const GetDogInfo = ({ loginMemberId, setPetid }) => {
   // 멤버 정보 조회
   const [data, isLoading, error] = useFetch(
-    `${process.env.REACT_APP_SERVER_API}/members/${loginMemberId}`
+    `${process.env.REACT_APP_SERVER_API}members/${loginMemberId}`
   );
 
   let board;
