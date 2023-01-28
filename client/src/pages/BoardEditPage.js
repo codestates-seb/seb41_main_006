@@ -8,6 +8,10 @@ import MapContainer from '../components/boardDetail/MapContainer';
 import { boardPatch, FINDMATE_ENDPOINT } from '../api/board/findMate';
 import useFetch from '../hooks/useFetch';
 import PageLoading from '../components/PageLoading';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import GetDogInfo from '../components/GetDogInfo';
+import { getLoginInfo } from '../api/loginInfo';
 
 const ContainerBox = styled(Container)`
   padding-top: 44px;
@@ -62,6 +66,11 @@ const MainContainer = styled.div`
     }
   }
 
+  .choose-pet {
+    font-size: 1.2rem;
+    border-bottom: 1px solid #a79689;
+  }
+
   .post-content {
     width: 720px;
     height: 30rem;
@@ -92,6 +101,7 @@ const BtnContainer = styled.div`
 
 const BoardEditPage = () => {
   const { boardId } = useParams();
+  const loginMemberId = getLoginInfo().memberId;
   const navigate = useNavigate();
 
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
@@ -99,6 +109,7 @@ const BoardEditPage = () => {
   let board;
   if (data) {
     board = data.data;
+    console.log(board);
   }
 
   // const [board, setBoard] = useState({});
@@ -109,10 +120,15 @@ const BoardEditPage = () => {
   //   });
   // }, [boardId]);
 
+  // 제목, 내용, 날짜, 장소 정보
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
   const [editDate, setEditDate] = useState();
   const [editPlace, setEditPlace] = useState([]);
+
+  //강아지 정보
+  const [petId, setPetid] = useState('');
+  console.log(setPetid);
 
   const userKeyDown = (e) => {
     if (e.keyCode === 13) {
@@ -132,6 +148,15 @@ const BoardEditPage = () => {
   //     content: form.content_text.value,
   //   });
   // };
+  console.log(
+    editTitle,
+    editContent,
+    editDate,
+    editPlace[0],
+    editPlace[1],
+    editPlace[2],
+    petId
+  );
 
   const handleEdit = () => {
     boardPatch(boardId, {
@@ -141,6 +166,7 @@ const BoardEditPage = () => {
       placeCode: editPlace[0],
       x: editPlace[1],
       y: editPlace[2],
+      petId: petId,
     });
 
     //navigate(`/boards/${boardId}`);
@@ -174,6 +200,8 @@ const BoardEditPage = () => {
                 defaultValue={board.content}
                 onChange={(e) => setEditContent(e.target.value)}
               ></textarea>
+              <div className="choose-pet">데리고 갈 친구</div>
+              <GetDogInfo loginMemberId={loginMemberId} setPetid={setPetid} />
             </div>
             <MapContainer
               setEditDate={setEditDate}
