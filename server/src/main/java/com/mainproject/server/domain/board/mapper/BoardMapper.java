@@ -104,9 +104,13 @@ public interface BoardMapper {
 
     // ----- Comments
     List<CommentsDto.Response> commentsToCommentsResponseDtos(List<Comments> comments);
-
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     PetDto.SimpleResponse petToPetResponseWithoutMemberDto(Pet pet);
-
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     MemberDto.SimpleResponse memberToSimpleResponseDto(Member member);
 
     @Mappings({@Mapping(source = "member.memberId", target = "memberId"),
