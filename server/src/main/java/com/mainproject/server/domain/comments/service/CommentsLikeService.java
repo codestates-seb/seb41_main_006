@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mainproject.server.domain.board.entity.BoardLike;
 import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.comments.entity.CommentsLike;
 import com.mainproject.server.domain.comments.repository.CommentsLikeRepository;
@@ -36,20 +37,18 @@ public class CommentsLikeService {
 		Comments findComments = commentsService.findVerifiedComments(commentsId);
 
 		Optional<CommentsLike> oCommentsLike = commentsLikeRepository.findByMemberAndComments(findMember, findComments);
-		oCommentsLike.ifPresentOrElse(
-			like -> {
-				if (like.getLikeStatus().equals(LikeStatus.LIKE)) {
-					like.setLikeStatus(LikeStatus.CANCEL);
-				} else {
-					like.setLikeStatus(LikeStatus.LIKE);
-				}
-			},
-			() -> {
-				CommentsLike commentsLike = new CommentsLike();
-				commentsLike.setMember(findMember);
-				commentsLike.setComments(findComments);
-				commentsLikeRepository.save(commentsLike);
-			});
-		return oCommentsLike;
+		return Optional.of(oCommentsLike.map(like -> {
+			if (like.getLikeStatus().equals(LikeStatus.LIKE)) {
+				like.setLikeStatus(LikeStatus.CANCEL);
+			} else {
+				like.setLikeStatus(LikeStatus.LIKE);
+			}
+			return like;
+		}).orElseGet(() -> {
+			CommentsLike commentsLike = new CommentsLike();
+			commentsLike.setMember(findMember);
+			commentsLike.setComments(findComments);
+			return commentsLikeRepository.save(commentsLike);
+		}));
 	}
 }

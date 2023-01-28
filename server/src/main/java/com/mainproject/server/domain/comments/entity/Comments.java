@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -69,4 +71,14 @@ public class Comments extends Auditable {
 	@OneToMany(mappedBy = "parentComments", orphanRemoval = true)
 	@JsonBackReference
 	private List<Comments> replyComments = new ArrayList<>();
+
+	@ElementCollection
+	@CollectionTable(name="comments_liked_members", joinColumns=@JoinColumn(name="comments_id"))
+	@Column(name="member_id")
+	private List<Long> likedMembers;
+
+	public void setlikedMembers(List<Long> likedMembers) {
+		this.likedMembers = likedMembers;
+	}
+
 }
