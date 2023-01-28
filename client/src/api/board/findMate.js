@@ -71,12 +71,11 @@ export const boardDelete = async (boardId) => {
 
 // 글 좋아요 & 좋아요 취소
 export const boardLike = async (boardId, body) => {
-  console.log(boardId, body);
   const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}/like`;
 
   try {
-    let result = await axios.put(path, body, {
+    let result = await axios.post(path, body, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: AccessToken,
