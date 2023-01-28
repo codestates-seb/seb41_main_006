@@ -59,6 +59,8 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new MemberAccessDeniedHandler());
         // todo api 권한 이렇게 해도 될까...
         http.authorizeHttpRequests()
+                // load balancing target group health check
+                .antMatchers(HttpMethod.GET, "/").permitAll()
                 .antMatchers("/h2/**", "/ws/**", "/sub/**", "/pub/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/s3/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/logout","auth/reissue").authenticated()
