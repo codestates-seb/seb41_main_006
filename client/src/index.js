@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import App from './App';
 import GlobalModal from './components/GlobalModal';
 import ScrollToTop from './components/ScrollToTop';
@@ -21,7 +20,6 @@ root.render(
         <QueryClientProvider client={queryClient}>
           <App />
           <GlobalModal />
-          <ReactQueryDevtools initialIsOpen />
         </QueryClientProvider>
       </Provider>
     </BrowserRouter>
