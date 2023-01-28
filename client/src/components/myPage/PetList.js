@@ -1,13 +1,14 @@
 import { useQuery } from 'react-query';
 import { getMyPetList } from '../../api/pet/pet';
-import styled from 'styled-components';
+import { GrayDog } from '../common/DogSvg';
 import EditPetInfoCard from './EditPetInfoCard';
-import DogFace from '../common/DogFace';
+import styled from 'styled-components';
 
 const SPetList = styled.ul`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(5, minmax(20%, 1fr));
+  grid-template-rows: minmax(1fr);
   grid-column-gap: 1rem;
   grid-row-gap: 1.5rem;
   justify-content: center;
@@ -24,7 +25,11 @@ const NoPetBox = styled.div`
   padding: 1rem;
 
   > .dog-face {
-    width: 10rem;
+    width: 13rem;
+    height: 16rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   > .no-pets-msg {
@@ -46,7 +51,7 @@ const PetList = () => {
   return petList?.length === 0 ? (
     <NoPetBox className="no-pets--wrapper">
       <div className="dog-face">
-        <DogFace></DogFace>
+        <GrayDog></GrayDog>
       </div>
       <div className="no-pets-msg">현재 등록된 강아지가 없어요!</div>
     </NoPetBox>

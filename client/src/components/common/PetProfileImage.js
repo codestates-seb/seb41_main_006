@@ -1,14 +1,16 @@
 import styled, { css } from 'styled-components';
 import { CenterBox } from '../FlexBoxs';
-import DogProfile from './DogProfile';
+import { BrownDog } from './DogSvg';
 
 const PetProfileBox = styled(CenterBox)`
   background-color: white;
   width: 100%;
   height: 100%;
+  border-radius: 10px;
 
   svg,
   img {
+    border-radius: 10px;
     width: ${(props) => props.width || '100%'};
     height: ${(props) => props.height || '100%'};
     object-fit: cover;
@@ -17,6 +19,10 @@ const PetProfileBox = styled(CenterBox)`
       css`
         border-radius: 100%;
       `}
+  }
+
+  svg {
+    padding: 3rem;
   }
 
   ${(props) =>
@@ -35,7 +41,7 @@ const PetProfileImage = ({ width, height, src, name, shadow, circle }) => {
         shadow={shadow}
         circle={circle}
       >
-        <DogProfile />
+        <BrownDog />
       </PetProfileBox>
     );
   }

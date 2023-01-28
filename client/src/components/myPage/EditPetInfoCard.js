@@ -29,7 +29,7 @@ const CardContainer = styled.div`
   }
   .Introduce {
   }
-  .Edit {
+  > .edit {
     width: 100%;
     display: flex;
     justify-content: flex-end;
@@ -48,7 +48,7 @@ const EditPetInfoCard = ({ pet }) => {
     <>
       <CardContainer>
         <PetInfoCard pet={pet} />
-        <div className="Edit">
+        <div className="edit">
           <button>
             <MdModeEdit
               size="20"

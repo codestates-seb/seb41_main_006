@@ -1,20 +1,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { openModal } from '../../store/modules/modalSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { flexRowCenter } from '../../style/styleVariable';
 import ProfileImage from '../common/ProfileImage';
 import Title from '../common/Title';
-import {
-  convertAppointDate,
-  // convertAppointTime,
-} from '../../utils/dateConvert';
-// import getAddressByCode from '../../api/kakaoMap/getAddressByCode';
+import { convertAppointDate } from '../../utils/dateConvert';
+// import { getAddressByCode } from '../../api/kakaoMap/getAddressByCode';
 import { BoardCloseBox, BoardOpenBox } from '../BoardStatus';
 import { IoLocationSharp } from 'react-icons/io5';
 import { TbCalendarTime } from 'react-icons/tb';
-// import { FiClock } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 // import { useEffect, useState } from 'react';
 
@@ -76,22 +72,12 @@ const BoardCard = styled.div`
 `;
 
 const MateBoardCard = ({ board }) => {
+  const { address } = useSelector((state) => state.address);
   const dispatch = useDispatch();
 
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
-
-  // const [address, setAddress] = useState();
-
-  // useEffect(() => {
-  //   const convertAddressCode = async (code) => {
-  //     const address = await getAddressByCode(code);
-  //     return address;
-  //   };
-
-  //   setAddress(convertAddressCode(board.placeCode));
-  // }, []);
 
   return (
     <BoardCard>
@@ -109,7 +95,7 @@ const MateBoardCard = ({ board }) => {
           </div>
           <div className="board-card--meet">
             <IoLocationSharp />
-            <span>{board.placeCode}</span>
+            <span>{address}</span>
           </div>
           <div className="board-card--meet">
             <TbCalendarTime />
@@ -117,20 +103,22 @@ const MateBoardCard = ({ board }) => {
           </div>
         </div>
       </Link>
-      <div className="board-card--bottom">
-        <button onClick={() => handleClickMember(board?.member?.memberId)}>
-          <ProfileImage
-            src={board?.member?.profileImage?.upFileUrl}
-            name={board?.member?.nickName}
-            size="2rem"
-          />
-          <span>{board?.member?.nickName}</span>
-        </button>
-        <div>
-          <FaHeart />
-          {board.countLike}
+      {board?.member ? (
+        <div className="board-card--bottom">
+          <button onClick={() => handleClickMember(board?.member?.memberId)}>
+            <ProfileImage
+              src={board?.member?.profileImage?.upFileUrl}
+              name={board?.member?.nickName}
+              size="2rem"
+            />
+            <span>{board?.member?.nickName}</span>
+          </button>
+          <div>
+            <FaHeart />
+            {board.countLike}
+          </div>
         </div>
-      </div>
+      ) : null}
     </BoardCard>
   );
 };

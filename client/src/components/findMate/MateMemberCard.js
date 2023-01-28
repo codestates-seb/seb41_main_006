@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { ColCenterBox } from '../FlexBoxs';
-import PetSlideCard from './PetSlideCard';
-import Title from '../common/Title';
+import ProfileImage from '../common/ProfileImage';
+import MatePetSlideCard from './MatePetSlideCard';
+import { GrayDog } from '../common/DogSvg';
 import Slider from 'react-slick';
+
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -18,11 +20,21 @@ const MemberCard = styled(ColCenterBox)`
 `;
 
 const MemberCardHeader = styled(ColCenterBox)`
-  .user-card--userName {
-    margin-top: 0.5rem;
-    span {
-      color: var(--main-color);
-      font-weight: 600;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  > .user-info {
+    padding-left: 0.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    > .user-info--name {
+      margin-left: 0.5rem;
+      color: var(--main--font-color);
+      font-weight: 500;
     }
   }
 `;
@@ -32,6 +44,22 @@ const MemberCardBody = styled(ColCenterBox)`
   flex: 1;
   height: 100%;
 
+  > .pet-info--empty {
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    > svg {
+      width: 5rem;
+    }
+    > div {
+      margin-top: 1rem;
+      text-align: center;
+    }
+  }
+
   // 슬라이더
   > .slider {
     width: 100%;
@@ -40,7 +68,7 @@ const MemberCardBody = styled(ColCenterBox)`
     // 양쪽에 달린 화살표 디자인
     .slick-prev::before,
     .slick-next::before {
-      color: red;
+      color: var(--main-color);
     }
 
     > .slick-list {
@@ -57,11 +85,6 @@ const MemberCardBody = styled(ColCenterBox)`
       }
     }
   }
-  > .user-card--about {
-    color: var(--main-font-color);
-    font-weight: 600;
-    margin: 0.8rem;
-  }
 `;
 
 const MateMemberCard = ({ member }) => {
@@ -73,28 +96,38 @@ const MateMemberCard = ({ member }) => {
     slidesToScroll: 1,
     variableWidth: true,
   };
+
   return (
     <MemberCard>
       <MemberCardHeader>
-        <div className="user-card--userName">
-          <span>{member.nickName}</span>
-          님의 강아지
+        <div className="user-info">
+          <ProfileImage
+            size="20px"
+            src={member?.profileImage?.upFileUrl}
+          ></ProfileImage>
+          <span className="user-info--name">{member.nickName}</span>
         </div>
-
-        <Title as="h4" size="small">
-          {member.petName}
-        </Title>
       </MemberCardHeader>
       <MemberCardBody>
-        <Slider {...settings}>
-          {member?.petsInfo.map((pet) => {
-            return (
-              <div key={pet.petId}>
-                <PetSlideCard pet={pet} />
-              </div>
-            );
-          })}
-        </Slider>
+        {member?.petsInfo.length === 0 ? (
+          <div className="pet-info--empty">
+            <GrayDog></GrayDog>
+            <div>
+              <p>아직 강아지 정보가</p>
+              <p>없습니다</p>
+            </div>
+          </div>
+        ) : (
+          <Slider {...settings}>
+            {member?.petsInfo.map((pet) => {
+              return (
+                <div key={pet.petId}>
+                  <MatePetSlideCard pet={pet} />
+                </div>
+              );
+            })}
+          </Slider>
+        )}
       </MemberCardBody>
     </MemberCard>
   );

@@ -8,7 +8,7 @@ const BoardInfo = () => {
   return (
     <>
       <h2>나의 모임</h2>
-      <MateBoardList boardList={data} />
+      <MateBoardList boardList={data} isMyPageBoardList={true} />
     </>
   );
 };
