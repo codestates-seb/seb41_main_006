@@ -64,24 +64,15 @@ public class RoomService {
         ChatRoom saveChatRoom = roomRepository.save(chatRoom);
         String roomId = "room" + saveChatRoom.getRoomId();
 
-        log.info("topics = {}", topics);
+        createTopic(roomId);
 
-        if(!topics.containsKey(roomId)) {
-            log.info("토픽 생성");
-
-            ChannelTopic topic = new ChannelTopic(roomId);
-            redisMessageListener.addMessageListener(redisSubscriber, topic);
-            topics.put(roomId, topic);
-
-            log.info("토픽 저장");
-        }
         return saveChatRoom.getRoomId();
     }
 
     // 유저의 채팅 목록 가져오기
     public Page<ChatRoom> findRooms(MemberDetails memberDetails, int page, int size) {
         Member sender = memberService.validateVerifyMember(memberDetails.getMemberId());
-        Pageable pageable = PageRequest.of(page-1, size, Sort.by("roomId").descending());
+        Pageable pageable = PageRequest.of(page-1 , size, Sort.by("roomId").descending());
         Page<ChatRoom> chatRooms = roomRepository.findAllBySenderOrReceiver(pageable, sender, sender);
 
         return chatRooms;
@@ -90,6 +81,11 @@ public class RoomService {
     // 채팅방 하나 찾기
     public ChatRoom findRoom(long roomId) {
         ChatRoom chatRoom = findExistRoom(roomId);
+
+        String topicRoomId = "room" + chatRoom.getRoomId();
+
+        createTopic(topicRoomId);
+
         return chatRoom;
     }
 
@@ -102,5 +98,22 @@ public class RoomService {
         );
 
         return findChatRoom;
+    }
+
+    private void createTopic(String topicRoomId) {
+
+        log.info("저장 전 topics = {}", topics);
+
+        if(!topics.containsKey(topicRoomId)) {
+            log.info("토픽 생성");
+
+            ChannelTopic topic = new ChannelTopic(topicRoomId);
+            redisMessageListener.addMessageListener(redisSubscriber, topic);
+            topics.put(topicRoomId, topic);
+
+            log.info("토픽 저장");
+        }
+
+        log.info("저장 후 topics = {}", topics);
     }
 }
