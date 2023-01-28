@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import SearchAddress from '../components/findMate/SearchAddress';
@@ -38,8 +39,9 @@ const FindMateBottom = styled.div`
 `;
 
 const FindMatePage = () => {
-  const [address, setAddress] = useState('');
-  const [bCode, setBCode] = useState('');
+  const { address, code } = useSelector((state) => state.address);
+  // const [address, setAddress] = useState('');
+  // const [bCode, setBCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   return (
@@ -47,8 +49,8 @@ const FindMatePage = () => {
       <FindMateTop>
         <h1>어떤 지역에서 찾고 싶으신가요?</h1>
         <SearchAddress
-          setAddress={setAddress}
-          setBCode={setBCode}
+          // setAddress={setAddress}
+          // setBCode={setBCode}
           setIsLoading={setIsLoading}
         />
         {isLoading ? <DogFootLoading size="1.3rem" /> : <h2>{address}</h2>}
@@ -58,15 +60,15 @@ const FindMatePage = () => {
         <Routes>
           <Route
             path="members"
-            element={<MateMemberContent placeCode={bCode} />}
+            element={<MateMemberContent placeCode={code} address={address} />}
           ></Route>
           <Route
             path="boards"
-            element={<MateBoardConent placeCode={bCode} />}
+            element={<MateBoardConent placeCode={code} address={address} />}
           ></Route>
           <Route
             path="*"
-            element={<MateMemberContent placeCode={bCode} />}
+            element={<MateMemberContent placeCode={code} address={address} />}
           ></Route>
         </Routes>
       </FindMateBottom>

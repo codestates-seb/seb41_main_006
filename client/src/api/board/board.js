@@ -32,6 +32,7 @@ export const getBoardById = async (boardId) => {
 export const getMyBoardsList = async () => {
   try {
     const res = await authRequest.get('/boards/my-boards');
+    console.log(res?.data?.data);
     return res?.data?.data;
   } catch (err) {
     console.log(err);

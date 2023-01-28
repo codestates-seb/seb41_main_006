@@ -1,10 +1,4 @@
-export default function memberInfoValidate({
-  name,
-  age,
-  gender,
-  breed,
-  petSize,
-}) {
+export default function petInfoValidate({ name, age, gender, breed, petSize }) {
   const errors = {};
 
   if (!name) {
@@ -17,10 +11,10 @@ export default function memberInfoValidate({
     errors.gender = '필수 항목입니다.';
   }
   if (!breed) {
-    errors.address = '필수 항목입니다.';
+    errors.breed = '필수 항목입니다.';
   }
   if (!petSize) {
-    errors.gender = '필수 항목입니다.';
+    errors.petSize = '필수 항목입니다.';
   }
 
   return errors;

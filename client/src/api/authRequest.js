@@ -27,7 +27,7 @@ authRequest.interceptors.response.use(
   */
     return response;
   },
-  function (error) {
+  async function (error) {
     /*
       http status가 200이 아닌 경우
       응답 에러 처리를 작성합니다.
@@ -36,9 +36,9 @@ authRequest.interceptors.response.use(
     if (error?.response?.status === 401) {
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
-        defaultRequest
+        await defaultRequest
           .post(
-            `${process.env.REACT_APP_SERVER_API}auth/reissue`,
+            `auth/reissue`,
             {},
             {
               headers: { Refresh: refreshToken },

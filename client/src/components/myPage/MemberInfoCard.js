@@ -44,6 +44,8 @@ const MemberInfoCard = ({ memberInfo }) => {
     (el) => el.value === memberInfo.memberAge
   )?.title;
 
+  console.log(memberInfo);
+
   return (
     <CardContainer>
       <ProfileImage
@@ -67,7 +69,7 @@ const MemberInfoCard = ({ memberInfo }) => {
             <IoLocationSharp />
             <span>지역</span>
           </RowCenterBox>
-          <span>{memberInfo.fullAddress}</span>
+          <span>{memberInfo.fullAddress || memberInfo.address}</span>
         </div>
       </UsefInfoWrapper>
       <div className="user-introduce">{memberInfo.aboutMe}</div>

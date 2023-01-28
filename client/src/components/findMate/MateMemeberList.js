@@ -14,21 +14,22 @@ const UserList = styled.ul`
 
 const UserItem = styled.li`
   height: 20rem;
+  width: 15rem;
 `;
 
 const MateMemberList = ({ memberList }) => {
   if (memberList.length === 0) {
     return <div>지금은 회원 정보가 없습니다.</div>;
   }
+
+  console.log(memberList);
   return (
     <UserList>
-      <button>이전</button>
       {memberList.map((el) => (
         <UserItem key={el.memberId}>
           <MateMemberCard member={el} />
         </UserItem>
       ))}
-      <button>다음</button>
     </UserList>
   );
 };

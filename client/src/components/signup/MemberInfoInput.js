@@ -390,9 +390,9 @@ const MemberInfoInput = ({
   // 주소 클릭하면 선택됨
   const handleClickAddress = (index) => {
     // input value
-    setSearchAddress(addressList[index].addressName);
+    setSearchAddress(addressList[index].name);
     // 선택한 결과의 배열 index를 이용해 서버에 보낼 법정 코드를 설정
-    setValueByName('address', addressList[index].bCode);
+    setValueByName('address', addressList[index].code);
     // 검색창 닫고 초기화
     setErrorByName('address', '');
     setIsAddressListOpen(false);
@@ -447,6 +447,7 @@ const MemberInfoInput = ({
     }
 
     let imageInfo = null;
+    let deletedImage = values.profileImageId;
     try {
       // 정보 수정 시에 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
       if (
@@ -458,6 +459,7 @@ const MemberInfoInput = ({
         // 수정모드일 때 기존에 파일에서 바꿨다면 previewUrl도 달라짐
         // s3 이미지 지우기
         await memberImageDelete(memberInfo.profileImage.upFileUrl);
+        deletedImage = null;
       }
 
       // 이미지 파일이 존재하면(업로드한 파일이 있음)
@@ -472,7 +474,7 @@ const MemberInfoInput = ({
           data: {
             ...values,
             // 업로드 된 이미지 아이디 정보
-            profileImageId: imageInfo?.upFileId,
+            profileImageId: imageInfo?.upFileId || deletedImage,
             // response body에 필요한 정보들
             email: memberInfo.email,
             memberStatus: memberInfo.memberStatus,
@@ -484,7 +486,7 @@ const MemberInfoInput = ({
           // input value
           ...values,
           // 업로드 된 이미지 아이디 정보
-          profileImageId: imageInfo?.upFileId,
+          profileImageId: imageInfo?.upFileId || deletedImage,
           // 이전 화면에서 입력된 이메일과 패스워드
           email: auth.email,
           password: auth.password,

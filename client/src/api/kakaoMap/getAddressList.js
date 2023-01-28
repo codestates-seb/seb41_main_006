@@ -13,17 +13,19 @@ const getAddressList = (address) => {
   return new Promise((resolve, reject) => {
     geocoder.addressSearch(address, function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
+        console.log(result);
         resolve(
           result.reduce((acc, cur) => {
             // 동 주소까지 존재한다면 (검색 범위가 넓거나 행정 주소라면 'region_3depth_name' 존재하지 않는다.)
             // 필요한 데이터만 원하는 형태로 저장함
-            if (cur.address.region_3depth_name) {
+
+            if (cur?.address?.region_3depth_name) {
               acc.push({
                 id: acc.length + 1,
                 // 주소명
-                addressName: `${cur.address.region_1depth_name} ${cur.address.region_2depth_name} ${cur.address.region_3depth_name}`,
+                name: `${cur.address.region_1depth_name} ${cur.address.region_2depth_name} ${cur.address.region_3depth_name}`,
                 // 법정 코드
-                bCode: cur.address.b_code,
+                code: cur.address.b_code,
               });
             }
             return acc;

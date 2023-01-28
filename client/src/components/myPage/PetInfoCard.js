@@ -8,10 +8,14 @@ const CardContainer = styled.div`
   align-items: center;
   width: 100%;
   color: var(--main-font-color);
-  > * {
-    margin: 1% 0;
+
+  > .image-box {
+    width: 100%;
+    height: 15rem;
+    border-radius: 10px;
   }
-  .Info {
+
+  > .info {
     display: flex;
     > div {
       text-align: center;
@@ -24,21 +28,21 @@ const CardContainer = styled.div`
       padding: 0 10px;
     }
   }
-  .Introduce {
-  }
 `;
 
 const PetInfoCard = ({ pet }) => {
   return (
     <CardContainer>
-      <PetProfileImage
-        src={pet?.profileImage?.upFileUrl}
-        alt=""
-      ></PetProfileImage>
+      <div className="image-box">
+        <PetProfileImage
+          src={pet?.profileImage?.upFileUrl}
+          alt=""
+        ></PetProfileImage>
+      </div>
       <Title as="h3" size="small">
         {pet?.name}
       </Title>
-      <div className="Info">
+      <div className="info">
         <div>🐶 {pet?.age}살</div>
         <div>{pet?.gender === 'M' ? '수컷' : '암컷'}</div>
         <div>{pet?.breed}</div>

@@ -3,40 +3,14 @@ import MapContainer from '../components/boardDetail/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { boardCreate } from '../api/board/findMate';
+import { getMyPetList } from '../api/pet/pet';
 import ChoosePetInfo from '../components/boardDetail/ChoosePetInfo';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-const dummyPet = [
-  {
-    petId: 1,
-    profileImage: 'url',
-    name: '둥이',
-    age: '2',
-    gender: 'M',
-    petSize: 'DOG_S',
-    neutered: true,
-    aboutDog: '테스트용',
-    breed: '말티즈',
-    createdAt: '2023-01-19T14:20:02.308246',
-    modifiedAt: '2023-01-19T14:20:02.308246',
-  },
-  {
-    petId: 2,
-    profileImage: 'url',
-    name: '둥일',
-    age: '2',
-    gender: 'M',
-    petSize: 'DOG_S',
-    neutered: true,
-    aboutDog: '테스트용',
-    breed: '말티즈',
-    createdAt: '2023-01-19T14:20:02.308246',
-    modifiedAt: '2023-01-19T14:20:02.308246',
-  },
-];
+
 const ContainerBox = styled(Container)`
   padding-top: 44px;
 
@@ -139,6 +113,7 @@ const BoardPage = () => {
   const navigate = useNavigate();
   //강아지 정보
   const [petId, setPetid] = useState('');
+  const [petList, setPetList] = useState([]);
 
   // 제목, 내용 정보
   const [title, setTitle] = useState('');
@@ -170,6 +145,15 @@ const BoardPage = () => {
     navigate('/mate/boards');
   };
 
+  useEffect(() => {
+    const getPetList = async () => {
+      const result = await getMyPetList({ page: 1, size: 10 });
+      setPetList(result);
+    };
+
+    getPetList();
+  }, []);
+
   return (
     <ContainerBox>
       <HeaderContainer>
@@ -195,7 +179,7 @@ const BoardPage = () => {
           <div className="choose-pet">데리고 갈 친구</div>
           <ul>
             <Slider {...settings}>
-              {dummyPet.map((el) => {
+              {petList.map((el) => {
                 return (
                   <ChoosePetInfo key={el.index} pets={el} setPetid={setPetid} />
                 );
