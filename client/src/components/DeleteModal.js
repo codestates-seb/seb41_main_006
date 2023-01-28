@@ -14,7 +14,6 @@ const ModalInner = styled.div`
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-
   background-color: #ffffff;
   border-radius: 10px;
   border: 1px solid var(--line-color);
@@ -43,8 +42,6 @@ const ModalInner = styled.div`
   .modal-btn {
     margin-top: 20px;
     text-align: center;
-    /* display: flex;
-    justify-content: space-between; */
 
     .btn {
       border-radius: 10px;
