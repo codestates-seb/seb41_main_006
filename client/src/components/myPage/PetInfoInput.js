@@ -119,6 +119,7 @@ const PetInfoInputForm = styled.div`
     }
   }
 `;
+
 const Scheckbox = styled.input`
   width: 1.5rem;
   height: 1.5rem;
@@ -139,6 +140,7 @@ const Scheckbox = styled.input`
 const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
   const {
     values,
+    errors,
     setValues,
     setValueByName,
     setErrors,
@@ -268,6 +270,8 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
     }
 
     let imageInfo = null;
+    // 기존의 이미지 아이디를 기억하는 변수 (이후 업로드에 사용)
+    let deletedImage = values.profileImageId;
     try {
       // 제출이 확정되었다면 기존의 이미지와 다른지 비교하여 다르면 S3에서 기존의 이미지를 지워야함
       // 만약 기존에 이미지가 있었는데 이후에 업로드를 통해 바뀌었다면!
@@ -277,6 +281,8 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
       ) {
         // 기존의 이미지는 지운다.
         await petImageDelete(petInfo.profileImage.upFileUrl);
+        // 지워졌으니 업로드 할 이미지는 null
+        deletedImage = null;
       }
 
       if (profileImageFile) {
@@ -290,19 +296,24 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
           petId: petInfo.petId,
           data: {
             ...values,
-            profileImageId: imageInfo?.upFileId,
+            // 업로드할 이미지가 있다면 올리고 아니면 기존에 있던 이미지를 올리거나 null
+            profileImageId: imageInfo?.upFileId || deletedImage,
           },
         });
       } else {
         createMyPetMutation.mutate({
           ...values,
           // 업로드 된 이미지 아이디 정보
-          profileImageId: imageInfo?.upFileId,
+          profileImageId: imageInfo?.upFileId || deletedImage,
         });
       }
-      handleModalClose();
     } catch (err) {
       console.log(err);
+      if (imageInfo) {
+        console.log('멤버 수정 모달: 요청 실패하여 이미지 삭제함');
+        // 지금 업로드 된 파일을 다시 지운다.
+        await petImageDelete(imageInfo.upFileUrl);
+      }
     }
   };
 
@@ -336,6 +347,7 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
               value={values.name}
               onChange={handleChange}
             ></input>
+            <p>{errors.name}</p>
             <div>나이</div>
             <input
               type="text"
@@ -346,6 +358,7 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
               className="age-input"
             ></input>
             <span>살</span>
+            <p>{errors.age}</p>
           </div>
           <div className="gender-button">
             <div>성별</div>
@@ -365,6 +378,8 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
             >
               암컷
             </button>
+            <p>{errors.gender}</p>
+
             <Scheckbox
               type="checkbox"
               value={values.neutered}
@@ -384,12 +399,15 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
               value={values.breed}
               onChange={handleChange}
             ></input>
+            <p>{errors.breed}</p>
+
             <div>크기</div>
             <Select
               curValue={values.petSize}
               handleSelect={handleChange}
               selectList={selectPetSizeList}
             />
+            <p>{errors.petSize}</p>
           </div>
           <div className="etc-input">
             <div>특이사항</div>
