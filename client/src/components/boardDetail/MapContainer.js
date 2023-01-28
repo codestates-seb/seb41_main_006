@@ -7,8 +7,9 @@ import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TbCalendarTime } from 'react-icons/tb';
 import { useLocation } from 'react-router-dom';
-import dummyBoards from '../../api/board/dummyBoards';
 // import { convertAppointDate } from '../../utils/dateConvert';
+//import useFetch from '../../hooks/useFetch';
+//import { FINDMATE_ENDPOINT } from '../../api/board/findMate';
 
 const MapBox = styled.div`
   color: black;
@@ -82,7 +83,10 @@ const MapContainer = ({
   setLocInfo,
   setEditDate,
   setEditPlace,
+  meetingPlace,
 }) => {
+  const location = useLocation();
+
   const [inputPlace, setInputPlace] = useState('');
   const [place, setPlace] = useState('');
 
@@ -98,6 +102,8 @@ const MapContainer = ({
   //};
 
   const [meetingDate, setMeetingDate] = useState(new Date());
+  // const [appointTime, setAppointTime] = useState(new Date());
+
   const [month, setMonth] = useState(new Date().getMonth());
 
   const handleMonthChange = (meetingDate) => {
@@ -123,14 +129,6 @@ const MapContainer = ({
   //const handleSubmit = () => {
   //  setDateInfo(meetingDate);
   // };
-
-  // const [isFocus, setIsFocus] = useState(false);
-
-  // const handleFocus = () => {
-  //   setIsFocus(true);
-  // };
-
-  const location = useLocation();
 
   // 등록 페이지에서만 작동하는 함수
   const handleClose = () => {
@@ -161,11 +159,7 @@ const MapContainer = ({
                   : 'custom-day gray-day'
               }
               locale={ko}
-              selected={
-                location.pathname === '/newmate'
-                  ? meetingDate
-                  : new Date(dummyBoards.data[0].appointTime)
-              }
+              selected={meetingDate}
               onChange={(date) => setMeetingDate(date)}
               showTimeSelect // 시간 선택 가능
               showPopperArrow={false}
@@ -178,7 +172,6 @@ const MapContainer = ({
               onMonthChange={handleMonthChange}
               // onSelect={handleDateSelect}
               name="date_input"
-              // onFocus={handleFocus}
               onCalendarClose={handleClose}
               value={meetingDate}
             />
@@ -196,9 +189,7 @@ const MapContainer = ({
               //value={inputPlace}
               onKeyDown={handleEnter}
               defaultValue={
-                location.pathname !== '/newmate'
-                  ? dummyBoards.data[0].meetingPlace
-                  : ''
+                location.pathname !== '/newmate' ? meetingPlace : ''
               }
             ></input>
           </div>

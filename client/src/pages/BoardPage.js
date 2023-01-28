@@ -147,7 +147,15 @@ const BoardPage = () => {
   // 날짜, 위치 정보
   const [dateInfo, setDateInfo] = useState();
   const [locInfo, setLocInfo] = useState([]);
-
+  console.log(
+    title,
+    content,
+    dateInfo,
+    locInfo[0],
+    locInfo[1],
+    locInfo[2],
+    petId
+  );
   // 글 등록하기
   const handleSubmit = () => {
     boardCreate({
@@ -159,9 +167,8 @@ const BoardPage = () => {
       y: locInfo[2],
       petId: petId,
     });
+    navigate('/mate/boards');
   };
-  console.log(dateInfo, locInfo);
-  console.log(petId);
 
   return (
     <ContainerBox>
