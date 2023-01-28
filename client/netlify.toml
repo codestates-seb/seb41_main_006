@@ -2,6 +2,12 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  
+  [[redirects]]
+  from = "/api/*"
+  to = "http://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080/:splat"
+  status = 200
+  force = true
 
   [build]
   command = "npm run build"
