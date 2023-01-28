@@ -100,6 +100,34 @@ public interface BoardMapper {
 
         return boardResponseDto;
     }
+
+    @Mapping(source = "member.memberId", target = "memberId")
+    default BoardDto.Response boardToBoardResponseDtoWithLikedMembers(Board board, List<Long> likedMembers){
+        List<Comments> comments= board.getCommentList();
+        Pet pet = board.getPet();
+
+        BoardDto.Response boardResponseDto = BoardDto.Response
+            .builder()
+            .boardId(board.getBoardId())
+            .member(memberToSimpleResponseDto(board.getMember()))
+            .title(board.getTitle())
+            .content(board.getContent())
+            .countLike(board.getCountLike())
+            .appointTime(board.getAppointTime())
+            .placeCode(board.getPlaceCode())
+            .x(board.getX())
+            .y(board.getY())
+            .pet(petToPetResponseWithoutMemberDto(pet))
+            .boardStatus(board.getBoardStatus())
+            .createdAt(board.getCreatedAt())
+            .modifiedAt(board.getModifiedAt())
+            .comments(commentsToCommentsResponseDtos(comments))
+            .likedMembers(likedMembers)
+            .build();
+
+        return boardResponseDto;
+    }
+
     List<BoardDto.Response> boardsToPostResponseDtos(List<Board> boards);
 
     // ----- Comments
