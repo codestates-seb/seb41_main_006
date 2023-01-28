@@ -109,3 +109,23 @@ export const recommentDelete = async (commentId) => {
     return { state: 'error ' };
   }
 };
+
+// 댓글 좋아요 & 좋아요 취소
+export const commentLike = async (commentId, body) => {
+  const { AccessToken } = getLoginInfo();
+  const path = `${COMMENT_ENDPOINT}/${commentId}/like`;
+
+  try {
+    let result = await axios.post(path, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: AccessToken,
+      },
+      timeout: API_CONNECT_TIMEOUT,
+    });
+    return { state: 'OK', msg: result.data };
+  } catch (err) {
+    console.error('Error: ', err);
+    return { state: 'error ' };
+  }
+};
