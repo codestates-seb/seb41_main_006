@@ -24,7 +24,6 @@ const RecommentBox = styled.div`
   .recomment-user-info {
     display: flex;
     margin-bottom: 1rem;
-    /* align-items: center; */
 
     .user-profile {
       font-size: 40px;
@@ -118,6 +117,7 @@ const Recomment = ({ recomment }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [recommentContent, setRecommentContent] = useState('');
 
+  // 대댓글 배열
   let recommentList = [];
   recommentList.push(recomment);
 

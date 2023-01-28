@@ -16,6 +16,7 @@ const MainContainer = styled.div`
 const Container = styled.div`
   padding: 0 5px;
 `;
+
 const InfoContainer = styled.li`
   background-color: var(--main--bgcolor);
   text-align: center;
@@ -58,7 +59,6 @@ const GetDogInfo = ({ loginMemberId, setPetid }) => {
   let board;
   if (data) {
     board = data.data;
-    console.log(board);
   }
 
   // 강아지 아이디

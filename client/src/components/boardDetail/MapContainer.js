@@ -7,9 +7,6 @@ import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TbCalendarTime } from 'react-icons/tb';
 import { useLocation } from 'react-router-dom';
-// import { convertAppointDate } from '../../utils/dateConvert';
-//import useFetch from '../../hooks/useFetch';
-//import { FINDMATE_ENDPOINT } from '../../api/board/findMate';
 
 const MapBox = styled.div`
   color: black;
@@ -158,7 +155,6 @@ const MapContainer = ({
               timeCaption="시간"
               dateFormat="yyyy.MM.dd (eee) a h시 mm분"
               onMonthChange={handleMonthChange}
-              // onSelect={handleDateSelect}
               name="date_input"
               onCalendarClose={handleClose}
               value={meetingDate}
@@ -174,7 +170,6 @@ const MapContainer = ({
               id="meet-place"
               placeholder="장소를 입력하세요"
               onChange={handleInput}
-              //value={inputPlace}
               onKeyDown={handleEnter}
               defaultValue={
                 location.pathname !== '/newmate' ? meetingPlace : ''

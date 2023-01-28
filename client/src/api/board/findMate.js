@@ -10,7 +10,6 @@ const API_CONNECT_TIMEOUT = 2000;
 
 // 글 생성
 export const boardCreate = async (body) => {
-  console.log(body);
   const { AccessToken } = getLoginInfo();
 
   try {
@@ -21,7 +20,6 @@ export const boardCreate = async (body) => {
       },
       timeout: API_CONNECT_TIMEOUT,
     });
-    console.log(result);
     return { state: 'OK', data: result.data.response };
   } catch (err) {
     console.error('Error: ', err);
@@ -31,7 +29,6 @@ export const boardCreate = async (body) => {
 
 // 글 수정
 export const boardPatch = async (boardId, body) => {
-  console.log(body);
   const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
 

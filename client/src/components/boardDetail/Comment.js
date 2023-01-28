@@ -139,8 +139,6 @@ const Comment = ({ comment, recomments }) => {
     console.log('no');
   }
 
-  //const likedList = commentList[0].likedMembers;
-
   const dispatch = useDispatch();
 
   const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);

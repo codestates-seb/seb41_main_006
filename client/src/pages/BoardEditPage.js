@@ -147,6 +147,7 @@ const BoardEditPage = () => {
       placeCode: editPlace[0],
       x: editPlace[1],
       y: editPlace[2],
+      petId: petId,
     });
   };
 
@@ -171,10 +172,8 @@ const BoardEditPage = () => {
 
     if (form.petId_text.value !== petId) {
       petNum = petId;
-      console.log(petNum);
     } else {
       petNum = form.pedId_text.value;
-      console.log(petNum);
     }
 
     boardPatch(boardId, {
