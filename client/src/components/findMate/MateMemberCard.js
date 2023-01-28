@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { ColCenterBox, RowCenterBox } from '../FlexBoxs';
 import ProfileImage from '../common/ProfileImage.js';
 import Title from '../common/Title';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const UserCard = styled(ColCenterBox)`
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
@@ -31,26 +34,59 @@ const UserCardBody = styled(ColCenterBox)`
     font-weight: 600;
     margin: 0.8rem;
   }
+
+  .slider {
+    width: 720px;
+    .slick-prev::before,
+    .slick-next::before {
+      color: var(--main-font-color);
+    }
+    > div {
+      width: 100px;
+    }
+  }
+  .slick-slide {
+    padding: 0 5px;
+  }
+
+  .slick-list {
+    width: 100px;
+  }
 `;
 
 const MateMemberCard = ({ member }) => {
+  const settings = {
+    className: 'slider variable-width',
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+  };
+  ///
+  console.log(member);
   return (
     <UserCard>
       <UserCardHeader>
-        <ProfileImage
-          size="85px"
-          src={member.ProfileImage}
-          name={member.user}
-        />
         <div className="user-card--userName">
           <span>{member.nickName}</span>
           님의 강아지
         </div>
+        <ProfileImage
+          size="85px"
+          src={member.profileImage.upFileUrl}
+          name={member.user}
+        />
         <Title as="h4" size="small">
           {member.petName}
         </Title>
       </UserCardHeader>
       <UserCardBody>
+        <Slider {...settings}>
+          {member?.petsInfo.map((el) => {
+            return <div key={el.petId}>{el.name}</div>;
+          })}
+        </Slider>
         <span>내용 수정 필요</span>
         <RowCenterBox>
           <span>{member.petBreed}</span>

@@ -390,9 +390,9 @@ const MemberInfoInput = ({
   // 주소 클릭하면 선택됨
   const handleClickAddress = (index) => {
     // input value
-    setSearchAddress(addressList[index].addressName);
+    setSearchAddress(addressList[index].name);
     // 선택한 결과의 배열 index를 이용해 서버에 보낼 법정 코드를 설정
-    setValueByName('address', addressList[index].bCode);
+    setValueByName('address', addressList[index].code);
     // 검색창 닫고 초기화
     setErrorByName('address', '');
     setIsAddressListOpen(false);

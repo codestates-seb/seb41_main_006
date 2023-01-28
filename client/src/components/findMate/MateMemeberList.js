@@ -20,6 +20,8 @@ const MateMemberList = ({ memberList }) => {
   if (memberList.length === 0) {
     return <div>지금은 회원 정보가 없습니다.</div>;
   }
+
+  console.log(memberList);
   return (
     <UserList>
       <button>이전</button>

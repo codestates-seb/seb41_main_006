@@ -27,7 +27,7 @@ const MateMemberContent = ({ placeCode }) => {
     setIsFilterModalOpen(true);
   };
 
-  const { data, isLoading } = useQuery(
+  const { data: memberList, isLoading } = useQuery(
     ['members', placeCode],
     async () => await getMemberList({ page: 1, size: 10, placeCode })
   );
@@ -43,7 +43,11 @@ const MateMemberContent = ({ placeCode }) => {
           상세 조건
         </Button>
       </MembersContentBox>
-      {isLoading ? <div>loading...</div> : <MateMemberList memberList={data} />}
+      {isLoading ? (
+        <div>loading...</div>
+      ) : (
+        <MateMemberList memberList={memberList} />
+      )}
 
       {isFilterModalOpen ? (
         <MemberFilterModal setIsFilterModalOpen={setIsFilterModalOpen} />

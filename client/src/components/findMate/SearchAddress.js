@@ -26,6 +26,8 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
         setAddressList(result);
         setIsAddressListOpen(true);
       } catch (err) {
+        setAddressList([]);
+        setIsAddressListOpen(true);
         console.log(err);
       }
     }
@@ -51,9 +53,9 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
     setSearchAddress('');
     // 선택한 결과의 배열 index를 이용해 화면에 출력할 주소명과 서버에 보낼 법정 코드를 설정
     // 주소명
-    setAddress(addressList[index].addressName);
+    setAddress(addressList[index].name);
     // 법정 코드
-    setBCode(addressList[index].bCode);
+    setBCode(addressList[index].code);
     // 검색창 닫고 초기화
     setIsAddressListOpen(false);
     setAddressList([]);
@@ -64,7 +66,7 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
       <IoLocationSharp className="location-icon" />
       <AdderssInput
         type="text"
-        placeholder="동 이름을 검색하세요"
+        placeholder="읍/면/동을 검색하세요"
         onKeyUp={handleSearchAddressKeyUp}
         value={searchAddress}
         onChange={(e) => setSearchAddress(e.target.value)}
@@ -76,16 +78,16 @@ const SearchAddress = ({ setAddress, setBCode, setIsLoading }) => {
       {isAddressListOpen && (
         <SearchResultBox ref={searchResultRef}>
           {addressList.length === 0 ? (
-            <div>검색 결과가 없습니다.</div>
+            <div>정확한 읍/면/동 을 입력해주세요</div>
           ) : (
             <ul>
-              {addressList.map((el, idx) => (
+              {addressList.map((address, idx) => (
                 <SearchResultItem
-                  key={el.id}
+                  key={address.id}
                   onClick={() => handleClickSearchResult(idx)}
                 >
                   <IoLocationSharp className="location-icon" />
-                  {el.addressName}
+                  {address.name}
                 </SearchResultItem>
               ))}
             </ul>

@@ -10,11 +10,13 @@ import {
   convertAppointDate,
   // convertAppointTime,
 } from '../../utils/dateConvert';
+// import getAddressByCode from '../../api/kakaoMap/getAddressByCode';
 import { BoardCloseBox, BoardOpenBox } from '../BoardStatus';
 import { IoLocationSharp } from 'react-icons/io5';
 import { TbCalendarTime } from 'react-icons/tb';
 // import { FiClock } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
+// import { useEffect, useState } from 'react';
 
 const BoardCard = styled.div`
   position: absolute;
@@ -80,6 +82,17 @@ const MateBoardCard = ({ board }) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
 
+  // const [address, setAddress] = useState();
+
+  // useEffect(() => {
+  //   const convertAddressCode = async (code) => {
+  //     const address = await getAddressByCode(code);
+  //     return address;
+  //   };
+
+  //   setAddress(convertAddressCode(board.placeCode));
+  // }, []);
+
   return (
     <BoardCard>
       <Link to={`/boards/${board.boardId}`}>
@@ -96,7 +109,7 @@ const MateBoardCard = ({ board }) => {
           </div>
           <div className="board-card--meet">
             <IoLocationSharp />
-            <span>{board.meetingPlace}</span>
+            <span>{board.placeCode}</span>
           </div>
           <div className="board-card--meet">
             <TbCalendarTime />
