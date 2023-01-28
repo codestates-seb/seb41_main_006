@@ -1,13 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom';
-// import { getBoardById } from '../api/board/board';
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
-// import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-// import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
@@ -147,10 +144,11 @@ const BoardDetailPage = () => {
 
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
-  let board, boardMemberId;
+  let board, boardMemberId, boardStatus;
   if (data) {
     board = data.data;
     boardMemberId = data.data.member.memberId;
+    boardStatus = data.data.boardStatus;
   }
 
   // 회원 정보 모달 창 띄우기
@@ -203,15 +201,18 @@ const BoardDetailPage = () => {
               <div className="post-btn">
                 {boardMemberId === Number(loginMemberId) ? (
                   <>
-                    <button
-                      className="post-edit"
-                      onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
-                    >
-                      수정
-                    </button>
-                    <button className="post-del" onClick={handelConfirmClick}>
-                      삭제
-                    </button>
+                    {boardStatus === 'BOARD_OPEN' ? (
+                      <button
+                        className="post-edit"
+                        onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
+                      >
+                        수정
+                      </button>
+                    ) : (
+                      <button className="post-del" onClick={handelConfirmClick}>
+                        삭제
+                      </button>
+                    )}
                   </>
                 ) : (
                   ''
