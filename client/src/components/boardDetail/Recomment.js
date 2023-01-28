@@ -4,8 +4,13 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
-import { commentPatch, recommentDelete } from '../../api/board/comment';
+import {
+  commentLike,
+  commentPatch,
+  recommentDelete,
+} from '../../api/board/comment';
 import { convertCreatedAt } from '../../utils/dateConvert';
+import { getLoginInfo } from '../../api/loginInfo';
 
 const RecommentBox = styled.div`
   height: 100%;
@@ -65,6 +70,10 @@ const RecommentBox = styled.div`
     flex-direction: column;
     align-items: flex-end;
 
+    .like-icon {
+      cursor: pointer;
+    }
+
     button {
       margin-left: 10px;
       font-size: 14px;
@@ -102,18 +111,24 @@ const RecommentBox = styled.div`
 `;
 
 const Recomment = ({ recomment }) => {
+  const loginMemberId = getLoginInfo().memberId;
+
   const dispatch = useDispatch();
 
-  const [like, setLike] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [recommentContent, setRecommentContent] = useState('');
 
+  let recommentList = [];
+  recommentList.push(recomment);
+
+  // 회원 정보 모달창 띄우기
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
 
-  const handleLikeClick = () => {
-    setLike(!like);
+  // 대댓글 좋아요 & 좋아요 취소
+  const handleLikeClick = (idx) => {
+    commentLike(idx, { memberId: loginMemberId });
   };
 
   // 대댓글 수정
@@ -169,15 +184,23 @@ const Recomment = ({ recomment }) => {
               <span className="recomment-like">
                 <FaHeart /> <span>{recomment.commentLike}</span>
               </span>
-              <span className="recomment-like-total">{recomment.likes}</span>
+              <span className="recomment-like-total">
+                {recomment.countLike}
+              </span>
             </div>
           </div>
         </div>
         <div className="recomment-right">
-          {like ? (
-            <FaHeart onClick={handleLikeClick} />
+          {recommentList[0].likedMembers.includes(Number(loginMemberId)) ? (
+            <FaHeart
+              className="like-icon"
+              onClick={() => handleLikeClick(recomment.commentsId)}
+            />
           ) : (
-            <FaRegHeart onClick={handleLikeClick} />
+            <FaRegHeart
+              className="like-icon"
+              onClick={() => handleLikeClick(recomment.commentsId)}
+            />
           )}
           <div>
             {isEditOpen ? (
