@@ -99,7 +99,7 @@ const MainContainer = styled.div`
   .post-content {
     /* width: 720px; */
     width: 100%;
-    height: 300px;
+    height: 15rem;
   }
 
   .comment-cnt {
@@ -153,6 +153,7 @@ const BoardDetailPage = () => {
     boardMemberId = data.data.member.memberId;
   }
 
+  // 회원 정보 모달 창 띄우기
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
@@ -170,7 +171,6 @@ const BoardDetailPage = () => {
   };
 
   // 좋아요 & 좋아요 취소
-
   const handleLikeClick = () => {
     boardLike(boardId, { memberId: loginMemberId });
   };
