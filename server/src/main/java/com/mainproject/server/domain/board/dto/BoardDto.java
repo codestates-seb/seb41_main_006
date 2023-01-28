@@ -1,6 +1,7 @@
 package com.mainproject.server.domain.board.dto;
 
 import com.mainproject.server.domain.board.entity.Board;
+import com.mainproject.server.domain.board.entity.BoardLike;
 import com.mainproject.server.domain.comments.dto.CommentsDto;
 import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
@@ -79,6 +80,7 @@ public class BoardDto {
         private long petId;
     }
     @Getter
+    @Setter
     @Builder
     public static class Response {
         private Long boardId;
@@ -94,6 +96,8 @@ public class BoardDto {
 
         private MemberDto.SimpleResponse member;
         private List<CommentsDto.Response> comments;
+
+        private List<Long> likedMembers;
 
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;

@@ -1,9 +1,13 @@
 package com.mainproject.server.domain.board.service;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
+import com.mainproject.server.domain.LikeStatus;
 import com.mainproject.server.domain.board.dto.BoardDto;
+import com.mainproject.server.domain.board.dto.BoardLikeDto;
 import com.mainproject.server.domain.board.entity.Board;
+import com.mainproject.server.domain.board.entity.BoardLike;
 import com.mainproject.server.domain.board.mapper.BoardMapper;
+import com.mainproject.server.domain.board.repository.BoardLikeRepository;
 import com.mainproject.server.domain.board.repository.BoardRepository;
 import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.comments.repository.CommentsRepository;
@@ -38,6 +42,7 @@ public class BoardService {
     private final CommentsService commentsService;
     private final PetService petService;
     private final CustomBeanUtils customBeanUtils;
+    private final BoardLikeRepository boardLikeRepository;
 
 
     public Board createBoard(Board board, MemberDetails memberDetails) {
@@ -68,7 +73,12 @@ public class BoardService {
         Board findBoard = findVerifiedBoard(boardId);
         findBoard.setCommentList(commentsService.getSortedCommentsByBoard(findBoard));
 
-        return boardMapper.boardToBoardResponseDto(findBoard);
+        List<Long> likedMembers = boardLikeRepository.findMemberIdsByBoardIdAndLikeStatus(boardId, LikeStatus.LIKE);
+
+        BoardDto.Response response = boardMapper.boardToBoardResponseDtoWithLikedMembers(findBoard, likedMembers);
+        response.setLikedMembers(likedMembers);
+
+        return response;
     }
 
     @Transactional(readOnly = true)

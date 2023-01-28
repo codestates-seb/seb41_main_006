@@ -1,5 +1,7 @@
 package com.mainproject.server.domain.board.dto;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
