@@ -91,9 +91,11 @@ public class MemberController {
     @GetMapping("/{member-id}")
     public ResponseEntity getMemberInfoWithPets(@Positive @PathVariable("member-id") long memberId) {
         Member member = memberService.findMember(memberId);
+        S3UpFile s3UpFile = member.getS3UpFile();
+        String fullAddress = addressRepository.findFullAddressByBeopJeongCd(member.getAddress());
         return new ResponseEntity(
                 new SingleResponseDto<>(
-                        memberMapper.memberToMemberResponseWithPetsDto(member)), HttpStatus.OK);
+                        memberMapper.memberToResponseWithFullAddress(member, fullAddress, s3UpFile)), HttpStatus.OK);
     }
 
     /*마이 페이지 회원 정보 조회*/
