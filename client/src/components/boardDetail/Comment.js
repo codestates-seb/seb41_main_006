@@ -6,7 +6,12 @@ import RecommentList from './RecommentList';
 import { convertCreatedAt } from '../../utils/dateConvert';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
-import { commentPatch, commentDelete } from '../../api/board/comment';
+import {
+  commentPatch,
+  commentDelete,
+  commentLike,
+} from '../../api/board/comment';
+import { getLoginInfo } from '../../api/loginInfo';
 
 const CommentBox = styled.div`
   height: 100%;
@@ -66,6 +71,10 @@ const CommentBox = styled.div`
     flex-direction: column;
     align-items: flex-end;
 
+    .like-icon {
+      cursor: pointer;
+    }
+
     button {
       margin-left: 10px;
       font-size: 14px;
@@ -119,9 +128,21 @@ const CommentBox = styled.div`
 `;
 
 const Comment = ({ comment, recomments }) => {
+  const loginMemberId = getLoginInfo().memberId;
+
+  let commentList = [];
+  commentList.push(comment);
+  console.log(commentList);
+  if (commentList[0].likedMembers.includes(Number(loginMemberId))) {
+    console.log('yes');
+  } else {
+    console.log('no');
+  }
+
+  //const likedList = commentList[0].likedMembers;
+
   const dispatch = useDispatch();
 
-  const [like, setLike] = useState(false);
   const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [commentContent, setCommentContent] = useState('');
@@ -131,8 +152,8 @@ const Comment = ({ comment, recomments }) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
 
-  const handleLikeClick = () => {
-    setLike(!like);
+  const handleLikeClick = (idx) => {
+    commentLike(idx, { memberId: loginMemberId });
   };
 
   const handleRecommentsClick = (idx) => {
@@ -193,15 +214,21 @@ const Comment = ({ comment, recomments }) => {
               <span className="comment-like">
                 <FaHeart /> <span>{comment.commentLike}</span>
               </span>
-              <span className="comment-like-total">{comment.likes}</span>
+              <span className="comment-like-total">{comment.countLike}</span>
             </div>
           </div>
         </div>
         <div className="comment-right">
-          {like ? (
-            <FaHeart onClick={handleLikeClick} />
+          {commentList[0].likedMembers.includes(Number(loginMemberId)) ? (
+            <FaHeart
+              className="like-icon"
+              onClick={() => handleLikeClick(comment.commentsId)}
+            />
           ) : (
-            <FaRegHeart onClick={handleLikeClick} />
+            <FaRegHeart
+              className="like-icon"
+              onClick={() => handleLikeClick(comment.commentsId)}
+            />
           )}
           <div>
             {isEditOpen ? (
