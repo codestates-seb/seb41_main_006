@@ -216,13 +216,14 @@ const BoardDetailPage = () => {
                 ) : (
                   ''
                 )}
-                {boardMemberId !== Number(loginMemberId) ? (
+                {board.likedMembers.includes(Number(loginMemberId)) ? (
                   <button className="post-like-btn">
-                    <FaRegHeart onClick={handleLikeClick} />
                     <FaHeart onClick={handleLikeClick} />
                   </button>
                 ) : (
-                  ''
+                  <button className="post-like-btn">
+                    <FaRegHeart onClick={handleLikeClick} />
+                  </button>
                 )}
               </div>
             </div>
