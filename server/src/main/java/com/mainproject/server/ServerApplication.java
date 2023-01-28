@@ -9,6 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
 
 
 @EnableJpaAuditing
@@ -17,6 +19,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableBatchProcessing
 @PropertySource("classpath:env.yml")
 public class ServerApplication extends SpringBootServletInitializer {
+
+	@PostConstruct
+	void started() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
