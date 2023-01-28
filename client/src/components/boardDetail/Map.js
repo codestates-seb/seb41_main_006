@@ -26,6 +26,11 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
 
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
+  //if (data) {
+  //  const meetLat = data[0].data.y;
+  //  const meetLng = data[0].data.x;
+  // }
+
   useEffect(() => {
     // 글 정보, 법정 코드, 위도, 경도 변수
     let board, bCode, lat, lng;

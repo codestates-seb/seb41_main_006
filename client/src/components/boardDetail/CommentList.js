@@ -6,6 +6,7 @@ const CommentBox = styled.ul`
 `;
 
 const CommentItem = styled.li`
+  /* height: 13.75rem; */
   height: 100%;
   margin-top: 16px;
   border-bottom: 1px solid #ebe6e1;

@@ -1,10 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
+// import { getBoardById } from '../api/board/board';
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
+// import { OpenBtn, CloseBtn } from '../components/Button';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+// import { convertCreatedAt } from '../utils/dateConvert';
 import MemberInfoCard from '../components/myPage/MemberInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
@@ -17,7 +20,6 @@ import useFetch from '../hooks/useFetch';
 import { getLoginInfo } from '../api/loginInfo';
 import PageLoading from '../components/PageLoading';
 import { convertCreatedAt } from '../utils/dateConvert';
-import ChoosedPetInfo from '../components/boardDetail/ChoosedPetInfo';
 
 const ContainerBox = styled(Container)`
   padding: 20px;
@@ -93,17 +95,11 @@ const HeaderContainer = styled.div`
 const MainContainer = styled.div`
   display: flex;
   margin: 20px 10px 0 10px;
-  .left-box {
-    display: flex;
-    flex-direction: column;
-    .choosed-pet {
-      border-bottom: 1px solid #a79689;
-    }
-  }
+
   .post-content {
     /* width: 720px; */
     width: 100%;
-    height: 15rem;
+    height: 300px;
   }
 
   .comment-cnt {
@@ -151,14 +147,12 @@ const BoardDetailPage = () => {
 
   const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
 
-  let board, boardMemberId, boardStatus;
+  let board, boardMemberId;
   if (data) {
     board = data.data;
     boardMemberId = data.data.member.memberId;
-    boardStatus = data.data.boardStatus;
   }
 
-  // 회원 정보 모달 창 띄우기
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
@@ -176,6 +170,7 @@ const BoardDetailPage = () => {
   };
 
   // 좋아요 & 좋아요 취소
+
   const handleLikeClick = () => {
     boardLike(boardId, { memberId: loginMemberId });
   };
@@ -208,18 +203,15 @@ const BoardDetailPage = () => {
               <div className="post-btn">
                 {boardMemberId === Number(loginMemberId) ? (
                   <>
-                    {boardStatus === 'BOARD_OPEN' ? (
-                      <button
-                        className="post-edit"
-                        onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
-                      >
-                        수정
-                      </button>
-                    ) : (
-                      <button className="post-del" onClick={handelConfirmClick}>
-                        삭제
-                      </button>
-                    )}
+                    <button
+                      className="post-edit"
+                      onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
+                    >
+                      수정
+                    </button>
+                    <button className="post-del" onClick={handelConfirmClick}>
+                      삭제
+                    </button>
                   </>
                 ) : (
                   ''
@@ -239,8 +231,6 @@ const BoardDetailPage = () => {
           <MainContainer>
             <div className="left-box">
               <div className="post-content">{board.content}</div>
-              <h3 className="choosed-pet">같이 가는 친구</h3>
-              <ChoosedPetInfo pets={board.pet} />
               <CommentContainer comments={board.comments} />
             </div>
             <div className="right-box">
