@@ -14,6 +14,7 @@ const UserList = styled.ul`
 
 const UserItem = styled.li`
   height: 20rem;
+  width: 15rem;
 `;
 
 const MateMemberList = ({ memberList }) => {
@@ -24,13 +25,11 @@ const MateMemberList = ({ memberList }) => {
   console.log(memberList);
   return (
     <UserList>
-      <button>이전</button>
       {memberList.map((el) => (
         <UserItem key={el.memberId}>
           <MateMemberCard member={el} />
         </UserItem>
       ))}
-      <button>다음</button>
     </UserList>
   );
 };

@@ -7,10 +7,9 @@ import Button from '../common/Button';
 import Select from '../common/Select';
 import selectPetSizeList from '../../static/selectPetSizeList';
 import { isNotNumber } from '../../utils/validateFunctions';
-import petInfoValidate from '../../utils/petInfoValidats';
+import petInfoValidate from '../../utils/petInfoValidate';
 import { petImageUpload, petImageDelete } from '../../api/image';
 import { createMyPet, updateMyPet } from '../../api/pet/pet';
-
 const PetInfoInputContainer = styled.div`
   width: 100%;
   height: 100%;

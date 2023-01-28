@@ -9,9 +9,14 @@ const PetProfileBox = styled(CenterBox)`
 
   svg,
   img {
-    width: 100%;
-    height: 100%;
+    width: ${(props) => props.width || '100%'};
+    height: ${(props) => props.height || '100%'};
     object-fit: cover;
+    ${(props) =>
+      props.circle &&
+      css`
+        border-radius: 100%;
+      `}
   }
 
   ${(props) =>
@@ -21,19 +26,26 @@ const PetProfileBox = styled(CenterBox)`
     `}
 `;
 
-/**
- * 원형의 profile 이미지를 반환
- */
-const PetProfileImage = ({ width, height, src, name, shadow }) => {
+const PetProfileImage = ({ width, height, src, name, shadow, circle }) => {
   if (!src) {
     return (
-      <PetProfileBox width={width} height={height} shadow={shadow}>
+      <PetProfileBox
+        width={width}
+        height={height}
+        shadow={shadow}
+        circle={circle}
+      >
         <DogProfile />
       </PetProfileBox>
     );
   }
   return (
-    <PetProfileBox width={width} height={height} shadow={shadow}>
+    <PetProfileBox
+      width={width}
+      height={height}
+      shadow={shadow}
+      circle={circle}
+    >
       <img src={src} alt={`${name}'s profile`}></img>
     </PetProfileBox>
   );
