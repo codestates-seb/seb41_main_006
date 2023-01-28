@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
 import { useEffect, useState } from 'react';
-import instance from '../../api/axiosConfig';
+import authRequest from '../../api/authRequest';
 
 const ChatItem = styled.li`
   display: flex;
@@ -29,17 +29,14 @@ const ChatItem = styled.li`
 const ChatList = () => {
   const navigate = useNavigate();
   const [chattingList, setChattingList] = useState([]);
+  const memberId = Number(localStorage.getItem('memberId'));
   useEffect(() => {
-    const AccessToken = localStorage.getItem('AccessToken');
     const GetChatList = async () => {
-      await instance
-        .get('/chats', {
-          headers: {
-            Authorization: AccessToken,
-          },
-        })
+      await authRequest
+        .get('/chats')
         .then((res) => {
           setChattingList(res.data.data);
+          console.log(res);
         })
         .catch((e) => {
           console.log(e);
@@ -47,6 +44,7 @@ const ChatList = () => {
     };
     GetChatList();
   }, []);
+
   const handleChatClick = (roomId) => {
     navigate(`/chat/${roomId}`);
   };
@@ -57,12 +55,20 @@ const ChatList = () => {
           key={chat.roomId}
           onClick={() => handleChatClick(chat.roomId)}
         >
-          <ProfileImage size="45px" />
+          <ProfileImage
+            size="45px"
+            src={
+              memberId === chat.receiver.memberId
+                ? chat.sender.profileImage?.upFileUrl
+                : chat.receiver.profileImage?.upFileUrl
+            }
+          />
           <div className="chatItem-content">
             <Title as="h2" size="xsmall">
-              {chat.receiver.nickName}
+              {memberId === chat.receiver.memberId
+                ? chat.sender.nickName
+                : chat.receiver.nickName}
             </Title>
-            <span>채팅 내용</span>
           </div>
         </ChatItem>
       ))}

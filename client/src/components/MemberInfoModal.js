@@ -4,7 +4,7 @@ import { getMemberInfo } from '../api/member/member';
 import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
 import Button from './common/Button';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
 import instance from '../api/axiosConfig';
@@ -46,6 +46,7 @@ const MemberInfoModal = ({ memberId }) => {
   });
   const AccessToken = localStorage.getItem('AccessToken');
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
 
   const handleModal = () => {
     dispatch(closeModal());
@@ -80,16 +81,16 @@ const MemberInfoModal = ({ memberId }) => {
     <SContainer>
       <div className="memberInfo-container">
         <MemberInfoCard memberInfo={member} />
-        <Link to="/chat">
-          <Button
-            onClick={() => {
-              handleModal();
-              AddChatList(member.memberId);
-            }}
-          >
-            채팅하기
-          </Button>
-        </Link>
+
+        <Button
+          onClick={() => {
+            handleModal();
+            AddChatList(member.memberId);
+            Navigate('/chat');
+          }}
+        >
+          채팅하기
+        </Button>
       </div>
       <div className="petInfo-container">
         <h2>강아지 소개</h2>

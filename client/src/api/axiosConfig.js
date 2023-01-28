@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080',
+  baseURL: process.env.REACT_APP_SERVER_API,
   timeout: 1000,
 });
 
@@ -25,7 +25,7 @@ instance.interceptors.response.use(
       if (refreshToken) {
         await axios
           .post(
-            'http://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080/auth/reissue',
+            `${process.env.REACT_APP_SERVER_API}auth/reissue`,
             {},
             {
               headers: { Refresh: refreshToken },
