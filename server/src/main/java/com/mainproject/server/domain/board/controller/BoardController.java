@@ -126,7 +126,7 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{board-id}/like")
+    @PostMapping("/{board-id}/like")
     public ResponseEntity likeBoard(@Positive @PathVariable("board-id") Long boardId,
                                     @Valid @RequestBody BoardLikeDto boardLikeDto,
                                     @AuthenticationPrincipal MemberDetails memberDetails){
