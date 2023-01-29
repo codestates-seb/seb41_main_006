@@ -441,7 +441,6 @@ const MemberInfoInput = ({
     const memberInfoError = memberInfoValidate(values);
 
     if (Object.keys(memberInfoError).length !== 0) {
-      console.log('오류가 있음');
       setErrors(memberInfoError);
       return;
     }
@@ -613,7 +612,7 @@ const MemberInfoInput = ({
                     onClick={() => handleClickAddress(idx)}
                   >
                     <IoLocationSharp className="location-icon" />
-                    {el.addressName}
+                    {el.name}
                   </AddressListItem>
                 ))}
               </ul>
