@@ -7,7 +7,6 @@ import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.mapper.MemberMapper;
 import com.mainproject.server.domain.member.service.MemberService;
-import com.mainproject.server.domain.pet.mapper.PetMapper;
 import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.dto.SingleResponseDto;
 import com.mainproject.server.exception.BusinessLogicException;
@@ -87,7 +86,7 @@ public class MemberController {
 
         return new ResponseEntity(
                 new MultiResponseDto<>(
-                        memberMapper.membersToMemberResponseWithPetsDto(content), pageInfo),
+                        memberMapper.membersToMemberResponseWithPets(content, address), pageInfo),
                 HttpStatus.OK);
     }
 
@@ -100,18 +99,17 @@ public class MemberController {
 
         return new ResponseEntity(
                 new SingleResponseDto<>(
-                        memberMapper.memberToMemberResponseWithPetsDto(member, fullAddress)), HttpStatus.OK);
+                        memberMapper.memberToMemberResponseWithPets(member, fullAddress)), HttpStatus.OK);
     }
 
     /*특정 회원 정보 조회*/
     @GetMapping("/{member-id}")
     public ResponseEntity getMemberInfoWithPets(@Positive @PathVariable("member-id") long memberId) {
         Member member = memberService.findMember(memberId);
-        S3UpFile s3UpFile = member.getS3UpFile();
         String fullAddress = addressRepository.findFullAddressByBeopJeongCd(member.getAddress());
         return new ResponseEntity(
                 new SingleResponseDto<>(
-                        memberMapper.memberToMemberResponseWithPetsDto(member, fullAddress)), HttpStatus.OK);
+                        memberMapper.memberToMemberResponseWithPets(member, fullAddress)), HttpStatus.OK);
     }
 
     /*마이 페이지 회원 정보 조회*/
