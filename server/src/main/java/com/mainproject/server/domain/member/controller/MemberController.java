@@ -90,7 +90,7 @@ public class MemberController {
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@Positive @PathVariable("member-id") long memberId,
                                       @RequestBody MemberDto.Active requestBody) {
-        Member member = memberService.findMember(memberId);
+        Member member = memberService.updateMember(memberId, requestBody);
         String fullAddress = addressRepository.findFullAddressByBeopJeongCd(member.getAddress());
 
         return new ResponseEntity(
