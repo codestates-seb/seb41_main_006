@@ -7,7 +7,7 @@ defaultRequest.defaults.withCredentials = true;
 // post의 content-type을 지정
 defaultRequest.defaults.headers.post['Content-Type'] = 'application/json';
 // 서버 API 주소 지정
-defaultRequest.defaults.baseURL = process.env.REACT_APP_SERVER_API;
+defaultRequest.defaults.baseURL = '/api';
 
 defaultRequest.interceptors.response.use(
   (response) => {
