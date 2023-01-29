@@ -1,5 +1,6 @@
 package com.mainproject.server.domain.member.controller;
 
+import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.domain.address.repository.AddressRepository;
 import com.mainproject.server.domain.member.dto.MemberDto;
@@ -9,12 +10,15 @@ import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.domain.pet.mapper.PetMapper;
 import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.dto.SingleResponseDto;
+import com.mainproject.server.exception.BusinessLogicException;
+import com.mainproject.server.exception.ExceptionCode;
 import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,6 +91,7 @@ public class MemberController {
                 HttpStatus.OK);
     }
 
+    /*휴면 회원 살리기*/
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@Positive @PathVariable("member-id") long memberId,
                                       @RequestBody MemberDto.Active requestBody) {
@@ -111,7 +116,11 @@ public class MemberController {
 
     /*마이 페이지 회원 정보 조회*/
     @GetMapping("/{member-id}/my-page")
-    public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId) {
+    public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId,
+                                        @AuthenticationPrincipal MemberDetails memberDetails) {
+        if (memberDetails.getMemberId() != memberId) {
+            throw new BusinessLogicException(ExceptionCode.FORBIDDEN_ACCESS);
+        }
         Member member = memberService.findMember(memberId);
         S3UpFile s3UpFile = member.getS3UpFile();
         String fullAddress = addressRepository.findFullAddressByBeopJeongCd(member.getAddress());
