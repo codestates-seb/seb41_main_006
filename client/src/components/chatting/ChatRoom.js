@@ -57,7 +57,7 @@ const ChatRoom = () => {
 
   const connect = () => {
     client.current = new StompJs.Client({
-      brokerURL: '/ws',
+      brokerURL: process.env.REACT_APP_CHAT_API,
       connectHeaders: { Authorization: AccessToken },
       onConnect: () => {
         console.log('success');
