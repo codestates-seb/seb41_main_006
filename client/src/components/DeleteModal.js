@@ -64,6 +64,11 @@ const DeleteModal = ({
   handleBoardDelete,
   recommentId,
   handleRecommentDelete,
+  petId,
+  handlePetDelete,
+  memberId,
+  handleMemberDelete,
+  message,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -73,16 +78,17 @@ const DeleteModal = ({
   };
 
   const handelDelClick = () => {
-    if (commentId !== undefined) {
-      handleCommentDelete(commentId);
-    }
+    if (commentId !== undefined) handleCommentDelete(commentId);
+
     if (boardId !== undefined) {
       handleBoardDelete(boardId);
       navigate('/mate/boards');
     }
-    if (recommentId !== undefined) {
-      handleRecommentDelete(recommentId);
-    }
+
+    if (recommentId !== undefined) handleRecommentDelete(recommentId);
+    if (petId) handlePetDelete(petId);
+    if (memberId) handleMemberDelete(memberId);
+
     dispatch(closeModal({ type: 'delete' }));
   };
 
@@ -90,7 +96,7 @@ const DeleteModal = ({
     <ModalInner>
       <div className="modal-message">
         <RiAlertFill />
-        <span>정말 삭제하시겠습니까?</span>
+        <span>{message || '정말 삭제하시겠습니까?'}</span>
       </div>
       <div className="modal-btn">
         <PostSubmitBtn

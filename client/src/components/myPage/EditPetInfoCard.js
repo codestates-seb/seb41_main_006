@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../store/modules/modalSlice';
+import { deleteMyPet } from '../../api/pet/pet';
 import styled from 'styled-components';
 import { MdModeEdit } from 'react-icons/md';
 import { RiDeleteBinFill } from 'react-icons/ri';
@@ -31,7 +35,36 @@ const CardContainer = styled.div`
 `;
 
 const EditPetInfoCard = ({ pet }) => {
+  const dispatch = useDispatch();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const deletePetMutation = useMutation(deleteMyPet, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['myPets']);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const deletePet = (petId) => {
+    deletePetMutation.mutate({ petId });
+  };
+
+  const handleClickPetDelete = () => {
+    dispatch(
+      openModal({
+        type: 'delete',
+        props: {
+          petId: pet.petId,
+          handlePetDelete: deletePet,
+          message: '강아지 정보를 삭제하시겠습니까?',
+        },
+      })
+    );
+  };
+
   return (
     <>
       <CardContainer>
@@ -45,7 +78,7 @@ const EditPetInfoCard = ({ pet }) => {
               }}
             />
           </button>
-          <button>
+          <button onClick={handleClickPetDelete}>
             <RiDeleteBinFill size="16" />
           </button>
         </div>
