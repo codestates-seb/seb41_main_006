@@ -29,7 +29,7 @@ public interface MemberMapper {
     @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     MemberDto.ResponseWithFullAddress memberToResponseWithFullAddress(Member member, String fullAddress, S3UpFile s3UpFile);
 
-    default MemberDto.ResponseWithPets memberToMemberResponseWithPetsDto(Member member) {
+    default MemberDto.ResponseWithPets memberToMemberResponseWithPetsDto(Member member, String fullAddress) {
         return MemberDto.ResponseWithPets.builder()
                 .memberId(member.getMemberId())
                 .nickName(member.getNickName())
@@ -37,6 +37,7 @@ public interface MemberMapper {
                 .memberAge(member.getMemberAge())
                 .gender(member.getGender())
                 .address(member.getAddress())
+                .fullAddress(fullAddress)
                 .memberStatus(member.getMemberStatus())
                 .aboutMe(member.getAboutMe())
                 .profileImage(member.getS3UpFile() == null ? null :
