@@ -49,6 +49,7 @@ const ChatList = () => {
   const handleChatClick = (roomId) => {
     navigate(`/chat/${roomId}`);
     setRoomId(roomId);
+    window.location.reload();
   };
   return (
     <ul>

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import footerImg from '../static/images/FooterTop-image.png';
+// import footerImg from '../static/images/FooterTop-image.png';
+import footerImage from '../static/images/FooterImage.png';
 
 const SFooter = styled.footer`
   display: flex;
@@ -15,18 +16,15 @@ const SFooter = styled.footer`
     font-size: 1rem;
   }
 `;
-const SfooterImg = styled.div`
-  background-image: url(${footerImg});
+const SfooterImg = styled.img`
   width: 100%;
-  height: 70px;
-  background-size: 10%;
 `;
 
 const Footer = () => {
   const url = 'https://github.com/codestates-seb/seb41_main_006';
   return (
     <>
-      <SfooterImg className="footerimg"></SfooterImg>
+      <SfooterImg src={footerImage} alt="footerImg" />
       <SFooter>
         <ul>
           <li>
