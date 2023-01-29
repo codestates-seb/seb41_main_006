@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+const api = process.env.REACT_APP_SERVER_API;
 const instance = axios.create({
-  baseURL: '/api',
+  baseURL: api,
   timeout: 1000,
 });
 
