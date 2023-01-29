@@ -21,8 +21,8 @@ const SelectBox = styled.div`
   }
 
   &.selected {
-    color: var(--main-color);
-    border: 1.5px solid var(--main-color);
+    color: var(--main-font-color);
+    border: 1.5px solid var(--main-font-color);
   }
 `;
 

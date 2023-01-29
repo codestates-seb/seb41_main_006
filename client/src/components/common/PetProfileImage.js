@@ -4,8 +4,8 @@ import { BrownDog } from './DogSvg';
 
 const PetProfileBox = styled(CenterBox)`
   background-color: white;
-  width: ${(props) => props.width || '100%'};
-  height: ${(props) => props.height || '100%'};
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
 
   svg,

@@ -3,9 +3,20 @@ import Slider from 'react-slick';
 import useFetch from '../hooks/useFetch';
 import PageLoading from './PageLoading';
 
+const MainContainer = styled.div`
+  .slider {
+    width: 720px;
+    .slick-prev::before,
+    .slick-next::before {
+      color: var(--main-font-color);
+    }
+  }
+`;
+
 const Container = styled.div`
   padding: 0 5px;
 `;
+
 const InfoContainer = styled.li`
   background-color: var(--main--bgcolor);
   text-align: center;
@@ -42,13 +53,12 @@ const settings = {
 const GetDogInfo = ({ loginMemberId, setPetid }) => {
   // 멤버 정보 조회
   const [data, isLoading, error] = useFetch(
-    `${process.env.REACT_APP_SERVER_API}/members/${loginMemberId}`
+    `${process.env.REACT_APP_SERVER_API}members/${loginMemberId}`
   );
 
   let board;
   if (data) {
     board = data.data;
-    console.log(board);
   }
 
   // 강아지 아이디
@@ -62,34 +72,36 @@ const GetDogInfo = ({ loginMemberId, setPetid }) => {
       {isLoading ? (
         <PageLoading />
       ) : (
-        <ul>
-          <Slider {...settings}>
-            {board.petsInfo.map((pet) => {
-              return (
-                <Container Key={pet.index}>
-                  <InfoContainer
-                    Key={pet.index}
-                    pats={pet}
-                    onClick={() => handlePetId(pet.petId)}
-                  >
-                    <img
-                      src="https://i.ibb.co/Rj5b3xs/Kakao-Talk-Photo-2023-01-12-00-46-38.jpg"
-                      alt="petimage"
-                    />
-                    <div className="pet-name">{pet.name}</div>
-                    <div>
-                      <span>{pet.gender === 'M' ? '남' : '여'}</span>
-                      <span>|</span>
-                      <span>{pet.age}살</span>
-                      <span>|</span>
-                      <span>{pet.breed}</span>
-                    </div>
-                  </InfoContainer>
-                </Container>
-              );
-            })}
-          </Slider>
-        </ul>
+        <MainContainer>
+          <ul>
+            <Slider {...settings}>
+              {board.petsInfo.map((pet) => {
+                return (
+                  <Container Key={pet.index}>
+                    <InfoContainer
+                      Key={pet.index}
+                      pats={pet}
+                      onClick={() => handlePetId(pet.petId)}
+                    >
+                      <img
+                        src="https://i.ibb.co/Rj5b3xs/Kakao-Talk-Photo-2023-01-12-00-46-38.jpg"
+                        alt="petimage"
+                      />
+                      <div className="pet-name">{pet.name}</div>
+                      <div>
+                        <span>{pet.gender === 'M' ? '남' : '여'}</span>
+                        <span>|</span>
+                        <span>{pet.age}살</span>
+                        <span>|</span>
+                        <span>{pet.breed}</span>
+                      </div>
+                    </InfoContainer>
+                  </Container>
+                );
+              })}
+            </Slider>
+          </ul>
+        </MainContainer>
       )}
     </>
   );

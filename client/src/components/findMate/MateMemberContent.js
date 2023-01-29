@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useQuery } from 'react-query';
+import { getMemberList } from '../../api/member/member';
 import styled from 'styled-components';
 import MateMemberList from './MateMemeberList';
 import MemberFilterModal from './MemberFilterModal';
@@ -16,16 +18,19 @@ const MembersContentBox = styled.div`
   ${flexRowCenter}
   width: 100%;
   justify-content: space-between;
-
-  margin-bottom: 1rem;
 `;
 
-const MateMemberContent = () => {
+const MateMemberContent = ({ placeCode }) => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const openModalHandler = () => {
     setIsFilterModalOpen(true);
   };
+
+  const { data: memberList, isLoading } = useQuery(
+    ['members', placeCode],
+    async () => await getMemberList({ page: 1, size: 10, placeCode })
+  );
 
   return (
     <MembersContentLayOut>
@@ -38,7 +43,12 @@ const MateMemberContent = () => {
           상세 조건
         </Button>
       </MembersContentBox>
-      <MateMemberList />
+      {isLoading ? (
+        <div>loading...</div>
+      ) : (
+        <MateMemberList memberList={memberList} />
+      )}
+
       {isFilterModalOpen ? (
         <MemberFilterModal setIsFilterModalOpen={setIsFilterModalOpen} />
       ) : null}

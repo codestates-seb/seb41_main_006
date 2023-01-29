@@ -1,13 +1,11 @@
+import { useQuery } from 'react-query';
 import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import EditMemberModal from './Modal/EditMemberModal';
 import MemberInfoCard from './MemberInfoCard';
-import { getMyInfo, deleteMember } from '../../api/member/member';
-import { openModal } from '../../store/modules/modalSlice';
-import { useNavigate } from 'react-router-dom';
+import WithdrawalModal from '../WithdrawalModal';
+import { getMyInfo } from '../../api/member/member';
 
 const UserInfoContainer = styled.div`
   display: flex;
@@ -40,12 +38,8 @@ const UserInfoContainer = styled.div`
 `;
 
 const MemberInfo = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const queryClient = useQueryClient();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  // 로컬 스토리지에 저장된 멤버 아이디
+  const [DeleteModal, setDeleteModal] = useState(false);
   const memberId = localStorage.getItem('memberId');
 
   const { data: memberInfo, isLoading } = useQuery(
@@ -54,33 +48,8 @@ const MemberInfo = () => {
     async () => await getMyInfo(memberId)
   );
 
-  const deleteMemberMutation = useMutation(deleteMember, {
-    onSuccess: () => {
-      navigate('/');
-      queryClient.invalidateQueries(['myInfo']);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
-  const handleMemberDelete = (memberId) => {
-    deleteMemberMutation.mutate({
-      memberId,
-    });
-  };
-
   const handleClickDeleteMember = () => {
-    dispatch(
-      openModal({
-        type: 'delete',
-        props: {
-          memberId: memberInfo.memberId,
-          handleMemberDelete,
-          message: '모든 회원 정보가 삭제됩니다. 회원 탈퇴 하시겠습니까?',
-        },
-      })
-    );
+    setDeleteModal(!DeleteModal);
   };
 
   if (isLoading) {
@@ -112,6 +81,7 @@ const MemberInfo = () => {
       ) : (
         ''
       )}
+      {DeleteModal ? <WithdrawalModal /> : ''}
     </>
   );
 };

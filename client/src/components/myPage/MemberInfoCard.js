@@ -44,6 +44,8 @@ const MemberInfoCard = ({ memberInfo }) => {
     (el) => el.value === memberInfo.memberAge
   )?.title;
 
+  console.log(memberInfo);
+
   return (
     <CardContainer>
       <ProfileImage

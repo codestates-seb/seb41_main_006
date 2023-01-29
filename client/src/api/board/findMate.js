@@ -10,7 +10,6 @@ const API_CONNECT_TIMEOUT = 2000;
 
 // 글 생성
 export const boardCreate = async (body) => {
-  console.log(body);
   const { AccessToken } = getLoginInfo();
 
   try {
@@ -21,7 +20,6 @@ export const boardCreate = async (body) => {
       },
       timeout: API_CONNECT_TIMEOUT,
     });
-    console.log(result);
     return { state: 'OK', data: result.data.response };
   } catch (err) {
     console.error('Error: ', err);
@@ -71,12 +69,11 @@ export const boardDelete = async (boardId) => {
 
 // 글 좋아요 & 좋아요 취소
 export const boardLike = async (boardId, body) => {
-  console.log(boardId, body);
   const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}/like`;
 
   try {
-    let result = await axios.put(path, body, {
+    let result = await axios.post(path, body, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: AccessToken,
