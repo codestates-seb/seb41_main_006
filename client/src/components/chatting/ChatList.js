@@ -29,6 +29,7 @@ const ChatItem = styled.li`
 const ChatList = () => {
   const navigate = useNavigate();
   const [chattingList, setChattingList] = useState([]);
+  const [roomId, setRoomId] = useState('');
   const memberId = Number(localStorage.getItem('memberId'));
   useEffect(() => {
     const GetChatList = async () => {
@@ -43,10 +44,11 @@ const ChatList = () => {
         });
     };
     GetChatList();
-  }, []);
+  }, [roomId]);
 
   const handleChatClick = (roomId) => {
     navigate(`/chat/${roomId}`);
+    setRoomId(roomId);
   };
   return (
     <ul>
