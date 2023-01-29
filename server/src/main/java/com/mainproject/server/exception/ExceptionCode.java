@@ -7,8 +7,8 @@ import static org.springframework.http.HttpStatus.*;
 
 public enum ExceptionCode {
     MEMBER_ALREADY_EXISTS(CONFLICT.value(), "Member Already Exists"),
+    MEMBER_STATUS_QUIT(FORBIDDEN.value(), "Member Quit Service"),
     NICKNAME_ALREADY_EXISTS(CONFLICT.value(), "NickName Already Exists"),
-
     MEMBER_NOT_FOUND(NOT_FOUND.value(), "Member Not Found"),
     PET_NOT_FOUND(404, "Pet Not Found"),
     PET_EXISTS(CONFLICT.value(), "Pet Exists" ),

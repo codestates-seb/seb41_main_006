@@ -87,6 +87,17 @@ public class MemberController {
                 HttpStatus.OK);
     }
 
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@Positive @PathVariable("member-id") long memberId,
+                                      @RequestBody MemberDto.Active requestBody) {
+        Member member = memberService.updateMember(memberId, requestBody);
+        String fullAddress = addressRepository.findFullAddressByBeopJeongCd(member.getAddress());
+
+        return new ResponseEntity(
+                new SingleResponseDto<>(
+                        memberMapper.memberToMemberResponseWithPetsDto(member, fullAddress)), HttpStatus.OK);
+    }
+
     /*특정 회원 정보 조회*/
     @GetMapping("/{member-id}")
     public ResponseEntity getMemberInfoWithPets(@Positive @PathVariable("member-id") long memberId) {
@@ -95,7 +106,7 @@ public class MemberController {
         String fullAddress = addressRepository.findFullAddressByBeopJeongCd(member.getAddress());
         return new ResponseEntity(
                 new SingleResponseDto<>(
-                        memberMapper.memberToResponseWithFullAddress(member, fullAddress, s3UpFile)), HttpStatus.OK);
+                        memberMapper.memberToMemberResponseWithPetsDto(member, fullAddress)), HttpStatus.OK);
     }
 
     /*마이 페이지 회원 정보 조회*/
