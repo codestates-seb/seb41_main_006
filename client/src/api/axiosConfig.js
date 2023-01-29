@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-// const api = process.env.REACT_APP_SERVER_API;
 const instance = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.REACT_APP_SERVER_API,
   timeout: 1000,
 });
 
@@ -26,7 +25,7 @@ instance.interceptors.response.use(
       if (refreshToken) {
         await axios
           .post(
-            `/auth/reissue`,
+            `${process.env.REACT_APP_SERVER_API}auth/reissue`,
             {},
             {
               headers: { Refresh: refreshToken },
