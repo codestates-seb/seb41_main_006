@@ -1,6 +1,5 @@
 package com.mainproject.server.domain.comments.controller;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -14,10 +13,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
@@ -28,7 +25,6 @@ import com.mainproject.server.domain.comments.entity.CommentsLike;
 import com.mainproject.server.domain.comments.mapper.CommentsMapper;
 import com.mainproject.server.domain.comments.service.CommentsLikeService;
 import com.mainproject.server.domain.comments.service.CommentsService;
-import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.exception.ExceptionCode;
 
 import lombok.RequiredArgsConstructor;
@@ -50,7 +46,7 @@ public class CommentsController {
 										@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
 		}
 
 		Comments createdComments = commentsService.createComments(mapper.commentsPostDtoToComments(commentsPostDto));
@@ -66,7 +62,7 @@ public class CommentsController {
 											@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
 		}
 
 		Comments createdComments = commentsService.createReComments(parentId, mapper.commentsPostDtoToComments(commentsPostDto));
@@ -83,7 +79,7 @@ public class CommentsController {
 										@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
 		}
 
 		commentsPatchDto.setCommentsId(commentsId);
@@ -100,7 +96,7 @@ public class CommentsController {
 												@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
 		}
 		commentsService.deleteParentComments(commentsId);
 
@@ -113,7 +109,7 @@ public class CommentsController {
 												@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
 		}
 		commentsService.deleteReplyComments(commentsId);
 
@@ -127,7 +123,7 @@ public class CommentsController {
 										@AuthenticationPrincipal MemberDetails memberDetails)
 	{
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
 		}
 
 		Optional<CommentsLike> commentsLike = commentsLikeService.likeComments(commentsId, commentsLikeDto.getMemberId());

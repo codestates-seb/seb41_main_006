@@ -3,14 +3,11 @@ package com.mainproject.server.domain.board.service;
 import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.LikeStatus;
 import com.mainproject.server.domain.board.dto.BoardDto;
-import com.mainproject.server.domain.board.dto.BoardLikeDto;
 import com.mainproject.server.domain.board.entity.Board;
-import com.mainproject.server.domain.board.entity.BoardLike;
 import com.mainproject.server.domain.board.mapper.BoardMapper;
 import com.mainproject.server.domain.board.repository.BoardLikeRepository;
 import com.mainproject.server.domain.board.repository.BoardRepository;
 import com.mainproject.server.domain.comments.entity.Comments;
-import com.mainproject.server.domain.comments.repository.CommentsRepository;
 import com.mainproject.server.domain.comments.service.CommentsService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
@@ -27,11 +24,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -129,7 +123,7 @@ public class BoardService {
         Member member = memberService.validateVerifyMember(memberId);
 
         if(board.getMember() != member) {
-            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.FORBIDDEN_ACCESS);
         }
     }
 }

@@ -20,8 +20,8 @@ public class MemberAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        log.error("# Authentication failed: {}", exception.getMessage());
+        log.error("# Authentication failed: {}, {}", exception.getMessage(), exception.getClass());
 
-        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
+        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED, exception.getMessage());
     }
 }
