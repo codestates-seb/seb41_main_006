@@ -7,7 +7,7 @@ import PetProfileImage from '../common/PetProfileImage';
 
 const PetSlideCardBox = styled.div`
   width: 100%;
-  height: 100%;
+  height: 250px;
   /* box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
   background-color: white;
   border-radius: 20px; */
@@ -59,7 +59,6 @@ const PetInfoBox = styled.div`
 `;
 
 const MatePetSlideCard = ({ pet }) => {
-  console.log(pet);
   return (
     <PetSlideCardBox>
       {pet?.profileImage?.upFileUrl ? (

@@ -25,9 +25,11 @@ const SPetList = styled.ul`
 
 const NoPetBox = styled.div`
   width: 100%;
+  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 1rem;
 
   > .dog-face {
