@@ -9,26 +9,11 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  justify-content: space-between;
+  width: 17.5rem;
+  height: 25rem;
   color: var(--main-font-color);
-  > * {
-    margin: 1% 0;
-  }
-  .Info {
-    display: flex;
-    > div {
-      text-align: center;
-    }
-    > :nth-child(2) {
-      border-left: 1px solid black;
-      border-right: 1px solid black;
-      border-color: var(--main-font-color);
-      margin: 0 10px;
-      padding: 0 10px;
-    }
-  }
-  .Introduce {
-  }
+
   > .edit {
     width: 100%;
     display: flex;
@@ -36,8 +21,11 @@ const CardContainer = styled.div`
     button {
       margin: 0 5px;
       border: none;
-      background-color: var(--bg-color);
       cursor: pointer;
+
+      &:hover {
+        color: var(--main-color);
+      }
     }
   }
 `;
@@ -51,22 +39,20 @@ const EditPetInfoCard = ({ pet }) => {
         <div className="edit">
           <button>
             <MdModeEdit
-              size="20"
+              size="16"
               onClick={() => {
                 setIsEditModalOpen(true);
               }}
             />
           </button>
           <button>
-            <RiDeleteBinFill size="20" />
+            <RiDeleteBinFill size="16" />
           </button>
         </div>
       </CardContainer>
       {isEditModalOpen ? (
         <EditPetModal pet={pet} setIsEditModalOpen={setIsEditModalOpen} />
-      ) : (
-        ''
-      )}
+      ) : null}
     </>
   );
 };

@@ -1,19 +1,25 @@
+// import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { getMyPetList } from '../../api/pet/pet';
 import { GrayDog } from '../common/DogSvg';
 import EditPetInfoCard from './EditPetInfoCard';
+
 import styled from 'styled-components';
 
 const SPetList = styled.ul`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(20%, 1fr));
-  grid-template-rows: minmax(1fr);
-  grid-column-gap: 1rem;
-  grid-row-gap: 1.5rem;
-  justify-content: center;
-  li {
-    margin: 0 10px 10px 10px;
+  width: 80%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  overflow-x: scroll;
+  gap: 1.5rem;
+  padding: 1rem;
+
+  // 스크롤바 가리기
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -39,10 +45,13 @@ const NoPetBox = styled.div`
 `;
 
 const PetList = () => {
-  const { data: petList, isLoading } = useQuery({
-    queryKey: ['myPets'],
-    queryFn: async () => await getMyPetList({ page: 1, size: 10 }),
-  });
+  const { data: petList, isLoading } = useQuery(
+    ['myPets'],
+    async () => await getMyPetList({ page: 1, size: 10 }),
+    {
+      placeholderData: [],
+    }
+  );
 
   if (isLoading) {
     <div>...loading</div>;
