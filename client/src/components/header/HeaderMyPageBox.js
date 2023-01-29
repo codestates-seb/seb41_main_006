@@ -66,8 +66,7 @@ const HeaderMyPageBox = ({ setIsLogin }) => {
           Refresh: refreshToken,
         },
       })
-      .then((res) => {
-        alert(res.data);
+      .then(() => {
         localStorage.clear();
         navigate('/');
         window.location.reload();

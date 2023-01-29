@@ -53,11 +53,14 @@ authRequest.interceptors.response.use(
               localStorage.removeItem('AccessToken');
               localStorage.removeItem('refreshToken');
               localStorage.removeItem('memberId');
-              alert('다시 로그인 해 주세요');
               window.location.reload();
             }
           });
-      } else if (error.code === 'ERR_BAD_REQUEST') {
+      }
+      if (
+        error.response.data.message === 'Member Not Found' ||
+        error.response.data.message === '자격 증명에 실패하였습니다.'
+      ) {
         alert('이메일과 비밀 번호를 정확히 입력해 주세요');
       } else {
         alert('로그인 후 이용해 주세요');
