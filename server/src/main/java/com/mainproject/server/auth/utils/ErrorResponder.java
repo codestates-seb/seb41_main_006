@@ -28,6 +28,7 @@ public class ErrorResponder {
         String errorResponseBody = objectMapper.writeValueAsString(errorResponse);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("utf-8");
         response.setStatus(httpStatus.value());
         response.getWriter().write(errorResponseBody);
     }
