@@ -11,6 +11,11 @@
   to = "http://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080/:splat"
   status = 200
   force = true
+    [[redirects]]
+  from = "/ws/*"
+  to = "ws://ec2-3-39-12-49.ap-northeast-2.compute.amazonaws.com:8080/ws/websocket"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
