@@ -34,3 +34,6 @@ export const createMyPet = async ({
 
 export const updateMyPet = async ({ petId, data }) =>
   await authRequest.patch(`/pets/${petId}`, data);
+
+export const deleteMyPet = async ({ petId }) =>
+  await authRequest.delete(`/pets/${petId}`);

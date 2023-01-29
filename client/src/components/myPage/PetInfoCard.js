@@ -1,32 +1,56 @@
 import styled from 'styled-components';
 import Title from '../common/Title';
 import PetProfileImage from '../common/PetProfileImage';
+import { RowCenterBox } from '../FlexBoxs';
+import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai';
+import { HiXMark, HiCheck } from 'react-icons/hi2';
 
 const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   color: var(--main-font-color);
 
   > .image-box {
     width: 100%;
-    height: 15rem;
+    height: 17rem;
     border-radius: 10px;
   }
+`;
+
+const PetInfoCardBottom = styled.div`
+  padding: 0.25rem;
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   > .info {
     display: flex;
-    > div {
-      text-align: center;
+    align-items: centser;
+    font-size: 0.875rem;
+    margin-top: 0.125rem;
+
+    > span {
+      display: flex;
+      align-items: center;
+      border-right: 0.5px solid var(--main-font-color);
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+
+      &:first-child {
+        padding-left: 0px;
+      }
+
+      &:last-child {
+        border: none;
+      }
     }
-    > :nth-child(2) {
-      border-left: 1px solid black;
-      border-right: 1px solid black;
-      border-color: var(--main-font-color);
-      margin: 0 10px;
-      padding: 0 10px;
-    }
+  }
+
+  > .mypet-info--aboutDog {
+    font-weight: 500;
   }
 `;
 
@@ -39,15 +63,32 @@ const PetInfoCard = ({ pet }) => {
           alt=""
         ></PetProfileImage>
       </div>
-      <Title as="h3" size="small">
-        {pet?.name}
-      </Title>
-      <div className="info">
-        <div>🐶 {pet?.age}살</div>
-        <div>{pet?.gender === 'M' ? '수컷' : '암컷'}</div>
-        <div>{pet?.breed}</div>
-      </div>
-      <div className="Introduce">{pet?.aboutDog}</div>
+      <PetInfoCardBottom>
+        <Title as="h3" size="small">
+          {pet?.name}
+        </Title>
+        <div className="info">
+          <span>{pet?.breed}</span>
+          <span>{pet?.age}살</span>
+          <span>
+            {pet.gender === 'M' ? <AiOutlineMan /> : <AiOutlineWoman />}
+          </span>
+          <span>
+            {pet?.neutered ? (
+              <RowCenterBox>
+                중성화
+                <HiCheck />
+              </RowCenterBox>
+            ) : (
+              <RowCenterBox>
+                중성화
+                <HiXMark />
+              </RowCenterBox>
+            )}
+          </span>
+        </div>
+        <div className="mypet-info--aboutDog">{pet?.aboutDog}</div>
+      </PetInfoCardBottom>
     </CardContainer>
   );
 };

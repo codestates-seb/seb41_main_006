@@ -14,6 +14,7 @@ const ModalInner = styled.div`
   -ms-transform: translate(-50%, -50%);
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+
   background-color: #ffffff;
   border-radius: 10px;
   border: 1px solid var(--line-color);
@@ -42,6 +43,8 @@ const ModalInner = styled.div`
   .modal-btn {
     margin-top: 20px;
     text-align: center;
+    /* display: flex;
+    justify-content: space-between; */
 
     .btn {
       border-radius: 10px;
@@ -61,6 +64,11 @@ const DeleteModal = ({
   handleBoardDelete,
   recommentId,
   handleRecommentDelete,
+  petId,
+  handlePetDelete,
+  memberId,
+  handleMemberDelete,
+  message,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -70,16 +78,17 @@ const DeleteModal = ({
   };
 
   const handelDelClick = () => {
-    if (commentId !== undefined) {
-      handleCommentDelete(commentId);
-    }
+    if (commentId !== undefined) handleCommentDelete(commentId);
+
     if (boardId !== undefined) {
       handleBoardDelete(boardId);
       navigate('/mate/boards');
     }
-    if (recommentId !== undefined) {
-      handleRecommentDelete(recommentId);
-    }
+
+    if (recommentId !== undefined) handleRecommentDelete(recommentId);
+    if (petId) handlePetDelete(petId);
+    if (memberId) handleMemberDelete(memberId);
+
     dispatch(closeModal({ type: 'delete' }));
   };
 
@@ -87,7 +96,7 @@ const DeleteModal = ({
     <ModalInner>
       <div className="modal-message">
         <RiAlertFill />
-        <span>정말 삭제하시겠습니까?</span>
+        <span>{message || '정말 삭제하시겠습니까?'}</span>
       </div>
       <div className="modal-btn">
         <PostSubmitBtn
