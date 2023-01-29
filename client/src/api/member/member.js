@@ -45,12 +45,5 @@ export const updateMyInfo = async ({ memberId, data }) => {
 };
 
 // DELETE /members/${memberId}
-export const deleteMember = async (memberId) => {
-  try {
-    console.log(memberId);
-    // await authRequest.delete(`/members/${memberId}`)
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
-};
+export const deleteMember = async ({ memberId }) =>
+  await authRequest.delete(`/members/${memberId}`);

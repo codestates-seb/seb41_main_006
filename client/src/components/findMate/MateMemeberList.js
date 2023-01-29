@@ -1,36 +1,51 @@
+import { useSelector } from 'react-redux';
+import { useQuery } from 'react-query';
+import { getMemberList } from '../../api/member/member';
 import styled from 'styled-components';
 import MateMemberCard from './MateMemberCard';
 
-const UserList = styled.ul`
-  width: 90%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 1rem;
-  grid-row-gap: 1.5rem;
+const MemberList = styled.ul`
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   overflow: hidden;
+  overflow-x: scroll;
+  // 스크롤바 가리기
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  gap: 1.5rem;
+  padding-bottom: 3rem;
 `;
 
-const UserItem = styled.li`
-  height: 20rem;
-  width: 15rem;
-`;
+const MateMemberList = () => {
+  const { code } = useSelector((state) => state.address);
+  const { data: memberList, isLoading } = useQuery(
+    ['members', code],
+    async () => await getMemberList({ page: 1, size: 10, placeCode: code }),
+    {
+      placeholderData: [],
+    }
+  );
 
-const MateMemberList = ({ memberList }) => {
-  if (memberList.length === 0) {
+  if (isLoading) {
+    <div>loading...</div>;
+  }
+
+  if (!memberList || memberList.length === 0) {
     return <div>지금은 회원 정보가 없습니다.</div>;
   }
 
-  console.log(memberList);
   return (
-    <UserList>
+    <MemberList>
       {memberList.map((el) => (
-        <UserItem key={el.memberId}>
+        <li key={el.memberId}>
           <MateMemberCard member={el} />
-        </UserItem>
+        </li>
       ))}
-    </UserList>
+    </MemberList>
   );
 };
 
