@@ -10,7 +10,7 @@ const BoardList = styled.ul`
 `;
 
 const BoardItem = styled.li`
-  height: 13.25rem;
+  height: 13rem;
   position: relative;
   padding-top: 60%;
 `;
