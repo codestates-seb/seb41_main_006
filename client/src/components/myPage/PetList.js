@@ -25,7 +25,7 @@ const SPetList = styled.ul`
 
 const NoPetBox = styled.div`
   width: 100%;
-  height: 400px;
+  height: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,8 +59,8 @@ const PetList = () => {
     <div>...loading</div>;
   }
 
-  return petList?.length === 0 ? (
-    <NoPetBox className="no-pets--wrapper">
+  return !petList || petList?.length === 0 ? (
+    <NoPetBox>
       <div className="dog-face">
         <GrayDog></GrayDog>
       </div>

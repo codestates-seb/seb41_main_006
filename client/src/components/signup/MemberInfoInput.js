@@ -149,7 +149,7 @@ const GenderSelectWrapper = styled.div`
       color: var(--sec-color);
       /* font-weight: 500; */
       :hover {
-        color: var(--main-font-color);
+        color: var(--main-color);
       }
     }
 
@@ -163,8 +163,8 @@ const GenderSelectWrapper = styled.div`
     }
 
     .selected {
-      color: var(--main-font-color);
-      border: 1.5px solid var(--main-font-color);
+      color: var(--main-color);
+      border: 1.5px solid var(--main-color);
       font-weight: 500;
     }
   }
@@ -209,7 +209,7 @@ const AddressSearchBox = styled.div`
   }
 
   > .selected {
-    border: 1.5px solid var(--main-font-color);
+    border: 1.5px solid var(--main-color);
   }
 
   > svg {
@@ -537,7 +537,7 @@ const MemberInfoInput = ({
         <div className="nickname-input--wrapper">
           <input
             type="text"
-            placeholder="닉네임"
+            placeholder="10자 이내"
             name="nickName"
             value={values.nickName}
             onChange={handleChange}
@@ -602,7 +602,7 @@ const MemberInfoInput = ({
         </AddressSearchBox>
         {isAddressListOpen && (
           <div className="address-list">
-            {addressList.length === 0 ? (
+            {!addressList || addressList.length === 0 ? (
               <div>검색 결과가 없습니다.</div>
             ) : (
               <ul>

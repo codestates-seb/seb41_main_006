@@ -34,7 +34,7 @@ const MateMemberList = () => {
     <div>loading...</div>;
   }
 
-  if (memberList.length === 0) {
+  if (!memberList || memberList.length === 0) {
     return <div>지금은 회원 정보가 없습니다.</div>;
   }
 

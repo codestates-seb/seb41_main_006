@@ -29,7 +29,10 @@ const MateBoardConent = ({ placeCode }) => {
 
   const { data, isLoading } = useQuery(
     ['boards', placeCode],
-    async () => await getBoardList({ page: 1, size: 10, placeCode })
+    async () => await getBoardList({ page: 1, size: 10, placeCode }),
+    {
+      placeholderData: [],
+    }
   );
 
   return (

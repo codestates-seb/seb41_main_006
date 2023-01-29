@@ -12,7 +12,7 @@ const MemberCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 26rem;
+  height: 27rem;
   width: 18rem;
   /* box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1); */
   background-color: var(--bg-dark-color);
@@ -109,7 +109,7 @@ const MateMemberCard = ({ member }) => {
         ></ProfileImage>
       </MemberCardHeader>
       <PetSlideBox>
-        {member?.petsInfo.length === 0 ? (
+        {!member?.petsInfo || member.petsInfo.length === 0 ? (
           <div className="pet-info--empty">
             <div>
               <GrayDog></GrayDog>
