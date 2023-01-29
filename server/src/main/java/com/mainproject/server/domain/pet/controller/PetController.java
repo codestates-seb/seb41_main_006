@@ -1,8 +1,6 @@
 package com.mainproject.server.domain.pet.controller;
 
 import com.mainproject.server.auth.userdetails.MemberDetails;
-import com.mainproject.server.auth.userdetails.MemberDetailsService;
-import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.pet.dto.PetDto;
 import com.mainproject.server.domain.pet.entity.Pet;
 import com.mainproject.server.domain.pet.mapper.PetMapper;
@@ -15,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +36,7 @@ public class PetController {
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
         Long profileImageId = petPostDto.getProfileImageId();
         if (memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), memberDetails, Optional.ofNullable(profileImageId));
@@ -56,7 +53,7 @@ public class PetController {
         Long profileImageId = petPatchDto.getProfileImageId();
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         Pet updatePet = petService.updatePet(petPatchDto, petId, memberDetails, Optional.ofNullable(profileImageId));
@@ -80,7 +77,7 @@ public class PetController {
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         Page<Pet> petPage = petService.findMyPets(page, size, memberDetails);
@@ -118,7 +115,7 @@ public class PetController {
                                     @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
         petService.deletePets(petId, memberDetails);
 

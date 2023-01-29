@@ -16,14 +16,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +39,7 @@ public class BoardController {
                                     @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto), memberDetails);
@@ -58,7 +56,7 @@ public class BoardController {
                                      @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         Board updateBoard = boardService.updateBoard(boardId, boardPatchDto, memberDetails);
@@ -73,7 +71,7 @@ public class BoardController {
                                       @Positive @RequestParam(defaultValue = "10") int size,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         Page<Board> boardPage = boardService.findMyBoards(page, size, memberDetails);
@@ -118,7 +116,7 @@ public class BoardController {
     public ResponseEntity deleteBoard(@Positive @PathVariable("board-id") long boardId,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         boardService.deleteBoard(boardId, memberDetails);
@@ -132,7 +130,7 @@ public class BoardController {
                                     @AuthenticationPrincipal MemberDetails memberDetails){
 
         if(memberDetails == null){
-            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
         }
 
         Optional<BoardLike> boardLike = boardLikeService.likeBoard(boardId, boardLikeDto.getMemberId());

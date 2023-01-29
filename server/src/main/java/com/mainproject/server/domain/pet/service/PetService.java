@@ -132,7 +132,7 @@ public class PetService {
     private void verifyPetOwner(Pet pet, long memberId) {
 
         if(pet.getMember().getMemberId() != memberId) {
-            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+            throw new BusinessLogicException(ExceptionCode.FORBIDDEN_ACCESS);
         }
     }
 }

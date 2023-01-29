@@ -29,7 +29,10 @@ public interface MemberMapper {
     @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     MemberDto.ResponseWithFullAddress memberToResponseWithFullAddress(Member member, String fullAddress, S3UpFile s3UpFile);
 
-    default MemberDto.ResponseWithPets memberToMemberResponseWithPetsDto(Member member) {
+/*    @Mapping(source = "member.pets", target = "petsInfo")
+    MemberDto.ResponseWithPets memberToMemberResponseWithPets(Member member, String fullAddress);*/
+
+    default MemberDto.ResponseWithPets memberToMemberResponseWithPets(Member member, String fullAddress) {
         return MemberDto.ResponseWithPets.builder()
                 .memberId(member.getMemberId())
                 .nickName(member.getNickName())
@@ -37,6 +40,7 @@ public interface MemberMapper {
                 .memberAge(member.getMemberAge())
                 .gender(member.getGender())
                 .address(member.getAddress())
+                .fullAddress(fullAddress)
                 .memberStatus(member.getMemberStatus())
                 .aboutMe(member.getAboutMe())
                 .profileImage(member.getS3UpFile() == null ? null :
@@ -68,9 +72,12 @@ public interface MemberMapper {
                 .build();
     }
 
-//    MemberDto.ResponseWithPets memberToMemberResponseWithPetsDto(Member member);
+    default List<MemberDto.ResponseWithPets> membersToMemberResponseWithPets(List<Member> members, String fullAddress) {
+        return members.stream()
+                .map(member -> memberToMemberResponseWithPets(member, fullAddress))
+                .collect(Collectors.toList());
 
-    List<MemberDto.ResponseWithPets> membersToMemberResponseWithPetsDto(List<Member> member);
+    }
 
     @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
     @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")

@@ -92,6 +92,13 @@ public class MemberDto {
 
     @Getter
     @Builder
+    public static class Active {
+        @MemberStatus
+        private Member.MemberStatus memberStatus;
+    }
+
+    @Getter
+    @Builder
     public static class SimpleResponse {
         private long memberId;
         private String nickName;
@@ -128,6 +135,7 @@ public class MemberDto {
         private Member.MemberAge memberAge;
         private String gender;
         private String address;
+        private String fullAddress;
         private Member.MemberStatus memberStatus;
         private S3UpFileResponse profileImage;
         private String aboutMe;
