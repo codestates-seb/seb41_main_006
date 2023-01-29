@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
+import PetInfoCard from './myPage/PetInfoCard';
 import { getMemberInfo } from '../api/member/member';
 import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
-import PetInfoCard from './myPage/PetInfoCard';
 import Button from './common/Button';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
-import { GrayDog } from './common/DogSvg';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import instance from '../api/axiosConfig';
 
 const SContainer = styled.div`
@@ -43,70 +39,8 @@ const SContainer = styled.div`
   }
 `;
 
-const PetSlideBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--main-font-color);
-  flex: 1;
-  height: 100%;
-
-  > .pet-info--empty {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    > div:first-child {
-      height: 200px;
-      svg {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    > div:last-child {
-      margin-top: 1rem;
-      text-align: center;
-    }
-  }
-
-  // 슬라이더
-  > .slider {
-    width: 100%;
-    height: 100%;
-
-    // 양쪽에 달린 화살표 디자인
-    .slick-prev::before,
-    .slick-next::before {
-      color: var(--main-color);
-    }
-
-    > .slick-list {
-      width: 16rem;
-      height: 100%;
-
-      > .slick-track {
-        height: 100%;
-
-        > div {
-          width: 16rem;
-          height: 100%;
-        }
-      }
-    }
-  }
-`;
-
 const MemberInfoModal = ({ memberId }) => {
-  const settings = {
-    className: 'slider variable-width',
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    variableWidth: true,
-    swipeToSlide: false,
-  };
+  console.log(memberId);
   const [member, setMember] = useState({
     petsInfo: [],
   });
@@ -147,6 +81,7 @@ const MemberInfoModal = ({ memberId }) => {
     <SContainer>
       <div className="memberInfo-container">
         <MemberInfoCard memberInfo={member} />
+
         <Button
           onClick={() => {
             handleModal();
@@ -159,29 +94,7 @@ const MemberInfoModal = ({ memberId }) => {
       </div>
       <div className="petInfo-container">
         <h2>강아지 소개</h2>
-        <PetSlideBox>
-          {!member.petsInfo || member.petsInfo.length === 0 ? (
-            <div className="pet-info--empty">
-              <div>
-                <GrayDog></GrayDog>
-              </div>
-              <div>
-                <p>아직 강아지 정보가</p>
-                <p>없습니다</p>
-              </div>
-            </div>
-          ) : (
-            <Slider {...settings}>
-              {member?.petsInfo.map((pet) => {
-                return (
-                  <div key={pet.petId}>
-                    <PetInfoCard pet={pet} />
-                  </div>
-                );
-              })}
-            </Slider>
-          )}
-        </PetSlideBox>
+        <PetInfoCard pet={member.petsInfo[0]} />
       </div>
     </SContainer>
   );

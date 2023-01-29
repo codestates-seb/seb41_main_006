@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setAddress, resetAddress } from '../../store/modules/addressSlice';
 import useOnClickOutside from '../../hooks/useOnClickOutside';
 import styled from 'styled-components';
@@ -11,7 +11,6 @@ import getAddressByGeo from '../../api/kakaoMap/getAddressByGeo';
 const SearchAddress = ({ setIsLoading }) => {
   const searchResultRef = useRef();
   const dispatch = useDispatch();
-  const { code, address } = useSelector((state) => state.address);
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
@@ -76,8 +75,7 @@ const SearchAddress = ({ setIsLoading }) => {
 
   useEffect(() => {
     // 초기 설정 - 현재 위치로 설정
-
-    if (!address || !code) handleLocClick();
+    handleLocClick();
   }, []);
 
   return (

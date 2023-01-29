@@ -10,181 +10,131 @@ import { isNotNumber } from '../../utils/validateFunctions';
 import petInfoValidate from '../../utils/petInfoValidate';
 import { petImageUpload, petImageDelete } from '../../api/image';
 import { createMyPet, updateMyPet } from '../../api/pet/pet';
-import { RowCenterBox } from '../FlexBoxs';
-
 const PetInfoInputContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
 `;
 
 const PetInfoInputForm = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 100%;
-  flex-wrap: wrap;
-  overflow: scroll;
-
-  .label {
-    color: var(--main-font-color);
-    font-weight: 600;
-    font-size: 0.875rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .error {
-    color: var(--error-color);
-    margin-top: 0.25rem;
-    font-size: 0.8rem;
-    text-align: left;
-  }
-
-  input,
-  textarea {
-    width: 100%;
-    border: 1px solid rgb(167, 150, 137, 0.4);
-    font-size: 1rem;
-    border-radius: 5px;
-    padding: 10px;
-    resize: none;
-    ::placeholder {
-      color: var(--sec-color);
-      font-size: 14px;
-      /* font-weight: 500; */
-    }
-  }
-
-  .wrapper {
-    .label {
-      width: 100%;
-      text-align: left;
-    }
-  }
-
-  > .detail-info {
-    width: 20rem;
+  > .container {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-  }
-`;
+    margin: 2% 5%;
 
-const PetImageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-right: 1.5rem;
-  height: 100%;
-
-  > .img-container {
-    width: 16rem;
-    height: 18rem;
-  }
-
-  .img-button {
-    display: flex;
-    margin-top: 2%;
-    justify-content: space-around;
-    input {
-      display: none;
+    > .img-container {
+      width: 18rem;
+      height: 20rem;
     }
-    button {
-      color: var(--sec-color);
-      border: 0;
+
+    .img-button {
+      display: flex;
+      margin-top: 2%;
+      justify-content: space-around;
+      input {
+        display: none;
+      }
+      button {
+        color: var(--sec-color);
+        border: 0;
+        border-radius: 4px;
+        width: 40%;
+        background-color: var(--bg-color);
+        :hover {
+          background-color: var(--sec-color);
+          color: white;
+        }
+      }
+    }
+  }
+  .detail-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    font-weight: 600;
+    input {
+      line-height: 30px;
+      border: 0.4px solid #b7a69e;
       border-radius: 4px;
-      width: 40%;
-      background-color: var(--bg-color);
-      :hover {
-        background-color: var(--sec-color);
+      padding-left: 5px;
+    }
+    > * {
+      margin: 20px 20px 20px 0;
+    }
+    .name-input {
+      display: flex;
+      div {
+        margin-right: 2%;
+      }
+      input {
+        margin-right: 2%;
+      }
+      .age-input {
+        width: 10%;
+      }
+    }
+    .gender-button {
+      display: flex;
+      div {
+        margin-right: 2%;
+      }
+      button {
+        width: 20%;
+        border: 0.4px solid #b7a69e;
+        border-radius: 4px;
+        background-color: white;
+        color: var(--sec-color);
+        :hover {
+          background-color: var(--main-font-color);
+          color: white;
+        }
+      }
+      .selected {
+        background-color: var(--main-font-color);
         color: white;
       }
     }
-  }
-`;
-
-const PetAgeWrapper = styled.div`
-  margin-left: 1rem;
-  input {
-    width: 2.75rem;
-  }
-`;
-
-const PetGenderWrapper = styled.div`
-  flex: 1;
-  .gender-button {
-    width: 13rem;
-    display: flex;
-    align-items: center;
-    button {
-      flex-grow: 1;
-      line-height: 1.5rem;
-      padding: 0.5rem;
-      font-size: 1rem;
-      background-color: white;
-      border: 1px solid rgb(167, 150, 137, 0.4);
-      color: var(--sec-color);
-      /* font-weight: 500; */
-      :hover {
-        color: var(--main-color);
+    .breed-input {
+      display: flex;
+      div {
+        margin-right: 2%;
       }
     }
-
-    > .left {
-      border-radius: 10px 0 0 10px;
-      border-right: none;
-    }
-
-    > .right {
-      border-radius: 0px 10px 10px 0;
-    }
-
-    .selected {
-      color: var(--main-color);
-      border: 1.5px solid var(--main-color);
-      font-weight: 500;
+    .etc-input {
+      text-align: left;
+      textarea {
+        width: 100%;
+        height: 100%;
+        resize: none;
+        border: 0.4px solid #b7a69e;
+        border-radius: 4px;
+        padding: 5px;
+      }
     }
   }
 `;
 
-const PetCheckNeutredWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: max-content;
-  height: 100%;
-  > div {
-    font-size: 0.875rem;
-    width: 5rem;
+const Scheckbox = styled.input`
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1.5px solid gainsboro;
+  border-radius: 0.35rem;
+  margin-left: 5%;
+  appearance: none;
+  &:checked {
+    border-color: transparent;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+    background-size: 100% 100%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-color: var(--main-font-color);
   }
-
-  > input {
-    width: 1.5rem;
-    height: 100%;
-    border: 1px solid rgb(167, 150, 137, 0.4);
-    border-radius: 0.35rem;
-    margin-left: 5%;
-    appearance: none;
-    background-color: white;
-    &:checked {
-      border-color: transparent;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-      background-size: 100% 100%;
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-color: var(--main-color);
-    }
-  }
-`;
-
-const PetBreedWrapper = styled.div`
-  width: 50%;
-`;
-
-const PetSizeWrapper = styled.div`
-  margin-left: 1rem;
-  width: 50%;
 `;
 
 const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
@@ -371,8 +321,7 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
     <PetInfoInputContainer>
       <h2>{isEditMode ? '강아지 정보 수정' : '나의 강아지 추가'}</h2>
       <PetInfoInputForm>
-        <PetImageContainer>
-          <div className="label">강아지 사진</div>
+        <div className="container">
           <div className="img-container">
             <PetProfileImage src={previewImgUrl} alt="" />
           </div>
@@ -387,119 +336,86 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
             ></input>
             <button onClick={handleClickDeleteImage}>이미지 삭제</button>
           </div>
-          <p className="error">{errors.profileImageId}</p>
-        </PetImageContainer>
+        </div>
         <div className="detail-info">
-          <RowCenterBox>
-            <div>
-              <div className="wrapper">
-                <div className="label">이름</div>
-                <input
-                  type="text"
-                  placeholder="최대 10자"
-                  name="name"
-                  value={values.name}
-                  onChange={handleChange}
-                ></input>
-              </div>
-              <p className="error">{errors.name}</p>
-            </div>
-            <PetAgeWrapper>
-              <div className="wrapper">
-                <div className="label">나이</div>
-                <RowCenterBox>
-                  <input
-                    type="text"
-                    maxLength={2}
-                    name="age"
-                    value={values.age}
-                    onChange={handleChangeAge}
-                    className="age-input"
-                  ></input>
-                  <span>살</span>
-                </RowCenterBox>
-              </div>
-              <p className="error">{errors.age}</p>
-            </PetAgeWrapper>
-          </RowCenterBox>
-          <RowCenterBox>
-            <PetGenderWrapper>
-              <div className="wrapper">
-                <div className="label">성별</div>
-                <div className="gender-button">
-                  <button
-                    name="gender"
-                    value="M"
-                    className={`left ${
-                      values.gender === 'M' ? 'selected' : ''
-                    }`}
-                    onClick={handleChange}
-                  >
-                    수컷
-                  </button>
-                  <button
-                    name="gender"
-                    value="F"
-                    className={`right ${
-                      values.gender === 'F' ? 'selected' : ''
-                    }`}
-                    onClick={handleChange}
-                  >
-                    암컷
-                  </button>
-                  <PetCheckNeutredWrapper>
-                    <input
-                      type="checkbox"
-                      value={values.neutered}
-                      checked={values.neutered}
-                      onChange={(e) => {
-                        if (e.target.checked) setValueByName('neutered', true);
-                        else setValueByName('neutered', false);
-                      }}
-                    />
-                    <div>중성화 여부</div>
-                  </PetCheckNeutredWrapper>
-                </div>
-              </div>
-              <p className="error">{errors.gender}</p>
-            </PetGenderWrapper>
-          </RowCenterBox>
-          <RowCenterBox>
-            <PetBreedWrapper>
-              <div className="wrapper">
-                <div className="label">견종</div>
-                <input
-                  type="text"
-                  name="breed"
-                  value={values.breed}
-                  onChange={handleChange}
-                ></input>
-              </div>
-              <p className="error">{errors.breed}</p>
-            </PetBreedWrapper>
-            <PetSizeWrapper>
-              <div className="wrapper">
-                <div className="label">크기</div>
-                <Select
-                  curValue={values.petSize}
-                  handleSelect={handleChange}
-                  selectList={selectPetSizeList}
-                />
-              </div>
-              <p className="error">{errors.petSize}</p>
-            </PetSizeWrapper>
-          </RowCenterBox>
-          <div>
-            <div className="wrapper">
-              <div className="label">특이사항</div>
-              <textarea
-                name="aboutDog"
-                value={values.aboutDog}
-                onChange={handleChange}
-                placeholder="최대 40자 입력이 가능합니다."
-              ></textarea>
-            </div>
-            <p className="error">{errors.aboutDog}</p>
+          <div className="name-input">
+            <div>이름</div>
+            <input
+              type="text"
+              placeholder="이름"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+            ></input>
+            <p>{errors.name}</p>
+            <div>나이</div>
+            <input
+              type="text"
+              maxLength={2}
+              name="age"
+              value={values.age}
+              onChange={handleChangeAge}
+              className="age-input"
+            ></input>
+            <span>살</span>
+            <p>{errors.age}</p>
+          </div>
+          <div className="gender-button">
+            <div>성별</div>
+            <button
+              name="gender"
+              value="M"
+              className={`left ${values.gender === 'M' ? 'selected' : ''}`}
+              onClick={handleChange}
+            >
+              수컷
+            </button>
+            <button
+              name="gender"
+              value="F"
+              className={`right ${values.gender === 'F' ? 'selected' : ''}`}
+              onClick={handleChange}
+            >
+              암컷
+            </button>
+            <p>{errors.gender}</p>
+
+            <Scheckbox
+              type="checkbox"
+              value={values.neutered}
+              checked={values.neutered}
+              onChange={(e) => {
+                if (e.target.checked) setValueByName('neutered', true);
+                else setValueByName('neutered', false);
+              }}
+            />
+            <span>중성화 여부</span>
+          </div>
+          <div className="breed-input">
+            <div>견종</div>
+            <input
+              type="text"
+              name="breed"
+              value={values.breed}
+              onChange={handleChange}
+            ></input>
+            <p>{errors.breed}</p>
+
+            <div>크기</div>
+            <Select
+              curValue={values.petSize}
+              handleSelect={handleChange}
+              selectList={selectPetSizeList}
+            />
+            <p>{errors.petSize}</p>
+          </div>
+          <div className="etc-input">
+            <div>특이사항</div>
+            <textarea
+              name="aboutDog"
+              value={values.aboutDog}
+              onChange={handleChange}
+            ></textarea>
           </div>
         </div>
       </PetInfoInputForm>

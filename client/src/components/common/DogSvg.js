@@ -1,5 +1,3 @@
-// import styled from "styled-components";
-
 const BrownDog = (props) => (
   <svg
     width={250}

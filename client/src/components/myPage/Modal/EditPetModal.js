@@ -4,14 +4,23 @@ import ModalBackDrop from '../../ModalBackDrop';
 
 const SContainer = styled.div`
   background-color: var(--bg-color);
-  border-radius: 25px;
+  border-radius: 40px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: center;
-  width: 45rem;
-  max-height: 40rem;
-  padding: 3rem;
-  overflow: scroll;
+  margin-top: 2%;
+  width: 60rem;
+  height: 85%;
+  padding: 3%;
+  .button-container {
+    button {
+      margin: 10% 50px 0 50px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 4px;
+    }
+  }
 `;
 
 const EditPetModal = ({ pet, setIsEditModalOpen }) => {

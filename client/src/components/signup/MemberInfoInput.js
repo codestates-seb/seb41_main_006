@@ -149,7 +149,7 @@ const GenderSelectWrapper = styled.div`
       color: var(--sec-color);
       /* font-weight: 500; */
       :hover {
-        color: var(--main-color);
+        color: var(--main-font-color);
       }
     }
 
@@ -163,8 +163,8 @@ const GenderSelectWrapper = styled.div`
     }
 
     .selected {
-      color: var(--main-color);
-      border: 1.5px solid var(--main-color);
+      color: var(--main-font-color);
+      border: 1.5px solid var(--main-font-color);
       font-weight: 500;
     }
   }
@@ -209,7 +209,7 @@ const AddressSearchBox = styled.div`
   }
 
   > .selected {
-    border: 1.5px solid var(--main-color);
+    border: 1.5px solid var(--main-font-color);
   }
 
   > svg {
@@ -441,6 +441,7 @@ const MemberInfoInput = ({
     const memberInfoError = memberInfoValidate(values);
 
     if (Object.keys(memberInfoError).length !== 0) {
+      console.log('오류가 있음');
       setErrors(memberInfoError);
       return;
     }
@@ -537,7 +538,7 @@ const MemberInfoInput = ({
         <div className="nickname-input--wrapper">
           <input
             type="text"
-            placeholder="10자 이내"
+            placeholder="닉네임"
             name="nickName"
             value={values.nickName}
             onChange={handleChange}
@@ -602,7 +603,7 @@ const MemberInfoInput = ({
         </AddressSearchBox>
         {isAddressListOpen && (
           <div className="address-list">
-            {!addressList || addressList.length === 0 ? (
+            {addressList.length === 0 ? (
               <div>검색 결과가 없습니다.</div>
             ) : (
               <ul>
@@ -612,7 +613,7 @@ const MemberInfoInput = ({
                     onClick={() => handleClickAddress(idx)}
                   >
                     <IoLocationSharp className="location-icon" />
-                    {el.name}
+                    {el.addressName}
                   </AddressListItem>
                 ))}
               </ul>

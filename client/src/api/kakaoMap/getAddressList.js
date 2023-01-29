@@ -13,6 +13,7 @@ const getAddressList = (address) => {
   return new Promise((resolve, reject) => {
     geocoder.addressSearch(address, function (result, status) {
       if (status === kakao.maps.services.Status.OK) {
+        console.log(result);
         resolve(
           result.reduce((acc, cur) => {
             // 동 주소까지 존재한다면 (검색 범위가 넓거나 행정 주소라면 'region_3depth_name' 존재하지 않는다.)

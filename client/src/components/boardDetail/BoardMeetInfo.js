@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-import {
-  convertAppointDate,
-  //convertAppointTime,
-} from '../../utils/dateConvert';
+import { convertAppointDate } from '../../utils/dateConvert';
 import { TbCalendarTime } from 'react-icons/tb';
 import { MdPlace } from 'react-icons/md';
 
@@ -62,7 +59,6 @@ const BoardMeetInfo = ({ meetInfo }) => {
         <span className="meet-info--content">{meetInfo?.meetingPlace}</span>
         <div className="meet-map" id="map">
           <Map meetLat={meetInfo?.y} meetLng={meetInfo?.x} />
-          {/* searchPlace={meetInfo?.meetingPlace} */}
         </div>
       </div>
     </MeetInfoContainer>

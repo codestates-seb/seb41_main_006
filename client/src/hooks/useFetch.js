@@ -21,7 +21,6 @@ const useFetch = (url, params, reload) => {
           timeout: 2000,
         });
       }
-      console.log(result);
       setIsLoading(false);
       setData(result.data);
     } catch (err) {

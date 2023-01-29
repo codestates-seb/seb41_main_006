@@ -1,10 +1,11 @@
 // 모임 글 상세 페이지 날짜 형식 (YYYY.MM.DD HH:MM)
 export const convertCreatedAt = (createAt) => {
   const utcDate = new Date(createAt);
+
   const year = utcDate.getFullYear();
   const month = String(utcDate.getMonth() + 1).padStart(2, '0');
   const date = String(utcDate.getDate()).padStart(2, '0');
-  const hour = String(utcDate.getHours()).padStart(2, '0');
+  const hour = String(utcDate.getHours() + 9).padStart(2, '0');
   const min = String(utcDate.getMinutes()).padStart(2, '0');
 
   return `${year}.${month}.${date} ${hour}:${min}`;
