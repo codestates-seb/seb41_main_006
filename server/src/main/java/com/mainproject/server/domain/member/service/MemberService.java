@@ -65,6 +65,13 @@ public class MemberService {
         return memberRepository.save(updatedMember);
     }
 
+    /*회원 정보 수정*/
+    public Member updateMember(long memberId, MemberDto.Active requestBody) {
+        Member findMember = validateVerifyMember(memberId);
+        findMember.setMemberStatus(requestBody.getMemberStatus());
+        return memberRepository.save(findMember);
+    }
+
     /*해당 주소를 가지고 있는 회원들 조회*/
     @Transactional(readOnly = true)
     public Page<Member> findMembersByAddress(String address, int page, int size) {
