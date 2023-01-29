@@ -14,7 +14,7 @@ const CardContainer = styled.div`
 
   > .image-box {
     width: 100%;
-    height: 18rem;
+    height: 17rem;
     border-radius: 10px;
   }
 `;

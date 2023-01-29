@@ -15,12 +15,12 @@ const BoardItem = styled.li`
   padding-top: 60%;
 `;
 
-const MateBoardList = ({ boardList, isMyPageBoardList }) => {
+const MateBoardList = ({ boardList }) => {
   return (
     <BoardList>
       {boardList.map((el) => (
         <BoardItem key={el.boardId}>
-          <MateBoardCard board={el} isMyPageBoardCard={isMyPageBoardList} />
+          <MateBoardCard board={el} />
         </BoardItem>
       ))}
     </BoardList>
