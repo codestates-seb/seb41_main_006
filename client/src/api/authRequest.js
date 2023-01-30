@@ -38,7 +38,7 @@ authRequest.interceptors.response.use(
       if (refreshToken) {
         await defaultRequest
           .post(
-            `auth/reissue`,
+            `/auth/reissue`,
             {},
             {
               headers: { Refresh: refreshToken },
