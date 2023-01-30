@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { getMemberList } from '../../api/member/member';
 import styled from 'styled-components';
 import MateMemberCard from './MateMemberCard';
+import { GrayDog } from '../common/DogSvg';
 
 const MemberList = styled.ul`
   width: 100%;
@@ -20,6 +21,29 @@ const MemberList = styled.ul`
   padding-bottom: 3rem;
 `;
 
+const NoMemberBox = styled.div`
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  > .dog-face {
+    width: 13rem;
+    height: 16rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  > .no-pets-msg {
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+`;
+
 const MateMemberList = () => {
   const { code } = useSelector((state) => state.address);
   const { data: memberList, isLoading } = useQuery(
@@ -35,7 +59,14 @@ const MateMemberList = () => {
   }
 
   if (!memberList || memberList.length === 0) {
-    return <div>지금은 회원 정보가 없습니다.</div>;
+    return (
+      <NoMemberBox>
+        <div className="dog-face">
+          <GrayDog></GrayDog>
+        </div>
+        <div className="no-pets-msg">주소에 해당하는 모임 글이 없습니다!</div>
+      </NoMemberBox>
+    );
   }
 
   return (

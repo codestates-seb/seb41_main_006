@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import getAddressByXY from '../../api/kakaoMap/getAddressByXY';
 import { convertAppointDate } from '../../utils/dateConvert';
 import { TbCalendarTime } from 'react-icons/tb';
 import { MdPlace } from 'react-icons/md';
-
 import Map from './Map';
 
 const MeetInfoContainer = styled.div`
@@ -38,6 +39,17 @@ const InfoLabelBox = styled.div`
 `;
 
 const BoardMeetInfo = ({ meetInfo }) => {
+  const [meetingPlace, setMeetingPlace] = useState('');
+
+  useEffect(() => {
+    const getMeetingPlace = async () => {
+      const address = await getAddressByXY(meetInfo.x, meetInfo.y);
+
+      setMeetingPlace(address);
+    };
+    getMeetingPlace();
+  }, []);
+
   return (
     <MeetInfoContainer>
       <div className="meet-info">
@@ -56,7 +68,7 @@ const BoardMeetInfo = ({ meetInfo }) => {
           <MdPlace />
           <span>만나는 장소</span>
         </InfoLabelBox>
-        <span className="meet-info--content">{meetInfo?.meetingPlace}</span>
+        <span className="meet-info--content">{meetingPlace}</span>
         <div className="meet-map" id="map">
           <Map meetLat={meetInfo?.y} meetLng={meetInfo?.x} />
         </div>

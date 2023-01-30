@@ -7,7 +7,6 @@ import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
-// import getAddressByCode from '../../api/kakaoMap/getAddressByCode';
 
 const PostsContentLayOut = styled.div`
   ${flexColCenter}

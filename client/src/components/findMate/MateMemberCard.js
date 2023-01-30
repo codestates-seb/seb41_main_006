@@ -30,7 +30,7 @@ const MemberCardHeader = styled.div`
   align-items: center;
   justify-content: flex-end;
   > .user-info--name {
-    margin-right: 0.25rem;
+    margin-left: 0.25rem;
     color: var(--main--font-color);
     font-size: 0.875rem;
     font-weight: 500;
@@ -102,11 +102,11 @@ const MateMemberCard = ({ member }) => {
   return (
     <MemberCard>
       <MemberCardHeader>
-        <span className="user-info--name">{member.nickName}</span>
         <ProfileImage
           size="20px"
           src={member?.profileImage?.upFileUrl}
         ></ProfileImage>
+        <span className="user-info--name">{member.nickName}</span>
       </MemberCardHeader>
       <PetSlideBox>
         {!member?.petsInfo || member.petsInfo.length === 0 ? (

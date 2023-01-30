@@ -3,7 +3,7 @@ import { CenterBox } from '../FlexBoxs';
 import { BrownDog } from './DogSvg';
 
 const PetProfileBox = styled(CenterBox)`
-  background-color: white;
+  background-color: var(--bg-color);
   width: ${(props) => props.width || '100%'};
   height: ${(props) => props.height || '100%'};
   border-radius: 10px;
