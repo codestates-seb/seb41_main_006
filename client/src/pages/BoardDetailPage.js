@@ -5,9 +5,11 @@ import styled from 'styled-components';
 import Container from '../components/Container';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import MemberInfoCard from '../components/myPage/MemberInfoCard';
+import ProfileImage from '../components/common/ProfileImage';
+import PetInfoCard from '../components/myPage/PetInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
+// import { RowCenterBox } from '../components/FlexBoxs';
 import {
   FINDMATE_ENDPOINT,
   boardDelete,
@@ -17,7 +19,6 @@ import useFetch from '../hooks/useFetch';
 import { getLoginInfo } from '../api/loginInfo';
 import PageLoading from '../components/PageLoading';
 import { convertCreatedAt } from '../utils/dateConvert';
-import ChoosedPetInfo from '../components/boardDetail/ChoosedPetInfo';
 
 const ContainerBox = styled(Container)`
   padding: 20px;
@@ -61,11 +62,13 @@ const HeaderContainer = styled.div`
     }
 
     .post-like {
+      display: flex;
+      align-items: center;
       font-size: 14px;
       color: #ca7c62;
 
       span {
-        padding-left: 3px;
+        padding-left: 4px;
       }
     }
 
@@ -96,9 +99,6 @@ const MainContainer = styled.div`
   .left-box {
     display: flex;
     flex-direction: column;
-    .choosed-pet {
-      border-bottom: 1px solid #a79689;
-    }
   }
   .post-content {
     /* width: 720px; */
@@ -120,10 +120,34 @@ const MainContainer = styled.div`
     flex-direction: column;
     align-items: center;
 
-    height: 51rem;
+    height: 62rem;
 
     background-color: white;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+
+    > .pet-box {
+      width: 80%;
+    }
+    > .choosed-pet {
+      margin-bottom: 0.25rem;
+      color: var(--main-font-color);
+      font-weight: 600;
+    }
+
+    > .member-info {
+      display: flex;
+      align-items: center;
+      > .member-info--link {
+        display: flex;
+        align-items: center;
+        margin: 0 0.25rem;
+        > button {
+          color: var(--main-color);
+          font-size: 1rem;
+          font-weight: 600;
+        }
+      }
+    }
   }
 
   .user-info-btn {
@@ -240,18 +264,28 @@ const BoardDetailPage = () => {
           <MainContainer>
             <div className="left-box">
               <div className="post-content">{board.content}</div>
-              <h3 className="choosed-pet">같이 가는 친구</h3>
-              <ChoosedPetInfo pets={board.pet} />
               <CommentContainer comments={board.comments} />
             </div>
             <div className="right-box">
-              <MemberInfoCard memberInfo={board.member} />
-              <button
-                className="user-info-btn"
-                onClick={() => handleClickMember(board.member.memberId)}
-              >
-                {'> 상세 정보'}
-              </button>
+              <div className="member-info">
+                <span>산책 메이트 </span>
+                <div className="member-info--link">
+                  <button
+                    onClick={() => handleClickMember(board.member.memberId)}
+                  >
+                    {board.member.nickName}
+                  </button>
+                  <ProfileImage
+                    src={board.member.profileImage.upFileUrl}
+                  ></ProfileImage>
+                </div>
+                <span> 님과</span>
+              </div>
+              <div className="choosed-pet">같이 가는 친구</div>
+              <div className="pet-box">
+                <PetInfoCard pet={board.pet}></PetInfoCard>
+              </div>
+
               <div className="post-meet-info">
                 <BoardMeetInfo
                   meetInfo={{

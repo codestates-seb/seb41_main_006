@@ -48,6 +48,8 @@ const CommentBox = styled.div`
   .comment-like {
     font-size: 12px;
     padding-right: 3px;
+    display: flex;
+    align-items: center;
   }
 
   .comment-sub-info {
@@ -210,7 +212,8 @@ const Comment = ({ comment, recomments }) => {
                 {convertCreatedAt(new Date())}
               </span>
               <span className="comment-like">
-                <FaHeart /> <span>{comment.commentLike}</span>
+                <FaHeart />
+                <span>{comment.commentLike}</span>
               </span>
               <span className="comment-like-total">{comment.countLike}</span>
             </div>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ProfileImage from '../common/ProfileImage';
+import { BrownDog } from '../common/DogSvg';
 
 const InfoContainer = styled.li`
   background-color: var(--main--bgcolor);
@@ -10,7 +10,8 @@ const InfoContainer = styled.li`
   border-radius: 10px;
   margin-top: 20px;
   float: left;
-  img {
+  img,
+  svg {
     width: 130px;
     height: 130px;
     border-radius: 50%;
@@ -30,7 +31,11 @@ const ChoosePetInfo = ({ setPetid, pets }) => {
   };
   return (
     <InfoContainer onClick={handlePetId}>
-      <ProfileImage src={pets.profileImage?.upFileUrl} alt="petimage" />
+      {pets?.profileImage ? (
+        <img src={pets?.profileImage?.upFileUrl} alt="petimage" />
+      ) : (
+        <BrownDog></BrownDog>
+      )}
       <div className="pet-name">{pets.name}</div>
       <div>
         <span>{pets.gender === 'M' ? '남' : '여'}</span>

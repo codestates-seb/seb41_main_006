@@ -46,6 +46,8 @@ const RecommentBox = styled.div`
   .recomment-like {
     font-size: 12px;
     padding-right: 3px;
+    display: flex;
+    align-items: center;
   }
 
   .recomment-sub-info {
