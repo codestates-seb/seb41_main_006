@@ -213,19 +213,30 @@ const Recomment = ({ recomment }) => {
                 수정완료
               </button>
             ) : (
-              <button
-                className="edit-btn"
-                onClick={() => setIsEditOpen(!isEditOpen)}
-              >
-                수정
-              </button>
+              <>
+                {' '}
+                {recomment.memberId === Number(loginMemberId) ? (
+                  <button
+                    className="edit-btn"
+                    onClick={() => setIsEditOpen(!isEditOpen)}
+                  >
+                    수정
+                  </button>
+                ) : (
+                  ''
+                )}
+              </>
             )}
-            <button
-              className="del-btn"
-              onClick={() => handelConfirmClick(recomment.commentsId)}
-            >
-              삭제
-            </button>
+            {recomment.memberId === Number(loginMemberId) ? (
+              <button
+                className="del-btn"
+                onClick={() => handelConfirmClick(recomment.commentsId)}
+              >
+                삭제
+              </button>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </div>
