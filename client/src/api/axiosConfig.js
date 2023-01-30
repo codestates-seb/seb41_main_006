@@ -25,7 +25,7 @@ instance.interceptors.response.use(
       if (refreshToken) {
         await axios
           .post(
-            `${process.env.REACT_APP_SERVER_API}auth/reissue`,
+            `${process.env.REACT_APP_SERVER_API}/auth/reissue`,
             {},
             {
               headers: { Refresh: refreshToken },

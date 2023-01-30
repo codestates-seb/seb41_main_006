@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ProfileImage from '../common/ProfileImage';
 
 const InfoContainer = styled.li`
   background-color: var(--main--bgcolor);
@@ -29,10 +30,7 @@ const ChoosePetInfo = ({ setPetid, pets }) => {
   };
   return (
     <InfoContainer onClick={handlePetId}>
-      <img
-        src="https://i.ibb.co/Rj5b3xs/Kakao-Talk-Photo-2023-01-12-00-46-38.jpg"
-        alt="petimage"
-      />
+      <ProfileImage src={pets.profileImage?.upFileUrl} alt="petimage" />
       <div className="pet-name">{pets.name}</div>
       <div>
         <span>{pets.gender === 'M' ? '남' : '여'}</span>
