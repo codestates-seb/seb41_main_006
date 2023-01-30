@@ -63,9 +63,6 @@ const ChatRoom = () => {
         console.log('success');
         subscribe();
       },
-      debug: function (str) {
-        console.log(str);
-      },
     });
     client.current.activate();
   };
