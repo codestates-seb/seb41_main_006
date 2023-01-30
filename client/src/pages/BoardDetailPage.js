@@ -240,10 +240,11 @@ const BoardDetailPage = () => {
                         수정
                       </button>
                     ) : (
-                      <button className="post-del" onClick={handelConfirmClick}>
-                        삭제
-                      </button>
+                      ''
                     )}
+                    <button className="post-del" onClick={handelConfirmClick}>
+                      삭제
+                    </button>
                   </>
                 ) : (
                   ''

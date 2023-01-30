@@ -96,7 +96,10 @@ const ChatRoom = () => {
   const handleSubmit = (e, message) => {
     // 보내기 버튼 눌렀을 때 publish
     e.preventDefault();
-
+    if (message === '') {
+      alert('메세지를 입력해 주세요');
+      return;
+    }
     publish(message);
   };
 

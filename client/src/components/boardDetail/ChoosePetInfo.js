@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { BrownDog } from '../common/DogSvg';
+
 const InfoContainer = styled.li`
   background-color: var(--main--bgcolor);
   text-align: center;
