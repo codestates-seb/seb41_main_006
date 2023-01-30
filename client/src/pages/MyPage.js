@@ -11,6 +11,7 @@ const SContainer = styled(Container)`
   flex-direction: column;
   align-items: center;
   padding-top: 3rem;
+  padding-bottom: 3rem;
   color: var(--main-font-color);
 
   .tap-container {

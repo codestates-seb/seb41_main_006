@@ -51,7 +51,7 @@ const BoardCard = styled.div`
     .board-card--title {
       ${flexRowCenter}
       gap: 0.5rem;
-      width: 10rem;
+      flex: 1;
     }
 
     .board-card--content {
@@ -71,30 +71,32 @@ const BoardCard = styled.div`
       align-items: center;
       font-size: 0.875rem;
       gap: 0.25rem;
-      margin-right: 1rem;
+      margin-left: 1rem;
 
       svg {
         color: var(--main-color);
       }
     }
 
-    > .profile {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      margin-right: 0.5rem;
-    }
-
     .board-info {
+      width: 13rem;
       display: flex;
       flex-direction: row;
-      align-items: flex-end;
-      gap: 0.5rem;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.25rem;
       font-size: 1rem;
       line-height: 1;
 
       .board-createdAt {
         font-size: 0.875rem;
+      }
+
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-right: 0.5rem;
       }
     }
   }
@@ -164,26 +166,27 @@ const BoardInfo = () => {
                   </div>
 
                   <div className="board-card--right">
-                    <div className="board-likes">
-                      <FaHeart />
-                      <span>{board.countLike}</span>
-                    </div>
-                    {board?.pet ? (
-                      <div className="profile">
-                        <PetProfileImage
-                          src={board?.pet?.profileImage?.upFileUrl}
-                          name={board?.pet?.nickName}
-                          circle
-                          width="1.25rem"
-                          height="1.25rem"
-                        />
-                        <span>{board?.pet?.name}</span>
-                      </div>
-                    ) : null}
                     <div className="board-info">
+                      {board?.pet ? (
+                        <div className="profile">
+                          <PetProfileImage
+                            src={board?.pet?.profileImage?.upFileUrl}
+                            name={board?.pet?.nickName}
+                            circle
+                            width="1.25rem"
+                            height="1.25rem"
+                          />
+                          <span>{board?.pet?.name}</span>
+                        </div>
+                      ) : null}
+
                       <span className="board-createdAt">
                         {convertCreatedAt(board.createdAt)}
                       </span>
+                    </div>
+                    <div className="board-likes">
+                      <FaHeart />
+                      <span>{board.countLike}</span>
                     </div>
                   </div>
                 </BoardCard>
