@@ -13,6 +13,7 @@ import com.mainproject.server.dto.SingleResponseDto;
 import com.mainproject.server.exception.ExceptionCode;
 import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @Validated
 @RequestMapping("/boards")
 public class BoardController {
@@ -37,14 +39,17 @@ public class BoardController {
     @PostMapping
     public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post boardPostDto,
                                     @AuthenticationPrincipal MemberDetails memberDetails) {
+        log.info("저장 전 약속 시간 : {}", boardPostDto.getAppointTime());
 
         if(memberDetails == null) {
             return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
         }
 
         Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto), memberDetails);
+        log.info("저장 후 약속 시간 : {}", board.getAppointTime());
 
         BoardDto.Response response = mapper.boardToBoardResponseDto(board);
+        log.info("ResponseDto 약속 시간 : {}", response.getAppointTime());
 
         return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.CREATED);
 
