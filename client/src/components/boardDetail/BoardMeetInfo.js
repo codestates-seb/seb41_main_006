@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getAddressByXY from '../../api/kakaoMap/getAddressByXY';
-import { convertAppointDate } from '../../utils/dateConvert';
+import { uctTokst } from '../../utils/dateConvert';
 import { TbCalendarTime } from 'react-icons/tb';
 import { MdPlace } from 'react-icons/md';
 import Map from './Map';
@@ -59,7 +59,7 @@ const BoardMeetInfo = ({ meetInfo }) => {
             <span>만나는 시간</span>
           </InfoLabelBox>
           <span className="meet-info--content">
-            {convertAppointDate(meetInfo?.appointTime)}
+            {uctTokst(meetInfo?.appointTime)}
           </span>
         </div>
       </div>
