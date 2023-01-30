@@ -46,15 +46,6 @@ authRequest.interceptors.response.use(
           )
           .then((res) => {
             localStorage.setItem('AccessToken', res.headers.authorization);
-            window.location.reload();
-          })
-          .catch((error) => {
-            if (error?.response?.status === 401) {
-              localStorage.removeItem('AccessToken');
-              localStorage.removeItem('refreshToken');
-              localStorage.removeItem('memberId');
-              window.location.reload();
-            }
           });
       }
       if (
