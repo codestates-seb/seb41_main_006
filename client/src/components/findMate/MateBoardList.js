@@ -24,6 +24,7 @@ const NoBoardBox = styled.div`
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  color: var(--main-font-color);
 
   > .dog-face {
     width: 13rem;
@@ -34,7 +35,7 @@ const NoBoardBox = styled.div`
   }
 
   > .no-pets-msg {
-    margin-top: 1rem;
+    margin-bottom: 1rem;
     font-weight: 500;
   }
 `;
@@ -43,10 +44,10 @@ const MateBoardList = ({ boardList }) => {
   if (!boardList || boardList.length === 0) {
     return (
       <NoBoardBox>
+        <div className="no-pets-msg">주소에 해당하는 모임 글이 없습니다!</div>
         <div className="dog-face">
           <GrayDog></GrayDog>
         </div>
-        <div className="no-pets-msg">주소에 해당하는 모임 글이 없습니다!</div>
       </NoBoardBox>
     );
   }

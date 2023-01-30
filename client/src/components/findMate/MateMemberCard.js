@@ -4,9 +4,11 @@ import ProfileImage from '../common/ProfileImage';
 import MatePetSlideCard from './MatePetSlideCard';
 import { GrayDog } from '../common/DogSvg';
 import Slider from 'react-slick';
-
+import { openModal } from '../../store/modules/modalSlice';
+import { useDispatch } from 'react-redux';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { NextArrow, PrevArrow } from '../common/SlideArrow';
 
 const MemberCard = styled.div`
   display: flex;
@@ -24,16 +26,21 @@ const MemberCard = styled.div`
 
 const MemberCardHeader = styled.div`
   width: 100%;
-  margin-right: 1rem;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   > .user-info--name {
-    margin-left: 0.25rem;
-    color: var(--main--font-color);
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    color: var(--main-font-color);
     font-size: 0.875rem;
     font-weight: 500;
+
+    > span {
+      margin-left: 0.5rem;
+    }
   }
 `;
 
@@ -65,6 +72,8 @@ const PetSlideBox = styled(ColCenterBox)`
   > .slider {
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
 
     // 양쪽에 달린 화살표 디자인
     .slick-prev::before,
@@ -97,16 +106,28 @@ const MateMemberCard = ({ member }) => {
     slidesToScroll: 1,
     variableWidth: true,
     swipeToSlide: false,
+    nextArrow: <NextArrow size="35" />,
+    prevArrow: <PrevArrow size="35" />,
+  };
+
+  const dispatch = useDispatch();
+
+  const handleClickMember = () => {
+    dispatch(
+      openModal({ type: 'member', props: { memberId: member.memberId } })
+    );
   };
 
   return (
     <MemberCard>
       <MemberCardHeader>
-        <ProfileImage
-          size="20px"
-          src={member?.profileImage?.upFileUrl}
-        ></ProfileImage>
-        <span className="user-info--name">{member.nickName}</span>
+        <button onClick={() => handleClickMember()} className="user-info--name">
+          <ProfileImage
+            size="20px"
+            src={member?.profileImage?.upFileUrl}
+          ></ProfileImage>
+          <span>{member.nickName}</span>
+        </button>
       </MemberCardHeader>
       <PetSlideBox>
         {!member?.petsInfo || member.petsInfo.length === 0 ? (

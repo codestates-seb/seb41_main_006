@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getMemberInfo } from '../api/member/member';
 import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
@@ -12,6 +12,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import instance from '../api/axiosConfig';
+import { PrevArrow, NextArrow } from './common/SlideArrow';
 
 const SContainer = styled.div`
   display: flex;
@@ -74,11 +75,19 @@ const PetSlideBox = styled.div`
   > .slider {
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
 
     // 양쪽에 달린 화살표 디자인
     .slick-prev::before,
     .slick-next::before {
       color: var(--main-color);
+      background-color: none;
+      height: 1000px;
+    }
+
+    .slick-disabled::before {
+      background-color: red;
     }
 
     > .slick-list {
@@ -98,14 +107,18 @@ const PetSlideBox = styled.div`
 `;
 
 const MemberInfoModal = ({ memberId }) => {
+  const slideRef = useRef();
   const settings = {
     className: 'slider variable-width',
+    ref: slideRef,
     infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     variableWidth: true,
     swipeToSlide: false,
+    nextArrow: <NextArrow size="45" />,
+    prevArrow: <PrevArrow size="45" />,
   };
   const [member, setMember] = useState({
     petsInfo: [],
