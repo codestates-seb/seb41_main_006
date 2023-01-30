@@ -5,13 +5,14 @@ import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 const NextArrowBox = styled.div`
   color: var(--main-color);
 
+  cursor: pointer;
   &.slick-disabled {
     color: ${lighten(0.2, '#A79689')};
   }
 `;
 const PrevArrowBox = styled.div`
   color: var(--main-color);
-
+  cursor: pointer;
   &.slick-disabled {
     color: ${lighten(0.2, '#A79689')};
   }
