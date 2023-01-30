@@ -209,7 +209,7 @@ const Comment = ({ comment, recomments }) => {
             </button>
             <div className="comment-sub-info">
               <span className="comment-createAt">
-                {convertCreatedAt(new Date())}
+                {convertCreatedAt(comment.createdAt)}
               </span>
               <span className="comment-like">
                 <FaHeart />

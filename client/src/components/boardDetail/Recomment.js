@@ -181,7 +181,7 @@ const Recomment = ({ recomment }) => {
             </button>
             <div className="recomment-sub-info">
               <span className="recomment-createAt">
-                {convertCreatedAt(new Date())}
+                {convertCreatedAt(recomment.createdAt)}
               </span>
               <span className="recomment-like">
                 <FaHeart /> <span>{recomment.commentLike}</span>
