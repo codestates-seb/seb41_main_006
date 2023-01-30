@@ -181,7 +181,12 @@ const BoardPage = () => {
             <Slider {...settings}>
               {petList.map((el) => {
                 return (
-                  <ChoosePetInfo key={el.index} pets={el} setPetid={setPetid} />
+                  <ChoosePetInfo
+                    key={el.index}
+                    pets={el}
+                    petId={petId}
+                    setPetid={setPetid}
+                  />
                 );
               })}
             </Slider>

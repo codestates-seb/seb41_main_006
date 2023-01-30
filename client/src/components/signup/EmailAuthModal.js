@@ -7,7 +7,7 @@ import useInput from '../../hooks/useInput';
 import { authEmailVerification, authEmail } from '../../api/member/signup';
 
 const EmailAuthModalView = styled.div`
-  width: 30rem;
+  width: 32rem;
   height: 23rem;
   background-color: white;
   padding: 3rem;
