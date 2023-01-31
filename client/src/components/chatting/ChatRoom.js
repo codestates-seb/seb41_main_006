@@ -112,7 +112,7 @@ const ChatRoom = () => {
     connect();
 
     return () => disconnect();
-  }, [chatId]);
+  }, []);
 
   return (
     <ChatRoomBox>
