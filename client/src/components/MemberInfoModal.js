@@ -11,7 +11,7 @@ import { GrayDog } from './common/DogSvg';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import instance from '../api/axiosConfig';
+import authRequest from '../api/authRequest';
 import { PrevArrow, NextArrow } from './common/SlideArrow';
 
 const SContainer = styled.div`
@@ -123,25 +123,18 @@ const MemberInfoModal = ({ memberId }) => {
   const [member, setMember] = useState({
     petsInfo: [],
   });
-  const AccessToken = localStorage.getItem('AccessToken');
   const dispatch = useDispatch();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleModal = () => {
     dispatch(closeModal());
   };
 
   const AddChatList = async (memberId) => {
-    await instance
-      .post(
-        '/chats',
-        {
-          memberId: memberId,
-        },
-        {
-          headers: { Authorization: AccessToken },
-        }
-      )
+    await authRequest
+      .post('/chats', {
+        memberId: memberId,
+      })
       .then((data) => console.log(data));
   };
 
@@ -163,7 +156,7 @@ const MemberInfoModal = ({ memberId }) => {
           onClick={() => {
             handleModal();
             AddChatList(member.memberId);
-            Navigate('/chat');
+            navigate('/chat');
           }}
         >
           채팅하기
