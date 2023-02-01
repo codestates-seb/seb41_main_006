@@ -34,7 +34,8 @@ https://kng2mate.site/
 ## 🐶 팀원 소개
 |정민교|김정하|나혜리|강선영|조규성|채예린|
 |:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|
-|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|
+|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "![채예린](https://user-images.githubusercontent.com/67780354/216006696-5a067210-f6df-438a-a82e-15a42d752d0a.jpg)
+" width = "100" height = "100">|
 |[@alsry922](https://github.com/alsry922)|[@jjunghakim](https://github.com/jjunghakim)|[@hiy7030](https://github.com/hiy7030)|[@ssunyk](https://github.com/ssunyk)|[@operat04](https://github.com/operat04)|[@chyerin802](https://github.com/chyerin802)|
 |팀장, BE|BE|BE|FE|FE|FE|
 |로그인 / 로그아웃, 회원 CRUD, 로깅 처리, CI/CD Github Actions 배포 자동화, 이메일 전송, HTTPS 적용|게시글 CRUD, 강아지  CRUD, 채팅 기능 구현|댓글, 대댓글 CRUD, 이미지 업로드, 좋아요 기능 구현|게시글 CRUD, 댓글, 대댓글 CRUD, 좋아요 기능 구현, 지도 검색 기능 구현|로그인 / 로그아웃, 실시간 채팅 구현, 클라이언트 배포|회원 CRUD, 강아지 CRUD, 이미지 업로드, 동 주소 검색 기능|
