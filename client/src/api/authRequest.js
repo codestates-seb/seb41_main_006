@@ -37,29 +37,25 @@ authRequest.interceptors.response.use(
     //   return axios(originalRequest);
     // }
 
-    if (error?.response?.status === 401) {
-      // 401 에러일 때 실행
+    if (error.response.data.message.includes('JWT expired')) {
+      // 토큰 만료 에러일 때 실행
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
         await defaultRequest
-          .post(
-            `/auth/reissue`,
-            {},
-            {
-              headers: { Refresh: refreshToken },
-            }
-          )
+          .post(`/auth/reissue`, '', {
+            headers: { Refresh: refreshToken },
+          })
           .then((res) => {
             localStorage.setItem('AccessToken', res.headers.authorization);
+            alert('다시 시도해 주세요.');
+          })
+          .catch((e) => {
+            if (e.response.data.message.includes('JWT expired')) {
+              localStorage.clear();
+              window.location.reload();
+              window.location.href = '/';
+            }
           });
-      }
-      if (
-        error.response.data.message === 'Member Not Found' ||
-        error.response.data.message === '자격 증명에 실패하였습니다.'
-      ) {
-        alert('이메일과 비밀 번호를 정확히 입력해 주세요');
-      } else {
-        alert('로그인 후 이용해 주세요');
       }
     }
     return Promise.reject(error);
