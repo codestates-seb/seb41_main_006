@@ -34,10 +34,10 @@ https://kng2mate.site/
 ## 🐶 팀원 소개
 |정민교|김정하|나혜리|강선영|조규성|채예린|
 |:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|
-|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "![채예린](https://user-images.githubusercontent.com/67780354/216006696-5a067210-f6df-438a-a82e-15a42d752d0a.jpg)" width = "100" height = "100">|
+|<img src = "https://user-images.githubusercontent.com/111368350/215995863-27e3130e-44eb-45e2-bc84-aca4b67d05e8.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995851-9273a457-684d-4f13-b8dd-0365a2ed6152.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995858-efc0cdb2-5c36-4a71-8de5-ba5aa5e90d98.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995869-ac50dedb-4910-485e-aa41-fc6a733004c8.jpg" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995860-5bc7e944-8a8e-469a-8ab5-f9934a0dc352.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/216020113-0a6401ee-2080-46b4-a5eb-5b09c3879451.jpeg" width = "100" height = "100">|
 |[@alsry922](https://github.com/alsry922)|[@jjunghakim](https://github.com/jjunghakim)|[@hiy7030](https://github.com/hiy7030)|[@ssunyk](https://github.com/ssunyk)|[@operat04](https://github.com/operat04)|[@chyerin802](https://github.com/chyerin802)|
 |팀장, BE|BE|BE|FE|FE|FE|
-|로그인 / 로그아웃, 회원 CRUD, 로깅 처리, CI/CD Github Actions 배포 자동화, 이메일 전송, HTTPS 적용|게시글 CRUD, 강아지  CRUD, 채팅 기능 구현|댓글, 대댓글 CRUD, 이미지 업로드, 좋아요 기능 구현|게시글 CRUD, 댓글, 대댓글 CRUD, 좋아요 기능 구현, 지도 검색 기능 구현|로그인 / 로그아웃, 실시간 채팅 구현, 클라이언트 배포|회원 CRUD, 강아지 CRUD, 이미지 업로드, 동 주소 검색 기능|
+|로그인 / 로그아웃, 회원 CRUD, 로깅 처리, CI/CD Github Actions<br> 배포 자동화, 이메일 전송, HTTPS 적용|댓글, 대댓글 CRUD,이미지 업로드,<br> 좋아요 기능 구현|게시글 CRUD, 강아지  CRUD, 채팅 기능 구현|게시글 CRUD, 댓글, 대댓글 CRUD, 좋아요 기능 구현, 지도 검색 기능 구현|로그인 / 로그아웃, 실시간 채팅 구현, 클라이언트 배포|회원 CRUD, 강아지 CRUD, 이미지 업로드, 동 주소 검색 기능|
 
 
 
@@ -45,12 +45,14 @@ https://kng2mate.site/
 
 <br>
 
-## 🔧 기술스택
+## 🔧 기술 스택
   
-<img src = "https://user-images.githubusercontent.com/111368350/215987727-a6f91c3b-9322-4f7d-9c3f-93c3066937e4.png" width="1000"/>
+![Web App Reference Architecture (2)](https://user-images.githubusercontent.com/111368350/216022523-de2d9d2e-4b35-4a9c-9003-ca562e9d587c.png)
 
-## 시연 영상
-
+## 🖼️ 시연 영상
+<details>
+  <summary>시연 영상</summary>
+  
 ### 회원 가입
 
 ![회원가입](https://user-images.githubusercontent.com/67780354/215999285-d8bc5171-6d53-4178-9920-7c72fc614d34.gif)
@@ -63,7 +65,7 @@ https://kng2mate.site/
 
 ![로그인 로그아웃](https://user-images.githubusercontent.com/67780354/215999508-c4837b2d-e2d1-46b8-9c75-c19fcaf4200d.gif)
 
-### 강아지 정 등록
+### 강아지 정보 등록
 
 ![강아지 등록](https://user-images.githubusercontent.com/67780354/216001711-d9ca767b-f69b-4b53-937e-a1effb647d01.gif)
 
@@ -79,7 +81,6 @@ https://kng2mate.site/
 
 ![게시글 작성](https://user-images.githubusercontent.com/67780354/216002049-b112ca35-d96d-48ce-b5e3-510b52163b32.gif)
 
-
 ### 댓글 작성
 
 ![댓글 작성](https://user-images.githubusercontent.com/67780354/216001605-774c0330-cb51-43e8-88da-574f8d963e33.gif)
@@ -91,3 +92,4 @@ https://kng2mate.site/
 ### 채팅
 
 ![채팅](https://user-images.githubusercontent.com/67780354/216002190-8cf341e0-3420-4ea0-a2b7-3fe776ba1887.gif)
+</details>
