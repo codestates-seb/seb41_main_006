@@ -3,7 +3,7 @@ import useInput from '../../hooks/useInput';
 import loginValidate from '../../utils/loginValidate';
 import styled from 'styled-components';
 import Button from '../common/Button';
-import instance from '../../api/axiosConfig';
+import { login } from '../../api/member/login';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/modules/modalSlice';
 
@@ -30,23 +30,16 @@ const LoginForm = ({ setIsLogin }) => {
     password.setError(loginValidate.password(value));
   };
 
-  const handleLogin = () =>
-    instance
-      .post('/auth/login', {
-        username: email.value,
-        password: password.value,
-      })
-      .then((data) => {
-        // console.log(data);
-        localStorage.setItem('AccessToken', data.headers.authorization);
-        localStorage.setItem('refreshToken', data.headers.refresh);
-        localStorage.setItem('memberId', data.data.memberId);
-        setIsLogin(true);
-        dispatch(closeModal());
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  const handleLogin = async () => {
+    try {
+      await login(email.value, password.value);
+      setIsLogin(true);
+      dispatch(closeModal());
+    } catch (e) {
+      //이메일 비밀번호 틀린 오류는 여기서 잡아야함
+      console.log(e);
+    }
+  };
 
   const handleSubmit = async (event) => {
     // 기본 동작 방지

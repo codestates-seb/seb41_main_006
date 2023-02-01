@@ -20,20 +20,25 @@ authRequest.interceptors.request.use(
 
 authRequest.interceptors.response.use(
   function (response) {
-    /*
-      http status가 200인 경우
-      응답 바로 직전에 대해 작성합니다. 
-      .then() 으로 이어집니다.
-  */
     return response;
   },
   async function (error) {
-    /*
-      http status가 200이 아닌 경우
-      응답 에러 처리를 작성합니다.
-      .catch() 으로 이어집니다.    
-  */
+    // config는 어떤 요청이었는지에 대한 정보를 담고 있다.
+    // const {config, response} = error
+    // const { response } = error;
+    // if (response?.status === 401) {
+    //   const originalRequest = config
+
+    //   401 에러인데 토큰이 만료된 에러라면 -> reissue // 요청했던 거 다시 이어가면 좋을텐디
+    //   if(token이 만료된 에러){
+    //     reissue
+    //   }
+    //   401로 요청 실패했던 요청 새로운 accessToken으로 재요청
+    //   return axios(originalRequest);
+    // }
+
     if (error?.response?.status === 401) {
+      // 401 에러일 때 실행
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
         await defaultRequest
