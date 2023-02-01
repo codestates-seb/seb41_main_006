@@ -36,6 +36,10 @@ authRequest.interceptors.response.use(
     //   401로 요청 실패했던 요청 새로운 accessToken으로 재요청
     //   return axios(originalRequest);
     // }
+    if (error.response.data === 'FORBIDDEN_ACCESS') {
+      alert('로그인 후 이용해 주세요.');
+      window.location.href = '/';
+    }
 
     if (error.response.data.message.includes('JWT expired')) {
       // 토큰 만료 에러일 때 실행
@@ -47,7 +51,7 @@ authRequest.interceptors.response.use(
           })
           .then((res) => {
             localStorage.setItem('AccessToken', res.headers.authorization);
-            alert('다시 시도해 주세요.');
+            alert('다시 시도해 주세요');
           })
           .catch((e) => {
             if (e.response.data.message.includes('JWT expired')) {
@@ -58,7 +62,6 @@ authRequest.interceptors.response.use(
           });
       }
     }
-    return Promise.reject(error);
   }
 );
 

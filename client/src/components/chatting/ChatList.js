@@ -43,7 +43,9 @@ const ChatList = () => {
           console.log(e);
         });
     };
-    GetChatList();
+    if (memberId) GetChatList();
+
+    return;
   }, [roomId]);
 
   const handleChatClick = (roomId) => {
