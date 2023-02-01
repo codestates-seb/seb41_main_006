@@ -112,6 +112,7 @@ const RecommentBox = styled.div`
 `;
 
 const Recomment = ({ recomment }) => {
+  console.log(recomment);
   const loginMemberId = getLoginInfo().memberId;
 
   const dispatch = useDispatch();
@@ -164,10 +165,10 @@ const Recomment = ({ recomment }) => {
         <div className="recomment-user-info">
           <button
             className="user-profile"
-            onClick={() => handleClickMember(recomment.memberId)}
+            onClick={() => handleClickMember(recomment.member.memberId)}
           >
             <ProfileImage
-              src={recomment.profileImage}
+              src={recomment.member.profileImage.upFileUrl}
               name={recomment.nickName}
               size="40px"
             ></ProfileImage>
@@ -175,7 +176,7 @@ const Recomment = ({ recomment }) => {
           <div className="recomment-detail-info">
             <button
               className="recomment-username"
-              onClick={() => handleClickMember(recomment.memberId)}
+              onClick={() => handleClickMember(recomment.member.memberId)}
             >
               {recomment.nickName}
             </button>

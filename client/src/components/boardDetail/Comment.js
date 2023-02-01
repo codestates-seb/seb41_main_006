@@ -186,10 +186,10 @@ const Comment = ({ comment, recomments }) => {
         <div className="comment-user-info">
           <button
             className="user-profile"
-            onClick={() => handleClickMember(comment.memberId)}
+            onClick={() => handleClickMember(comment.member.memberId)}
           >
             <ProfileImage
-              src={comment.profileImage}
+              src={comment.member.profileImage.upFileUrl}
               name={comment.nickName}
               size="40px"
             ></ProfileImage>
@@ -197,7 +197,7 @@ const Comment = ({ comment, recomments }) => {
           <div className="comment-detail-info">
             <button
               className="comment-username"
-              onClick={() => handleClickMember(comment.memberId)}
+              onClick={() => handleClickMember(comment.member.memberId)}
             >
               {comment.nickName}
             </button>
