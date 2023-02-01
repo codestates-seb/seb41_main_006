@@ -15,17 +15,18 @@ const MemberCard = styled.div`
   flex-direction: column;
   align-items: center;
   height: 27rem;
-  width: 18rem;
+  width: 17rem;
   /* box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1); */
   background-color: var(--bg-dark-color);
   border-radius: 20px;
   justify-content: space-between;
-  padding: 1.5rem 1rem;
   color: var(--main-font-color);
 `;
 
 const MemberCardHeader = styled.div`
   width: 100%;
+  padding-top: 1.5rem;
+  padding-left: 1rem;
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -46,7 +47,7 @@ const MemberCardHeader = styled.div`
 
 const PetSlideBox = styled(ColCenterBox)`
   color: var(--main-font-color);
-  flex: 1;
+  width: 100%;
   height: 100%;
 
   > .pet-info--empty {
@@ -67,47 +68,28 @@ const PetSlideBox = styled(ColCenterBox)`
       text-align: center;
     }
   }
+`;
 
-  // 슬라이더
-  > .slider {
+const StyledSlider = styled(Slider)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  padding: 0 1.5rem;
+  > .slick-list {
     width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-
-    // 양쪽에 달린 화살표 디자인
-    .slick-prev::before,
-    .slick-next::before {
-      color: var(--main-color);
-    }
-
-    > .slick-list {
-      width: 14rem;
-      height: 100%;
-
-      > .slick-track {
-        height: 100%;
-
-        > div {
-          width: 14rem;
-          height: 100%;
-        }
-      }
-    }
   }
 `;
 
 const MateMemberCard = ({ member }) => {
   const settings = {
-    className: 'slider variable-width',
     infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    variableWidth: true,
     swipeToSlide: false,
-    nextArrow: <NextArrow size="35" />,
-    prevArrow: <PrevArrow size="35" />,
+    nextArrow: <NextArrow size="24" />,
+    prevArrow: <PrevArrow size="24" />,
   };
 
   const dispatch = useDispatch();
@@ -141,7 +123,7 @@ const MateMemberCard = ({ member }) => {
             </div>
           </div>
         ) : (
-          <Slider {...settings}>
+          <StyledSlider {...settings}>
             {member?.petsInfo.map((pet) => {
               return (
                 <div key={pet.petId}>
@@ -149,7 +131,7 @@ const MateMemberCard = ({ member }) => {
                 </div>
               );
             })}
-          </Slider>
+          </StyledSlider>
         )}
       </PetSlideBox>
     </MemberCard>

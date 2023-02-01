@@ -4,21 +4,22 @@ import { getMemberList } from '../../api/member/member';
 import styled from 'styled-components';
 import MateMemberCard from './MateMemberCard';
 import { GrayDog } from '../common/DogSvg';
+import { media } from '../../style/styleUtils';
 
 const MemberList = styled.ul`
-  width: 100%;
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  overflow-x: scroll;
-  // 스크롤바 가리기
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 1rem;
+
+  ${media.tablet`
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 5rem;
+  `}// 스크롤바 가리기
+  /* -ms-overflow-style: none; IE and Edge */
+  /* scrollbar-width: none; Firefox */
+  /* &::-webkit-scrollbar {
     display: none;
-  }
-  gap: 1.5rem;
-  padding-bottom: 3rem;
+  } */
 `;
 
 const NoMemberBox = styled.div`

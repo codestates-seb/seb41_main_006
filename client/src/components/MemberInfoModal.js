@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { getMemberInfo } from '../api/member/member';
 import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
@@ -46,11 +46,13 @@ const SContainer = styled.div`
 
 const PetSlideBox = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+
   color: var(--main-font-color);
   flex: 1;
   height: 100%;
+  width: 100%;
 
   > .pet-info--empty {
     height: 100%;
@@ -70,55 +72,39 @@ const PetSlideBox = styled.div`
       text-align: center;
     }
   }
+`;
 
-  // 슬라이더
-  > .slider {
+const StyledSlider = styled(Slider)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 0 2.5rem;
+  > .slick-list {
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-
-    // 양쪽에 달린 화살표 디자인
-    .slick-prev::before,
-    .slick-next::before {
-      color: var(--main-color);
-      background-color: none;
-      height: 1000px;
-    }
-
-    .slick-disabled::before {
-      background-color: red;
-    }
-
-    > .slick-list {
-      width: 16rem;
+    > .slick-track {
+      width: 100%;
       height: 100%;
-
-      > .slick-track {
-        height: 100%;
-
-        > div {
-          width: 16rem;
-          height: 100%;
-        }
-      }
     }
+  }
+
+  .slick-slide {
+    width: 100%;
+    height: 100%;
   }
 `;
 
 const MemberInfoModal = ({ memberId }) => {
-  const slideRef = useRef();
   const settings = {
-    className: 'slider variable-width',
-    ref: slideRef,
     infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    variableWidth: true,
     swipeToSlide: false,
-    nextArrow: <NextArrow size="45" />,
-    prevArrow: <PrevArrow size="45" />,
+    nextArrow: <NextArrow size="40" />,
+    prevArrow: <PrevArrow size="40" />,
   };
   const [member, setMember] = useState({
     petsInfo: [],
@@ -176,15 +162,11 @@ const MemberInfoModal = ({ memberId }) => {
               </div>
             </div>
           ) : (
-            <Slider {...settings}>
+            <StyledSlider {...settings}>
               {member?.petsInfo.map((pet) => {
-                return (
-                  <div key={pet.petId}>
-                    <PetInfoCard pet={pet} />
-                  </div>
-                );
+                return <PetInfoCard key={pet.petId} pet={pet} />;
               })}
-            </Slider>
+            </StyledSlider>
           )}
         </PetSlideBox>
       </div>

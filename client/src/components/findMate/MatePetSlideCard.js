@@ -19,7 +19,7 @@ const PetSlideCardBox = styled.div`
 
 const PetImageBox = styled.div`
   width: 100%;
-  height: 220px;
+  height: 14rem;
 
   > svg {
     width: 100%;
@@ -30,8 +30,7 @@ const PetImageBox = styled.div`
 const PetInfoBox = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-
+  width: 100%;
   margin-top: 0.5rem;
 
   span,
@@ -63,7 +62,6 @@ const MatePetSlideCard = ({ pet }) => {
     <PetSlideCardBox>
       {pet?.profileImage?.upFileUrl ? (
         <PetProfileImage
-          width="100%"
           height="220px"
           src={pet?.profileImage?.upFileUrl}
           name={pet.name}
