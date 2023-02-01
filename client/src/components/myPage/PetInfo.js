@@ -19,6 +19,13 @@ const DogAddButton = styled.div`
   font-weight: 500;
   background-color: var(--bg-dark-color);
   cursor: pointer;
+  &:hover {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.1);
+  }
+  &:active {
+    color: white;
+    background-color: var(--main-font-color);
+  }
   > div {
     width: 20rem;
     height: 2rem;
@@ -26,7 +33,6 @@ const DogAddButton = styled.div`
     align-items: center;
     justify-content: center;
   }
-  /* box-shadow: 4px 4px 10px 10px rgba(0, 0, 0, 0.05); */
 `;
 
 const PetInfo = () => {

@@ -5,5 +5,10 @@ import addressReducer from './modules/addressSlice';
 export const store = configureStore({
   reducer: { modal: modalReducer, address: addressReducer },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['modal/openModal'],
+        ignoredPaths: ['modal.props'],
+      },
+    }),
 });

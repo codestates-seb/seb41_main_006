@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 /*---------- 초기 상태 선언 ----------*/
 const initialState = {
-  code: '1159010700',
-  address: '서울특별시 동작구 사당동',
+  code: '',
+  address: '',
 };
 
 /*---------- slice 생성 ----------*/

@@ -37,7 +37,7 @@ const LoginForm = ({ setIsLogin }) => {
         password: password.value,
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         localStorage.setItem('AccessToken', data.headers.authorization);
         localStorage.setItem('refreshToken', data.headers.refresh);
         localStorage.setItem('memberId', data.data.memberId);
