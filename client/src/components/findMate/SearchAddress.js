@@ -15,6 +15,7 @@ const SearchAddress = ({ setIsLoading }) => {
   const [searchAddress, setSearchAddress] = useState('');
   const [addressList, setAddressList] = useState([]);
   const [isAddressListOpen, setIsAddressListOpen] = useState(false);
+  // const [addressError, setAddressError] = useState('');
   // 검색 결과 창 밖 클릭하면 닫힘
   useOnClickOutside(searchResultRef, () => setIsAddressListOpen(false));
 
@@ -49,10 +50,15 @@ const SearchAddress = ({ setIsLoading }) => {
       setIsLoading(false);
     } catch (err) {
       console.log(err);
-      // if (err.message === 'User denied Geolocation') {
-
-      // }
-      dispatch(resetAddress());
+      if (err.message === 'User denied Geolocation') {
+        // set('현재 위치 정보가 허용되지 않았습니다.');
+      }
+      dispatch(
+        setAddress({
+          code: '1171010100',
+          address: '서울특별시 송파구 잠실동',
+        })
+      );
       setIsLoading(false);
     }
   };
@@ -76,7 +82,6 @@ const SearchAddress = ({ setIsLoading }) => {
 
   useEffect(() => {
     // 초기 설정 - 현재 위치로 설정
-
     if (!address || !code) handleLocClick();
   }, []);
 

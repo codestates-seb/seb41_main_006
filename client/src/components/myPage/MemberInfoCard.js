@@ -14,6 +14,7 @@ const CardContainer = styled.div`
   gap: 0.5rem;
   color: var(--main-font-color);
   font-size: 1rem;
+  padding: 1rem 3rem;
 
   > .user-name {
     font-size: 1.25rem;
@@ -43,8 +44,6 @@ const MemberInfoCard = ({ memberInfo }) => {
   const ageTitle = selectAgeList.find(
     (el) => el.value === memberInfo.memberAge
   )?.title;
-
-  console.log(memberInfo);
 
   return (
     <CardContainer>

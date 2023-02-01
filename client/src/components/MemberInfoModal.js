@@ -148,7 +148,6 @@ const MemberInfoModal = ({ memberId }) => {
   useEffect(() => {
     getMemberInfo(memberId)
       .then((data) => {
-        console.log(data);
         setMember(data);
       })
       .catch((err) => {

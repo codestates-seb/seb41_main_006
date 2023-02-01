@@ -4,7 +4,6 @@ import Container from '../components/Container';
 import BoardInfo from '../components/myPage/BoardInfo';
 import MemberInfo from '../components/myPage/MemberInfo';
 import PetInfo from '../components/myPage/PetInfo';
-import dummyMembers from '../api/member/dummyMembers';
 
 const SContainer = styled(Container)`
   display: flex;
@@ -78,10 +77,7 @@ const MyPage = () => {
           <Route path="/" element={<MemberInfo />}></Route>
           <Route path="memberInfo" element={<MemberInfo />}></Route>
           <Route path="petInfo" element={<PetInfo />}></Route>
-          <Route
-            path="myBoards"
-            element={<BoardInfo memberId={dummyMembers.data[1].memberId} />}
-          ></Route>
+          <Route path="myBoards" element={<BoardInfo />}></Route>
         </Routes>
       </SContainer>
     </>

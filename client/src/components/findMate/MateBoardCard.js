@@ -40,6 +40,7 @@ const BoardCard = styled.div`
       ${flexRowCenter}
       gap: 0.5rem;
       margin-bottom: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .board-card--meet {

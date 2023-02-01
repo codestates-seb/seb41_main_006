@@ -109,6 +109,7 @@ const PetAgeWrapper = styled.div`
   margin-left: 1rem;
   input {
     width: 2.75rem;
+    margin-right: 0.25rem;
   }
 `;
 

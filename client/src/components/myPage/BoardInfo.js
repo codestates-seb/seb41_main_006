@@ -33,7 +33,7 @@ const BoardCard = styled.div`
   padding: 0.5rem 1rem;
   width: 100%;
   height: 100%;
-  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.28);
   color: var(--main-font-color);
 
   .board-card--left {
@@ -104,7 +104,7 @@ const BoardCard = styled.div`
 
 const NoPetBox = styled.div`
   width: 100%;
-  height: 400px;
+  height: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;

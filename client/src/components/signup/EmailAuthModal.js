@@ -79,7 +79,6 @@ const EmailAuthModal = ({
       await authEmailVerification({ code: emailAuthNumber.value, email });
       // 인증 완료
       setIsEmailVerified(true);
-      alert('인증이 완료되었습니다.');
       setIsEmailAuthModalOpen(false);
     } catch (err) {
       if (err.message === 'Code Has Not Matched') {

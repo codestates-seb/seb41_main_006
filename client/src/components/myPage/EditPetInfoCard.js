@@ -14,8 +14,8 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 17.5rem;
-  height: 25rem;
+  width: 16.5rem;
+  height: 25.5rem;
   color: var(--main-font-color);
 
   > .edit {

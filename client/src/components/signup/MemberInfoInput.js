@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,6 +16,7 @@ import { authNickName, signUp } from '../../api/member/signup';
 import { memberImageUpload, memberImageDelete } from '../../api/image';
 import { updateMyInfo } from '../../api/member/member';
 import getAddressList from '../../api/kakaoMap/getAddressList';
+import { openModal } from '../../store/modules/modalSlice';
 
 const MemberInfoContainer = styled.div`
   display: flex;
@@ -251,6 +253,7 @@ const MemberInfoInput = ({
 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
   const updateMyInfoMutation = useMutation(updateMyInfo, {
     onSuccess: () => {
@@ -492,6 +495,7 @@ const MemberInfoInput = ({
         });
         // 메인 페이지로!
         navigate('/');
+        dispatch(openModal({ type: 'login' }));
         // 로그인 모달 같이 띄우면 좋을 것 같음
       }
     } catch (err) {
@@ -551,7 +555,7 @@ const MemberInfoInput = ({
         </div>
         <p className="error">{errors.nickName}</p>
         {isNicknameVerified && (
-          <p className="email-verified--msg">중복 확인 완료!</p>
+          <p className="email-verified--msg">사용 가능한 닉네임입니다.</p>
         )}
       </NickNameWrapper>
       <div className="select-container">

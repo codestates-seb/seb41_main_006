@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
 import LoginModal from './login/LoginModal';
@@ -30,11 +32,9 @@ const MODAL_COMPONENTS = {
 };
 
 const GlobalModal = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
   const { type, props } = useSelector((state) => state.modal);
-
-  // type이 명시되지 않았다면 아무것도 띄우지 않는다.
-  if (!type) return null;
 
   // 띄울 모달을 type을 통해 지정한다.
   const Modal = MODAL_COMPONENTS[type];
@@ -43,6 +43,13 @@ const GlobalModal = () => {
   const handleModalClose = () => {
     dispatch(closeModal());
   };
+
+  useEffect(() => {
+    dispatch(closeModal());
+  }, [location.pathname]);
+
+  // type이 명시되지 않았다면 아무것도 띄우지 않는다.
+  if (!type) return null;
 
   return (
     <ModalBackDrop onClick={handleModalClose}>
