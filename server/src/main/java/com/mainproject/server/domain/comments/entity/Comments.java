@@ -69,7 +69,7 @@ public class Comments extends Auditable {
 
 	// 자기 참조 관계 : 대댓글 ~ 댓글 (N : 1)
 	@OneToMany(mappedBy = "parentComments", orphanRemoval = true)
-	@JsonBackReference
+	//@JsonBackReference
 	private List<Comments> replyComments = new ArrayList<>();
 
 	@ElementCollection
@@ -79,6 +79,6 @@ public class Comments extends Auditable {
 
 	public void setlikedMembers(List<Long> likedMembers) {
 		this.likedMembers = likedMembers;
-	}
 
+	}
 }

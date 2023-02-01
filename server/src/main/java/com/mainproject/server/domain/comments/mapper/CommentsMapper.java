@@ -7,11 +7,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
+import com.mainproject.server.awsS3.dto.S3UpFileResponse;
+import com.mainproject.server.awsS3.entity.S3UpFile;
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.comments.dto.CommentsDto;
 import com.mainproject.server.domain.comments.dto.CommentsLikeDto;
 import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.comments.entity.CommentsLike;
+import com.mainproject.server.domain.member.dto.MemberDto;
 import com.mainproject.server.domain.member.entity.Member;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -23,11 +26,14 @@ public interface CommentsMapper {
 
 	Comments commentsPatchDtoToComments(CommentsDto.Patch commentsPatchDto);
 
-	@Mappings({@Mapping(source = "member.memberId", target = "memberId"),
-	@Mapping(source = "member.nickName", target = "nickName"),
-	@Mapping(source = "board.boardId", target = "boardId"),
+	@Mappings({@Mapping(source = "board.boardId", target = "boardId"),
 	@Mapping(source = "parentComments.commentsId", target = "parentId")})
 	CommentsDto.Response commentsToCommentsResponseDto(Comments comments);
+
+	@Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+	@Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+	@Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
+	MemberDto.ResponseOnlyMemberName memberToMemberNameDto(Member member);
 
 	CommentsLike commentsLikeDtoToCommentsLike(CommentsLikeDto commentsLikeDto);
 
