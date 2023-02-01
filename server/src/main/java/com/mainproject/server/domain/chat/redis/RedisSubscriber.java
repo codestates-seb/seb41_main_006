@@ -16,28 +16,19 @@ import javax.annotation.Resource;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class RedisSubscriber implements MessageListener {
+public class RedisSubscriber{
     private final ObjectMapper objectMapper;
-    @Resource(name = "chatRedisTemplate")
-    private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
 
-
-    @Override
-    public void onMessage(Message message, byte[] pattern) {
-        log.info("redis subscriber : onMessage 실행");
+    public void sendMessage(String message) {
         try {
-            // 레디스를 통해 들어온 메세지를 chatMessage로 변환
-            String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            log.info("publishMessage:{}", publishMessage );
-
-            PublishMessage chatMessage = objectMapper.readValue(publishMessage, PublishMessage.class);
-            log.info("chatMessage: {}", chatMessage.getContent());
-            // 채팅방을 구독하고 있는 회원에게 해당 메세지를 뿌림
-            messagingTemplate.convertAndSend("/sub/chats/" + chatMessage.getRoomId(), chatMessage);
-            log.info("redis publish messages");
+            log.info("publish 전 message: {}", message);
+            PublishMessage publishMessage = objectMapper.readValue(message, PublishMessage.class);
+            messagingTemplate.convertAndSend("/sub/chats/" + publishMessage.getRoomId(), publishMessage);
+            log.info("publish 전 message: {}", publishMessage.getContent());
         } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
+
 }
