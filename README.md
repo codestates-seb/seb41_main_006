@@ -34,24 +34,55 @@ https://kng2mate.site/
 ## 🐶 팀원 소개
 |정민교|김정하|나혜리|강선영|조규성|채예린|
 |:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|
-|<img src = "https://user-images.githubusercontent.com/111368350/215995863-27e3130e-44eb-45e2-bc84-aca4b67d05e8.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995851-9273a457-684d-4f13-b8dd-0365a2ed6152.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215997061-a4979b12-eafa-4442-a36f-7e4877cbc633.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995869-ac50dedb-4910-485e-aa41-fc6a733004c8.jpg" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995860-5bc7e944-8a8e-469a-8ab5-f9934a0dc352.png" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215997449-75748908-de20-42c8-8688-dad3d741b077.jpg" width = "100" height = "100">|
+|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|
 |[@alsry922](https://github.com/alsry922)|[@jjunghakim](https://github.com/jjunghakim)|[@hiy7030](https://github.com/hiy7030)|[@ssunyk](https://github.com/ssunyk)|[@operat04](https://github.com/operat04)|[@chyerin802](https://github.com/chyerin802)|
 |팀장, BE|BE|BE|FE|FE|FE|
 
 <br>
 
 ## 🔧 기술스택
-
+  
 <img src = "https://user-images.githubusercontent.com/111368350/215987727-a6f91c3b-9322-4f7d-9c3f-93c3066937e4.png" width="1000"/>
 
+## 시연 영상
+
+### 회원 가입
+
+![회원가입](https://user-images.githubusercontent.com/67780354/215999285-d8bc5171-6d53-4178-9920-7c72fc614d34.gif)
+
+### 로그인 / 로그아웃
+
+![로그인 로그아웃](https://user-images.githubusercontent.com/67780354/215999439-e2bda0e8-7f1e-4c08-932e-a11ba1db8127.gif)
+
+### 마이페이지
+
+![로그인 로그아웃](https://user-images.githubusercontent.com/67780354/215999508-c4837b2d-e2d1-46b8-9c75-c19fcaf4200d.gif)
+
+### 강아지 정 등록
+
+![강아지 등록](https://user-images.githubusercontent.com/67780354/216001711-d9ca767b-f69b-4b53-937e-a1effb647d01.gif)
+
+### 산책 메이트(위치 기반 검색)
+
+![산책메이트](https://user-images.githubusercontent.com/67780354/215999597-b87009bc-a948-40d8-8925-1a643d8ea302.gif)
+
+### 산책 모임(위치 기반 검색)
+
+![산책모임](https://user-images.githubusercontent.com/67780354/216001499-6e42df53-04de-4f7b-979f-7e126cee5209.gif)
+
+### 게시글 작성
+
+![게시글 작성](https://user-images.githubusercontent.com/67780354/216002049-b112ca35-d96d-48ce-b5e3-510b52163b32.gif)
 
 
+### 댓글 작성
 
+![댓글 작성](https://user-images.githubusercontent.com/67780354/216001605-774c0330-cb51-43e8-88da-574f8d963e33.gif)
 
+### 좋아요
 
+![좋아요](https://user-images.githubusercontent.com/67780354/216002394-b1169af3-cf45-4ef9-a8d4-5a0af7e269d9.gif)
 
+### 채팅
 
-
-
-
-
+![채팅](https://user-images.githubusercontent.com/67780354/216002190-8cf341e0-3420-4ea0-a2b7-3fe776ba1887.gif)
