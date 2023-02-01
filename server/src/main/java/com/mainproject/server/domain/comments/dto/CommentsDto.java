@@ -8,6 +8,9 @@ import javax.validation.constraints.Positive;
 
 import org.springframework.lang.Nullable;
 
+import com.mainproject.server.awsS3.dto.S3UpFileResponse;
+import com.mainproject.server.domain.member.dto.MemberDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,8 +59,7 @@ public class CommentsDto {
 	public static class Response{
 		private Long commentsId;
 		private Long boardId;
-		private Long memberId;
-		private String nickName;
+		private MemberDto.ResponseOnlyMemberName member;
 		private String content;
 		private Long parentId;
 		private int depth;
@@ -65,6 +67,7 @@ public class CommentsDto {
 		private List<Long> likedMembers;
 		private LocalDateTime createdAt;
 		private LocalDateTime modifiedAt;
+
 	public void setLikedMembers(List<Long> likedMembers){
 		this.likedMembers = likedMembers;
 		}

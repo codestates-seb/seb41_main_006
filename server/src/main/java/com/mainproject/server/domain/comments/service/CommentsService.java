@@ -107,7 +107,7 @@ public class CommentsService {
 	public List<Comments> getSortedCommentsByBoard(Board board) {
 		List<Comments> comments = commentsRepository.findAllByBoardOrderByCreatedAtAscParentCommentsCommentsId(board);
 
-		Map<Long, Comments> commentsMap = comments.stream().collect(Collectors.toMap(Comments::getCommentsId, c -> c));
+		//Map<Long, Comments> commentsMap = comments.stream().collect(Collectors.toMap(Comments::getCommentsId, c -> c));
 		List<Comments> rootComments = comments.stream().filter(c -> c.getParentComments() == null).collect(Collectors.toList());
 		List<Comments> result = new ArrayList<>();
 

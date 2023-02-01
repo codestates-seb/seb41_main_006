@@ -132,6 +132,7 @@ public interface BoardMapper {
 
     // ----- Comments
     List<CommentsDto.Response> commentsToCommentsResponseDtos(List<Comments> comments);
+
     @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
     @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
     @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
@@ -140,11 +141,14 @@ public interface BoardMapper {
     @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
     @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
     MemberDto.SimpleResponse memberToSimpleResponseDto(Member member);
+    @Mapping(source = "s3UpFile.upFileId", target = "profileImage.upFileId")
+    @Mapping(source = "s3UpFile.upFileName", target = "profileImage.upFileName")
+    @Mapping(source = "s3UpFile.upFileUrl", target = "profileImage.upFileUrl")
+    MemberDto.ResponseOnlyMemberName memberToMemberNameDto(Member member);
 
-    @Mappings({@Mapping(source = "member.memberId", target = "memberId"),
-        @Mapping(source = "member.nickName", target = "nickName"),
-        @Mapping(source = "board.boardId", target = "boardId"),
-        @Mapping(source = "parentComments.commentsId", target = "parentId")})
+    @Mappings({@Mapping(source = "board.boardId", target = "boardId"),
+    @Mapping(source = "parentComments.commentsId", target = "parentId"),
+    @Mapping(source = "member", target = "member")})
     CommentsDto.Response commentsToCommentsResponseDto(Comments comments);
     // ------------------------
 
