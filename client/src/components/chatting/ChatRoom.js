@@ -63,9 +63,6 @@ const ChatRoom = () => {
         console.log('success');
         subscribe();
       },
-      debug: function (str) {
-        console.log(str);
-      },
     });
     client.current.activate();
   };
@@ -115,7 +112,7 @@ const ChatRoom = () => {
     connect();
 
     return () => disconnect();
-  }, [chatId]);
+  }, []);
 
   return (
     <ChatRoomBox>

@@ -134,12 +134,6 @@ const Comment = ({ comment, recomments }) => {
 
   let commentList = [];
   commentList.push(comment);
-  console.log(commentList);
-  if (commentList[0].likedMembers.includes(Number(loginMemberId))) {
-    console.log('yes');
-  } else {
-    console.log('no');
-  }
 
   const dispatch = useDispatch();
 
@@ -209,7 +203,7 @@ const Comment = ({ comment, recomments }) => {
             </button>
             <div className="comment-sub-info">
               <span className="comment-createAt">
-                {convertCreatedAt(new Date())}
+                {convertCreatedAt(comment.createdAt)}
               </span>
               <span className="comment-like">
                 <FaHeart />
@@ -240,19 +234,29 @@ const Comment = ({ comment, recomments }) => {
                 수정완료
               </button>
             ) : (
-              <button
-                className="edit-btn"
-                onClick={() => setIsEditOpen(!isEditOpen)}
-              >
-                수정
-              </button>
+              <>
+                {comment.memberId === Number(loginMemberId) ? (
+                  <button
+                    className="edit-btn"
+                    onClick={() => setIsEditOpen(!isEditOpen)}
+                  >
+                    수정
+                  </button>
+                ) : (
+                  ''
+                )}
+              </>
             )}
-            <button
-              className="del-btn"
-              onClick={() => handelConfirmClick(comment.commentsId)}
-            >
-              삭제
-            </button>
+            {comment.memberId === Number(loginMemberId) ? (
+              <button
+                className="del-btn"
+                onClick={() => handelConfirmClick(comment.commentsId)}
+              >
+                삭제
+              </button>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </div>

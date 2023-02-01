@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { flexRowCenter } from '../../style/styleVariable';
 import ProfileImage from '../common/ProfileImage';
 import Title from '../common/Title';
-import { convertAppointDate } from '../../utils/dateConvert';
+import { uctTokst } from '../../utils/dateConvert';
 // import { getAddressByCode } from '../../api/kakaoMap/getAddressByCode';
 import { BoardCloseBox, BoardOpenBox } from '../BoardStatus';
 import { IoLocationSharp } from 'react-icons/io5';
@@ -100,7 +100,7 @@ const MateBoardCard = ({ board }) => {
           </div>
           <div className="board-card--meet">
             <TbCalendarTime />
-            <span>{convertAppointDate(board.appointTime)}</span>
+            <span>{uctTokst(board.appointTime)}</span>
           </div>
         </div>
       </Link>

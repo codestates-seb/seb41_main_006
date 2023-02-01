@@ -1,5 +1,5 @@
 import AroundWalkDog from '../../static/images/AroundWalkDog.png';
-import AroundWalk from '../../static/images/AroundWalk.png';
+import AroundWalk from '../../static/images/AroundWalk2.png';
 import styled from 'styled-components';
 import Fade from 'react-reveal/Fade';
 
@@ -9,11 +9,11 @@ const MainSecondContainer = styled.div`
   height: 80vh;
   img {
     width: 40%;
-    height: 40%;
+    height: 60%;
   }
   .Around-Walk-dog {
     width: 60%;
-    height: 40%;
+    height: 50%;
     margin-left: 10%;
     background-image: url(${AroundWalkDog});
     background-size: 90%;
