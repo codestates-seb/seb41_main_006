@@ -37,7 +37,12 @@ const LoginForm = ({ setIsLogin }) => {
       dispatch(closeModal());
     } catch (e) {
       //이메일 비밀번호 틀린 오류는 여기서 잡아야함
-      console.log(e);
+      if (
+        e.response.data.message === 'Member Not Found' ||
+        e.response.data.message === '자격 증명에 실패하였습니다.'
+      ) {
+        alert('이메일과 비밀 번호를 정확히 입력해 주세요');
+      }
     }
   };
 
