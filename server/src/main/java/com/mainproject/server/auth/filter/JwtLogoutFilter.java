@@ -50,11 +50,12 @@ public class JwtLogoutFilter extends OncePerRequestFilter {
         try {
             String accessToken = resolveAccessToken(request, response);
             String refreshToken = resolveRefreshToken(request, response);
-            redisService.deleteRefreshToken(refreshToken);
             // access token payload 뽑기
             Jws<Claims> claims =
                     jwtTokenizer.getClaims(accessToken,
                             jwtTokenizer.encodeSecretKeyWithBase64(jwtTokenizer.getSecretKey()));
+            redisService.deleteRefreshToken(refreshToken);
+
             long remainExpiration = calculateRemainExpiration(claims);
             // access token 값을 키로 logout 문자열을 값으로 하는 데이터 레디스에 저장, 만료 시간 명시
             redisService.setAccessTokenLogout(accessToken, remainExpiration);
