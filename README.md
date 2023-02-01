@@ -34,7 +34,7 @@ https://kng2mate.site/
 ## 🐶 팀원 소개
 |정민교|김정하|나혜리|강선영|조규성|채예린|
 |:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|:--------------------:|
-|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "" width = "100" height = "100">|
+|<img src = "https://user-images.githubusercontent.com/111368350/215995863-27e3130e-44eb-45e2-bc84-aca4b67d05e8.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995851-9273a457-684d-4f13-b8dd-0365a2ed6152.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215997061-a4979b12-eafa-4442-a36f-7e4877cbc633.png" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995869-ac50dedb-4910-485e-aa41-fc6a733004c8.jpg" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215995860-5bc7e944-8a8e-469a-8ab5-f9934a0dc352.png" width = "100" height = "100">|<img src = "" width = "100" height = "100">|<img src = "https://user-images.githubusercontent.com/111368350/215997449-75748908-de20-42c8-8688-dad3d741b077.jpg" width = "100" height = "100">|
 |[@alsry922](https://github.com/alsry922)|[@jjunghakim](https://github.com/jjunghakim)|[@hiy7030](https://github.com/hiy7030)|[@ssunyk](https://github.com/ssunyk)|[@operat04](https://github.com/operat04)|[@chyerin802](https://github.com/chyerin802)|
 |팀장, BE|BE|BE|FE|FE|FE|
 
