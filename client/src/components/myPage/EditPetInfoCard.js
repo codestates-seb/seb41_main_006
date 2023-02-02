@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
@@ -7,7 +6,6 @@ import styled from 'styled-components';
 import { MdModeEdit } from 'react-icons/md';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import PetInfoCard from './PetInfoCard';
-import EditPetModal from './Modal/EditPetModal';
 
 const CardContainer = styled.div`
   display: flex;
@@ -34,9 +32,8 @@ const CardContainer = styled.div`
   }
 `;
 
-const EditPetInfoCard = ({ pet }) => {
+const EditPetInfoCard = ({ pet, setEditPet, setIsEditModalOpen }) => {
   const dispatch = useDispatch();
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const deletePetMutation = useMutation(deleteMyPet, {
@@ -50,6 +47,11 @@ const EditPetInfoCard = ({ pet }) => {
 
   const deletePet = (petId) => {
     deletePetMutation.mutate({ petId });
+  };
+
+  const openEdit = (pet) => {
+    setEditPet(pet);
+    setIsEditModalOpen(true);
   };
 
   const handleClickPetDelete = () => {
@@ -74,7 +76,7 @@ const EditPetInfoCard = ({ pet }) => {
             <MdModeEdit
               size="16"
               onClick={() => {
-                setIsEditModalOpen(true);
+                openEdit(pet);
               }}
             />
           </button>
@@ -83,9 +85,6 @@ const EditPetInfoCard = ({ pet }) => {
           </button>
         </div>
       </CardContainer>
-      {isEditModalOpen ? (
-        <EditPetModal pet={pet} setIsEditModalOpen={setIsEditModalOpen} />
-      ) : null}
     </>
   );
 };
