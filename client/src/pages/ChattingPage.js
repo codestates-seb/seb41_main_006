@@ -4,6 +4,8 @@ import Title from '../components/common/Title';
 import ChatList from '../components/chatting/ChatList';
 import ChatRoom from '../components/chatting/ChatRoom';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import authRequest from '../api/authRequest';
 
 const ChattingPageContainer = styled(Container)`
   display: flex;
@@ -22,11 +24,27 @@ const ChattingPageContainer = styled(Container)`
 `;
 
 const ChattingPage = () => {
+  const [chattingList, setChattingList] = useState([]);
+
+  useEffect(() => {
+    const GetChatList = async () => {
+      await authRequest
+        .get('/chats')
+        .then((res) => {
+          setChattingList(res.data.data);
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+    GetChatList();
+  }, []);
   return (
     <ChattingPageContainer>
       <div className="side-bar">
         <Title>채팅</Title>
-        <ChatList />
+        <ChatList chattingList={chattingList} />
       </div>
       <div className="content">
         <Routes>
