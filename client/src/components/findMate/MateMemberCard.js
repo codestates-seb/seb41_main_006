@@ -89,7 +89,7 @@ const StyledSlider = styled(Slider)`
   height: 100%;
   display: flex;
   position: relative;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
   > .slick-list {
     width: 100%;
   }
@@ -102,8 +102,8 @@ const MateMemberCard = ({ member }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
     swipeToSlide: false,
-    nextArrow: <NextArrow size="24" />,
-    prevArrow: <PrevArrow size="24" />,
+    nextArrow: <NextArrow size="32" />,
+    prevArrow: <PrevArrow size="32" />,
   };
 
   const dispatch = useDispatch();

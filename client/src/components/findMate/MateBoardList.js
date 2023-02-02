@@ -1,19 +1,27 @@
 import styled from 'styled-components';
 import MateBoardCard from './MateBoardCard';
 import { GrayDog } from '../common/DogSvg';
+import { media } from '../../style/styleUtils';
 
 const BoardList = styled.ul`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(316px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-column-gap: 1.25rem;
   grid-row-gap: 1.5rem;
 `;
 
 const BoardItem = styled.li`
-  height: 13rem;
+  height: 15rem;
   position: relative;
-  padding-top: 60%;
+  padding-top: 65%;
+
+  ${media.desktop`
+    padding-top: 40%;
+  `}
+  ${media.mobile`
+    padding-top: 30%;
+  `}
 `;
 
 const NoBoardBox = styled.div`
