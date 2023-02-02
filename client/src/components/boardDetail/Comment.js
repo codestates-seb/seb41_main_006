@@ -153,7 +153,14 @@ const Comment = ({ comment, recomments }) => {
       console.log(err);
     },
   });
-
+  const { mutate: deleteCommentMutation } = useMutation(commentDelete, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
@@ -192,7 +199,7 @@ const Comment = ({ comment, recomments }) => {
 
   // 댓글 삭제
   const handleCommentDelete = (commentId) => {
-    commentDelete(commentId);
+    deleteCommentMutation(commentId);
   };
 
   return (
