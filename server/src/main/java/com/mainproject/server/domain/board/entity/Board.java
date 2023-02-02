@@ -54,7 +54,7 @@ public class Board extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<Comments> commentList = new ArrayList<>();
 
 
@@ -65,7 +65,7 @@ public class Board extends Auditable {
         }
     }
 
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
