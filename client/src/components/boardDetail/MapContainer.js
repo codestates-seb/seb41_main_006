@@ -174,6 +174,7 @@ const MapContainer = ({
               defaultValue={
                 location.pathname !== '/newmate' ? meetingPlace : ''
               }
+              required
             ></input>
           </div>
           <div className="meet-map" id="map">
