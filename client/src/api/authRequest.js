@@ -1,6 +1,14 @@
+import axios from 'axios';
 import defaultRequest from './defaultRequest';
 
-const authRequest = defaultRequest.create();
+const authRequest = axios.create();
+
+// 모든 요청에 withCredentials가 true로 설정
+authRequest.defaults.withCredentials = true;
+// post의 content-type을 지정
+authRequest.defaults.headers.post['Content-Type'] = 'application/json';
+// 서버 API 주소 지정
+authRequest.defaults.baseURL = process.env.REACT_APP_SERVER_API;
 
 authRequest.interceptors.request.use(
   function (config) {
@@ -82,6 +90,7 @@ authRequest.interceptors.response.use(
         window.location.href = '/';
       }
     }
+    console.log(error);
     return Promise.reject(error);
   }
 );

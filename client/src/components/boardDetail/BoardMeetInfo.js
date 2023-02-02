@@ -43,12 +43,12 @@ const BoardMeetInfo = ({ meetInfo }) => {
 
   useEffect(() => {
     const getMeetingPlace = async () => {
+      console.log(meetInfo.x, meetInfo.y);
       const address = await getAddressByXY(meetInfo.x, meetInfo.y);
-
       setMeetingPlace(address);
     };
     getMeetingPlace();
-  }, []);
+  }, [meetInfo]);
 
   return (
     <MeetInfoContainer>

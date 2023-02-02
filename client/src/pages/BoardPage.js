@@ -143,6 +143,7 @@ const BoardPage = () => {
         y: locInfo[2],
         petId: petId,
       });
+
       navigate('/mate/boards');
     }
   };

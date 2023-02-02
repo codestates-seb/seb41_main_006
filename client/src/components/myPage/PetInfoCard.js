@@ -71,7 +71,7 @@ const PetInfoCard = ({ pet }) => {
           <span>{pet?.breed}</span>
           <span>{pet?.age}살</span>
           <span>
-            {pet.gender === 'M' ? <AiOutlineMan /> : <AiOutlineWoman />}
+            {pet?.gender === 'M' ? <AiOutlineMan /> : <AiOutlineWoman />}
           </span>
           <span>
             {pet?.neutered ? (

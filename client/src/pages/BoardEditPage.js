@@ -1,11 +1,11 @@
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
 import MapContainer from '../components/boardDetail/MapContainer';
-import { boardPatch, FINDMATE_ENDPOINT } from '../api/board/findMate';
-import useFetch from '../hooks/useFetch';
+import { boardPatch, boardGetById } from '../api/board/findMate';
 import PageLoading from '../components/PageLoading';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -116,12 +116,18 @@ const BoardEditPage = () => {
   //강아지 정보
   const [petId, setPetid] = useState('');
 
-  const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
-
-  let board;
-  if (data) {
-    board = data.data;
-  }
+  const {
+    data: board,
+    isLoading,
+    isError,
+  } = useQuery(['board', boardId], async () => await boardGetById(boardId), {
+    placeholderData: {
+      comments: [],
+      likedMembers: [],
+      member: {},
+      pet: {},
+    },
+  });
 
   const userKeyDown = (e) => {
     if (e.keyCode === 13) {
@@ -191,7 +197,7 @@ const BoardEditPage = () => {
 
   return (
     <>
-      {error && <div>글 조회 실패</div>}
+      {isError && <div>글 조회 실패</div>}
       {isLoading ? (
         <PageLoading />
       ) : (

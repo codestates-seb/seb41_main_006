@@ -1,23 +1,28 @@
-import axios from 'axios';
-import { getLoginInfo } from '../loginInfo';
-
+import authRequest from '../authRequest';
+import defaultRequest from '../defaultRequest';
 // api url
 export const FINDMATE_ENDPOINT =
-  process.env.REACT_APP_SERVER_API +
   process.env.REACT_APP_API_FINDMATE_BOARD_ENDPOINT;
 
 const API_CONNECT_TIMEOUT = 2000;
 
+// 글 불러오기
+export const boardGetById = async (boardId) => {
+  const path = `${FINDMATE_ENDPOINT}/${boardId}`;
+  try {
+    const res = await defaultRequest.get(path);
+    console.log(res.data.data);
+    return res?.data?.data;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
 // 글 생성
 export const boardCreate = async (body) => {
-  const { AccessToken } = getLoginInfo();
-
   try {
-    let result = await axios.post(FINDMATE_ENDPOINT, body, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: AccessToken,
-      },
+    let result = await authRequest.post(FINDMATE_ENDPOINT, body, {
       timeout: API_CONNECT_TIMEOUT,
     });
     return { state: 'OK', data: result.data.response };
@@ -29,15 +34,10 @@ export const boardCreate = async (body) => {
 
 // 글 수정
 export const boardPatch = async (boardId, body) => {
-  const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
 
   try {
-    let result = await axios.patch(path, body, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: AccessToken,
-      },
+    let result = await authRequest.patch(path, body, {
       timeout: API_CONNECT_TIMEOUT,
     });
     return { state: 'OK', data: result.data.response };
@@ -49,15 +49,10 @@ export const boardPatch = async (boardId, body) => {
 
 // 글 삭제
 export const boardDelete = async (boardId) => {
-  const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
 
   try {
-    let result = await axios.delete(path, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: AccessToken,
-      },
+    let result = await authRequest.delete(path, {
       timeout: API_CONNECT_TIMEOUT,
     });
     return { state: 'OK', msg: result.data };
@@ -69,15 +64,10 @@ export const boardDelete = async (boardId) => {
 
 // 글 좋아요 & 좋아요 취소
 export const boardLike = async (boardId, body) => {
-  const { AccessToken } = getLoginInfo();
   const path = `${FINDMATE_ENDPOINT}/${boardId}/like`;
 
   try {
-    let result = await axios.post(path, body, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: AccessToken,
-      },
+    let result = await authRequest.post(path, body, {
       timeout: API_CONNECT_TIMEOUT,
     });
     return { state: 'OK', msg: result.data };
