@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
 import PetInfoCard from './myPage/PetInfoCard';
 import Button from './common/Button';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
 import { GrayDog } from './common/DogSvg';
@@ -97,6 +97,7 @@ const StyledSlider = styled(Slider)`
 `;
 
 const MemberInfoModal = ({ memberId }) => {
+  const navigate = useNavigate();
   const settings = {
     infinite: false,
     speed: 500,
@@ -120,7 +121,7 @@ const MemberInfoModal = ({ memberId }) => {
       .post('/chats', {
         memberId: memberId,
       })
-      .then((data) => console.log(data));
+      .then(() => navigate('/chat'));
   };
 
   useEffect(() => {
@@ -137,16 +138,14 @@ const MemberInfoModal = ({ memberId }) => {
     <SContainer>
       <div className="memberInfo-container">
         <MemberInfoCard memberInfo={member} />
-        <Link to="/chat">
-          <Button
-            onClick={() => {
-              handleModal();
-              AddChatList(member.memberId);
-            }}
-          >
-            채팅하기
-          </Button>
-        </Link>
+        <Button
+          onClick={() => {
+            handleModal();
+            AddChatList(member.memberId);
+          }}
+        >
+          채팅하기
+        </Button>
       </div>
       <div className="petInfo-container">
         <h2>강아지 소개</h2>

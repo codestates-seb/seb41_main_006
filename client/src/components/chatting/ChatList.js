@@ -30,7 +30,6 @@ const ChatList = ({ chattingList }) => {
 
   const handleChatClick = (roomId) => {
     navigate(`/chat/${roomId}`);
-    window.location.reload();
   };
   return (
     <ul>
