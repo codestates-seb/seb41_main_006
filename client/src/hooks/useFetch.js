@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
+import defaultRequest from '../api/defaultRequest';
 
 const useFetch = (url, params, reload) => {
   const [data, setData] = useState(null);
@@ -12,12 +13,12 @@ const useFetch = (url, params, reload) => {
       let result;
       if (params !== undefined) {
         // console.log('params', params);
-        result = await axios.get(url, {
+        result = await defaultRequest.get(url, {
           params: params,
           timeout: 2000,
         });
       } else {
-        result = await axios.get(url, {
+        result = await defaultRequest.get(url, {
           timeout: 2000,
         });
       }

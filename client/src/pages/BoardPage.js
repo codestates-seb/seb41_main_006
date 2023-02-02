@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import MapContainer from '../components/boardDetail/MapContainer';
 import Container from '../components/Container';
 import { PostSubmitBtn, CancelButton } from '../components/Button';
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { boardCreate } from '../api/board/findMate';
@@ -123,6 +124,20 @@ const BoardPage = () => {
   const [dateInfo, setDateInfo] = useState();
   const [locInfo, setLocInfo] = useState([]);
 
+  // mutation
+  const queryClient = useQueryClient();
+
+  const { mutate: createBoardMutate } = useMutation(boardCreate, {
+    onSuccess: (data) => {
+      queryClient.setQueryData(['board', data.boardId], data.boardId);
+      queryClient.invalidateQueries(['boards']);
+      navigate(`/boards/${data.boardId}`);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
   // 글 등록하기
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -136,7 +151,7 @@ const BoardPage = () => {
     } else if (locInfo.length === 0) {
       alert('장소를 선택해주세요');
     } else {
-      boardCreate({
+      createBoardMutate({
         title: title,
         content: content,
         appointTime: dateInfo,
@@ -145,7 +160,6 @@ const BoardPage = () => {
         y: locInfo[2],
         petId: petId,
       });
-      navigate('/mate/boards');
     }
   };
 

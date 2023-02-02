@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import Slider from 'react-slick';
-import useFetch from '../hooks/useFetch';
+import { useQuery } from 'react-query';
+import { getMyPetList } from '../api/pet/pet';
 import PageLoading from './PageLoading';
+import { BrownDog } from './common/DogSvg';
 
 const MainContainer = styled.div`
   .slider {
@@ -27,7 +29,8 @@ const InfoContainer = styled.li`
   margin-top: 20px;
   float: left;
 
-  img {
+  img,
+  svg {
     width: 130px;
     height: 130px;
     border-radius: 50%;
@@ -50,16 +53,19 @@ const settings = {
   variableWidth: true,
 };
 
-const GetDogInfo = ({ loginMemberId, setPetid }) => {
+const GetDogInfo = ({ setPetid }) => {
   // 멤버 정보 조회
-  const [data, isLoading, error] = useFetch(
-    `${process.env.REACT_APP_SERVER_API}/members/${loginMemberId}`
+  const {
+    data: petList,
+    isLoading,
+    isError,
+  } = useQuery(
+    ['myPets'],
+    async () => await getMyPetList({ page: 1, size: 10 }),
+    {
+      placeholderData: [],
+    }
   );
-
-  let board;
-  if (data) {
-    board = data.data;
-  }
 
   // 강아지 아이디
   const handlePetId = (idx) => {
@@ -68,25 +74,28 @@ const GetDogInfo = ({ loginMemberId, setPetid }) => {
 
   return (
     <>
-      {error && <div>강아지 정보 불러오기 실패</div>}
+      {isError && <div>강아지 정보 불러오기 실패</div>}
       {isLoading ? (
         <PageLoading />
       ) : (
         <MainContainer>
           <ul>
             <Slider {...settings}>
-              {board.petsInfo.map((pet) => {
+              {petList.map((pet) => {
                 return (
-                  <Container Key={pet.index}>
+                  <Container key={pet.petId}>
                     <InfoContainer
-                      Key={pet.index}
                       pats={pet}
                       onClick={() => handlePetId(pet.petId)}
                     >
-                      <img
-                        src="https://i.ibb.co/Rj5b3xs/Kakao-Talk-Photo-2023-01-12-00-46-38.jpg"
-                        alt="petimage"
-                      />
+                      {pet?.profileImage ? (
+                        <img
+                          src={pet?.profileImage?.upFileUrl}
+                          alt="petimage"
+                        />
+                      ) : (
+                        <BrownDog></BrownDog>
+                      )}
                       <div className="pet-name">{pet.name}</div>
                       <div>
                         <span>{pet.gender === 'M' ? '남' : '여'}</span>

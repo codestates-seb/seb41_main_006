@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FINDMATE_ENDPOINT } from '../../api/board/findMate';
-import useFetch from '../../hooks/useFetch';
+import { boardGetById } from '../../api/board/findMate';
+import { useQuery } from 'react-query';
 import PageLoading from '../PageLoading';
 
 const MapBox = styled.div`
@@ -24,11 +24,22 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
 
   const location = useLocation();
 
-  const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
+  const {
+    data: board,
+    isLoading,
+    isError,
+  } = useQuery(['board', boardId], async () => await boardGetById(boardId), {
+    placeholderData: {
+      comments: [],
+      likedMembers: [],
+      member: {},
+      pet: {},
+    },
+  });
 
   useEffect(() => {
     // 글 정보, 법정 코드, 위도, 경도 변수
-    let board, bCode, lat, lng;
+    let bCode, lat, lng;
 
     // 법정 코드, 위도, 경도 값 저장
     const callback = function (result, status) {
@@ -60,9 +71,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
     const ps = new kakao.maps.services.Places();
 
     // 상세, 수정 페이지에서의 지도 표시
-    if (data) {
-      board = data.data;
-
+    if (board) {
       center = new kakao.maps.LatLng(board.y, board.x);
       markerPosition = new kakao.maps.LatLng(board.y, board.x);
 
@@ -266,11 +275,11 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
         geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
       };
     }
-  }, [searchPlace, data]);
+  }, [searchPlace, board]);
 
   return (
     <>
-      {error && <div>글 조회 실패</div>}
+      {isError && <div>글 조회 실패</div>}
       {isLoading ? (
         <PageLoading />
       ) : (

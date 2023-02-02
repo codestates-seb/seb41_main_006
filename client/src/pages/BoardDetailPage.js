@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
@@ -10,12 +11,7 @@ import PetInfoCard from '../components/myPage/PetInfoCard';
 import BoardMeetInfo from '../components/boardDetail/BoardMeetInfo';
 import CommentContainer from '../components/boardDetail/CommentContainer';
 // import { RowCenterBox } from '../components/FlexBoxs';
-import {
-  FINDMATE_ENDPOINT,
-  boardDelete,
-  boardLike,
-} from '../api/board/findMate';
-import useFetch from '../hooks/useFetch';
+import { boardDelete, boardLike, boardGetById } from '../api/board/findMate';
 import { getLoginInfo } from '../api/loginInfo';
 import PageLoading from '../components/PageLoading';
 import { convertCreatedAt } from '../utils/dateConvert';
@@ -173,14 +169,20 @@ const BoardDetailPage = () => {
   const { boardId } = useParams();
   const loginMemberId = getLoginInfo().memberId;
 
-  const [data, isLoading, error] = useFetch(`${FINDMATE_ENDPOINT}/${boardId}`);
+  const {
+    data: board,
+    isLoading,
+    isError,
+  } = useQuery(['board', boardId], async () => await boardGetById(boardId), {
+    placeholderData: {
+      comments: [],
+      likedMembers: [],
+      member: {},
+      pet: {},
+    },
+  });
 
-  let board, boardMemberId, boardStatus;
-  if (data) {
-    board = data.data;
-    boardMemberId = data.data.member.memberId;
-    boardStatus = data.data.boardStatus;
-  }
+  console.log(board);
 
   // 회원 정보 모달 창 띄우기
   const handleClickMember = (memberId) => {
@@ -206,7 +208,7 @@ const BoardDetailPage = () => {
 
   return (
     <>
-      {error && <div>글 조회 실패</div>}
+      {isError && <div>글 조회 실패</div>}
       {isLoading ? (
         <PageLoading />
       ) : (
@@ -229,9 +231,9 @@ const BoardDetailPage = () => {
                 <span>{board.countLike}</span>
               </div>
               <div className="post-btn">
-                {boardMemberId === Number(loginMemberId) ? (
+                {board?.member?.memberId === Number(loginMemberId) ? (
                   <>
-                    {boardStatus === 'BOARD_OPEN' ? (
+                    {board.boardStatus === 'BOARD_OPEN' ? (
                       <button
                         className="post-edit"
                         onClick={() => navigate(`/mate/boards/${boardId}/edit`)}
@@ -248,7 +250,7 @@ const BoardDetailPage = () => {
                 ) : (
                   ''
                 )}
-                {board.likedMembers.includes(Number(loginMemberId)) ? (
+                {board?.likedMembers?.includes(Number(loginMemberId)) ? (
                   <button className="post-like-btn">
                     <FaHeart onClick={handleLikeClick} />
                   </button>
@@ -262,17 +264,17 @@ const BoardDetailPage = () => {
           </HeaderContainer>
           <MainContainer>
             <div className="left-box">
-              <div className="post-content">{board.content}</div>
-              <CommentContainer comments={board.comments} />
+              <div className="post-content">{board?.content}</div>
+              <CommentContainer comments={board?.comments} />
             </div>
             <div className="right-box">
               <div className="member-info">
                 <span>산책 메이트 </span>
                 <div className="member-info--link">
                   <button
-                    onClick={() => handleClickMember(board.member.memberId)}
+                    onClick={() => handleClickMember(board?.member?.memberId)}
                   >
-                    {board.member.nickName}
+                    {board?.member?.nickName}
                   </button>
                   {board.member.profileImage ? (
                     <ProfileImage
