@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
@@ -168,6 +168,7 @@ const BoardDetailPage = () => {
 
   const { boardId } = useParams();
   const loginMemberId = getLoginInfo().memberId;
+  const queryClient = useQueryClient();
 
   const {
     data: board,
@@ -179,6 +180,16 @@ const BoardDetailPage = () => {
       likedMembers: [],
       member: {},
       pet: {},
+    },
+  });
+
+  const { mutate: deleteBoardMutation } = useMutation(boardDelete, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['boards']);
+      navigate(`/mate/boards`);
+    },
+    onError: (err) => {
+      console.log(err);
     },
   });
 
@@ -196,7 +207,7 @@ const BoardDetailPage = () => {
 
   // 글 삭제
   const handleBoardDelete = (boardId) => {
-    boardDelete(boardId);
+    deleteBoardMutation(boardId);
   };
 
   // 좋아요 & 좋아요 취소
