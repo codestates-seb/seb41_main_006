@@ -239,7 +239,7 @@ const Comment = ({ comment, recomments }) => {
               </button>
             ) : (
               <>
-                {comment.memberId === Number(loginMemberId) ? (
+                {comment.member.memberId === Number(loginMemberId) ? (
                   <button
                     className="edit-btn"
                     onClick={() => setIsEditOpen(!isEditOpen)}
@@ -251,7 +251,7 @@ const Comment = ({ comment, recomments }) => {
                 )}
               </>
             )}
-            {comment.memberId === Number(loginMemberId) ? (
+            {comment.member.memberId === Number(loginMemberId) ? (
               <button
                 className="del-btn"
                 onClick={() => handelConfirmClick(comment.commentsId)}
