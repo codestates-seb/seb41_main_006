@@ -220,7 +220,7 @@ const Recomment = ({ recomment }) => {
             ) : (
               <>
                 {' '}
-                {recomment.memberId === Number(loginMemberId) ? (
+                {recomment.member.memberId === Number(loginMemberId) ? (
                   <button
                     className="edit-btn"
                     onClick={() => setIsEditOpen(!isEditOpen)}
@@ -232,7 +232,7 @@ const Recomment = ({ recomment }) => {
                 )}
               </>
             )}
-            {recomment.memberId === Number(loginMemberId) ? (
+            {recomment.member.memberId === Number(loginMemberId) ? (
               <button
                 className="del-btn"
                 onClick={() => handelConfirmClick(recomment.commentsId)}
