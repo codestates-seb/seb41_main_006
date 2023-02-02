@@ -230,6 +230,7 @@ const BoardEditPage = () => {
                   loginMemberId={loginMemberId}
                   petId={petId}
                   setPetid={setPetid}
+                  selectedPetId={board.pet.petId}
                 />
                 <div className="block-box">
                   <input
@@ -248,6 +249,8 @@ const BoardEditPage = () => {
                 setEditDate={setEditDate}
                 editPlace={editPlace}
                 setEditPlace={setEditPlace}
+                boardX={board.x}
+                boardY={board.y}
               />
             </MainContainer>
             <BtnContainer>
