@@ -122,27 +122,29 @@ const BoardPage = () => {
   // 날짜, 위치 정보
   const [dateInfo, setDateInfo] = useState();
   const [locInfo, setLocInfo] = useState([]);
-  console.log(
-    title,
-    content,
-    dateInfo,
-    locInfo[0],
-    locInfo[1],
-    locInfo[2],
-    petId
-  );
+
   // 글 등록하기
-  const handleSubmit = () => {
-    boardCreate({
-      title: title,
-      content: content,
-      appointTime: dateInfo,
-      placeCode: locInfo[0],
-      x: locInfo[1],
-      y: locInfo[2],
-      petId: petId,
-    });
-    navigate('/mate/boards');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!petId) {
+      alert('데리고 갈 친구를 선택해주세요');
+    } else if (!dateInfo) {
+      alert('날짜를 선택해주세요');
+    } else if (locInfo.length === 0) {
+      alert('장소를 선택해주세요');
+    } else {
+      boardCreate({
+        title: title,
+        content: content,
+        appointTime: dateInfo,
+        placeCode: locInfo[0],
+        x: locInfo[1],
+        y: locInfo[2],
+        petId: petId,
+      });
+      navigate('/mate/boards');
+    }
   };
 
   useEffect(() => {
@@ -156,56 +158,60 @@ const BoardPage = () => {
 
   return (
     <ContainerBox>
-      <HeaderContainer>
-        <div className="post-title">
-          <div>
-            <textarea
-              className="title"
-              placeholder="제목을 입력하세요"
-              defaultValue={title}
-              onChange={(e) => setTitle(e.target.value)}
-            ></textarea>
+      <form onSubmit={handleSubmit}>
+        <HeaderContainer>
+          <div className="post-title">
+            <div>
+              <textarea
+                className="title"
+                placeholder="제목을 입력하세요"
+                defaultValue={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              ></textarea>
+            </div>
           </div>
-        </div>
-      </HeaderContainer>
-      <MainContainer>
-        <div className="left-box">
-          <textarea
-            className="post-content"
-            placeholder="내용을 입력하세요"
-            defaultValue={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
-          <div className="choose-pet">데리고 갈 친구</div>
-          <ul>
-            <Slider {...settings}>
-              {petList.map((el) => {
-                return (
-                  <ChoosePetInfo
-                    key={el.index}
-                    pets={el}
-                    petId={petId}
-                    setPetid={setPetid}
-                  />
-                );
-              })}
-            </Slider>
-          </ul>
-        </div>
-        <div className="right-box">
-          <MapContainer
-            locInfo={locInfo}
-            setDateInfo={setDateInfo}
-            setLocInfo={setLocInfo}
-          />
-        </div>
-      </MainContainer>
-      <BtnContainer>
-        <PostSubmitBtn onClick={handleSubmit}>등록</PostSubmitBtn>
-        <CancelButton onClick={() => navigate('/mate/boards')}>
-          취소
-        </CancelButton>
-      </BtnContainer>
+        </HeaderContainer>
+        <MainContainer>
+          <div className="left-box">
+            <textarea
+              className="post-content"
+              placeholder="내용을 입력하세요"
+              defaultValue={content}
+              onChange={(e) => setContent(e.target.value)}
+              required
+            ></textarea>
+            <div className="choose-pet">데리고 갈 친구</div>
+            <ul>
+              <Slider {...settings}>
+                {petList.map((el) => {
+                  return (
+                    <ChoosePetInfo
+                      key={el.index}
+                      pets={el}
+                      petId={petId}
+                      setPetid={setPetid}
+                    />
+                  );
+                })}
+              </Slider>
+            </ul>
+          </div>
+          <div className="right-box">
+            <MapContainer
+              locInfo={locInfo}
+              setDateInfo={setDateInfo}
+              setLocInfo={setLocInfo}
+            />
+          </div>
+        </MainContainer>
+        <BtnContainer>
+          <PostSubmitBtn>등록</PostSubmitBtn>
+          <CancelButton onClick={() => navigate('/mate/boards')}>
+            취소
+          </CancelButton>
+        </BtnContainer>
+      </form>
     </ContainerBox>
   );
 };
