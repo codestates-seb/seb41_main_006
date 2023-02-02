@@ -47,8 +47,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
-
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
     }
 
     /*access token이 포함되어 있지 않으면 필터를 타지 않음*/
@@ -81,7 +80,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         // @AuthenticationPrincipal 은 security Context에 저장된 principal를 불러오기 때문에 MemberDetails를 가져올 수 있음
         long memberId = Long.parseLong(String.valueOf(claims.get("memberId")));
         String username = (String) claims.get("username");
-        List<String> roles = (List<String>)claims.get("roles");
+        List<String> roles = (List<String>) claims.get("roles");
         List<GrantedAuthority> authorities = customAuthorityUtils.createAuthorities(roles);
 
         Member member = new Member();

@@ -61,7 +61,7 @@ public class MessageController {
 
         if(memberDetails == null) {
             log.error("인증되지 않은 회원의 접근으로 메세지를 가져올 수 없음");
-            return new ResponseEntity<>(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
         // 해당 채팅방의 메세지를 가져와야 함

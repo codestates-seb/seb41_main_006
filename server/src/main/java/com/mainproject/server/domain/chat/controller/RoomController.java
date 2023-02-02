@@ -4,7 +4,6 @@ import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.chat.dto.ChatDto;
 import com.mainproject.server.domain.chat.entity.ChatRoom;
 import com.mainproject.server.domain.chat.mapper.ChatMapper;
-import com.mainproject.server.domain.chat.service.ChatService;
 import com.mainproject.server.domain.chat.service.RoomService;
 import com.mainproject.server.domain.member.entity.Member;
 import com.mainproject.server.domain.member.service.MemberService;
@@ -14,8 +13,6 @@ import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
@@ -46,7 +42,7 @@ public class RoomController {
                                           @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
             log.info("인증되지 않은 회원으로 채팅방을 생성할 수 없음");
-            return new ResponseEntity<>(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
         // 탈퇴한 회원 확인
@@ -74,7 +70,7 @@ public class RoomController {
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
             log.info("인증되지 않은 회원으로 채팅방을 가져올 수 없음");
-            return new ResponseEntity<>(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
         ChatRoom chatRoom = roomService.findRoom(roomId);
         ChatDto.RoomResponse response = mapper.chatRoomToRoomResponseDto(chatRoom);
@@ -90,7 +86,7 @@ public class RoomController {
 
         if(memberDetails == null) {
             log.info("인증되지 않은 회원의 접근으로 채팅 목록을 가져올 수 없음");
-            return new ResponseEntity<>(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
         Page<ChatRoom> roomPage = roomService.findRooms(memberDetails, page, size);
