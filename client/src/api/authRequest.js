@@ -23,6 +23,7 @@ authRequest.interceptors.response.use(
     return response;
   },
   async function (error) {
+    const refreshToken = localStorage.getItem('refreshToken');
     // config는 어떤 요청이었는지에 대한 정보를 담고 있다.
     // const {config, response} = error
     // const { response } = error;
@@ -36,15 +37,10 @@ authRequest.interceptors.response.use(
     //   401로 요청 실패했던 요청 새로운 accessToken으로 재요청
     //   return axios(originalRequest);
     // }
-    if (error.response.data === 'FORBIDDEN_ACCESS') {
-      alert('로그인 후 이용해 주세요.');
-      window.location.href = '/';
-    }
 
-    if (error.response.data.message.includes('JWT expired')) {
+    if (error.response.data.message) {
       // 토큰 만료 에러일 때 실행
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
+      if (error.response.data.message.includes('JWT expired') && refreshToken) {
         await defaultRequest
           .post(`/auth/reissue`, '', {
             headers: { Refresh: refreshToken },
@@ -62,6 +58,31 @@ authRequest.interceptors.response.use(
           });
       }
     }
+    if (
+      error.response.data === 'FORBIDDEN_ACCESS' ||
+      error.response.data === 'NOT_AUTHORIZED'
+    ) {
+      if (refreshToken) {
+        await defaultRequest
+          .post(`/auth/reissue`, '', {
+            headers: { Refresh: refreshToken },
+          })
+          .then((res) => {
+            localStorage.setItem('AccessToken', res.headers.authorization);
+          })
+          .catch((e) => {
+            if (e.response.data.message.includes('JWT expired')) {
+              localStorage.clear();
+              window.location.reload();
+              window.location.href = '/';
+            }
+          });
+      } else {
+        alert('로그인 후 이용해 주세요.');
+        window.location.href = '/';
+      }
+    }
+    return Promise.reject(error);
   }
 );
 
