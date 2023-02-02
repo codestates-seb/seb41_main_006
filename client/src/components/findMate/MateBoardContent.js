@@ -8,9 +8,8 @@ import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
 import { getLoginInfo } from '../../api/loginInfo';
-import { useDispatch } from 'react-redux';
-import { openModal } from '../../store/modules/modalSlice';
 import DogFootLoading from '../DogFootLoading';
+import { alertLogin } from '../../alert';
 
 const PostsContentLayOut = styled.div`
   ${flexColCenter}
@@ -29,7 +28,6 @@ const PostsContentRow = styled.div`
 
 const MateBoardConent = ({ placeCode }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const loginMemberId = getLoginInfo().memberId;
 
@@ -45,7 +43,7 @@ const MateBoardConent = ({ placeCode }) => {
     if (loginMemberId) {
       navigate('/newmate');
     } else {
-      dispatch(openModal({ type: 'goToLogin' }));
+      alertLogin();
     }
   };
 
