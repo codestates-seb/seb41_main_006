@@ -30,12 +30,12 @@ public class CommentsLike extends Auditable {
 	private Long commentsLikeId;
 
 	// 좋아요 ~ 멤버 (N : 1)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	//좋아요 ~ 댓글 (N : 1)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "comments_id", nullable = false)
 	private Comments comments;
 

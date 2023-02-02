@@ -58,7 +58,7 @@ public class Pet extends Auditable {
     @JoinColumn(name = "up_file_id")
     private S3UpFile s3UpFile;
 
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pet", orphanRemoval = true)
     public List<Board> boards = new ArrayList<>();
 
     public void setMember(Member member) {
