@@ -29,6 +29,11 @@ const InfoContainer = styled.li`
   margin-top: 20px;
   float: left;
 
+  &.selected {
+    color: white;
+    background-color: var(--sec-color);
+  }
+
   img,
   svg {
     width: 130px;
@@ -53,7 +58,7 @@ const settings = {
   variableWidth: true,
 };
 
-const GetDogInfo = ({ setPetid }) => {
+const GetDogInfo = ({ petId, setPetid }) => {
   // 멤버 정보 조회
   const {
     data: petList,
@@ -69,6 +74,7 @@ const GetDogInfo = ({ setPetid }) => {
 
   // 강아지 아이디
   const handlePetId = (idx) => {
+    console.log('선택', idx);
     setPetid(idx);
   };
 
@@ -87,6 +93,7 @@ const GetDogInfo = ({ setPetid }) => {
                     <InfoContainer
                       pats={pet}
                       onClick={() => handlePetId(pet.petId)}
+                      className={pet.petId === petId ? 'selected' : ''}
                     >
                       {pet?.profileImage ? (
                         <img

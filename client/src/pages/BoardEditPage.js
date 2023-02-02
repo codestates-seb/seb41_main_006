@@ -226,7 +226,11 @@ const BoardEditPage = () => {
                   spellCheck="false"
                 ></textarea>
                 <div className="choose-pet">데리고 갈 친구</div>
-                <GetDogInfo loginMemberId={loginMemberId} setPetid={setPetid} />
+                <GetDogInfo
+                  loginMemberId={loginMemberId}
+                  petId={petId}
+                  setPetid={setPetid}
+                />
                 <div className="block-box">
                   <input
                     name="placeCode_text"
