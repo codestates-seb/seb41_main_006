@@ -42,7 +42,7 @@ public class BoardController {
         log.info("저장 전 약속 시간 : {}", boardPostDto.getAppointTime());
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Board board = boardService.createBoard(mapper.boardPostDtoToPost(boardPostDto), memberDetails);
@@ -61,7 +61,7 @@ public class BoardController {
                                      @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Board updateBoard = boardService.updateBoard(boardId, boardPatchDto, memberDetails);
@@ -76,7 +76,7 @@ public class BoardController {
                                       @Positive @RequestParam(defaultValue = "10") int size,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Page<Board> boardPage = boardService.findMyBoards(page, size, memberDetails);
@@ -121,7 +121,7 @@ public class BoardController {
     public ResponseEntity deleteBoard(@Positive @PathVariable("board-id") long boardId,
                                       @AuthenticationPrincipal MemberDetails memberDetails) {
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         boardService.deleteBoard(boardId, memberDetails);
@@ -135,7 +135,7 @@ public class BoardController {
                                     @AuthenticationPrincipal MemberDetails memberDetails){
 
         if(memberDetails == null){
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
         }
 
         Optional<BoardLike> boardLike = boardLikeService.likeBoard(boardId, boardLikeDto.getMemberId());

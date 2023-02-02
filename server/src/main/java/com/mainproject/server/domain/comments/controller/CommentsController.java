@@ -46,7 +46,7 @@ public class CommentsController {
 										@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 
 		Comments createdComments = commentsService.createComments(mapper.commentsPostDtoToComments(commentsPostDto));
@@ -62,7 +62,7 @@ public class CommentsController {
 											@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 
 		Comments createdComments = commentsService.createReComments(parentId, mapper.commentsPostDtoToComments(commentsPostDto));
@@ -79,7 +79,7 @@ public class CommentsController {
 										@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 
 		commentsPatchDto.setCommentsId(commentsId);
@@ -96,7 +96,7 @@ public class CommentsController {
 												@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 		commentsService.deleteParentComments(commentsId);
 
@@ -109,7 +109,7 @@ public class CommentsController {
 												@AuthenticationPrincipal MemberDetails memberDetails){
 
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 		commentsService.deleteReplyComments(commentsId);
 
@@ -123,7 +123,7 @@ public class CommentsController {
 										@AuthenticationPrincipal MemberDetails memberDetails)
 	{
 		if(memberDetails == null){
-			return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS, HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 
 		Optional<CommentsLike> commentsLike = commentsLikeService.likeComments(commentsId, commentsLikeDto.getMemberId());
