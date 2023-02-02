@@ -60,18 +60,12 @@ const FindMatePage = () => {
       <FindMateBottom>
         <FindMateTab />
         <Routes>
-          <Route
-            path="members"
-            element={<MateMemberContent placeCode={code} address={address} />}
-          ></Route>
+          <Route path="members" element={<MateMemberContent />}></Route>
           <Route
             path="boards"
             element={<MateBoardConent placeCode={code} address={address} />}
           ></Route>
-          <Route
-            path="*"
-            element={<MateMemberContent placeCode={code} address={address} />}
-          ></Route>
+          <Route path="*" element={<MateMemberContent />}></Route>
         </Routes>
       </FindMateBottom>
     </FindMateContainer>

@@ -1,14 +1,11 @@
 // import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query';
-import { getBoardList } from '../../api/board/board';
 import styled from 'styled-components';
 import MateBoardList from './MateBoardList';
 import Button from '../common/Button';
 import Title from '../common/Title';
 import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
 import { getLoginInfo } from '../../api/loginInfo';
-import DogFootLoading from '../DogFootLoading';
 import { alertLogin } from '../../alert';
 
 const PostsContentLayOut = styled.div`
@@ -26,18 +23,10 @@ const PostsContentRow = styled.div`
   }
 `;
 
-const MateBoardConent = ({ placeCode }) => {
+const MateBoardConent = () => {
   const navigate = useNavigate();
 
   const loginMemberId = getLoginInfo().memberId;
-
-  const { data, isLoading } = useQuery(
-    ['boards', placeCode],
-    async () => await getBoardList({ page: 1, size: 10, placeCode }),
-    {
-      placeholderData: [],
-    }
-  );
 
   const handleCreate = () => {
     if (loginMemberId) {
@@ -61,13 +50,7 @@ const MateBoardConent = ({ placeCode }) => {
           글 작성
         </Button>
       </PostsContentRow>
-      {isLoading || !placeCode ? (
-        <div>
-          <DogFootLoading />
-        </div>
-      ) : (
-        <MateBoardList boardList={data} />
-      )}
+      <MateBoardList />
     </PostsContentLayOut>
   );
 };
