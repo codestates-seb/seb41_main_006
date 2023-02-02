@@ -27,7 +27,7 @@ const InfoContainer = styled.div`
 const ChoosePetInfo = ({ pets }) => {
   return (
     <InfoContainer>
-      <ProfileImage src={pets.profileImage?.upFileUrl} alt="petimage" />
+      <ProfileImage src={pets?.profileImage?.upFileUrl} alt="petimage" />
       <div className="pet-name">{pets.name}</div>
       <div>
         <span>{pets.gender === 'M' ? '남' : '여'}</span>

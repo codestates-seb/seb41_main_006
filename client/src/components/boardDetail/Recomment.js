@@ -167,10 +167,10 @@ const Recomment = ({ recomment }) => {
             className="user-profile"
             onClick={() => handleClickMember(recomment.member.memberId)}
           >
-            {recomment.member.profileImage ? (
+            {recomment?.member?.profileImage ? (
               <ProfileImage
-                src={recomment.member.profileImage.upFileUrl}
-                name={recomment.member.nickName}
+                src={recomment?.member?.profileImage?.upFileUrl}
+                name={recomment?.member?.nickName}
                 size="40px"
               ></ProfileImage>
             ) : (

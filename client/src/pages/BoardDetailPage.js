@@ -182,8 +182,6 @@ const BoardDetailPage = () => {
     },
   });
 
-  console.log(board);
-
   // 회원 정보 모달 창 띄우기
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
@@ -276,7 +274,7 @@ const BoardDetailPage = () => {
                   >
                     {board?.member?.nickName}
                   </button>
-                  {board.member.profileImage ? (
+                  {board?.member?.profileImage ? (
                     <ProfileImage
                       src={board.member.profileImage.upFileUrl}
                     ></ProfileImage>

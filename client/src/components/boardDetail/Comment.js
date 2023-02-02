@@ -188,9 +188,9 @@ const Comment = ({ comment, recomments }) => {
             className="user-profile"
             onClick={() => handleClickMember(comment.member.memberId)}
           >
-            {comment.member.profileImage ? (
+            {comment.member?.profileImage ? (
               <ProfileImage
-                src={comment.member.profileImage.upFileUrl}
+                src={comment.member?.profileImage.upFileUrl}
                 name={comment.member.nickName}
                 size="40px"
               ></ProfileImage>

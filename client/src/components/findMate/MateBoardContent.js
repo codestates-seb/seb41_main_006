@@ -10,6 +10,7 @@ import { flexColCenter, flexRowCenter } from '../../style/styleVariable';
 import { getLoginInfo } from '../../api/loginInfo';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
+import DogFootLoading from '../DogFootLoading';
 
 const PostsContentLayOut = styled.div`
   ${flexColCenter}
@@ -62,7 +63,13 @@ const MateBoardConent = ({ placeCode }) => {
           글 작성
         </Button>
       </PostsContentRow>
-      {isLoading ? <div>loading...</div> : <MateBoardList boardList={data} />}
+      {isLoading || !placeCode ? (
+        <div>
+          <DogFootLoading />
+        </div>
+      ) : (
+        <MateBoardList boardList={data} />
+      )}
     </PostsContentLayOut>
   );
 };
