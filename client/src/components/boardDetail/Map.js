@@ -279,7 +279,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
 
   return (
     <>
-      {isError && <div>글 조회 실패</div>}
+      {isError && <div>지도 조회 실패</div>}
       {isLoading ? (
         <PageLoading />
       ) : (
