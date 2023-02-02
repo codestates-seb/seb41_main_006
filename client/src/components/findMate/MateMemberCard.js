@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { NextArrow, PrevArrow } from '../common/SlideArrow';
+import { media } from '../../style/styleUtils';
 
 const MemberCard = styled.div`
   display: flex;
@@ -16,6 +17,18 @@ const MemberCard = styled.div`
   align-items: center;
   height: 27rem;
   width: 17rem;
+  ${media.desktop`
+    width: 18.5rem;
+    height: 28rem;
+  `}
+  ${media.tablet`
+    width: 19.5rem;
+    height: 29rem;
+  `}
+  ${media.mobile`
+    width: 22rem;
+    height: 30rem;
+  `}
   /* box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1); */
   background-color: var(--bg-dark-color);
   border-radius: 20px;

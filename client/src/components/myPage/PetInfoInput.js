@@ -28,6 +28,12 @@ const PetInfoInputForm = styled.div`
   width: 100%;
   flex-wrap: wrap;
   overflow: scroll;
+  // 스크롤바 가리기
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .label {
     color: var(--main-font-color);

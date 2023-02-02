@@ -10,16 +10,22 @@ const MemberList = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-column-gap: 1rem;
-
-  ${media.tablet`
+  grid-row-gap: 1.5rem;
+  ${media.desktop`
     grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 5rem;
-  `}// 스크롤바 가리기
-  /* -ms-overflow-style: none; IE and Edge */
-  /* scrollbar-width: none; Firefox */
-  /* &::-webkit-scrollbar {
-    display: none;
-  } */
+    grid-column-gap: 1.5rem;
+    grid-row-gap: 2rem;
+  `};
+  ${media.tablet`
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 1.5rem;
+    grid-row-gap: 2rem;
+  `};
+  ${media.mobile`
+    grid-template-columns: repeat(1, 1fr);
+    grid-column-gap: 1.5rem;
+    grid-row-gap: 2rem;
+  `};
 `;
 
 const NoMemberBox = styled.div`

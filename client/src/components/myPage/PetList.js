@@ -40,11 +40,11 @@ const StyledSlider = styled(Slider)`
   height: 100%;
   display: flex;
   padding: 0 3rem;
-  overflow: visible;
 
-  > .slick-list {
+  .slick-list {
     width: 100%;
   }
+
   .slick-prev::before,
   .slick-next::before {
     opacity: 0;
@@ -58,16 +58,37 @@ const NextButton = styled.button`
   height: 100%;
   position: absolute;
   right: 0;
+  border-radius: 0 10px 10px 0;
+  &.slick-disabled {
+    visibility: hidden;
+  }
+
+  &:hover {
+    background-color: var(--bg-dark-color);
+  }
 `;
 const PrevButton = styled.button`
   color: var(--main-font-color);
   width: 3rem;
   height: 100%;
+  position: absolute;
+  left: 0;
+  border-radius: 10px 0 0 10px;
+  &.slick-disabled {
+    visibility: hidden;
+  }
+
+  &:hover {
+    background-color: var(--bg-dark-color);
+  }
 `;
 
 function SlideNextButton({ onClick }) {
   return (
-    <NextButton onClick={onClick}>
+    <NextButton
+      onClick={onClick}
+      className={onClick === null ? 'slick-disabled' : ''}
+    >
       <HiArrowRight />
     </NextButton>
   );
@@ -75,7 +96,10 @@ function SlideNextButton({ onClick }) {
 
 function SlidePrevButton({ onClick }) {
   return (
-    <PrevButton onClick={onClick}>
+    <PrevButton
+      onClick={onClick}
+      className={onClick === null ? 'slick-disabled' : ''}
+    >
       <HiArrowLeft />
     </PrevButton>
   );
@@ -92,7 +116,6 @@ const PetList = () => {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editPet, setEditPet] = useState({});
-  // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const settings = {
     infinite: false,
@@ -102,6 +125,22 @@ const PetList = () => {
     swipeToSlide: false,
     nextArrow: <SlideNextButton />,
     prevArrow: <SlidePrevButton />,
+    responsive: [
+      {
+        breakpoint: 980,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 680,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   if (isLoading) {

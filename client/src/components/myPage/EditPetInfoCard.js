@@ -12,9 +12,10 @@ const CardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 16.5rem;
+  width: 100%;
   height: 25.5rem;
   color: var(--main-font-color);
+  padding: 0 1rem;
 
   > .edit {
     width: 100%;
@@ -68,24 +69,22 @@ const EditPetInfoCard = ({ pet, setEditPet, setIsEditModalOpen }) => {
   };
 
   return (
-    <>
-      <CardContainer>
-        <PetInfoCard pet={pet} />
-        <div className="edit">
-          <button>
-            <MdModeEdit
-              size="16"
-              onClick={() => {
-                openEdit(pet);
-              }}
-            />
-          </button>
-          <button onClick={handleClickPetDelete}>
-            <RiDeleteBinFill size="16" />
-          </button>
-        </div>
-      </CardContainer>
-    </>
+    <CardContainer>
+      <PetInfoCard pet={pet} />
+      <div className="edit">
+        <button>
+          <MdModeEdit
+            size="16"
+            onClick={() => {
+              openEdit(pet);
+            }}
+          />
+        </button>
+        <button onClick={handleClickPetDelete}>
+          <RiDeleteBinFill size="16" />
+        </button>
+      </div>
+    </CardContainer>
   );
 };
 

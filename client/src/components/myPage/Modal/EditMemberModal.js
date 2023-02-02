@@ -16,6 +16,12 @@ const ModalContainer = styled.div`
   width: 30rem;
   height: 40rem;
   overflow-y: scroll;
+  // 스크롤바 가리기
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const EditMemberModal = ({ setIsEditModalOpen, memberInfo }) => {
