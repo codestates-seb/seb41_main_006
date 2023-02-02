@@ -120,30 +120,6 @@ const MainContainer = styled.div`
 
     background-color: white;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-
-    > .pet-box {
-      width: 80%;
-    }
-    > .choosed-pet {
-      margin-bottom: 0.25rem;
-      color: var(--main-font-color);
-      font-weight: 600;
-    }
-
-    > .member-info {
-      display: flex;
-      align-items: center;
-      > .member-info--link {
-        display: flex;
-        align-items: center;
-        margin: 0 0.25rem;
-        > button {
-          color: var(--main-color);
-          font-size: 1rem;
-          font-weight: 600;
-        }
-      }
-    }
   }
 
   .user-info-btn {
@@ -159,6 +135,37 @@ const MainContainer = styled.div`
     margin-top: 2rem;
     padding-top: 2rem;
     border-top: 1px solid var(--main-font-color);
+  }
+`;
+
+const MemberinfoCard = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  > .member-info {
+    display: flex;
+    align-items: center;
+    > .member-info--name {
+      display: flex;
+      align-items: center;
+      margin: 0 0.25rem;
+      > .member-name {
+        color: var(--main-color);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  > .pet-box {
+    width: 80%;
+  }
+  > .choosed-pet {
+    margin-bottom: 0.25rem;
+    color: var(--main-font-color);
+    font-weight: 600;
   }
 `;
 
@@ -286,28 +293,28 @@ const BoardDetailPage = () => {
               <CommentContainer comments={board?.comments} />
             </div>
             <div className="right-box">
-              <div className="member-info">
-                <span>산책 메이트 </span>
-                <div className="member-info--link">
-                  <button
-                    onClick={() => handleClickMember(board?.member?.memberId)}
-                  >
-                    {board?.member?.nickName}
-                  </button>
-                  {board?.member?.profileImage ? (
-                    <ProfileImage
-                      src={board.member.profileImage.upFileUrl}
-                    ></ProfileImage>
-                  ) : (
-                    <ProfileImage></ProfileImage>
-                  )}
+              <MemberinfoCard
+                onClick={() => handleClickMember(board?.member?.memberId)}
+              >
+                <div className="member-info">
+                  <span>산책 메이트 </span>
+                  <div className="member-info--name">
+                    <div className="member-name">{board?.member?.nickName}</div>
+                    {board?.member?.profileImage ? (
+                      <ProfileImage
+                        src={board.member.profileImage.upFileUrl}
+                      ></ProfileImage>
+                    ) : (
+                      <ProfileImage></ProfileImage>
+                    )}
+                  </div>
+                  <span> 님과</span>
                 </div>
-                <span> 님과</span>
-              </div>
-              <div className="choosed-pet">같이 가는 친구</div>
-              <div className="pet-box">
-                <PetInfoCard pet={board.pet}></PetInfoCard>
-              </div>
+                <div className="choosed-pet">같이 가는 친구</div>
+                <div className="pet-box">
+                  <PetInfoCard pet={board.pet}></PetInfoCard>
+                </div>
+              </MemberinfoCard>
               <div className="post-meet-info">
                 <BoardMeetInfo
                   meetInfo={{

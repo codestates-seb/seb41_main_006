@@ -45,6 +45,7 @@ const MemberCardHeader = styled.div`
   align-items: center;
   justify-content: flex-start;
   > .user-info--name {
+    width: 100%;
     display: flex;
     align-items: center;
     margin-left: 0.5rem;
