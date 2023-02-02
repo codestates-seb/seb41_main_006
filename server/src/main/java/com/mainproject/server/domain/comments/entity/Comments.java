@@ -61,7 +61,7 @@ public class Comments extends Auditable {
 	private Board board;
 
 	// 댓글 ~ 좋아요 (1 : N)
-	@OneToMany(mappedBy = "comments", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "comments", orphanRemoval = true)
 	private List<CommentsLike> commentsLikes = new ArrayList<>();
 
 	// 자기 참조 관계 : 댓글 ~ 대댓글 (1 : N)
