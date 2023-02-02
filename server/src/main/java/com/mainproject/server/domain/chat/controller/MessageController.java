@@ -6,7 +6,6 @@ import com.mainproject.server.domain.chat.dto.MessageDto;
 import com.mainproject.server.domain.chat.entity.ChatMessage;
 import com.mainproject.server.domain.chat.entity.PublishMessage;
 import com.mainproject.server.domain.chat.mapper.ChatMapper;
-import com.mainproject.server.domain.chat.redis.RedisPublisher;
 import com.mainproject.server.domain.chat.service.ChatService;
 import com.mainproject.server.dto.MultiResponseDto;
 import com.mainproject.server.exception.ExceptionCode;
@@ -14,6 +13,7 @@ import com.mainproject.server.response.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +22,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,20 +32,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageController {
     private final ChatService chatService;
-
-    private final RedisPublisher redisPublisher;
     private final ChatMapper mapper;
+
+    private final ChannelTopic topic;
+
+    @Resource(name = "chatRedisTemplate")
+    private final RedisTemplate redisTemplate;
 
     @MessageMapping("/chats/messages/{room-id}")
     public void message(@DestinationVariable("room-id") Long roomId, MessageDto messageDto) {
 
-        log.info("messageDto : {}", messageDto.toString());
-
         PublishMessage publishMessage =
                 new PublishMessage(messageDto.getRoomId(), messageDto.getSenderId(), messageDto.getContent(), LocalDateTime.now());
-        log.info("publishMessage: {}", publishMessage.getContent());
+
         // 채팅방에 메세지 전송
-        redisPublisher.publish(ChannelTopic.of("room" + roomId), publishMessage);
+        redisTemplate.convertAndSend(topic.getTopic(), publishMessage);
         log.info("레디스 서버에 메세지 전송 완료");
 
         chatService.saveMessage(messageDto, roomId);
