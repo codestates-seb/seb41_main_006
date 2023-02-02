@@ -7,6 +7,7 @@ import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 import { TbCalendarTime } from 'react-icons/tb';
 import { useLocation } from 'react-router-dom';
+import getAddressByXY from '../../api/kakaoMap/getAddressByXY';
 
 const MapBox = styled.div`
   color: black;
@@ -94,12 +95,21 @@ const MapContainer = ({
   setEditDate,
   setEditPlace,
   meetingPlace,
+  boardX,
+  boardY,
 }) => {
   const location = useLocation();
 
   const [inputPlace, setInputPlace] = useState('');
   const [place, setPlace] = useState('');
   const [selectPlace, setSelectPlace] = useState('');
+
+  getAddressByXY(boardX, boardY).then((result) => {
+    const defaultPlace = document.getElementById('informPlace');
+    if (!selectPlace) {
+      defaultPlace.innerHTML = result;
+    }
+  });
 
   const handleInput = (e) => {
     setInputPlace(e.target.value);
@@ -204,7 +214,7 @@ const MapContainer = ({
       </form>
       <div className="meet-place-inform">
         선택한 장소
-        <MdKeyboardArrowRight /> <p>{selectPlace}</p>
+        <MdKeyboardArrowRight /> <p id="informPlace">{selectPlace}</p>
       </div>
     </MapBox>
   );
