@@ -117,7 +117,7 @@ public class MemberController {
     public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId,
                                         @AuthenticationPrincipal MemberDetails memberDetails) {
         if (memberDetails == null || memberDetails.getMemberId() != memberId) {
-            throw new BusinessLogicException(ExceptionCode.FORBIDDEN_ACCESS);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
         Member member = memberService.findMember(memberId);
         S3UpFile s3UpFile = member.getS3UpFile();

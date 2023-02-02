@@ -123,7 +123,7 @@ public class BoardService {
         Member member = memberService.validateVerifyMember(memberId);
 
         if(board.getMember() != member) {
-            throw new BusinessLogicException(ExceptionCode.FORBIDDEN_ACCESS);
+            throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
         }
     }
 }

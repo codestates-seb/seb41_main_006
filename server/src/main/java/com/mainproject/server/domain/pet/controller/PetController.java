@@ -36,7 +36,7 @@ public class PetController {
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
         Long profileImageId = petPostDto.getProfileImageId();
         if (memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Pet pet = petService.createPet(mapper.petPostDtoToPet(petPostDto), memberDetails, Optional.ofNullable(profileImageId));
@@ -53,7 +53,7 @@ public class PetController {
         Long profileImageId = petPatchDto.getProfileImageId();
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Pet updatePet = petService.updatePet(petPatchDto, petId, memberDetails, Optional.ofNullable(profileImageId));
@@ -77,7 +77,7 @@ public class PetController {
                                   @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
 
         Page<Pet> petPage = petService.findMyPets(page, size, memberDetails);
@@ -115,7 +115,7 @@ public class PetController {
                                     @AuthenticationPrincipal MemberDetails memberDetails) {
 
         if(memberDetails == null) {
-            return new ResponseEntity(ExceptionCode.FORBIDDEN_ACCESS,HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED,HttpStatus.UNAUTHORIZED);
         }
         petService.deletePets(petId, memberDetails);
 
