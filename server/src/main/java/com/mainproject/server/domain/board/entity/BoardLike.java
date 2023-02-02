@@ -30,12 +30,12 @@ public class BoardLike extends Auditable {
 	private Long boardLikeId;
 
 	// 좋아요 ~ 멤버 (N : 1)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	// 좋아요 ~ 게시글 (N : 1)
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "board_id", nullable = false)
 	private Board board;
 

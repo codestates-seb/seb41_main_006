@@ -54,10 +54,10 @@ public class Board extends Auditable {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "board",orphanRemoval = true)
     public List<Comments> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "board", orphanRemoval = true)
     public List<BoardLike> boardLikes = new ArrayList<>();
 
     public void addComments(Comments comments) {
