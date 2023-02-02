@@ -1,18 +1,21 @@
 package com.mainproject.server.domain.comments.service;
-
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.mainproject.server.auth.userdetails.MemberDetails;
 import com.mainproject.server.domain.LikeStatus;
 import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.comments.entity.Comments;
 import com.mainproject.server.domain.comments.repository.CommentsLikeRepository;
 import com.mainproject.server.domain.comments.repository.CommentsRepository;
+import com.mainproject.server.domain.member.entity.Member;
+import com.mainproject.server.domain.member.service.MemberService;
 import com.mainproject.server.exception.BusinessLogicException;
 import com.mainproject.server.exception.ExceptionCode;
 
@@ -23,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class CommentsService {
 	private final CommentsRepository commentsRepository;
 	private final CommentsLikeRepository commentsLikeRepository;
+	private final MemberService memberService;
+	private final EntityManager entityManager;
 
 	// ----- 댓글 등록
 	public Comments createComments(Comments comments){
@@ -74,20 +79,33 @@ public class CommentsService {
 	}
 
 	// ----- 댓글 삭제
-	public void deleteParentComments(Long commentsId){
+	@Transactional
+	public void deleteParentComments(Long commentsId, MemberDetails memberDetails){
 		Comments findComments = findVerifiedComments(commentsId);
 
+		validateCommentsWriter(findComments, memberDetails.getMemberId());
+
+		entityManager.createQuery("delete from CommentsLike cl where cl.comments.commentsId = :commentsId")
+				.setParameter("commentsId", commentsId)
+				.executeUpdate();
 		commentsRepository.delete(findComments);
 	}
 
 	// ----- 대댓글 삭제
-	public void deleteReplyComments(Long commentsId) {
+	@Transactional
+	public void deleteReplyComments(Long commentsId, MemberDetails memberDetails) {
 		Comments findComments = findVerifiedComments(commentsId);
+
+		validateCommentsWriter(findComments, memberDetails.getMemberId());
 
 		//대댓글인지 확인
 		if(findComments != null && findComments.getParentComments() != null){
 			Comments parentComments = findComments.getParentComments();
 			parentComments.getReplyComments().remove(findComments);
+
+			entityManager.createQuery("delete from CommentsLike cl where cl.comments.commentsId = :commentsId")
+				.setParameter("commentsId", commentsId)
+				.executeUpdate();
 
 			commentsRepository.deleteById(commentsId);
 			commentsRepository.saveAndFlush(parentComments);
@@ -130,5 +148,14 @@ public class CommentsService {
 	// ----- 댓글 좋아요한 멤버 가져오기
 	public List<Long> findCommentsLikedMembers(Long commentsId, LikeStatus likeStatus){
 		return commentsLikeRepository.findMemberIdsByCommentsIdAndLikeStatus(commentsId, likeStatus);
+	}
+
+	// ----- 작성자 검증
+	public void validateCommentsWriter(Comments comments, long memberId){
+		Member member = memberService.validateVerifyMember(memberId);
+
+		if(comments.getMember() != member){
+			throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
+		}
 	}
 }
