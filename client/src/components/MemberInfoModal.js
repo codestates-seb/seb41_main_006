@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import MemberInfoCard from './myPage/MemberInfoCard';
 import PetInfoCard from './myPage/PetInfoCard';
 import Button from './common/Button';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../store/modules/modalSlice';
 import { GrayDog } from './common/DogSvg';
@@ -110,7 +110,6 @@ const MemberInfoModal = ({ memberId }) => {
     petsInfo: [],
   });
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleModal = () => {
     dispatch(closeModal());
@@ -138,15 +137,16 @@ const MemberInfoModal = ({ memberId }) => {
     <SContainer>
       <div className="memberInfo-container">
         <MemberInfoCard memberInfo={member} />
-        <Button
-          onClick={() => {
-            handleModal();
-            AddChatList(member.memberId);
-            navigate('/chat');
-          }}
-        >
-          채팅하기
-        </Button>
+        <Link to="/chat">
+          <Button
+            onClick={() => {
+              handleModal();
+              AddChatList(member.memberId);
+            }}
+          >
+            채팅하기
+          </Button>
+        </Link>
       </div>
       <div className="petInfo-container">
         <h2>강아지 소개</h2>

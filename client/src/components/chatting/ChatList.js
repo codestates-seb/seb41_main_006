@@ -2,8 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Title from '../common/Title';
 import ProfileImage from '../common/ProfileImage';
-import { useEffect, useState } from 'react';
-import authRequest from '../../api/authRequest';
 
 const ChatItem = styled.li`
   display: flex;
@@ -26,31 +24,12 @@ const ChatItem = styled.li`
   }
 `;
 
-const ChatList = () => {
+const ChatList = ({ chattingList }) => {
   const navigate = useNavigate();
-  const [chattingList, setChattingList] = useState([]);
-  const [roomId, setRoomId] = useState('');
   const memberId = Number(localStorage.getItem('memberId'));
-  useEffect(() => {
-    const GetChatList = async () => {
-      await authRequest
-        .get('/chats')
-        .then((res) => {
-          setChattingList(res.data.data);
-          console.log(res);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
-    if (memberId) GetChatList();
-
-    return;
-  }, [roomId]);
 
   const handleChatClick = (roomId) => {
     navigate(`/chat/${roomId}`);
-    setRoomId(roomId);
     window.location.reload();
   };
   return (

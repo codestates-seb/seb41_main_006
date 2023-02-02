@@ -6,6 +6,7 @@ import LoginModal from './login/LoginModal';
 import styled from 'styled-components';
 import MemberInfoModal from './MemberInfoModal';
 import DeleteModal from './DeleteModal';
+import AccessBlockModal from './AccessBlockModal';
 
 const ModalBackDrop = styled.div`
   position: fixed; // 보이는 화면에서 위치가 고정
@@ -29,6 +30,7 @@ const MODAL_COMPONENTS = {
   login: LoginModal,
   member: MemberInfoModal,
   delete: DeleteModal,
+  goToLogin: AccessBlockModal,
 };
 
 const GlobalModal = () => {

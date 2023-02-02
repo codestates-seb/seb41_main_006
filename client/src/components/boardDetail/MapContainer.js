@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MdPlace } from 'react-icons/md';
+import { MdPlace, MdKeyboardArrowRight } from 'react-icons/md';
 import { useState } from 'react';
 import Map from './Map';
 import DatePicker from 'react-datepicker';
@@ -11,7 +11,7 @@ import { useLocation } from 'react-router-dom';
 const MapBox = styled.div`
   color: black;
   width: 100%;
-  height: 30rem;
+  height: 31rem;
   padding: 10px;
   background-color: #ffffff;
   border-radius: 10px;
@@ -71,6 +71,19 @@ const MapBox = styled.div`
   .gray-day {
     color: #aba8b9;
   }
+
+  .meet-place-inform {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--main-font-color);
+    text-align: center;
+
+    p {
+      text-decoration: underline var(--main-font-color);
+      text-underline-position: under;
+    }
+  }
 `;
 
 const MyDatePicker = styled(DatePicker)``;
@@ -86,6 +99,7 @@ const MapContainer = ({
 
   const [inputPlace, setInputPlace] = useState('');
   const [place, setPlace] = useState('');
+  const [selectPlace, setSelectPlace] = useState('');
 
   const handleInput = (e) => {
     setInputPlace(e.target.value);
@@ -182,10 +196,16 @@ const MapContainer = ({
               searchPlace={place}
               setLocInfo={setLocInfo}
               setEditPlace={setEditPlace}
+              setSelectPlace={setSelectPlace}
+              selectPlace={selectPlace}
             />
           </div>
         </div>
       </form>
+      <div className="meet-place-inform">
+        선택한 장소
+        <MdKeyboardArrowRight /> <p>{selectPlace}</p>
+      </div>
     </MapBox>
   );
 };
