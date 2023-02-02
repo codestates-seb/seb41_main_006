@@ -29,6 +29,16 @@ const InfoContainer = styled.li`
   margin-top: 20px;
   float: left;
 
+  &.selected {
+    color: white;
+    background-color: var(--sec-color);
+  }
+
+  &.newSelected {
+    color: white;
+    background-color: var(--sec-color);
+  }
+
   img,
   svg {
     width: 130px;
@@ -53,7 +63,7 @@ const settings = {
   variableWidth: true,
 };
 
-const GetDogInfo = ({ setPetid }) => {
+const GetDogInfo = ({ selectedPetId, petId, setPetid }) => {
   // 멤버 정보 조회
   const {
     data: petList,
@@ -69,6 +79,15 @@ const GetDogInfo = ({ setPetid }) => {
 
   // 강아지 아이디
   const handlePetId = (idx) => {
+    const selectedDiv = document.getElementsByClassName('selected');
+    const newSelectedDiv = document.getElementsByClassName('newSelected');
+
+    if (selectedDiv[0]) {
+      selectedDiv[0].classList.remove('selected');
+    }
+    if (newSelectedDiv[0]) {
+      newSelectedDiv[0].classList.add('newSelected');
+    }
     setPetid(idx);
   };
 
@@ -86,6 +105,13 @@ const GetDogInfo = ({ setPetid }) => {
                   <Container key={pet.petId}>
                     <InfoContainer
                       pats={pet}
+                      className={
+                        pet.petId === petId
+                          ? 'newSelected'
+                          : selectedPetId === pet.petId
+                          ? 'selected'
+                          : ''
+                      }
                       onClick={() => handlePetId(pet.petId)}
                     >
                       {pet?.profileImage ? (

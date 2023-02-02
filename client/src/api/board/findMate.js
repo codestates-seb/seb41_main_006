@@ -8,13 +8,15 @@ const API_CONNECT_TIMEOUT = 2000;
 
 // 글 불러오기
 export const boardGetById = async (boardId) => {
-  const path = `${FINDMATE_ENDPOINT}/${boardId}`;
-  try {
-    const res = await defaultRequest.get(path);
-    return res?.data?.data;
-  } catch (e) {
-    console.log(e);
-    throw e;
+  if (boardId) {
+    const path = `${FINDMATE_ENDPOINT}/${boardId}`;
+    try {
+      const res = await defaultRequest.get(path);
+      return res?.data?.data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 };
 

@@ -132,6 +132,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
               place.address_name +
               '</div>'
           );
+          setSelectPlace(place.place_name);
           infowindow.open(map, marker);
 
           // 마커 클릭 시 지번 주소를 이용해서 법정 코드, 위도, 경도 값을 가져옴
@@ -161,6 +162,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
 
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
+                setSelectPlace(result[0].address.address_name);
               }
               // 지도 클릭 시 지번 주소를 이용해서 법정 코드 값을 가져옴
               geocoder.addressSearch(result[0].address.address_name, callback);
@@ -279,7 +281,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
 
   return (
     <>
-      {isError && <div>글 조회 실패</div>}
+      {isError && <div>지도 조회 실패</div>}
       {isLoading ? (
         <PageLoading />
       ) : (

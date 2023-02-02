@@ -246,7 +246,12 @@ const BoardEditPage = () => {
                   spellCheck="false"
                 ></textarea>
                 <div className="choose-pet">데리고 갈 친구</div>
-                <GetDogInfo loginMemberId={loginMemberId} setPetid={setPetid} />
+                <GetDogInfo
+                  loginMemberId={loginMemberId}
+                  petId={petId}
+                  setPetid={setPetid}
+                  selectedPetId={board.pet.petId}
+                />
                 <div className="block-box">
                   <input
                     name="placeCode_text"
@@ -264,6 +269,8 @@ const BoardEditPage = () => {
                 setEditDate={setEditDate}
                 editPlace={editPlace}
                 setEditPlace={setEditPlace}
+                boardX={board.x}
+                boardY={board.y}
               />
             </MainContainer>
             <BtnContainer>

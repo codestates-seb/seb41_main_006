@@ -142,7 +142,7 @@ const BoardPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (dateInfo > new Date()) {
+    if (dateInfo > new Date() === false) {
       alert('날짜가 지났습니다. 다시 선택해주세요.');
     } else if (!petId) {
       alert('데리고 갈 친구를 선택해주세요');
