@@ -193,6 +193,15 @@ const BoardDetailPage = () => {
     },
   });
 
+  const { mutate: likeBoardMutation } = useMutation(boardLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
   // 회원 정보 모달 창 띄우기
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
@@ -212,7 +221,7 @@ const BoardDetailPage = () => {
 
   // 좋아요 & 좋아요 취소
   const handleLikeClick = () => {
-    boardLike(boardId, { memberId: loginMemberId });
+    likeBoardMutation({ boardId, body: { memberId: loginMemberId } });
   };
 
   return (

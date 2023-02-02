@@ -62,7 +62,7 @@ export const boardDelete = async (boardId) => {
 };
 
 // 글 좋아요 & 좋아요 취소
-export const boardLike = async (boardId, body) => {
+export const boardLike = async ({ boardId, body }) => {
   const path = `${FINDMATE_ENDPOINT}/${boardId}/like`;
 
   try {
