@@ -11,7 +11,6 @@ export const boardGetById = async (boardId) => {
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
   try {
     const res = await defaultRequest.get(path);
-    console.log(res.data.data);
     return res?.data?.data;
   } catch (e) {
     console.log(e);
@@ -22,10 +21,11 @@ export const boardGetById = async (boardId) => {
 // 글 생성
 export const boardCreate = async (body) => {
   try {
-    let result = await authRequest.post(FINDMATE_ENDPOINT, body, {
+    const res = await authRequest.post(FINDMATE_ENDPOINT, body, {
       timeout: API_CONNECT_TIMEOUT,
     });
-    return { state: 'OK', data: result.data.response };
+    console.log(res.data.data);
+    return res.data.data;
   } catch (err) {
     console.error('Error: ', err);
     return { state: 'error ' };
