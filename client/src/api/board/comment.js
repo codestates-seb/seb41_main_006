@@ -49,7 +49,7 @@ export const commentDelete = async (commentId) => {
 };
 
 // 대댓글 생성
-export const recommentCreate = async (parentId, body) => {
+export const recommentCreate = async ({ parentId, body }) => {
   const path = `${COMMENT_ENDPOINT}/${parentId}`;
 
   try {
@@ -79,7 +79,7 @@ export const recommentDelete = async (commentId) => {
 };
 
 // 댓글 좋아요 & 좋아요 취소
-export const commentLike = async (commentId, body) => {
+export const commentLike = async ({ commentId, body }) => {
   const path = `${COMMENT_ENDPOINT}/${commentId}/like`;
 
   try {

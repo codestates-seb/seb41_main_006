@@ -145,6 +145,8 @@ const Comment = ({ comment, recomments }) => {
   const [parentId, setParentId] = useState();
 
   const queryClient = useQueryClient();
+
+  // 댓글 수정 mutate
   const { mutate: patchCommentMutation } = useMutation(commentPatch, {
     onSuccess: () => {
       queryClient.invalidateQueries(['board', boardId]);
@@ -153,6 +155,8 @@ const Comment = ({ comment, recomments }) => {
       console.log(err);
     },
   });
+
+  // 댓글 삭제 mutate
   const { mutate: deleteCommentMutation } = useMutation(commentDelete, {
     onSuccess: () => {
       queryClient.invalidateQueries(['board', boardId]);
@@ -161,12 +165,23 @@ const Comment = ({ comment, recomments }) => {
       console.log(err);
     },
   });
+
+  // 댓글 좋아요 mutate
+  const { mutate: likeCommentMutation } = useMutation(commentLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
 
   const handleLikeClick = (idx) => {
-    commentLike(idx, { memberId: loginMemberId });
+    likeCommentMutation({ commentId: idx, body: { memberId: loginMemberId } });
   };
 
   const handleRecommentsClick = (idx) => {
