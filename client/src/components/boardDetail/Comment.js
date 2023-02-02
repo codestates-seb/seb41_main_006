@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { FaHeart, FaRegHeart, FaPlus, FaMinus } from 'react-icons/fa';
 import { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 import ProfileImage from '../common/ProfileImage';
 import RecommentList from './RecommentList';
 import { convertCreatedAt } from '../../utils/dateConvert';
@@ -130,17 +132,27 @@ const CommentBox = styled.div`
 `;
 
 const Comment = ({ comment, recomments }) => {
+  const { boardId } = useParams();
   const loginMemberId = getLoginInfo().memberId;
 
   let commentList = [];
   commentList.push(comment);
 
   const dispatch = useDispatch();
-
   const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [commentContent, setCommentContent] = useState('');
   const [parentId, setParentId] = useState();
+
+  const queryClient = useQueryClient();
+  const { mutate: patchCommentMutation } = useMutation(commentPatch, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
@@ -159,9 +171,12 @@ const Comment = ({ comment, recomments }) => {
   const handleSubmitClick = async (idx) => {
     setIsEditOpen(!isEditOpen);
 
-    await commentPatch(idx, {
-      commentsId: idx,
-      content: commentContent,
+    patchCommentMutation({
+      commentId: idx,
+      body: {
+        commentsId: idx,
+        content: commentContent,
+      },
     });
   };
 
@@ -239,7 +254,7 @@ const Comment = ({ comment, recomments }) => {
               </button>
             ) : (
               <>
-                {comment.memberId === Number(loginMemberId) ? (
+                {comment.member.memberId === Number(loginMemberId) ? (
                   <button
                     className="edit-btn"
                     onClick={() => setIsEditOpen(!isEditOpen)}
@@ -251,7 +266,7 @@ const Comment = ({ comment, recomments }) => {
                 )}
               </>
             )}
-            {comment.memberId === Number(loginMemberId) ? (
+            {comment.member.memberId === Number(loginMemberId) ? (
               <button
                 className="del-btn"
                 onClick={() => handelConfirmClick(comment.commentsId)}

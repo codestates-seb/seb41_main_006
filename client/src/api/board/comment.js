@@ -27,7 +27,7 @@ export const commentCreate = async (body) => {
 };
 
 // 댓글 수정
-export const commentPatch = async (commentId, body) => {
+export const commentPatch = async ({ commentId, body }) => {
   const { AccessToken } = getLoginInfo();
   const path = `${COMMENT_ENDPOINT}/${commentId}`;
 
