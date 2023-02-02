@@ -57,6 +57,8 @@ public class Board extends Auditable {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<Comments> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<BoardLike> boardLikes = new ArrayList<>();
 
     public void addComments(Comments comments) {
         commentList.add(comments);

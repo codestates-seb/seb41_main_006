@@ -2,6 +2,7 @@ package com.mainproject.server.domain.pet.entity;
 
 import com.mainproject.server.audit.Auditable;
 import com.mainproject.server.awsS3.entity.S3UpFile;
+import com.mainproject.server.domain.board.entity.Board;
 import com.mainproject.server.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,9 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -53,6 +57,9 @@ public class Pet extends Auditable {
     @OneToOne
     @JoinColumn(name = "up_file_id")
     private S3UpFile s3UpFile;
+
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Board> boards = new ArrayList<>();
 
     public void setMember(Member member) {
         this.member = member;
