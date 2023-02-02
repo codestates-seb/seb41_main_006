@@ -19,7 +19,7 @@ const MapContent = styled.div`
 
 const { kakao } = window;
 
-const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
+const Map = ({ searchPlace, setLocInfo, setEditPlace, setSelectPlace }) => {
   const { boardId } = useParams();
 
   const location = useLocation();
@@ -226,6 +226,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
               '</div>'
           );
           infowindow.open(map, marker);
+          setSelectPlace(place.place_name);
 
           // 마커 클릭 시 지번 주소를 이용해서 법정 코드, 위도, 경도 값을 가져옴
           geocoder.addressSearch(place.address_name, callback);
@@ -253,6 +254,7 @@ const Map = ({ searchPlace, setLocInfo, setEditPlace }) => {
 
               infowindow.setContent(content);
               infowindow.open(map, marker);
+              setSelectPlace(result[0].address.address_name);
             }
             // 지도 클릭 시 지번 주소를 이용해서 법정 코드 값을 가져옴
             geocoder.addressSearch(result[0].address.address_name, callback);

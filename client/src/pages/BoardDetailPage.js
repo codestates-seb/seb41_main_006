@@ -228,7 +228,6 @@ const BoardDetailPage = () => {
                 <FaHeart onClick={handleLikeClick} />
                 <span>{board.countLike}</span>
               </div>
-
               <div className="post-btn">
                 {boardMemberId === Number(loginMemberId) ? (
                   <>
@@ -275,9 +274,13 @@ const BoardDetailPage = () => {
                   >
                     {board.member.nickName}
                   </button>
-                  <ProfileImage
-                    src={board.member.profileImage.upFileUrl}
-                  ></ProfileImage>
+                  {board.member.profileImage ? (
+                    <ProfileImage
+                      src={board.member.profileImage.upFileUrl}
+                    ></ProfileImage>
+                  ) : (
+                    <ProfileImage></ProfileImage>
+                  )}
                 </div>
                 <span> 님과</span>
               </div>
@@ -285,7 +288,6 @@ const BoardDetailPage = () => {
               <div className="pet-box">
                 <PetInfoCard pet={board.pet}></PetInfoCard>
               </div>
-
               <div className="post-meet-info">
                 <BoardMeetInfo
                   meetInfo={{
