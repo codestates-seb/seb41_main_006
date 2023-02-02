@@ -26,7 +26,6 @@ export const boardCreate = async (body) => {
     const res = await authRequest.post(FINDMATE_ENDPOINT, body, {
       timeout: API_CONNECT_TIMEOUT,
     });
-    console.log(res.data.data);
     return res.data.data;
   } catch (err) {
     console.error('Error: ', err);
@@ -35,14 +34,14 @@ export const boardCreate = async (body) => {
 };
 
 // 글 수정
-export const boardPatch = async (boardId, body) => {
+export const boardPatch = async ({ boardId, body }) => {
   const path = `${FINDMATE_ENDPOINT}/${boardId}`;
 
   try {
-    let result = await authRequest.patch(path, body, {
+    const res = await authRequest.patch(path, body, {
       timeout: API_CONNECT_TIMEOUT,
     });
-    return { state: 'OK', data: result.data.response };
+    return res.data.data;
   } catch (err) {
     console.error('Error: ', err);
     return { statusText: 'error ' };
@@ -65,7 +64,7 @@ export const boardDelete = async (boardId) => {
 };
 
 // 글 좋아요 & 좋아요 취소
-export const boardLike = async (boardId, body) => {
+export const boardLike = async ({ boardId, body }) => {
   const path = `${FINDMATE_ENDPOINT}/${boardId}/like`;
 
   try {

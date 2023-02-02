@@ -258,9 +258,9 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
         neutered: petInfo.neutered,
         petSize: petInfo.petSize,
         aboutDog: petInfo.aboutDog,
-        profileImageId: petInfo.profileImage?.upFileId,
+        profileImageId: petInfo?.profileImage?.upFileId,
       });
-      setPreviewImgUrl(petInfo.profileImage?.upFileUrl);
+      setPreviewImgUrl(petInfo?.profileImage?.upFileUrl);
     };
 
     if (isEditMode && petInfo) {

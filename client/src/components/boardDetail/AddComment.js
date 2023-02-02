@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { commentCreate } from '../../api/board/comment';
 import { CommentBtn } from '../Button';
@@ -41,14 +42,24 @@ const CommentContainer = styled.form`
 
 const AddComment = () => {
   const { boardId } = useParams();
-
   const loginMemberId = getLoginInfo().memberId;
+
+  const queryClient = useQueryClient();
+
+  const { mutate: createCommentMutation } = useMutation(commentCreate, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
-    await commentCreate({
+    createCommentMutation({
       memberId: loginMemberId,
       boardId: boardId,
       content: form.comment_text.value,

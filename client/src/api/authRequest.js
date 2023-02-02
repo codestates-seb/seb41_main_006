@@ -1,5 +1,6 @@
 import axios from 'axios';
 import defaultRequest from './defaultRequest';
+import { alertLogin, tryAgain } from '../alert';
 
 const authRequest = axios.create();
 
@@ -21,7 +22,6 @@ authRequest.interceptors.request.use(
   function (error) {
     // 오류 요청을 보내기전 수행할 일
     // ...
-    console.log(error);
     return Promise.reject(error);
   }
 );
@@ -55,7 +55,7 @@ authRequest.interceptors.response.use(
           })
           .then((res) => {
             localStorage.setItem('AccessToken', res.headers.authorization);
-            alert('다시 시도해 주세요');
+            tryAgain();
           })
           .catch((e) => {
             if (e.response.data.message.includes('JWT expired')) {
@@ -86,11 +86,9 @@ authRequest.interceptors.response.use(
             }
           });
       } else {
-        alert('로그인 후 이용해 주세요.');
-        window.location.href = '/';
+        alertLogin();
       }
     }
-    console.log(error);
     return Promise.reject(error);
   }
 );

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { openModal } from '../store/modules/modalSlice';
 import { useDispatch } from 'react-redux';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import { BoardOpenBox, BoardCloseBox } from '../components/BoardStatus';
@@ -120,30 +120,6 @@ const MainContainer = styled.div`
 
     background-color: white;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-
-    > .pet-box {
-      width: 80%;
-    }
-    > .choosed-pet {
-      margin-bottom: 0.25rem;
-      color: var(--main-font-color);
-      font-weight: 600;
-    }
-
-    > .member-info {
-      display: flex;
-      align-items: center;
-      > .member-info--link {
-        display: flex;
-        align-items: center;
-        margin: 0 0.25rem;
-        > button {
-          color: var(--main-color);
-          font-size: 1rem;
-          font-weight: 600;
-        }
-      }
-    }
   }
 
   .user-info-btn {
@@ -162,12 +138,44 @@ const MainContainer = styled.div`
   }
 `;
 
+const MemberinfoCard = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  > .member-info {
+    display: flex;
+    align-items: center;
+    > .member-info--name {
+      display: flex;
+      align-items: center;
+      margin: 0 0.25rem;
+      > .member-name {
+        color: var(--main-color);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+  > .pet-box {
+    width: 80%;
+  }
+  > .choosed-pet {
+    margin-bottom: 0.25rem;
+    color: var(--main-font-color);
+    font-weight: 600;
+  }
+`;
+
 const BoardDetailPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { boardId } = useParams();
   const loginMemberId = getLoginInfo().memberId;
+  const queryClient = useQueryClient();
 
   const {
     data: board,
@@ -179,6 +187,25 @@ const BoardDetailPage = () => {
       likedMembers: [],
       member: {},
       pet: {},
+    },
+  });
+
+  const { mutate: deleteBoardMutation } = useMutation(boardDelete, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['boards']);
+      navigate(`/mate/boards`);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const { mutate: likeBoardMutation } = useMutation(boardLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
     },
   });
 
@@ -196,12 +223,12 @@ const BoardDetailPage = () => {
 
   // 글 삭제
   const handleBoardDelete = (boardId) => {
-    boardDelete(boardId);
+    deleteBoardMutation(boardId);
   };
 
   // 좋아요 & 좋아요 취소
   const handleLikeClick = () => {
-    boardLike(boardId, { memberId: loginMemberId });
+    likeBoardMutation({ boardId, body: { memberId: loginMemberId } });
   };
 
   return (
@@ -266,28 +293,28 @@ const BoardDetailPage = () => {
               <CommentContainer comments={board?.comments} />
             </div>
             <div className="right-box">
-              <div className="member-info">
-                <span>산책 메이트 </span>
-                <div className="member-info--link">
-                  <button
-                    onClick={() => handleClickMember(board?.member?.memberId)}
-                  >
-                    {board?.member?.nickName}
-                  </button>
-                  {board.member.profileImage ? (
-                    <ProfileImage
-                      src={board.member.profileImage.upFileUrl}
-                    ></ProfileImage>
-                  ) : (
-                    <ProfileImage></ProfileImage>
-                  )}
+              <MemberinfoCard
+                onClick={() => handleClickMember(board?.member?.memberId)}
+              >
+                <div className="member-info">
+                  <span>산책 메이트 </span>
+                  <div className="member-info--name">
+                    <div className="member-name">{board?.member?.nickName}</div>
+                    {board?.member?.profileImage ? (
+                      <ProfileImage
+                        src={board.member.profileImage.upFileUrl}
+                      ></ProfileImage>
+                    ) : (
+                      <ProfileImage></ProfileImage>
+                    )}
+                  </div>
+                  <span> 님과</span>
                 </div>
-                <span> 님과</span>
-              </div>
-              <div className="choosed-pet">같이 가는 친구</div>
-              <div className="pet-box">
-                <PetInfoCard pet={board.pet}></PetInfoCard>
-              </div>
+                <div className="choosed-pet">같이 가는 친구</div>
+                <div className="pet-box">
+                  <PetInfoCard pet={board.pet}></PetInfoCard>
+                </div>
+              </MemberinfoCard>
               <div className="post-meet-info">
                 <BoardMeetInfo
                   meetInfo={{

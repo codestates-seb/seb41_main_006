@@ -6,6 +6,7 @@ import Button from '../common/Button';
 import { login } from '../../api/member/login';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../../store/modules/modalSlice';
+import { wrongInput } from '../../alert';
 
 const SLoginForm = styled.form`
   width: 100%;
@@ -41,7 +42,7 @@ const LoginForm = ({ setIsLogin }) => {
         e.response.data.message === 'Member Not Found' ||
         e.response.data.message === '자격 증명에 실패하였습니다.'
       ) {
-        alert('이메일과 비밀 번호를 정확히 입력해 주세요');
+        wrongInput();
       }
     }
   };

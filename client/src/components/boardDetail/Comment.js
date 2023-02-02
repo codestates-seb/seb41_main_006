@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { FaHeart, FaRegHeart, FaPlus, FaMinus } from 'react-icons/fa';
 import { useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 import ProfileImage from '../common/ProfileImage';
 import RecommentList from './RecommentList';
 import { convertCreatedAt } from '../../utils/dateConvert';
@@ -130,24 +132,56 @@ const CommentBox = styled.div`
 `;
 
 const Comment = ({ comment, recomments }) => {
+  const { boardId } = useParams();
   const loginMemberId = getLoginInfo().memberId;
 
   let commentList = [];
   commentList.push(comment);
 
   const dispatch = useDispatch();
-
   const [isRecommentsOpen, setIsRecommentsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [commentContent, setCommentContent] = useState('');
   const [parentId, setParentId] = useState();
+
+  const queryClient = useQueryClient();
+
+  // 댓글 수정 mutate
+  const { mutate: patchCommentMutation } = useMutation(commentPatch, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  // 댓글 삭제 mutate
+  const { mutate: deleteCommentMutation } = useMutation(commentDelete, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  // 댓글 좋아요 mutate
+  const { mutate: likeCommentMutation } = useMutation(commentLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
   };
 
   const handleLikeClick = (idx) => {
-    commentLike(idx, { memberId: loginMemberId });
+    likeCommentMutation({ commentId: idx, body: { memberId: loginMemberId } });
   };
 
   const handleRecommentsClick = (idx) => {
@@ -159,9 +193,12 @@ const Comment = ({ comment, recomments }) => {
   const handleSubmitClick = async (idx) => {
     setIsEditOpen(!isEditOpen);
 
-    await commentPatch(idx, {
-      commentsId: idx,
-      content: commentContent,
+    patchCommentMutation({
+      commentId: idx,
+      body: {
+        commentsId: idx,
+        content: commentContent,
+      },
     });
   };
 
@@ -177,7 +214,7 @@ const Comment = ({ comment, recomments }) => {
 
   // 댓글 삭제
   const handleCommentDelete = (commentId) => {
-    commentDelete(commentId);
+    deleteCommentMutation(commentId);
   };
 
   return (
@@ -188,9 +225,9 @@ const Comment = ({ comment, recomments }) => {
             className="user-profile"
             onClick={() => handleClickMember(comment.member.memberId)}
           >
-            {comment.member.profileImage ? (
+            {comment.member?.profileImage ? (
               <ProfileImage
-                src={comment.member.profileImage.upFileUrl}
+                src={comment.member?.profileImage.upFileUrl}
                 name={comment.member.nickName}
                 size="40px"
               ></ProfileImage>

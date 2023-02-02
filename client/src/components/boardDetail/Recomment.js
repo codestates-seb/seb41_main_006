@@ -3,6 +3,7 @@ import ProfileImage from '../common/ProfileImage';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useMutation, useQueryClient } from 'react-query';
 import { openModal } from '../../store/modules/modalSlice';
 import {
   commentLike,
@@ -11,6 +12,7 @@ import {
 } from '../../api/board/comment';
 import { convertCreatedAt } from '../../utils/dateConvert';
 import { getLoginInfo } from '../../api/loginInfo';
+import { useParams } from 'react-router-dom';
 
 const RecommentBox = styled.div`
   height: 100%;
@@ -112,12 +114,44 @@ const RecommentBox = styled.div`
 `;
 
 const Recomment = ({ recomment }) => {
+  const { boardId } = useParams();
   const loginMemberId = getLoginInfo().memberId;
 
   const dispatch = useDispatch();
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [recommentContent, setRecommentContent] = useState('');
+
+  const queryClient = useQueryClient();
+  // 대댓글 삭제 mutate
+  const { mutate: deleteRecommentMutation } = useMutation(recommentDelete, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  // 대댓글 수정 mutate
+  const { mutate: patchRecommentMutation } = useMutation(commentPatch, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  // 대댓글 좋아요 mutate
+  const { mutate: likeRecommentMutation } = useMutation(commentLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   // 대댓글 배열
   let recommentList = [];
@@ -130,16 +164,22 @@ const Recomment = ({ recomment }) => {
 
   // 대댓글 좋아요 & 좋아요 취소
   const handleLikeClick = (idx) => {
-    commentLike(idx, { memberId: loginMemberId });
+    likeRecommentMutation({
+      commentId: idx,
+      body: { memberId: loginMemberId },
+    });
   };
 
   // 대댓글 수정
   const handleSubmitClick = async (recommentId) => {
     setIsEditOpen(!isEditOpen);
 
-    await commentPatch(recommentId, {
-      commentsId: recommentId,
-      content: recommentContent,
+    patchRecommentMutation({
+      commentId: recommentId,
+      body: {
+        commentsId: recommentId,
+        content: recommentContent,
+      },
     });
   };
 
@@ -155,7 +195,7 @@ const Recomment = ({ recomment }) => {
 
   // 대댓글 삭제
   const handleRecommentDelete = (recommentId) => {
-    recommentDelete(recommentId);
+    deleteRecommentMutation(recommentId);
   };
 
   return (
@@ -166,10 +206,10 @@ const Recomment = ({ recomment }) => {
             className="user-profile"
             onClick={() => handleClickMember(recomment.member.memberId)}
           >
-            {recomment.member.profileImage ? (
+            {recomment?.member?.profileImage ? (
               <ProfileImage
-                src={recomment.member.profileImage.upFileUrl}
-                name={recomment.member.nickName}
+                src={recomment?.member?.profileImage?.upFileUrl}
+                name={recomment?.member?.nickName}
                 size="40px"
               ></ProfileImage>
             ) : (
@@ -219,7 +259,7 @@ const Recomment = ({ recomment }) => {
             ) : (
               <>
                 {' '}
-                {recomment.member.memberId === Number(loginMemberId) ? (
+                {recomment?.member?.memberId === Number(loginMemberId) ? (
                   <button
                     className="edit-btn"
                     onClick={() => setIsEditOpen(!isEditOpen)}
@@ -231,7 +271,7 @@ const Recomment = ({ recomment }) => {
                 )}
               </>
             )}
-            {recomment.member.memberId === Number(loginMemberId) ? (
+            {recomment?.member?.memberId === Number(loginMemberId) ? (
               <button
                 className="del-btn"
                 onClick={() => handelConfirmClick(recomment.commentsId)}

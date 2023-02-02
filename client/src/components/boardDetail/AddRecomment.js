@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { recommentCreate } from '../../api/board/comment';
 import { CommentBtn } from '../Button';
@@ -44,14 +45,27 @@ const AddRecomment = ({ parentId }) => {
 
   const loginMemberId = getLoginInfo().memberId;
 
+  const queryClient = useQueryClient();
+  const { mutate: createRecommentMutation } = useMutation(recommentCreate, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['board', boardId]);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
   const handleRecommentSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
 
-    await recommentCreate(parentId, {
-      memberId: loginMemberId,
-      boardId: boardId,
-      content: form.recomment_text.value,
+    createRecommentMutation({
+      parentId,
+      body: {
+        memberId: loginMemberId,
+        boardId: boardId,
+        content: form.recomment_text.value,
+      },
     });
 
     form.recomment_text.value = '';

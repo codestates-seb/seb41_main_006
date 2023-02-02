@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
@@ -115,6 +115,8 @@ const BoardEditPage = () => {
 
   //강아지 정보
   const [petId, setPetid] = useState('');
+  // mutation
+  const queryClient = useQueryClient();
 
   const {
     data: board,
@@ -126,6 +128,21 @@ const BoardEditPage = () => {
       likedMembers: [],
       member: {},
       pet: {},
+    },
+  });
+
+  const { mutate: patchBoardMutation } = useMutation(boardPatch, {
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.setQueryData(
+        ['board', String(data.boardId)],
+        String(data.boardId)
+      );
+      queryClient.invalidateQueries(['board', String(data.boardId)]);
+      navigate(`/boards/${data.boardId}`);
+    },
+    onError: (err) => {
+      console.log(err);
     },
   });
 
@@ -182,14 +199,17 @@ const BoardEditPage = () => {
       petNum = form.pedId_text.value;
     }
 
-    boardPatch(boardId, {
-      title: form.title_text.value,
-      content: form.body_text.value,
-      appointTime: editDate,
-      placeCode: editPlace[0],
-      x: editPlace[1],
-      y: editPlace[2],
-      pedId: petNum,
+    patchBoardMutation({
+      boardId,
+      body: {
+        title: form.title_text.value,
+        content: form.body_text.value,
+        appointTime: editDate,
+        placeCode: editPlace[0],
+        x: editPlace[1],
+        y: editPlace[2],
+        pedId: petNum,
+      },
     });
 
     navigate(`/boards/${boardId}`);
