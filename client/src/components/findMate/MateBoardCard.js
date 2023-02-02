@@ -36,11 +36,9 @@ const BoardCard = styled.div`
     gap: 0.3rem;
     margin-bottom: 1rem;
 
-    .board-card--title {
-      ${flexRowCenter}
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-      flex-wrap: wrap;
+    .board-card--status {
+      width: 4.5rem;
+      margin-bottom: 0.1rem;
     }
 
     .board-card--meet {
@@ -84,16 +82,16 @@ const MateBoardCard = ({ board }) => {
     <BoardCard>
       <Link to={`/boards/${board.boardId}`}>
         <div className="board-card--top">
-          <div className="board-card--title">
-            <Title as="h4" size="small">
-              {board.title}
-            </Title>
+          <div className="board-card--status">
             {board.boardStatus === 'BOARD_OPEN' ? (
               <BoardOpenBox>모집중</BoardOpenBox>
             ) : (
               <BoardCloseBox>모집완료</BoardCloseBox>
             )}
           </div>
+          <Title as="h4" size="small" className="board-card--title">
+            {board.title}
+          </Title>
           <div className="board-card--meet">
             <IoLocationSharp />
             <span>{address}</span>

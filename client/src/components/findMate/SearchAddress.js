@@ -7,6 +7,7 @@ import { IoLocationSharp } from 'react-icons/io5';
 import { BiTargetLock } from 'react-icons/bi';
 import getAddressList from '../../api/kakaoMap/getAddressList';
 import getAddressByGeo from '../../api/kakaoMap/getAddressByGeo';
+import { media } from '../../style/styleUtils';
 
 const SearchAddress = ({ setIsLoading }) => {
   const searchResultRef = useRef();
@@ -86,39 +87,42 @@ const SearchAddress = ({ setIsLoading }) => {
   }, []);
 
   return (
-    <SearchAddressBox>
-      <IoLocationSharp className="location-icon" />
-      <AdderssInput
-        type="text"
-        placeholder="읍/면/동을 검색하세요"
-        onKeyUp={handleSearchAddressKeyUp}
-        value={searchAddress}
-        onChange={(e) => setSearchAddress(e.target.value)}
-      ></AdderssInput>
-      <LocationButton onClick={handleLocClick}>
-        <BiTargetLock />
-        현재위치
-      </LocationButton>
-      {isAddressListOpen && (
-        <SearchResultBox ref={searchResultRef}>
-          {addressList.length === 0 ? (
-            <div>정확한 읍/면/동 을 입력해주세요</div>
-          ) : (
-            <ul>
-              {addressList.map((address, idx) => (
-                <SearchResultItem
-                  key={address.id}
-                  onClick={() => handleClickSearchResult(idx)}
-                >
-                  <IoLocationSharp className="location-icon" />
-                  {address.name}
-                </SearchResultItem>
-              ))}
-            </ul>
-          )}
-        </SearchResultBox>
-      )}
-    </SearchAddressBox>
+    <>
+      <h1>어떤 지역에서 찾고 싶으신가요?</h1>
+      <SearchAddressBox>
+        <IoLocationSharp className="location-icon" />
+        <AdderssInput
+          type="text"
+          placeholder="읍/면/동을 검색하세요"
+          onKeyUp={handleSearchAddressKeyUp}
+          value={searchAddress}
+          onChange={(e) => setSearchAddress(e.target.value)}
+        ></AdderssInput>
+        <LocationButton onClick={handleLocClick}>
+          <BiTargetLock />
+          <span>현재위치</span>
+        </LocationButton>
+        {isAddressListOpen && (
+          <SearchResultBox ref={searchResultRef}>
+            {addressList.length === 0 ? (
+              <div>정확한 읍/면/동 을 입력해주세요</div>
+            ) : (
+              <ul>
+                {addressList.map((address, idx) => (
+                  <SearchResultItem
+                    key={address.id}
+                    onClick={() => handleClickSearchResult(idx)}
+                  >
+                    <IoLocationSharp className="location-icon" />
+                    {address.name}
+                  </SearchResultItem>
+                ))}
+              </ul>
+            )}
+          </SearchResultBox>
+        )}
+      </SearchAddressBox>
+    </>
   );
 };
 
@@ -168,7 +172,14 @@ const LocationButton = styled.button`
   font-size: 1rem;
   font-weight: 600;
   > svg {
-    margin-right: 0.5rem;
+    margin-right: 0.25rem;
+    font-size: 1.25rem;
+  }
+
+  > span {
+    ${media.mobile`
+      display: none;
+    `}
   }
 `;
 

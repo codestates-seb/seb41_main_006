@@ -8,6 +8,7 @@ import FindMateTab from '../components/findMate/FindMateTab';
 import MateBoardConent from '../components/findMate/MateBoardContent';
 import MateMemberContent from '../components/findMate/MateMemberContent';
 import DogFootLoading from '../components/DogFootLoading';
+import { media } from '../style/styleUtils';
 
 const FindMateContainer = styled(Container)`
   display: flex;
@@ -22,6 +23,10 @@ const FindMateTop = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  ${media.mobile`
+    width: 80%
+  `}
   > h1 {
     width: 100%;
     color: var(--main-font-color);
@@ -31,6 +36,10 @@ const FindMateTop = styled.div`
   > h2 {
     color: var(--main-font-color);
     font-size: 1.5rem;
+
+    ${media.mobile`
+      font-size: 1.25rem;
+  `}
   }
 `;
 
@@ -40,36 +49,23 @@ const FindMateBottom = styled.div`
 
 const FindMatePage = () => {
   const { address, code } = useSelector((state) => state.address);
-  // const [address, setAddress] = useState('');
-  // const [bCode, setBCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   return (
     <FindMateContainer>
       <FindMateTop>
-        <h1>어떤 지역에서 찾고 싶으신가요?</h1>
-        <SearchAddress
-          // setAddress={setAddress}
-          // setBCode={setBCode}
-          setIsLoading={setIsLoading}
-        />
+        <SearchAddress setIsLoading={setIsLoading} />
         {isLoading ? <DogFootLoading size="1.3rem" /> : <h2>{address}</h2>}
       </FindMateTop>
       <FindMateBottom>
         <FindMateTab />
         <Routes>
-          <Route
-            path="members"
-            element={<MateMemberContent placeCode={code} address={address} />}
-          ></Route>
+          <Route path="members" element={<MateMemberContent />}></Route>
           <Route
             path="boards"
             element={<MateBoardConent placeCode={code} address={address} />}
           ></Route>
-          <Route
-            path="*"
-            element={<MateMemberContent placeCode={code} address={address} />}
-          ></Route>
+          <Route path="*" element={<MateMemberContent />}></Route>
         </Routes>
       </FindMateBottom>
     </FindMateContainer>

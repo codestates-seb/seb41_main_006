@@ -97,7 +97,6 @@ const EmailAuthModal = ({
     setIsEmailLoading(true);
     try {
       await authEmail(email);
-      alert('해당 메일로 인증 메일을 전송했습니다.');
     } catch (error) {
       console.log(error);
     }

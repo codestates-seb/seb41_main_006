@@ -1,3 +1,4 @@
+import { isNameValid } from './validateFunctions';
 export default function petInfoValidate({
   name,
   age,
@@ -10,8 +11,8 @@ export default function petInfoValidate({
 
   if (!name) {
     errors.name = '필수 항목입니다.';
-  } else if (name.length > 10) {
-    errors.name = '이름은 10자 이내로 작성해주세요';
+  } else if (!isNameValid(name)) {
+    errors.name = '한글, 영어 포함 10자 이내로 작성해주세요.';
   }
 
   if (!age) {

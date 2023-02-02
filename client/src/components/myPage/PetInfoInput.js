@@ -403,7 +403,7 @@ const PetInfoInput = ({ petInfo, isEditMode, handleModalClose }) => {
                 <div className="label">이름</div>
                 <input
                   type="text"
-                  placeholder="최대 10자"
+                  placeholder="한글, 영어 포함 최대 10자"
                   name="name"
                   value={values.name}
                   onChange={handleChange}

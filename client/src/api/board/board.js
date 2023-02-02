@@ -8,7 +8,7 @@ export const getBoardList = async ({ page, size, placeCode }) => {
       params: { page, size, 'place-code': placeCode },
     });
 
-    return res?.data?.data;
+    return res?.data;
   } catch (err) {
     console.log(err);
   }

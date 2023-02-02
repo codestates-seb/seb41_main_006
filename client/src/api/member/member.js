@@ -8,7 +8,6 @@ export const getMemberList = async ({ page, size, placeCode }) => {
     const res = await defaultRequest.get('/members', {
       params: { page, size, address: placeCode },
     });
-    console.log(res.data.data);
     return res.data.data;
   } catch (err) {
     console.log(err);
