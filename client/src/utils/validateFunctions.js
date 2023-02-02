@@ -4,7 +4,7 @@ const EMAIL_RULE = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 const PASSWORD_RULE =
   /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/;
 // '한글, 영어를 사용하여 10자 이내로 작성해주세요.
-const NAME_RULE = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+{,10}$/;
+const NAME_RULE = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|]+$/;
 
 // 이메일 형식에 맞는지 검사
 export const isEmailValid = (email) => {

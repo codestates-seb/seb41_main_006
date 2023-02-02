@@ -12,7 +12,9 @@ export default function petInfoValidate({
   if (!name) {
     errors.name = '필수 항목입니다.';
   } else if (!isNameValid(name)) {
-    errors.name = '한글, 영어 포함 10자 이내로 작성해주세요.';
+    errors.name = '한글, 영어만 포함하여 작성해주세요.';
+  } else if (name.length > 10) {
+    errors.name = '10자 이내로 작성해주세요';
   }
 
   if (!age) {
