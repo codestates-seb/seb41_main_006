@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ChattingArea from './ChattingArea';
 import * as StompJs from '@stomp/stompjs';
+import authRequest from '../../api/authRequest';
 
 const ChatRoomBox = styled.div`
   height: calc(100vh - var(--header-height));
@@ -49,6 +50,7 @@ const ChatInputBox = styled.form`
 const ChatRoom = () => {
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
+  const [prechat, setPrechat] = useState([]);
   const { chatId } = useParams();
   const chatInputRef = useRef();
   const client = useRef({});
@@ -103,6 +105,19 @@ const ChatRoom = () => {
   const handleInput = (e) => {
     setMessage(e.target.value);
   };
+  //채팅방이 바뀔 때 마다 채팅리스트 다시 불러옴
+  useEffect(() => {
+    const Getchat = async () => {
+      await authRequest
+        .get(`/chats/messages/${chatId}?page=1&size=20`)
+        .then((res) => {
+          const chatdata = res.data.data.slice(0).reverse();
+          setPrechat(chatdata, ...prechat);
+        });
+    };
+    Getchat();
+  }, [chatId]);
+
   useEffect(() => {
     // 채팅방 입장 시 input에 바로 focus
     chatInputRef.current.focus();
@@ -120,6 +135,7 @@ const ChatRoom = () => {
         <ChattingArea
           messageList={messageList}
           setMessageList={setMessageList}
+          prechat={prechat}
         />
       </ChatBox>
       <ChatInputBox onSubmit={(e) => handleSubmit(e, message)}>

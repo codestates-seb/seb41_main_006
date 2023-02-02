@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import authRequest from '../../api/authRequest';
-import { useParams } from 'react-router-dom';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import scrollTodown from '../../utils/scrollTodown';
 
 const MyChatBox = styled.div`
@@ -32,26 +30,9 @@ const MyChatBox = styled.div`
     font-size: 1rem;
   }
 `;
-const ChattingArea = ({ messageList }) => {
+const ChattingArea = ({ messageList, prechat }) => {
   const memberId = Number(localStorage.getItem('memberId'));
-  const { chatId } = useParams();
-  const [prechat, setPrechat] = useState([]);
-  const [maxpage, setMaxpage] = useState('');
   const scrollRef = useRef();
-  useEffect(() => {
-    const Getchat = async () => {
-      await authRequest
-        .get(`/chats/messages/${chatId}?page=1&size=20`)
-        .then((res) => {
-          const chatdata = res.data.data.slice(0).reverse();
-          console.log(res.data);
-          setPrechat(chatdata, ...prechat);
-          setMaxpage(res.data.pageInfo.totalpage);
-          console.log(maxpage);
-        });
-    };
-    Getchat();
-  }, []);
 
   useEffect(() => {
     scrollTodown(scrollRef);
