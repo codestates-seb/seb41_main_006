@@ -4,10 +4,11 @@ import { AiOutlineMan, AiOutlineWoman } from 'react-icons/ai';
 import { HiXMark, HiCheck } from 'react-icons/hi2';
 import { BrownDog } from '../common/DogSvg';
 import PetProfileImage from '../common/PetProfileImage';
+import { media } from '../../style/styleUtils';
 
 const PetSlideCardBox = styled.div`
   width: 100%;
-  height: 250px;
+  height: 100%;
   /* box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
   background-color: white;
   border-radius: 20px; */
@@ -19,7 +20,17 @@ const PetSlideCardBox = styled.div`
 
 const PetImageBox = styled.div`
   width: 100%;
-  height: 220px;
+  height: 14rem;
+
+  ${media.desktop`
+  height: 15.5rem;
+  `}
+  ${media.tablet`
+  height: 16.5rem;
+  `}
+  ${media.mobile`
+    height: 18rem;
+  `}
 
   > svg {
     width: 100%;
@@ -30,8 +41,7 @@ const PetImageBox = styled.div`
 const PetInfoBox = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-
+  width: 100%;
   margin-top: 0.5rem;
 
   span,
@@ -61,18 +71,13 @@ const PetInfoBox = styled.div`
 const MatePetSlideCard = ({ pet }) => {
   return (
     <PetSlideCardBox>
-      {pet?.profileImage?.upFileUrl ? (
-        <PetProfileImage
-          width="100%"
-          height="220px"
-          src={pet?.profileImage?.upFileUrl}
-          name={pet.name}
-        />
-      ) : (
-        <PetImageBox>
+      <PetImageBox>
+        {pet?.profileImage?.upFileUrl ? (
+          <PetProfileImage src={pet?.profileImage?.upFileUrl} name={pet.name} />
+        ) : (
           <BrownDog></BrownDog>
-        </PetImageBox>
-      )}
+        )}
+      </PetImageBox>
       <PetInfoBox>
         <span className="pet--name">{pet.name}</span>
         <span className="pet--breed">{pet.breed}</span>

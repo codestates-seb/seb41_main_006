@@ -5,7 +5,7 @@ import AddPetInfoModal from './Modal/AddPetInfoModal';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { FaDog } from 'react-icons/fa';
 
-const PetContainer = styled.ul`
+const PetContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;

@@ -11,6 +11,7 @@ export const isEmailValid = (email) => {
 
 export const isPasswordValid = (password) => {
   return PASSWORD_RULE.test(password);
+  // '한글, 영어를 사용하여 10자 이내로 작성해주세요.'
 };
 
 export const isNotNumber = (value) => {

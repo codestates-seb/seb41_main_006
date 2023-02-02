@@ -12,6 +12,12 @@ const SContainer = styled.div`
   max-height: 40rem;
   padding: 3rem;
   overflow: scroll;
+  // 스크롤바 가리기
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const EditPetModal = ({ pet, setIsEditModalOpen }) => {

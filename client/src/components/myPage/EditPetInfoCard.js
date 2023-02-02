@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../store/modules/modalSlice';
@@ -7,16 +6,16 @@ import styled from 'styled-components';
 import { MdModeEdit } from 'react-icons/md';
 import { RiDeleteBinFill } from 'react-icons/ri';
 import PetInfoCard from './PetInfoCard';
-import EditPetModal from './Modal/EditPetModal';
 
 const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 16.5rem;
+  width: 100%;
   height: 25.5rem;
   color: var(--main-font-color);
+  padding: 0 1rem;
 
   > .edit {
     width: 100%;
@@ -34,9 +33,8 @@ const CardContainer = styled.div`
   }
 `;
 
-const EditPetInfoCard = ({ pet }) => {
+const EditPetInfoCard = ({ pet, setEditPet, setIsEditModalOpen }) => {
   const dispatch = useDispatch();
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const deletePetMutation = useMutation(deleteMyPet, {
@@ -50,6 +48,11 @@ const EditPetInfoCard = ({ pet }) => {
 
   const deletePet = (petId) => {
     deletePetMutation.mutate({ petId });
+  };
+
+  const openEdit = (pet) => {
+    setEditPet(pet);
+    setIsEditModalOpen(true);
   };
 
   const handleClickPetDelete = () => {
@@ -66,27 +69,22 @@ const EditPetInfoCard = ({ pet }) => {
   };
 
   return (
-    <>
-      <CardContainer>
-        <PetInfoCard pet={pet} />
-        <div className="edit">
-          <button>
-            <MdModeEdit
-              size="16"
-              onClick={() => {
-                setIsEditModalOpen(true);
-              }}
-            />
-          </button>
-          <button onClick={handleClickPetDelete}>
-            <RiDeleteBinFill size="16" />
-          </button>
-        </div>
-      </CardContainer>
-      {isEditModalOpen ? (
-        <EditPetModal pet={pet} setIsEditModalOpen={setIsEditModalOpen} />
-      ) : null}
-    </>
+    <CardContainer>
+      <PetInfoCard pet={pet} />
+      <div className="edit">
+        <button>
+          <MdModeEdit
+            size="16"
+            onClick={() => {
+              openEdit(pet);
+            }}
+          />
+        </button>
+        <button onClick={handleClickPetDelete}>
+          <RiDeleteBinFill size="16" />
+        </button>
+      </div>
+    </CardContainer>
   );
 };
 
