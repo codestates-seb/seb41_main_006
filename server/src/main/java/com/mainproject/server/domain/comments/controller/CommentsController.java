@@ -98,7 +98,7 @@ public class CommentsController {
 		if(memberDetails == null){
 			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
-		commentsService.deleteParentComments(commentsId);
+		commentsService.deleteParentComments(commentsId, memberDetails);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -111,7 +111,7 @@ public class CommentsController {
 		if(memberDetails == null){
 			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
-		commentsService.deleteReplyComments(commentsId);
+		commentsService.deleteReplyComments(commentsId, memberDetails);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

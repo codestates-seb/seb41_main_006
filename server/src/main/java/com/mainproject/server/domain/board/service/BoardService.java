@@ -27,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -37,6 +39,7 @@ public class BoardService {
     private final PetService petService;
     private final CustomBeanUtils customBeanUtils;
     private final BoardLikeRepository boardLikeRepository;
+    private final EntityManager entityManager;
 
 
     public Board createBoard(Board board, MemberDetails memberDetails) {
@@ -102,10 +105,15 @@ public class BoardService {
         return boardPage;
     }
 
+    @Transactional
     public void deleteBoard(Long boardId, MemberDetails memberDetails) {
         Board findBoard = findVerifiedBoard(boardId);
 
         validateBoardWriter(findBoard, memberDetails.getMemberId());
+
+        entityManager.createQuery("delete from BoardLike bl where bl.board.boardId = :boardId")
+            .setParameter("boardId", boardId)
+            .executeUpdate();
 
         boardRepository.delete(findBoard);
     }
