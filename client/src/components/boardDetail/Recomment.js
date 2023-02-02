@@ -112,7 +112,7 @@ const RecommentBox = styled.div`
 `;
 
 const Recomment = ({ recomment }) => {
-  console.log(recomment);
+  console.log(recomment.member.nickName);
   const loginMemberId = getLoginInfo().memberId;
 
   const dispatch = useDispatch();
@@ -167,18 +167,22 @@ const Recomment = ({ recomment }) => {
             className="user-profile"
             onClick={() => handleClickMember(recomment.member.memberId)}
           >
-            <ProfileImage
-              src={recomment.member.profileImage.upFileUrl}
-              name={recomment.nickName}
-              size="40px"
-            ></ProfileImage>
+            {recomment.member.profileImage ? (
+              <ProfileImage
+                src={recomment.member.profileImage.upFileUrl}
+                name={recomment.member.nickName}
+                size="40px"
+              ></ProfileImage>
+            ) : (
+              <ProfileImage size="40px"></ProfileImage>
+            )}
           </button>
           <div className="recomment-detail-info">
             <button
               className="recomment-username"
               onClick={() => handleClickMember(recomment.member.memberId)}
             >
-              {recomment.nickName}
+              {recomment.member.nickName}
             </button>
             <div className="recomment-sub-info">
               <span className="recomment-createAt">

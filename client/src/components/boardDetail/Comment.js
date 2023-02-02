@@ -188,18 +188,22 @@ const Comment = ({ comment, recomments }) => {
             className="user-profile"
             onClick={() => handleClickMember(comment.member.memberId)}
           >
-            <ProfileImage
-              src={comment.member.profileImage.upFileUrl}
-              name={comment.nickName}
-              size="40px"
-            ></ProfileImage>
+            {comment.member.profileImage ? (
+              <ProfileImage
+                src={comment.member.profileImage.upFileUrl}
+                name={comment.member.nickName}
+                size="40px"
+              ></ProfileImage>
+            ) : (
+              <ProfileImage size="40px"></ProfileImage>
+            )}
           </button>
           <div className="comment-detail-info">
             <button
               className="comment-username"
               onClick={() => handleClickMember(comment.member.memberId)}
             >
-              {comment.nickName}
+              {comment.member.nickName}
             </button>
             <div className="comment-sub-info">
               <span className="comment-createAt">
