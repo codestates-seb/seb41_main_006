@@ -116,7 +116,7 @@ public class MemberController {
     @GetMapping("/{member-id}/my-page")
     public ResponseEntity getMypageInfo(@Positive @PathVariable("member-id") long memberId,
                                         @AuthenticationPrincipal MemberDetails memberDetails) {
-        if (memberDetails.getMemberId() != memberId) {
+        if (memberDetails == null || memberDetails.getMemberId() != memberId) {
             throw new BusinessLogicException(ExceptionCode.FORBIDDEN_ACCESS);
         }
         Member member = memberService.findMember(memberId);
