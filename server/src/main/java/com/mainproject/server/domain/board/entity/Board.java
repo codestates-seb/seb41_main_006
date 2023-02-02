@@ -65,7 +65,7 @@ public class Board extends Auditable {
         }
     }
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
