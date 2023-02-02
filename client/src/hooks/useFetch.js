@@ -9,10 +9,8 @@ const useFetch = (url, params, reload) => {
 
   const getFetch = async (url, params) => {
     try {
-      // console.log('## fetch url ##', url);
       let result;
       if (params !== undefined) {
-        // console.log('params', params);
         result = await defaultRequest.get(url, {
           params: params,
           timeout: 2000,

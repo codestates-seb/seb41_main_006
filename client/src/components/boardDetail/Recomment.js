@@ -112,7 +112,6 @@ const RecommentBox = styled.div`
 `;
 
 const Recomment = ({ recomment }) => {
-  console.log(recomment.member.nickName);
   const loginMemberId = getLoginInfo().memberId;
 
   const dispatch = useDispatch();

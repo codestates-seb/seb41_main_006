@@ -182,8 +182,6 @@ const BoardDetailPage = () => {
     },
   });
 
-  console.log(board);
-
   // 회원 정보 모달 창 띄우기
   const handleClickMember = (memberId) => {
     dispatch(openModal({ type: 'member', props: { memberId } }));
