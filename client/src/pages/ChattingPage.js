@@ -32,7 +32,6 @@ const ChattingPage = () => {
         .get('/chats')
         .then((res) => {
           setChattingList(res.data.data);
-          console.log(res);
         })
         .catch((e) => {
           console.log(e);
