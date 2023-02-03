@@ -37,7 +37,6 @@ const LoginForm = ({ setIsLogin }) => {
       setIsLogin(true);
       dispatch(closeModal());
     } catch (e) {
-      //이메일 비밀번호 틀린 오류는 여기서 잡아야함
       if (
         e.response.data.message === 'Member Not Found' ||
         e.response.data.message === '자격 증명에 실패하였습니다.'
