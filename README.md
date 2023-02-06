@@ -50,8 +50,6 @@ https://kng2mate.site/
 ![Web App Reference Architecture (2)](https://user-images.githubusercontent.com/111368350/216022523-de2d9d2e-4b35-4a9c-9003-ca562e9d587c.png)
 
 ## 🖼️ 시연 영상
-<details>
-  <summary>시연 영상</summary>
   
 ### 회원 가입
 
@@ -92,4 +90,4 @@ https://kng2mate.site/
 ### 채팅
 
 ![채팅](https://user-images.githubusercontent.com/67780354/216002190-8cf341e0-3420-4ea0-a2b7-3fe776ba1887.gif)
-</details>
+
