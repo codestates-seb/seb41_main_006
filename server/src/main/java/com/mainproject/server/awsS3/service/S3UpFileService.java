@@ -44,6 +44,7 @@ public class S3UpFileService {
 
 	//멤버 사진 업로드
 	public S3UpFile uploadMFile(MultipartFile multipartFile) throws IOException{
+		//중복 이미지 제목 피하기 위해 randomUUID 부여
 		String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
 		ObjectMetadata objMeta = new ObjectMetadata();
@@ -53,7 +54,7 @@ public class S3UpFileService {
 
 		S3UpFile s3UpFiles = new S3UpFile();
 		s3UpFiles.setUpFileName(s3FileName);
-		s3UpFiles.setUpFileUrl(s3EndPoint + "/member/" + s3FileName);
+		s3UpFiles.setUpFileUrl(s3EndPoint + "/member/" + s3FileName); //S3 저장 폴더 위치
 		s3UpFileRepository.save(s3UpFiles);
 
 		log.info("파일 업로드됨");
@@ -62,6 +63,7 @@ public class S3UpFileService {
 
 	//펫 사진 업로드
 	public S3UpFile uploadPFile(MultipartFile multipartFile) throws IOException {
+		//중복 이미지 제목 피하기 위해 randomUUID 부여
 		String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
 		ObjectMetadata objMeta = new ObjectMetadata();
@@ -71,7 +73,7 @@ public class S3UpFileService {
 
 		S3UpFile s3UpFiles = new S3UpFile();
 		s3UpFiles.setUpFileName(s3FileName);
-		s3UpFiles.setUpFileUrl(s3EndPoint + "/pet/" + s3FileName);
+		s3UpFiles.setUpFileUrl(s3EndPoint + "/pet/" + s3FileName); //S3 저장 폴더 위치
 		s3UpFileRepository.save(s3UpFiles);
 
 		log.info("파일 업로드됨");
@@ -80,6 +82,7 @@ public class S3UpFileService {
 
 	//멤버 사진 url 삭제
 	public String deleteMFile(String upFileUrl) throws IOException{
+		//FileURL 검증
 		S3UpFile s3UpFile = findVerifiedUpFileUrl(upFileUrl);
 		Member member = s3UpFile.getMember();
 		String fileName = s3UpFile.getUpFileName();
@@ -95,6 +98,7 @@ public class S3UpFileService {
 
 	//펫 사진 url 삭제
 	public String deletePFile(String upFileUrl) throws IOException{
+		//FileURL 검증
 		S3UpFile s3UpFile = findVerifiedUpFileUrl(upFileUrl);
 		s3UpFile.getPet().setS3UpFile(null);
 		String fileName = s3UpFile.getUpFileName();
@@ -116,7 +120,7 @@ public class S3UpFileService {
 		return findS3UpFile;
 	}
 
-	//존재하는 id 인지 검증
+	//존재하는 id 인지 검증 : member, pet 등록/수정 시에 사용
 	public S3UpFile validateVerifyFile(Long upFileId){
 		Optional<S3UpFile> optionalS3UpFile = s3UpFileRepository.findByUpFileId(upFileId);
 		S3UpFile findS3UpFile = optionalS3UpFile.orElseThrow(
