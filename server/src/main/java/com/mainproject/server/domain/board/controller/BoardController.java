@@ -129,6 +129,7 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    // ----- 게시글 좋아요
     @PostMapping("/{board-id}/like")
     public ResponseEntity likeBoard(@Positive @PathVariable("board-id") Long boardId,
                                     @Valid @RequestBody BoardLikeDto boardLikeDto,

@@ -45,9 +45,10 @@ public class CommentsService {
 
 	// ----- 대댓글 등록
 	public Comments createReComments(Long parentId, Comments comments){
-
+		//대댓글의 parent를 찾아옵니다.
 		Comments parent = commentsRepository.findById(parentId).orElse(null);
-		//parent 가 null 이면 (댓글의 경우) exception
+
+		//parent 가 null 이면 (대댓글이 아닌 댓글의 경우) exception
 		if(parent == null){
 			throw new IllegalArgumentException("Invalid parentId");
 		}
@@ -55,7 +56,7 @@ public class CommentsService {
 		replyComments.setContent(comments.getContent());
 		replyComments.setBoard(comments.getBoard());
 		replyComments.setMember(comments.getMember());
-		replyComments.setDepth(parent.getDepth() + 1);
+		replyComments.setDepth(parent.getDepth() + 1); // 댓글 depth = 0, 대댓글 depth = 1
 
 		replyComments.setParentComments(parent);
 		parent.getReplyComments().add(replyComments);
@@ -83,8 +84,10 @@ public class CommentsService {
 	public void deleteParentComments(Long commentsId, MemberDetails memberDetails){
 		Comments findComments = findVerifiedComments(commentsId);
 
+		//유효한 작성자인지 검증
 		validateCommentsWriter(findComments, memberDetails.getMemberId());
 
+		//해당 댓글ID의 댓글 좋아요까지 함께 삭제
 		entityManager.createQuery("delete from CommentsLike cl where cl.comments.commentsId = :commentsId")
 				.setParameter("commentsId", commentsId)
 				.executeUpdate();
@@ -96,13 +99,15 @@ public class CommentsService {
 	public void deleteReplyComments(Long commentsId, MemberDetails memberDetails) {
 		Comments findComments = findVerifiedComments(commentsId);
 
+		//유효한 작성자인지 검증
 		validateCommentsWriter(findComments, memberDetails.getMemberId());
 
-		//대댓글인지 확인
+		//대댓글인지 확인 : 유효한 대댓글 && parentId 가 null이 아닐 경우
 		if(findComments != null && findComments.getParentComments() != null){
 			Comments parentComments = findComments.getParentComments();
 			parentComments.getReplyComments().remove(findComments);
 
+			//해당 대댓글ID의 대댓글 좋아요까지 함께 삭제
 			entityManager.createQuery("delete from CommentsLike cl where cl.comments.commentsId = :commentsId")
 				.setParameter("commentsId", commentsId)
 				.executeUpdate();
@@ -115,20 +120,21 @@ public class CommentsService {
 	// ----- 댓글 검증
 	public Comments findVerifiedComments(Long commentsId){
 		Optional<Comments> optionalComments = commentsRepository.findById(commentsId);
+		//유효하지 않은 댓글 - exception 발생
 		Comments findComments =
 			optionalComments.orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENTS_NOT_FOUND));
 
 		return findComments;
 	}
 
-	// ----- 댓글, 대댓글 정렬
+	// ----- 댓글, 대댓글 정렬 (특정 게시물 조회 : getBoardWithSortedCommentsAndReplies 시에 사용)
 	public List<Comments> getSortedCommentsByBoard(Board board) {
 		List<Comments> comments = commentsRepository.findAllByBoardOrderByCreatedAtAscParentCommentsCommentsId(board);
 
-		//Map<Long, Comments> commentsMap = comments.stream().collect(Collectors.toMap(Comments::getCommentsId, c -> c));
 		List<Comments> rootComments = comments.stream().filter(c -> c.getParentComments() == null).collect(Collectors.toList());
 		List<Comments> result = new ArrayList<>();
 
+		//재귀로 댓글에 대댓글 작성순 정렬
 		for (Comments rootComment : rootComments) {
 			result.addAll(getCommentsInOrder(rootComment));
 		}
@@ -139,19 +145,22 @@ public class CommentsService {
 		List<Comments> result = new ArrayList<>();
 		result.add(comment);
 
+		//댓글에 대댓글 정렬
 		for (Comments reply : comment.getReplyComments()) {
 			result.addAll(getCommentsInOrder(reply));
 		}
 		return result;
 	}
 
-	// ----- 댓글 좋아요한 멤버 가져오기
+	// ----- 댓글 좋아요한 멤버 가져오기 : 각 게시글 당 좋아요한 멤버 알기 위해 사용
 	public List<Long> findCommentsLikedMembers(Long commentsId, LikeStatus likeStatus){
+		//CommentsLike 테이블에서 commentsId, likeStatus 같은 memberId 반환
 		return commentsLikeRepository.findMemberIdsByCommentsIdAndLikeStatus(commentsId, likeStatus);
 	}
 
 	// ----- 작성자 검증
 	public void validateCommentsWriter(Comments comments, long memberId){
+		//validateVerifyMember : 존재하는 회원인지 검증
 		Member member = memberService.validateVerifyMember(memberId);
 
 		if(comments.getMember() != member){
