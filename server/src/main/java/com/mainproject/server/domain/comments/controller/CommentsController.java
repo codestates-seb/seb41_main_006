@@ -65,6 +65,7 @@ public class CommentsController {
 			return new ResponseEntity(ExceptionCode.NOT_AUTHORIZED, HttpStatus.UNAUTHORIZED);
 		}
 
+		//대댓글 등록시 parentId(댓글Id)도 함께 받는다.
 		Comments createdComments = commentsService.createReComments(parentId, mapper.commentsPostDtoToComments(commentsPostDto));
 		CommentsDto.Response response = mapper.commentsToCommentsResponseDto(createdComments);
 

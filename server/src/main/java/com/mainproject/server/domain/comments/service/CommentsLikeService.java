@@ -33,9 +33,12 @@ public class CommentsLikeService {
 	// ----- 댓글 좋아요
 	@Transactional
 	public Optional<CommentsLike> likeComments(Long commentsId, Long memberId) {
+		// 멤버, 댓글 검증
 		Member findMember = memberService.validateVerifyMember(memberId);
 		Comments findComments = commentsService.findVerifiedComments(commentsId);
 
+		//LIKE 눌린 기록 있으면 - likeStatus를 CANCEL로,
+		//               없다면 - likeStatus를 LIKE로
 		Optional<CommentsLike> oCommentsLike = commentsLikeRepository.findByMemberAndComments(findMember, findComments);
 		return Optional.of(oCommentsLike.map(like -> {
 			if (like.getLikeStatus().equals(LikeStatus.LIKE)) {
