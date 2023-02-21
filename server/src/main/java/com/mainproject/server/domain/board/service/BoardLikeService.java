@@ -32,11 +32,15 @@ public class BoardLikeService {
 		this.boardMapper = boardMapper;
 	}
 
+	// ----- 게시글 좋아요
 	@Transactional
 	public Optional<BoardLike> likeBoard(Long boardId, Long memberId){
+		// 멤버, 게시글 검증
 		Member findMember = memberService.validateVerifyMember(memberId);
 		Board findBoard = boardService.findVerifiedBoard(boardId);
 
+		//LIKE 눌린 기록 있으면 - likeStatus를 CANCEL로,
+		//               없다면 - likeStatus를 LIKE로
 		Optional<BoardLike> oBoardLike = boardLikeRepository.findByMemberAndBoard(findMember, findBoard);
 		return Optional.of(oBoardLike.map(like -> {
 			if (like.getLikeStatus().equals(LikeStatus.LIKE)) {
