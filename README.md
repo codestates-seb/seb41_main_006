@@ -67,7 +67,7 @@ https://kng2mate.site/
 
 ### 강아지 정보 등록
 
-![강아지 등록](https://user-images.githubusercontent.com/67780354/216001711-d9ca767b-f69b-4b53-937e-a1effb647d01.gif)
+![마이페이지 - 강아지 추가](https://github.com/codestates-seb/seb41_main_006/assets/52372820/90225fa8-163f-41af-b35a-392460e2f441)
 
 ### 산책 메이트(위치 기반 검색)
 
